@@ -1,0 +1,24 @@
+@import "tailwindcss" source(none);
+
+/* Only scan Razor views; the compiled output is committed to wwwroot/css/app.css. */
+@source "../Pages";
+@source "../Areas";
+
+/* Alpine: hide elements until Alpine has initialised them. */
+[x-cloak] { display: none !important; }
+
+@theme {
+  --color-brand-50: #eef6ff;
+  --color-brand-100: #d9eaff;
+  --color-brand-600: #1d5fd1;
+  --color-brand-700: #184eaa;
+  --color-brand-800: #163f86;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 py-2 text-base font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-50;
+  }
+  .btn-primary { @apply bg-brand-600 text-white hover:bg-brand-700; }
+  .btn-secondary { @apply border border-slate-300 bg-white text-slate-800 hover:bg-slate-50; }
+}

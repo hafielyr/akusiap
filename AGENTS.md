@@ -28,17 +28,18 @@ Only a human or a review agent moves a card from Review to Done, after the PR me
 - Get every access check from `IEntitlementService`. Never query purchases or subscriptions from a page.
 - Put UI strings in `.resx` (`id` required, `en` required). Keep code, identifiers, commits and docs in English.
 - Migrations: one per card that changes the schema, named `<ID>_<Change>`. Never edit an applied migration.
-- Tests: unit tests for domain, integration tests (Testcontainers) for handlers and pages, Playwright for flows named in the AC. Use `TestData` builders; no shared mutable fixtures between tests.
+- Tests: unit tests for domain, integration tests (per-run test database, D-15) for handlers and pages, Playwright for flows named in the AC. Use `TestData` builders; no shared mutable fixtures between tests.
 - Secrets come from user-secrets or env vars only. Never commit keys (Midtrans, Google, SMTP).
 - Pages must work at 360 px width and keep JS minimal: Alpine for local state, htmx for server round-trips, no SPA frameworks.
 
 ## Commands
 
 ```
-docker compose up -d                                  # postgres + mailpit
+dotnet user-secrets set "ConnectionStrings:Default" "<neon>" --project src/Akusiap.Web   # once (D-15)
 dotnet build -warnaserror
 dotnet test
 dotnet run --project src/Akusiap.Web
 dotnet ef migrations add <Name> -p src/Akusiap.Infrastructure -s src/Akusiap.Web
 pwsh tests/Akusiap.E2E/bin/Debug/net10.0/playwright.ps1 install   # once
+tools/tailwind.sh                                     # rebuild CSS after changing Tailwind classes
 ```

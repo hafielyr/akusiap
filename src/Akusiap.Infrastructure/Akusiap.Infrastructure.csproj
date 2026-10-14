@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Akusiap.Application\Akusiap.Application.csproj" />
+  </ItemGroup>
+</Project>

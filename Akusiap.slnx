@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Akusiap.Application/Akusiap.Application.csproj" />
+    <Project Path="src/Akusiap.Domain/Akusiap.Domain.csproj" />
+    <Project Path="src/Akusiap.Infrastructure/Akusiap.Infrastructure.csproj" />
+    <Project Path="src/Akusiap.Web/Akusiap.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Akusiap.E2E/Akusiap.E2E.csproj" />
+    <Project Path="tests/Akusiap.IntegrationTests/Akusiap.IntegrationTests.csproj" />
+    <Project Path="tests/Akusiap.UnitTests/Akusiap.UnitTests.csproj" />
+  </Folder>
+</Solution>

@@ -8,14 +8,14 @@ Source of truth for requirements: `Quiz Practice App — User Stories.docx` (sto
 |---|---|
 | Runtime | .NET 10 (LTS), ASP.NET Core |
 | UI | Razor Pages + htmx + Alpine.js, Tailwind CSS via the standalone CLI (no Node toolchain). htmx and Alpine are vendored in `wwwroot/lib` |
-| Data | PostgreSQL 17, EF Core 10 (Npgsql), code-first migrations. Use JSONB for `*Json` columns |
+| Data | PostgreSQL 17 (Neon in dev, D-15), EF Core 10 (Npgsql), code-first migrations. Use JSONB for `*Json` columns |
 | Auth | ASP.NET Core Identity (`User` : `IdentityUser<Guid>`), Google login. Roles: `Learner`, `Teacher`, `Admin` |
 | Jobs | Hangfire with PostgreSQL storage. Dashboard at `/admin/jobs` (Admin only) |
 | Payments | Midtrans Core API behind `IPaymentGateway`; `FakePaymentGateway` for dev and tests |
-| Email | `IEmailSender` → Brevo or SES in production, Mailpit in dev (docker-compose) |
+| Email | `IEmailSender` → Brevo or SES in production; `.eml` files in `.dev-mail/` during development (D-15) |
 | i18n | `.resx` localization. `id-ID` is the default culture, `en` is optional. Money is formatted as `Rp49.000` |
 | Import | ClosedXML (xlsx) + CsvHelper |
-| Tests | xUnit, Testcontainers (Postgres), WebApplicationFactory, Playwright for .NET (360×640 viewport) |
+| Tests | xUnit, WebApplicationFactory, a per-run test database on the hosted Postgres (CI: service container), Playwright for .NET (360×640 viewport) |
 | Hosting | Docker image, managed Postgres in an Indonesian region, Cloudflare in front. CI on GitHub Actions |
 
 All libraries are open source. Hangfire core is LGPL-3.0, which is fine as a NuGet reference. Do not add commercial libraries (for example Duende IdentityServer or Telerik) without a decision record.
@@ -23,7 +23,7 @@ All libraries are open source. Hangfire core is LGPL-3.0, which is fine as a NuG
 ## Solution layout
 
 ```
-Akusiap.sln
+Akusiap.slnx
 src/
   Akusiap.Domain/          entities, enums, pure domain services (EntitlementPolicy, Scoring, Sm2Scheduler, RefundPolicy, AllowancePolicy)
   Akusiap.Application/     use cases grouped by feature folder; interfaces (IAppDbContext, IPaymentGateway, IEmailSender, IClock)
@@ -31,7 +31,7 @@ src/
   Akusiap.Web/             Razor Pages (Areas: Admin, Account, Learn), htmx partials, Alpine components, webhook endpoints
 tests/
   Akusiap.UnitTests/         domain and application tests (no DB)
-  Akusiap.IntegrationTests/  Testcontainers Postgres + WebApplicationFactory
+  Akusiap.IntegrationTests/  per-run test database + WebApplicationFactory
   Akusiap.E2E/               Playwright, mobile viewport
 ```
 
