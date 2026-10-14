@@ -8,7 +8,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
 - [F-02] Database and dev infrastructure · M1 · deps: F-01 · needs the Neon connection string (D-15)
-- [AC-05] Legal pages · M1 · deps: F-06
 
 ## In Progress
 
@@ -53,6 +52,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [ENT-04] My access page · M1 · deps: ENT-02
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
 - [AC-04] Profile, password and role · M1 · deps: AC-01
+- [AC-05] Legal pages · M1 · deps: F-06, AC-01
 - [AC-03] Google sign-in · M1 · deps: AC-01
 
 **M1 exit check**: An admin creates and publishes a paid exam and a free exam. A guest finds the paid exam in the catalog, takes the 30-question trial with explanations and sees the buy CTA. A registered user takes the free exam. The admin grants the paid exam to that user, who then takes the full exam in Simulation mode; it auto-submits at the time limit.

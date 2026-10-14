@@ -89,7 +89,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - AC: Phone numbers are validated (+62 followed by 8–12 digits). The language change applies immediately.
 
 ### AC-05 Legal pages · S
-- Stories: A-06 · Depends on: F-06
+- Stories: A-06 · Depends on: F-06, AC-01
 - Scope: Terms, Refund policy (text from the stories doc) and Privacy pages in `id` and `en`. Registration requires accepting the terms. Links appear in the footer.
 - AC: Registration fails without the checkbox. All three pages render in both languages.
 
