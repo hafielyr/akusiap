@@ -336,8 +336,8 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### OPS-02 Production deployment · M
 - Depends on: F-08, PAY-04
-- Scope: Dockerfile (chiseled runtime image), migrations applied on deploy (bundle), env-based secrets (Midtrans keys, SMTP and Google), HTTPS behind Cloudflare with forwarded headers, Hangfire dashboard protected and structured logging.
-- AC: The image builds in CI (`docker build` runs on GitHub Actions, not locally). The container starts with only env vars and `/health` reports DB status.
+- Scope (D-16): `Dockerfile` using the `noble-chiseled-extra` ASP.NET runtime image (the plain chiseled image has no ICU, which breaks `id-ID` formatting). GitHub Actions on `main`: build, test, push the image to GHCR, build an EF migrations bundle, then SSH to the VPS to run the bundle against Neon and `docker compose pull && up -d`. `deploy/` holds a cloud-init file for the Hetzner VPS (non-root deploy user, SSH keys only, ufw allowing 22/80/443, unattended-upgrades, Docker), `compose.yaml` (app + Caddy) and a `Caddyfile` (automatic HTTPS, forwarded headers). Secrets (Neon, Midtrans, Google, SMTP) come from a root-only `.env` on the server, filled from GitHub secrets; nothing is committed. Protect the Hangfire dashboard, add structured logging, and document a rollback (redeploy the previous image tag).
+- AC: The image builds in CI (nothing is built locally). A fresh VPS created with the cloud-init file serves the app over HTTPS after one deploy run. The container starts with only env vars, `/health` reports DB status, and a rollback to the previous tag works.
 
 ---
 
