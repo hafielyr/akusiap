@@ -7,13 +7,14 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [F-02] Database and dev infrastructure · M1 · deps: F-01 · needs the Neon connection string (D-15)
+- [F-03] Content and access schema · M1 · deps: F-02
 
 ## In Progress
 
 ## Review
 - [F-01] Solution skeleton · M1 · deps: none · (claude-opus-5.5, 2026-10-14)
 - [F-06] Localization and Rupiah · M1 · deps: F-01 · (claude-opus-5.5, 2026-10-14)
+- [F-02] Database and dev infrastructure · M1 · deps: F-01 · (claude-opus-5.5, 2026-10-18)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -23,7 +24,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [F-03] Content and access schema · M1 · deps: F-02
 - [F-04] Session and memorization schema · M1 · deps: F-03
 - [F-05] Test infrastructure · M1 · deps: F-03
 - [F-08] CI pipeline · M1 · deps: F-05
