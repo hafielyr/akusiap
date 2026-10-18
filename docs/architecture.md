@@ -16,7 +16,7 @@ Source of truth for requirements: `Quiz Practice App — User Stories.docx` (sto
 | i18n | `.resx` localization. `id-ID` is the default culture, `en` is optional. Money is formatted as `Rp49.000` |
 | Import | ClosedXML (xlsx) + CsvHelper |
 | Tests | xUnit, WebApplicationFactory, a per-run test database on the hosted Postgres (CI: service container), Playwright for .NET (360×640 viewport) |
-| Hosting | Docker image, managed Postgres in an Indonesian region, Cloudflare in front. CI on GitHub Actions |
+| Hosting | Hetzner VPS (Singapore) running the Docker image behind Caddy, Neon Postgres (Singapore), Cloudflare in front. CI and image builds on GitHub Actions (D-16) |
 
 All libraries are open source. Hangfire core is LGPL-3.0, which is fine as a NuGet reference. Do not add commercial libraries (for example Duende IdentityServer or Telerik) without a decision record.
 
