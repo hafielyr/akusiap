@@ -3,4 +3,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Akusiap.Domain\Akusiap.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!-- DbSet<T> for IAppDbContext. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
 </Project>
