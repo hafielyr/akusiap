@@ -26,7 +26,7 @@ Only a human or a review agent moves a card from Review to Done, after the PR me
 - Handlers live in `Application/<Feature>/<UseCase>.cs`; pages in `Web/Pages/...` or `Web/Areas/Admin/Pages/...`; htmx partials are named `_<Name>Partial.cshtml`.
 - Never read `DateTime.UtcNow` directly; inject `IClock`. Store money as `long` Rupiah.
 - Get every access check from `IEntitlementService`. Never query purchases or subscriptions from a page.
-- Put UI strings in `.resx` (`id` required, `en` required). Keep code, identifiers, commits and docs in English.
+- Put UI strings in `src/Akusiap.Web/Resources/Localization/SharedResource.resx` (Indonesian, the neutral/default) and `SharedResource.en.resx`, with dotted keys like `Catalog.SearchPlaceholder`. In views use `@T["Key"]` (injected in `_ViewImports`). Format money with `<idr value="..." />` or `Money.FormatIdr`. Keep code, identifiers, commits and docs in English.
 - Migrations: one per card that changes the schema, named `<ID>_<Change>`. Never edit an applied migration.
 - Tests: unit tests for domain, integration tests (per-run test database, D-15) for handlers and pages, Playwright for flows named in the AC. Use `TestData` builders; no shared mutable fixtures between tests.
 - Secrets come from user-secrets or env vars only. Never commit keys (Midtrans, Google, SMTP).

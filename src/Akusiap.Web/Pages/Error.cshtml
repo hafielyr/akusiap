@@ -1,14 +1,14 @@
 @page
 @model ErrorModel
 @{
-  ViewData["Title"] = "Terjadi kesalahan";
+  ViewData["Title"] = T["Error.Title"].Value;
 }
 
 <section class="space-y-3 py-6">
-  <h1 class="text-xl font-bold text-red-700">Maaf, terjadi kesalahan.</h1>
-  <p class="text-slate-600">Silakan coba lagi beberapa saat lagi. Jika masalah berlanjut, hubungi kami lewat WhatsApp.</p>
+  <h1 class="text-xl font-bold text-red-700">@T["Error.Heading"]</h1>
+  <p class="text-slate-600">@T["Error.Body"]</p>
   @if (Model.ShowRequestId)
   {
-    <p class="text-sm text-slate-500">Kode permintaan: <code>@Model.RequestId</code></p>
+    <p class="text-sm text-slate-500">@T["Error.RequestId"]: <code>@Model.RequestId</code></p>
   }
 </section>
