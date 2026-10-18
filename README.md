@@ -26,7 +26,8 @@ EF Core tools are pinned in `dotnet-tools.json`:
 
 ```
 dotnet tool restore
-dotnet ef migrations add <ID>_<Change> -p src/Akusiap.Infrastructure -s src/Akusiap.Web
+dotnet ef database update -p src/Akusiap.Infrastructure -s src/Akusiap.Web                # apply migrations to your dev database
+dotnet ef migrations add <ID>_<Change> -p src/Akusiap.Infrastructure -s src/Akusiap.Web   # e.g. F04_Sessions; lands next to the existing ones
 ```
 
 ## Styles

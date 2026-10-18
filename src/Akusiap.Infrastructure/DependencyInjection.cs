@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options => options
             .UseNpgsql(connectionString)
             .UseSnakeCaseNamingConvention());
+        services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
         services.AddHealthChecks().AddDbContextCheck<AppDbContext>(DatabaseHealthCheckName);
 
         services.AddSingleton(TimeProvider.System);
