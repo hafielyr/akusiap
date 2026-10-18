@@ -28,10 +28,10 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - AC: `dotnet build` and `dotnet test` pass. `dotnet run --project src/Akusiap.Web` serves `/` and `/health` returns 200. The page has a viewport meta tag and the support button.
 - Tests: an integration smoke test that `/health` returns 200.
 
-### F-02 Local infrastructure · S
+### F-02 Database and dev infrastructure · S
 - Depends on: F-01
-- Scope: `docker-compose.yml` with postgres:17 and Mailpit. `appsettings.Development.json` connection strings. `AppDbContext` registered with Npgsql and snake_case naming. `IClock` and `SystemClock`. README with a "Run locally" section.
-- AC: `docker compose up -d` followed by `dotnet run` connects to the DB. Mailpit UI is reachable at :8025.
+- Scope: (No Docker on the dev machine; see D-15.) `AppDbContext` registered with Npgsql and snake_case naming, with the connection strings `ConnectionStrings:Default` (and `ConnectionStrings:Test` for F-05) read from user-secrets in dev and env vars elsewhere; the app fails fast with a clear message when it's missing. A DB health check on `/health`. `IClock` and `SystemClock`. A dev `IEmailSender` stub that writes `.eml` files to `.dev-mail/` (replaces Mailpit). README "Run locally" section explaining how to set the Neon connection string with `dotnet user-secrets`.
+- AC: With the secret set, `dotnet run` connects and `/health` reports the database Healthy. Without it, startup fails with a message naming the missing setting.
 
 ### F-03 Content and access schema · M
 - Depends on: F-02
@@ -46,7 +46,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### F-05 Test infrastructure · M
 - Depends on: F-03
-- Scope: Shared `PostgresFixture` (Testcontainers) and `AppFactory` (WebApplicationFactory with a test clock and fake email). `TestData` builder (`TestData.Exam().Paid(49000).WithQuestions(40, trial: 30)`). Playwright project with an `iPhone SE`-like 360×640 context and a script to install browsers.
+- Scope: Shared `PostgresFixture` that creates a uniquely named database on the server from `ConnectionStrings:Test` (user-secrets or env; CI points it at the service container), applies migrations and drops the database on dispose (D-15), and `AppFactory` (WebApplicationFactory with a test clock and fake email). `TestData` builder (`TestData.Exam().Paid(49000).WithQuestions(40, trial: 30)`). Playwright project with an `iPhone SE`-like 360×640 context and a script to install browsers.
 - AC: A sample integration test and a sample E2E test (home page loads) pass locally and in CI.
 
 ### F-06 Localization and Rupiah · S
@@ -75,8 +75,8 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### AC-02 Email confirmation and password reset · S
 - Stories: A-02 · Depends on: AC-01
-- Scope: `IEmailSender` implementation (SMTP to Mailpit in dev). Indonesian templates. Confirm-email and forgot/reset-password flows. Unconfirmed users can practise but must confirm before paying (checked in PAY-03).
-- AC: The confirmation email arrives in Mailpit and its link confirms. A reset link changes the password.
+- Scope: `IEmailSender` implementation (SMTP provider in production; the `.eml` file sender from F-02 in dev). Indonesian templates. Confirm-email and forgot/reset-password flows. Unconfirmed users can practise but must confirm before paying (checked in PAY-03).
+- AC: The confirmation email is written to `.dev-mail/` (captured by the fake sender in tests) and its link confirms. A reset link changes the password.
 
 ### AC-03 Google sign-in · S
 - Stories: A-01 · Depends on: AC-01
@@ -293,7 +293,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 ### PAY-07 Receipt email · S
 - Stories: P-05 · Depends on: PAY-06, AC-02
 - Scope: On Paid, enqueue a Hangfire job that sends an Indonesian receipt (order number, item, amount, method, paid at, access end) and records a Notification (Email, Sent or Failed).
-- AC: The receipt arrives in Mailpit in the integration test with the fake gateway.
+- AC: The receipt is captured by the fake email sender in the integration test with the fake gateway.
 
 ### PAY-08 Expiry jobs and reminders · M
 - Stories: P-07, D-06 · Depends on: PAY-06, PAY-07
@@ -337,7 +337,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 ### OPS-02 Production deployment · M
 - Depends on: F-08, PAY-04
 - Scope: Dockerfile (chiseled runtime image), migrations applied on deploy (bundle), env-based secrets (Midtrans keys, SMTP and Google), HTTPS behind Cloudflare with forwarded headers, Hangfire dashboard protected and structured logging.
-- AC: `docker build` succeeds. The container starts with only env vars and `/health` reports DB status.
+- AC: The image builds in CI (`docker build` runs on GitHub Actions, not locally). The container starts with only env vars and `/health` reports DB status.
 
 ---
 

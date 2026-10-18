@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Akusiap.Application\Akusiap.Application.csproj" />
+    <ProjectReference Include="..\Akusiap.Infrastructure\Akusiap.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Akusiap.IntegrationTests" />
+    <InternalsVisibleTo Include="Akusiap.E2E" />
+  </ItemGroup>
+
+</Project>
