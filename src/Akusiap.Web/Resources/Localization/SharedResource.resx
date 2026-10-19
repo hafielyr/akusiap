@@ -812,4 +812,17 @@
   <data name="Mix.NothingSelected" xml:space="preserve"><value>Pilih minimal satu sumber soal.</value></data>
   <data name="Mix.Empty" xml:space="preserve"><value>Tidak ada soal yang bisa dipakai dari pilihan ini.</value></data>
   <data name="Mix.Count" xml:space="preserve"><value>Jumlah soal</value></data>
+  <data name="Share.Title" xml:space="preserve"><value>Bagikan ujian</value></data>
+  <data name="Share.On" xml:space="preserve"><value>Siapa pun yang punya tautan ini bisa mengerjakan ujian Anda, juga tanpa akun.</value></data>
+  <data name="Share.Off" xml:space="preserve"><value>Ujian ini belum dibagikan.</value></data>
+  <data name="Share.Start" xml:space="preserve"><value>Bagikan tautan</value></data>
+  <data name="Share.Stop" xml:space="preserve"><value>Berhenti membagikan</value></data>
+  <data name="Share.Reset" xml:space="preserve"><value>Buat tautan baru</value></data>
+  <data name="Share.ResetHelp" xml:space="preserve"><value>Tautan baru membuat tautan lama tidak berlaku lagi.</value></data>
+  <data name="Share.Link" xml:space="preserve"><value>Tautan ujian</value></data>
+  <data name="Share.Copy" xml:space="preserve"><value>Salin</value></data>
+  <data name="Share.Copied" xml:space="preserve"><value>Tersalin</value></data>
+  <data name="Share.ForeignQuestions" xml:space="preserve"><value>Ujian hanya bisa dibagikan jika semua soalnya buatan Anda sendiri.</value></data>
+  <data name="Share.TakenDown" xml:space="preserve"><value>Ujian ini diturunkan admin dan tidak bisa dibagikan.</value></data>
+  <data name="Share.Saved" xml:space="preserve"><value>Pengaturan berbagi disimpan.</value></data>
 </root>

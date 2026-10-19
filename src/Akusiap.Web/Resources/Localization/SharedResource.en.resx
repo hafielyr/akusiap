@@ -812,4 +812,17 @@
   <data name="Mix.NothingSelected" xml:space="preserve"><value>Choose at least one source of questions.</value></data>
   <data name="Mix.Empty" xml:space="preserve"><value>There are no questions you can use in this choice.</value></data>
   <data name="Mix.Count" xml:space="preserve"><value>Number of questions</value></data>
+  <data name="Share.Title" xml:space="preserve"><value>Share the exam</value></data>
+  <data name="Share.On" xml:space="preserve"><value>Anyone with this link can take your exam, even without an account.</value></data>
+  <data name="Share.Off" xml:space="preserve"><value>This exam isn't shared.</value></data>
+  <data name="Share.Start" xml:space="preserve"><value>Share a link</value></data>
+  <data name="Share.Stop" xml:space="preserve"><value>Stop sharing</value></data>
+  <data name="Share.Reset" xml:space="preserve"><value>Make a new link</value></data>
+  <data name="Share.ResetHelp" xml:space="preserve"><value>A new link stops the old one from working.</value></data>
+  <data name="Share.Link" xml:space="preserve"><value>Exam link</value></data>
+  <data name="Share.Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Share.Copied" xml:space="preserve"><value>Copied</value></data>
+  <data name="Share.ForeignQuestions" xml:space="preserve"><value>An exam can only be shared when all its questions are your own.</value></data>
+  <data name="Share.TakenDown" xml:space="preserve"><value>An admin took this exam down, so it can't be shared.</value></data>
+  <data name="Share.Saved" xml:space="preserve"><value>Sharing updated.</value></data>
 </root>

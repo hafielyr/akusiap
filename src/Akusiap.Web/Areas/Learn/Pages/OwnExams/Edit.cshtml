@@ -20,4 +20,8 @@
   }
   <partial name="_AllowanceNoticePartial" model="Model.Allowance" />
   <partial name="_OwnExamFormPartial" model="new OwnExamFormView(Model.Input, Model.Questions, Model.Id, Model.Allowance.CanEdit)" />
+  @if (Model.Share is { } shareState)
+  {
+    <partial name="_SharePanelPartial" model="(shareState, Model.ShareLink)" />
+  }
 </section>
