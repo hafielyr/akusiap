@@ -60,6 +60,13 @@ app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthR
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+// Unknown addresses get 404 for every method. Without this, the static-asset catch-all (GET/HEAD only) turns a POST to
+// an unknown address into 405. The empty 404 is then shown as the friendly status page.
+app.MapFallback(context =>
+{
+    context.Response.StatusCode = StatusCodes.Status404NotFound;
+    return Task.CompletedTask;
+});
 
 app.Run();
 

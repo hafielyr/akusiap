@@ -7,6 +7,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
+- [ADM-T1] Admin shell, subjects and topics · M1 · deps: AC-06, F-03
 - [ENT-02] Entitlement query and guard · M1 · deps: ENT-01, AC-01
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
 - [AC-04] Profile, password and role · M1 · deps: AC-01
@@ -14,11 +15,12 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [AC-03] Google sign-in · M1 · deps: AC-01
 - [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
+- [USR-01] User search · M4 · deps: AC-06
 
 ## In Progress
-- [AC-06] Authorization policies · M1 · deps: AC-01 · (claude-opus-5.5, 2026-10-19)
 
 ## Review
+- [AC-06] Authorization policies · M1 · deps: AC-01 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -38,7 +40,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [ADM-T1] Admin shell, subjects and topics · M1 · deps: AC-06, F-03
 - [ADM-T2] Question editor · M1 · deps: ADM-T1
 - [ADM-T3] Exam editor · M1 · deps: ADM-T2
 - [ADM-T5] Rule presets · M1 · deps: ADM-T1
@@ -80,7 +81,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-10] Admin transactions · M3 · deps: PAY-06
 
 ### M4 Admin ops and launch (Release 1)
-- [USR-01] User search · M4 · deps: AC-06
 - [USR-02] Create user · M4 · deps: USR-01, AC-02
 - [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
