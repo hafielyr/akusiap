@@ -131,7 +131,7 @@ public sealed class AccountTests(PostgresFixture database)
         using var client = NewClient(app);
         using var signedIn = await client.PostFormAsync("/akun/masuk", SignInForm(user.Email!, Password));
 
-        using var signedOut = await client.PostFormAsync("/", new Dictionary<string, string>(), postUrl: "/akun/keluar");
+        using var signedOut = await client.PostFormAsync("/ujian", new Dictionary<string, string>(), postUrl: "/akun/keluar");
         var home = await client.GetStringAsync(new Uri("/", UriKind.Relative));
 
         Assert.Equal(HttpStatusCode.Redirect, signedOut.StatusCode);

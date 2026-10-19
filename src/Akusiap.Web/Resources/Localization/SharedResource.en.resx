@@ -841,4 +841,9 @@
   <data name="Admin.Reports.TakenDownList" xml:space="preserve"><value>Taken-down exams</value></data>
   <data name="Admin.Reports.Restore" xml:space="preserve"><value>Restore</value></data>
   <data name="Admin.Reports.Restored" xml:space="preserve"><value>Exam restored.</value></data>
+  <data name="Today.Title" xml:space="preserve"><value>Today</value></data>
+  <data name="Today.Lead" xml:space="preserve"><value>Cards to review today.</value></data>
+  <data name="Today.TotalDue" xml:space="preserve"><value>cards due</value></data>
+  <data name="Today.NoneDue" xml:space="preserve"><value>Nothing is due. Start new practice from the catalog.</value></data>
+  <data name="Today.Catalog" xml:space="preserve"><value>Exam catalog</value></data>
 </root>

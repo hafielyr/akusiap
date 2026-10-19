@@ -841,4 +841,9 @@
   <data name="Admin.Reports.TakenDownList" xml:space="preserve"><value>Ujian yang diturunkan</value></data>
   <data name="Admin.Reports.Restore" xml:space="preserve"><value>Pulihkan</value></data>
   <data name="Admin.Reports.Restored" xml:space="preserve"><value>Ujian dipulihkan.</value></data>
+  <data name="Today.Title" xml:space="preserve"><value>Hari ini</value></data>
+  <data name="Today.Lead" xml:space="preserve"><value>Kartu yang perlu diulang hari ini.</value></data>
+  <data name="Today.TotalDue" xml:space="preserve"><value>kartu jatuh tempo</value></data>
+  <data name="Today.NoneDue" xml:space="preserve"><value>Tidak ada kartu jatuh tempo. Kerjakan latihan baru dari katalog.</value></data>
+  <data name="Today.Catalog" xml:space="preserve"><value>Katalog ujian</value></data>
 </root>

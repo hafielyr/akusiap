@@ -192,7 +192,7 @@ public sealed class SubjectsAndTopicsTests(PostgresFixture database)
         using var learner = await app.CreateSignedInClientAsync(TestData.User().Build(), RoleNames.Learner);
 
         Assert.Contains("data-testid=\"admin-link\"", await admin.GetStringAsync(new Uri("/", UriKind.Relative)), StringComparison.Ordinal);
-        Assert.DoesNotContain("data-testid=\"admin-link\"", await learner.GetStringAsync(new Uri("/", UriKind.Relative)), StringComparison.Ordinal);
+        Assert.DoesNotContain("data-testid=\"admin-link\"", await learner.GetStringAsync(new Uri("/ujian", UriKind.Relative)), StringComparison.Ordinal);
     }
 
     private async Task<AppFactory> StartAsync()
