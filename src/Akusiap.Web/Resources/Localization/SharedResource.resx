@@ -301,4 +301,16 @@
   <data name="Catalog.Previous" xml:space="preserve"><value>Sebelumnya</value></data>
   <data name="Catalog.Next" xml:space="preserve"><value>Berikutnya</value></data>
   <data name="Catalog.PageOf" xml:space="preserve"><value>Halaman {0} dari {1}</value></data>
+  <data name="ExamPage.Back" xml:space="preserve"><value>Kembali ke katalog</value></data>
+  <data name="ExamPage.QuestionSummary" xml:space="preserve"><value>{0} soal aktif</value></data>
+  <data name="ExamPage.Topics" xml:space="preserve"><value>Topik</value></data>
+  <data name="ExamPage.Start" xml:space="preserve"><value>Mulai latihan</value></data>
+  <data name="ExamPage.Trial" xml:space="preserve"><value>Coba {0} soal gratis</value></data>
+  <data name="ExamPage.TrialHint" xml:space="preserve"><value>Tanpa daftar. Lihat skor Anda dulu, lalu putuskan.</value></data>
+  <data name="ExamPage.Buy" xml:space="preserve"><value>Beli ujian</value></data>
+  <data name="ExamPage.Subscribe" xml:space="preserve"><value>Berlangganan</value></data>
+  <data name="ExamPage.SubscribeHint" xml:space="preserve"><value>Langganan membuka semua ujian di katalog.</value></data>
+  <data name="ExamPage.Register" xml:space="preserve"><value>Daftar gratis untuk membuka</value></data>
+  <data name="ExamPage.Draft" xml:space="preserve"><value>Pratinjau admin: ujian ini belum tampil di katalog.</value></data>
+  <data name="ExamPage.Actions" xml:space="preserve"><value>Pilihan untuk ujian ini</value></data>
 </root>

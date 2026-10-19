@@ -1,5 +1,6 @@
 using Akusiap.Application.Access;
 using Akusiap.Domain.Access;
+using Akusiap.Web.Pages.Exams;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -15,13 +16,13 @@ public enum ExamAccessOutcome
     /// <summary>A guest who could get access by signing in or registering.</summary>
     SignIn,
 
-    /// <summary>A signed-in user without access. CAT-02 replaces this with the exam's "buy" page.</summary>
-    Forbidden,
+    /// <summary>A signed-in user without access: send them to the exam page, which shows how to get it (CAT-02).</summary>
+    ExamPage,
 }
 
 /// <summary>
 /// <c>RequireExamAccess</c> for pages (ENT-02): asks <see cref="IEntitlementService"/> and turns a refusal into 404,
-/// a sign-in redirect or 403. Pages that start an attempt must also check <see cref="AccessDecision.CanStart"/>.
+/// a sign-in redirect or a redirect to the exam page and its buy options (CAT-02). Pages that start an attempt must also check <see cref="AccessDecision.CanStart"/>.
 /// </summary>
 public static class ExamAccessGuard
 {
@@ -41,7 +42,7 @@ public static class ExamAccessGuard
         {
             AccessReason.NotPublished or AccessReason.TakenDown => ExamAccessOutcome.NotFound,
             _ when !signedIn => ExamAccessOutcome.SignIn,
-            _ => ExamAccessOutcome.Forbidden,
+            _ => ExamAccessOutcome.ExamPage,
         };
     }
 
@@ -60,7 +61,7 @@ public static class ExamAccessGuard
             ExamAccessOutcome.Allow => (result, null),
             ExamAccessOutcome.NotFound => (null, new NotFoundResult()),
             ExamAccessOutcome.SignIn => (null, new RedirectResult($"{AccountRoutes.SignIn}?ReturnUrl={Uri.EscapeDataString(page.Request.Path + page.Request.QueryString)}")),
-            _ => (null, new StatusCodeResult(StatusCodes.Status403Forbidden)),
+            _ => (null, new RedirectResult(ExamRoutes.Detail(examId))),
         };
     }
 }

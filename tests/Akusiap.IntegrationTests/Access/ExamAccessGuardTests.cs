@@ -15,7 +15,7 @@ public sealed class ExamAccessGuardTests
     [InlineData(AccessLevel.None, AccessReason.TakenDown, false, ExamAccessOutcome.NotFound)]
     [InlineData(AccessLevel.None, AccessReason.RegisterToUnlock, false, ExamAccessOutcome.SignIn)]
     [InlineData(AccessLevel.None, AccessReason.NoAccess, false, ExamAccessOutcome.SignIn)]
-    [InlineData(AccessLevel.None, AccessReason.NoAccess, true, ExamAccessOutcome.Forbidden)]
+    [InlineData(AccessLevel.None, AccessReason.NoAccess, true, ExamAccessOutcome.ExamPage)]
     public void Maps_each_decision_to_an_outcome(AccessLevel level, AccessReason reason, bool signedIn, ExamAccessOutcome expected)
     {
         var scope = level == AccessLevel.None ? QuestionScope.None : QuestionScope.All;

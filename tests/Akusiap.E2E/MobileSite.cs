@@ -56,6 +56,13 @@ public sealed class MobileSite : IAsyncLifetime, IAsyncDisposable
     public Task<Akusiap.Domain.Users.User> CreateUserAsync(Akusiap.Domain.Users.User user, string password, params string[] roles) =>
         (_app ?? throw new InvalidOperationException("The site is not started.")).CreateUserAsync(user, password, roles);
 
+    /// <summary>Saves an exam built with <c>TestData</c> straight to the database, for flows that start from published content.</summary>
+    public async Task<Akusiap.Domain.Content.Exam> SaveExamAsync(Akusiap.Domain.Content.Exam exam)
+    {
+        await using var db = _database.CreateContext();
+        return await Akusiap.TestSupport.Builders.TestData.SaveAsync(db, exam);
+    }
+
     /// <summary>Environment variable that turns on trace recording (see <see cref="Phone"/>).</summary>
     public const string TracesDirVariable = "PLAYWRIGHT_TRACES_DIR";
 

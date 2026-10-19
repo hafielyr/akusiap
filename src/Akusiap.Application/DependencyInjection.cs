@@ -18,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped<IEntitlementService, EntitlementService>();
         services.AddScoped<ExamQuestionScope>();
         services.AddScoped<ListCatalog>();
+        services.AddScoped<GetCatalogExam>();
         services.AddScoped<ListSubjects>();
         services.AddScoped<GetSubject>();
         services.AddScoped<SaveSubject>();

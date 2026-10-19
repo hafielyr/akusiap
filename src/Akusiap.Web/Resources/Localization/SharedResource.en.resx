@@ -301,4 +301,16 @@
   <data name="Catalog.Previous" xml:space="preserve"><value>Previous</value></data>
   <data name="Catalog.Next" xml:space="preserve"><value>Next</value></data>
   <data name="Catalog.PageOf" xml:space="preserve"><value>Page {0} of {1}</value></data>
+  <data name="ExamPage.Back" xml:space="preserve"><value>Back to catalog</value></data>
+  <data name="ExamPage.QuestionSummary" xml:space="preserve"><value>{0} active questions</value></data>
+  <data name="ExamPage.Topics" xml:space="preserve"><value>Topics</value></data>
+  <data name="ExamPage.Start" xml:space="preserve"><value>Start practice</value></data>
+  <data name="ExamPage.Trial" xml:space="preserve"><value>Try {0} questions free</value></data>
+  <data name="ExamPage.TrialHint" xml:space="preserve"><value>No sign-up needed. See your score first, then decide.</value></data>
+  <data name="ExamPage.Buy" xml:space="preserve"><value>Buy this exam</value></data>
+  <data name="ExamPage.Subscribe" xml:space="preserve"><value>Subscribe</value></data>
+  <data name="ExamPage.SubscribeHint" xml:space="preserve"><value>A subscription unlocks every exam in the catalog.</value></data>
+  <data name="ExamPage.Register" xml:space="preserve"><value>Register free to unlock</value></data>
+  <data name="ExamPage.Draft" xml:space="preserve"><value>Admin preview: this exam isn't in the catalog.</value></data>
+  <data name="ExamPage.Actions" xml:space="preserve"><value>Options for this exam</value></data>
 </root>
