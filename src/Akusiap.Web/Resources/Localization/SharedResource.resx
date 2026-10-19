@@ -825,4 +825,5 @@
   <data name="Share.ForeignQuestions" xml:space="preserve"><value>Ujian hanya bisa dibagikan jika semua soalnya buatan Anda sendiri.</value></data>
   <data name="Share.TakenDown" xml:space="preserve"><value>Ujian ini diturunkan admin dan tidak bisa dibagikan.</value></data>
   <data name="Share.Saved" xml:space="preserve"><value>Pengaturan berbagi disimpan.</value></data>
+  <data name="Flashcards.NextDue" xml:space="preserve"><value>Kartu tadi muncul lagi {0}.</value></data>
 </root>

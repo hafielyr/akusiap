@@ -5,6 +5,10 @@
   var rateUrl = $"{IndexModel.SetUrl(Model.AttemptId)}?handler=Rate";
 }
 <article id="flashcard" x-data="{ flipped: false }" class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" data-testid="flashcard" data-position="@Model.Position">
+  @if ((ViewData[SetModel.NextDueKey] ?? TempData[SetModel.NextDueKey]) is string nextDue)
+  {
+    <p role="status" class="rounded-lg bg-slate-100 px-3 py-2 text-sm text-slate-700" data-testid="next-due">@T["Flashcards.NextDue", nextDue]</p>
+  }
   <div class="space-y-1">
     <p class="text-xs font-medium uppercase tracking-wide text-slate-500">@(Model.Title ?? T["Flashcards.MyCards"].Value) · @T["Flashcards.CardOf", Model.Position, Model.Total]</p>
     <p class="whitespace-pre-line text-lg font-medium">@Model.Text</p>
