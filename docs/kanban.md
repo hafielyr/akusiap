@@ -7,8 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [AC-05] Legal pages · M1 · deps: F-06, AC-01
-- [AC-03] Google sign-in · M1 · deps: AC-01
 - [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
 - [ADM-T7] Bulk question import · M2 · deps: ADM-T2
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
@@ -20,10 +18,11 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [AC-04] Profile, password and role · M1 · deps: AC-01 · (claude-opus-5.5, 2026-10-19)
+- [AC-03] Google sign-in · M1 · deps: AC-01 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
+- [AC-05] Legal pages · M1 · deps: F-06, AC-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: the Terms of Service and Privacy Policy text (Indonesian and English), the business name and contact to show in them, and confirmation that the "proposed" refund policy in the stories doc is final. The stories doc has no Terms or Privacy text, and legal text must not be guessed.
 
 ## Done
 - [F-01] Solution skeleton · M1 · deps: none
@@ -50,6 +49,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-01] Start attempt service · M1 · deps: ENT-02, F-04
 - [ENT-04] My access page · M1 · deps: ENT-02
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
+- [AC-04] Profile, password and role · M1 · deps: AC-01
 
 ## Backlog
 

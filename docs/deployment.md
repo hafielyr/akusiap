@@ -107,8 +107,9 @@ Email__Smtp__Host=smtp-relay.brevo.com        # or email-smtp.<region>.amazonaws
 Email__Smtp__Port=587
 Email__Smtp__UserName=…
 Email__Smtp__Password=…
+Authentication__Google__ClientId=…            # optional (AC-03); the Google button shows only when both are set
+Authentication__Google__ClientSecret=…
 # Added by later cards:
-# Authentication__Google__ClientId / Authentication__Google__ClientSecret   (AC-03)
 # Doku__ClientId / Doku__SecretKey                                          (PAY-04)
 ```
 
@@ -132,7 +133,8 @@ Email__Smtp__Password=…
    | `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD` | First admin account |
    | `SUPPORT_WHATSAPP_NUMBER` | Support number, `62…` |
    | `SITE_BASE_URL`, `EMAIL_FROM`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD` | Account emails (AC-02). Without `SMTP_HOST` the app runs but drops emails with a warning |
-   | Later: `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`, `DOKU_CLIENT_ID`/`DOKU_SECRET_KEY` | Added with AC-03 and PAY-04 |
+   | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google sign-in (AC-03), optional. In Google Cloud Console create an OAuth client of type "Web application" with the authorized redirect URI `https://<your domain>/signin-google` (needs the forwarded-headers change from OPS-02 so the app sees https) |
+   | Later: `DOKU_CLIENT_ID`/`DOKU_SECRET_KEY` | Added with PAY-04 |
 3. Protect `main` so that only PRs that passed CI can be merged (see `docs/ci.md`).
 
 ## 6. Deploying (after OPS-02)

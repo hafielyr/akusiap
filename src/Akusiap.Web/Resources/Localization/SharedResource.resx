@@ -429,4 +429,9 @@
   <data name="Profile.WrongPassword" xml:space="preserve"><value>Kata sandi sekarang salah.</value></data>
   <data name="Profile.Link" xml:space="preserve"><value>Nama, nomor HP, bahasa, dan kata sandi</value></data>
   <data name="Validation.Phone" xml:space="preserve"><value>Nomor HP harus +62 diikuti 8–12 angka.</value></data>
+  <data name="Account.Google.Button" xml:space="preserve"><value>Masuk dengan Google</value></data>
+  <data name="Account.Google.Or" xml:space="preserve"><value>atau dengan email</value></data>
+  <data name="Account.Google.Title" xml:space="preserve"><value>Masuk dengan Google</value></data>
+  <data name="Account.Google.Failed" xml:space="preserve"><value>Masuk dengan Google gagal atau dibatalkan. Silakan coba lagi.</value></data>
+  <data name="Account.Google.NoEmail" xml:space="preserve"><value>Akun Google Anda tidak membagikan alamat email, jadi kami tidak bisa membuat akun.</value></data>
 </root>

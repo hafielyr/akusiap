@@ -11,6 +11,8 @@
     <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-green-800" data-testid="reset-done">@T["Account.Reset.Done"]</p>
   }
 
+  <partial name="_GoogleButtonPartial" model="Model.ReturnUrl" />
+
   <form method="post" class="space-y-4" novalidate>
     <input type="hidden" asp-for="ReturnUrl" />
     <div asp-validation-summary="ModelOnly" class="field-error" role="alert" data-testid="sign-in-error"></div>
