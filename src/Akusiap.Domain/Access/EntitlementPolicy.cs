@@ -43,8 +43,8 @@ public static class EntitlementPolicy
             return All(AccessLevel.Shared, AccessReason.SharedLink) with { RequiresGuestName = !viewer.IsRegistered };
         }
 
-        // 5. Not in the catalog.
-        if (exam.Status != ExamStatus.Published)
+        // 5. Not in the catalog. A learner's exam never is: Published only means "ready to share" (D-79).
+        if (exam.Status != ExamStatus.Published || exam.OwnerKind == OwnerKind.Learner)
         {
             return NoAccess(AccessReason.NotPublished);
         }

@@ -736,4 +736,26 @@
   <data name="Reminder.Tomorrow" xml:space="preserve"><value>tomorrow</value></data>
   <data name="Reminder.Today" xml:space="preserve"><value>today</value></data>
   <data name="Reminder.Renew" xml:space="preserve"><value>Renew the package</value></data>
+  <data name="Own.Exams.Title" xml:space="preserve"><value>My exams</value></data>
+  <data name="Own.Exams.Link" xml:space="preserve"><value>Build exams from your own questions</value></data>
+  <data name="Own.Exams.Add" xml:space="preserve"><value>Create an exam</value></data>
+  <data name="Own.Exams.New" xml:space="preserve"><value>New exam</value></data>
+  <data name="Own.Exams.Edit" xml:space="preserve"><value>Edit exam</value></data>
+  <data name="Own.Exams.Empty" xml:space="preserve"><value>You haven't made an exam yet.</value></data>
+  <data name="Own.Exams.Saved" xml:space="preserve"><value>Exam saved.</value></data>
+  <data name="Own.Exams.LimitReached" xml:space="preserve"><value>You have used all {0} exams in your allowance. Subscribe to make more exams.</value></data>
+  <data name="Own.Exams.ReadOnly" xml:space="preserve"><value>Your exams can now only be viewed and practised, because you have more than your package allows. Subscribe to edit or add exams.</value></data>
+  <data name="Own.Exams.NoQuestions" xml:space="preserve"><value>Choose at least one of your own questions.</value></data>
+  <data name="Own.Exams.Questions" xml:space="preserve"><value>Questions in the exam</value></data>
+  <data name="Own.Exams.NoOwnQuestions" xml:space="preserve"><value>You have no questions of your own yet.</value></data>
+  <data name="Own.Exams.Rules" xml:space="preserve"><value>Practice rules</value></data>
+  <data name="Own.Exams.Published" xml:space="preserve"><value>Ready to share</value></data>
+  <data name="Own.Exams.PublishedHelp" xml:space="preserve"><value>Tick when the exam is finished. You can practise it at any time either way.</value></data>
+  <data name="Own.Exams.QuestionCount" xml:space="preserve"><value>{0} questions</value></data>
+  <data name="Own.Exams.Status.Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Own.Exams.Status.Published" xml:space="preserve"><value>Ready to share</value></data>
+  <data name="Own.Exams.Status.Unpublished" xml:space="preserve"><value>Inactive</value></data>
+  <data name="Own.Exams.Status.TakenDown" xml:space="preserve"><value>Taken down by an admin</value></data>
+  <data name="Own.Exams.Practise" xml:space="preserve"><value>Practise</value></data>
+  <data name="Own.Exams.TakenDown" xml:space="preserve"><value>An admin took this exam down. You can still see it, but you can't start practice.</value></data>
 </root>

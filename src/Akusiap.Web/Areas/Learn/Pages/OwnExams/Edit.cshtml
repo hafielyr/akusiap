@@ -1,0 +1,23 @@
+@page "/learn/ujian-saya/{id:long}"
+@model Akusiap.Web.Areas.Learn.Pages.OwnExams.EditModel
+@{
+  ViewData["Title"] = T["Own.Exams.Edit"].Value;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="@IndexModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Own.Exams.Title"]</a>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <h1 class="text-2xl font-bold leading-tight">@T["Own.Exams.Edit"]</h1>
+    <a href="@Akusiap.Web.Pages.Exams.ExamRoutes.Start(Model.Id)" class="btn btn-primary" data-testid="practise-own-exam">@T["Own.Exams.Practise"]</a>
+  </div>
+  @if (TempData["Flash"] is string flash)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash]</p>
+  }
+  @if (Model.Status == Akusiap.Domain.Content.ExamStatus.TakenDown)
+  {
+    <p class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800" data-testid="taken-down">@T["Own.Exams.TakenDown"]</p>
+  }
+  <partial name="_AllowanceNoticePartial" model="Model.Allowance" />
+  <partial name="_OwnExamFormPartial" model="new OwnExamFormView(Model.Input, Model.Questions, Model.Id, Model.Allowance.CanEdit)" />
+</section>

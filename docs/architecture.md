@@ -85,7 +85,7 @@ Evaluate in this order; the first match wins:
 2. The viewer owns the exam (`Exam.OwnerUserId == viewer.UserId`) → `Owner`, all questions, at any status except TakenDown (TakenDown: view only, cannot start).
 3. `Exam.Status == TakenDown` → `None` ("taken down").
 4. A share token is supplied, `Exam.IsShared`, the token matches `ShareToken` and `OwnerKind == Learner` → `Shared`, all questions. Guests must enter a name.
-5. `Exam.Status != Published` → `None` (not in catalog).
+5. `Exam.Status != Published`, or the exam is a learner's (`OwnerKind == Learner`, where Published only means "ready to share", D-79) → `None` (not in catalog).
 6. `Exam.IsFree`: registered → `Full`; guest → `None` with reason `RegisterToUnlock`.
 7. The viewer has an `ExamPurchase` for this exam with `Status == Active && AccessExpiresAt > now` → `Full`.
 8. The viewer has a `Subscription` with `Status == Active && CurrentPeriodEnd > now` whose `Plan.IncludesAllExams` → `Full`.

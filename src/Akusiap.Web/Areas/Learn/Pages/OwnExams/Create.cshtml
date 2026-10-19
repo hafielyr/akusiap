@@ -1,0 +1,12 @@
+@page "/learn/ujian-saya/baru"
+@model Akusiap.Web.Areas.Learn.Pages.OwnExams.CreateModel
+@{
+  ViewData["Title"] = T["Own.Exams.New"].Value;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="@IndexModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Own.Exams.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Own.Exams.New"]</h1>
+  <partial name="_AllowanceBarPartial" model="Model.Allowance" />
+  <partial name="_OwnExamFormPartial" model="new OwnExamFormView(Model.Input, Model.Questions, null, Model.Allowance.CanCreateExam)" />
+</section>
