@@ -13,6 +13,12 @@ public interface IEntitlementService
     /// <summary>The decision for the current viewer, or null when the exam doesn't exist.</summary>
     Task<EntitlementResult?> GetAsync(long examId, string? shareToken, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// The decision for exam facts the caller already loaded (for lists such as the catalog): uses the cached viewer, so
+    /// deciding for many exams costs no extra queries.
+    /// </summary>
+    Task<AccessDecision> DecideAsync(ExamAccessFacts exam, string? shareToken, CancellationToken cancellationToken);
+
     /// <summary>The current viewer's facts, loaded once per request (one database round-trip, none for guests).</summary>
     Task<ViewerContext> GetViewerAsync(CancellationToken cancellationToken);
 }

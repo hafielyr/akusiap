@@ -19,6 +19,13 @@ public sealed class EntitlementService(IAppDbContext db, ICurrentUser currentUse
     public Task<ViewerContext> GetViewerAsync(CancellationToken cancellationToken) =>
         _viewer ??= LoadViewerAsync(cancellationToken);
 
+    public async Task<AccessDecision> DecideAsync(ExamAccessFacts exam, string? shareToken, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(exam);
+        var viewer = await GetViewerAsync(cancellationToken).ConfigureAwait(false);
+        return EntitlementPolicy.Evaluate(viewer, exam, shareToken, clock.UtcNow);
+    }
+
     public async Task<EntitlementResult?> GetAsync(long examId, string? shareToken, CancellationToken cancellationToken)
     {
         var exam = await db.Exams

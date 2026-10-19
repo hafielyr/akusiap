@@ -44,7 +44,6 @@
   <data name="Identity.PasswordTooShort" xml:space="preserve"><value>Kata sandi minimal {0} karakter.</value></data>
   <data name="Identity.DefaultError" xml:space="preserve"><value>Terjadi kesalahan. Silakan coba lagi.</value></data>
   <data name="Catalog.Title" xml:space="preserve"><value>Katalog ujian</value></data>
-  <data name="Catalog.ComingSoon" xml:space="preserve"><value>Katalog ujian sedang disiapkan dan segera hadir.</value></data>
   <data name="Status.Forbidden.Title" xml:space="preserve"><value>Akses ditolak</value></data>
   <data name="Status.Forbidden.Heading" xml:space="preserve"><value>Anda tidak punya akses ke halaman ini.</value></data>
   <data name="Status.Forbidden.Body" xml:space="preserve"><value>Halaman ini hanya untuk pengguna dengan izin tertentu. Jika menurut Anda ini keliru, hubungi kami lewat WhatsApp.</value></data>
@@ -284,4 +283,22 @@
   <data name="Admin.Publish.TakenDown" xml:space="preserve"><value>Ujian yang diturunkan tidak bisa diterbitkan.</value></data>
   <data name="Admin.Publish.AlreadyPublished" xml:space="preserve"><value>Ujian ini sudah terbit.</value></data>
   <data name="Admin.Publish.NotPublished" xml:space="preserve"><value>Ujian ini belum terbit.</value></data>
+  <data name="Catalog.Lead" xml:space="preserve"><value>Pilih ujian untuk latihan. Ujian berbayar punya 30 soal coba gratis.</value></data>
+  <data name="Catalog.Search" xml:space="preserve"><value>Cari judul atau deskripsi ujian</value></data>
+  <data name="Catalog.Subject" xml:space="preserve"><value>Subjek</value></data>
+  <data name="Catalog.AllSubjects" xml:space="preserve"><value>Semua subjek</value></data>
+  <data name="Catalog.Apply" xml:space="preserve"><value>Cari</value></data>
+  <data name="Catalog.Total" xml:space="preserve"><value>{0} ujian</value></data>
+  <data name="Catalog.Empty" xml:space="preserve"><value>Belum ada ujian di katalog.</value></data>
+  <data name="Catalog.NoMatch" xml:space="preserve"><value>Tidak ada ujian yang cocok. Coba kata kunci lain.</value></data>
+  <data name="Catalog.Free" xml:space="preserve"><value>Gratis</value></data>
+  <data name="Catalog.YourAccess" xml:space="preserve"><value>Akses Anda</value></data>
+  <data name="Catalog.FreeForMembers" xml:space="preserve"><value>Gratis untuk pengguna terdaftar</value></data>
+  <data name="Catalog.AccessDays" xml:space="preserve"><value>{0} hari akses</value></data>
+  <data name="Catalog.QuestionCount" xml:space="preserve"><value>{0} soal</value></data>
+  <data name="Catalog.MoreTopics" xml:space="preserve"><value>+{0} topik</value></data>
+  <data name="Catalog.Pages" xml:space="preserve"><value>Halaman katalog</value></data>
+  <data name="Catalog.Previous" xml:space="preserve"><value>Sebelumnya</value></data>
+  <data name="Catalog.Next" xml:space="preserve"><value>Berikutnya</value></data>
+  <data name="Catalog.PageOf" xml:space="preserve"><value>Halaman {0} dari {1}</value></data>
 </root>
