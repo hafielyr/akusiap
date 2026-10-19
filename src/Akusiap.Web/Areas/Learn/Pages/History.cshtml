@@ -39,7 +39,11 @@
           </div>
           <p class="text-sm text-slate-600">@JakartaTime.Format(row.StartedAt) · @mode@(open ? null : " · " + T["Session.Result.Correct", row.CorrectCount, row.TotalCount].Value) · @T["History.Minutes", row.TimeSpentSeconds / 60, row.TimeSpentSeconds % 60]</p>
           <div class="flex flex-wrap gap-2">
-            @if (open)
+            @if (row.Mode == AttemptMode.Flashcard)
+            {
+              <a href="@Akusiap.Web.Areas.Learn.Pages.Flashcards.IndexModel.SetUrl(row.AttemptId)" class="btn btn-secondary w-full sm:w-auto" data-testid="history-flashcards">@T["History.Open"]</a>
+            }
+            else if (open)
             {
               <a href="@SessionRoutes.Player(row.AttemptId)" class="btn btn-primary w-full sm:w-auto" data-testid="history-continue">@T["ExamPage.ResumeAction"]</a>
             }

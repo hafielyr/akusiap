@@ -783,4 +783,23 @@
   <data name="Admin.Reports.Rejected" xml:space="preserve"><value>Tolak</value></data>
   <data name="Admin.Reports.MarkedFixed" xml:space="preserve"><value>Laporan ditandai sudah diperbaiki.</value></data>
   <data name="Admin.Reports.MarkedRejected" xml:space="preserve"><value>Laporan ditolak.</value></data>
+  <data name="Flashcards.Title" xml:space="preserve"><value>Kartu hafalan</value></data>
+  <data name="Flashcards.Link" xml:space="preserve"><value>Ulangi soal dengan kartu, yang jatuh tempo lebih dulu</value></data>
+  <data name="Flashcards.Lead" xml:space="preserve"><value>Pilih kumpulan kartu. Satu set berisi 10 kartu: yang jatuh tempo dulu, lalu yang sering salah, lalu yang baru.</value></data>
+  <data name="Flashcards.MyCards" xml:space="preserve"><value>Kartu saya</value></data>
+  <data name="Flashcards.Due" xml:space="preserve"><value>{0} kartu jatuh tempo</value></data>
+  <data name="Flashcards.Start" xml:space="preserve"><value>Mulai 10 kartu</value></data>
+  <data name="Flashcards.Empty" xml:space="preserve"><value>Belum ada kartu untuk dilatih di sini.</value></data>
+  <data name="Flashcards.NoAccess" xml:space="preserve"><value>Anda tidak punya akses penuh ke ujian ini.</value></data>
+  <data name="Flashcards.CardOf" xml:space="preserve"><value>Kartu {0} dari {1}</value></data>
+  <data name="Flashcards.Flip" xml:space="preserve"><value>Lihat jawaban</value></data>
+  <data name="Flashcards.Rate" xml:space="preserve"><value>Seberapa ingat Anda?</value></data>
+  <data name="Flashcards.Rating.Forgot" xml:space="preserve"><value>Lupa</value></data>
+  <data name="Flashcards.Rating.Hard" xml:space="preserve"><value>Sulit</value></data>
+  <data name="Flashcards.Rating.Good" xml:space="preserve"><value>Ingat</value></data>
+  <data name="Flashcards.Rating.Easy" xml:space="preserve"><value>Mudah</value></data>
+  <data name="Flashcards.Done" xml:space="preserve"><value>Set selesai</value></data>
+  <data name="Flashcards.SummaryTotal" xml:space="preserve"><value>{0} kartu diulang</value></data>
+  <data name="Flashcards.Again" xml:space="preserve"><value>Set berikutnya</value></data>
+  <data name="History.Open" xml:space="preserve"><value>Buka</value></data>
 </root>

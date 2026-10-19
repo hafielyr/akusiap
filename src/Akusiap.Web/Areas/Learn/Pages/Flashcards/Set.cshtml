@@ -1,0 +1,17 @@
+@page "/learn/kartu/{id:long}"
+@model Akusiap.Web.Areas.Learn.Pages.Flashcards.SetModel
+@{
+  ViewData["Title"] = T["Flashcards.Title"].Value;
+}
+
+<section class="mx-auto max-w-xl space-y-4">
+  <a href="@IndexModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Flashcards.Title"]</a>
+  @if (Model.Card is { } card)
+  {
+    <partial name="_FlashcardPartial" model="card" />
+  }
+  else
+  {
+    <partial name="_FlashcardSummaryPartial" model="Model.Summary!" />
+  }
+</section>
