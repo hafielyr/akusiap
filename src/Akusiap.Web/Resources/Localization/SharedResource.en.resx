@@ -411,4 +411,22 @@
   <data name="Account.Reset.Submit" xml:space="preserve"><value>Save password</value></data>
   <data name="Account.Reset.Invalid" xml:space="preserve"><value>This link no longer works. Ask for a new one.</value></data>
   <data name="Account.Reset.Done" xml:space="preserve"><value>Your password has been changed. Please sign in.</value></data>
+  <data name="Profile.Title" xml:space="preserve"><value>Profile</value></data>
+  <data name="Profile.Lead" xml:space="preserve"><value>Change your account details, language and password.</value></data>
+  <data name="Profile.Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Profile.Phone" xml:space="preserve"><value>Phone number (optional)</value></data>
+  <data name="Profile.PhoneHint" xml:space="preserve"><value>For example: +62 812 3456 7890</value></data>
+  <data name="Profile.Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Profile.Teacher" xml:space="preserve"><value>I also teach</value></data>
+  <data name="Profile.TeacherHint" xml:space="preserve"><value>Adds teacher features to your account.</value></data>
+  <data name="Profile.Save" xml:space="preserve"><value>Save profile</value></data>
+  <data name="Profile.Saved" xml:space="preserve"><value>Profile saved.</value></data>
+  <data name="Profile.PasswordTitle" xml:space="preserve"><value>Change password</value></data>
+  <data name="Profile.CurrentPassword" xml:space="preserve"><value>Current password</value></data>
+  <data name="Profile.NewPassword" xml:space="preserve"><value>New password</value></data>
+  <data name="Profile.ChangePassword" xml:space="preserve"><value>Change password</value></data>
+  <data name="Profile.PasswordChanged" xml:space="preserve"><value>Password changed.</value></data>
+  <data name="Profile.WrongPassword" xml:space="preserve"><value>The current password is wrong.</value></data>
+  <data name="Profile.Link" xml:space="preserve"><value>Name, phone, language and password</value></data>
+  <data name="Validation.Phone" xml:space="preserve"><value>The phone number must be +62 followed by 8–12 digits.</value></data>
 </root>

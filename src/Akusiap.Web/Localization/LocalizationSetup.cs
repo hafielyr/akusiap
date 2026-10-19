@@ -36,4 +36,18 @@ public static class LocalizationSetup
 
     public static bool IsSupported(string culture) =>
         Languages.Any(l => string.Equals(l.Code, culture, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>The UI culture for a user's preferred language (<c>id</c> or <c>en</c>).</summary>
+    public static string CultureFor(string preferredLanguage) =>
+        preferredLanguage == Domain.Users.Languages.English ? "en" : DefaultCulture;
+
+    /// <summary>Remembers the UI language in the culture cookie for a year (the switcher, sign-in and the profile page).</summary>
+    public static void SetCultureCookie(HttpResponse response, string culture)
+    {
+        ArgumentNullException.ThrowIfNull(response);
+        response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), IsEssential = true, HttpOnly = true, SameSite = SameSiteMode.Lax });
+    }
 }

@@ -3,7 +3,6 @@ using Akusiap.Domain.Users;
 using Akusiap.Web.Identity;
 using Akusiap.Web.Localization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
@@ -43,7 +42,7 @@ public sealed class LoginModel(UserManager<User> users, SignInManager<User> sign
         cancellationToken.ThrowIfCancellationRequested();
         if (result.Succeeded)
         {
-            SetCultureCookie(user.PreferredLanguage);
+            LocalizationSetup.SetCultureCookie(Response, LocalizationSetup.CultureFor(user.PreferredLanguage));
             return LocalRedirect(SafeReturnUrl);
         }
 
@@ -67,15 +66,6 @@ public sealed class LoginModel(UserManager<User> users, SignInManager<User> sign
     {
         ModelState.AddModelError(string.Empty, t[messageKey]);
         return Page();
-    }
-
-    private void SetCultureCookie(string preferredLanguage)
-    {
-        var culture = preferredLanguage == Languages.English ? "en" : LocalizationSetup.DefaultCulture;
-        Response.Cookies.Append(
-            CookieRequestCultureProvider.DefaultCookieName,
-            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), IsEssential = true, HttpOnly = true, SameSite = SameSiteMode.Lax });
     }
 }
 
