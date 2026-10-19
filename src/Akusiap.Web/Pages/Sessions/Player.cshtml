@@ -1,0 +1,89 @@
+@page "/sesi/{id:long}"
+@model Akusiap.Web.Pages.Sessions.PlayerModel
+@using Akusiap.Domain.Sessions
+@using Akusiap.Web.Pages.Exams
+@* Quiz player (SES-03). The server renders the shell and the attempt's state as JSON; Alpine runs the screen. *@
+@{
+  var view = Model.View;
+  ViewData["Title"] = view.Title;
+}
+
+@if (view.Status != AttemptStatus.InProgress)
+{
+  <section class="mx-auto max-w-md space-y-4" data-testid="session-ended">
+    <h1 class="text-2xl font-bold leading-tight">@view.Title</h1>
+    <p class="text-slate-600">@T["Session.Player.Ended"]</p>
+    @if (view.ExamId is { } examId)
+    {
+      <a href="@ExamRoutes.Detail(examId)" class="btn btn-secondary w-full">@T["Session.Player.BackToExam"]</a>
+    }
+  </section>
+}
+else
+{
+  <script type="application/json" id="quiz-state">@Html.Raw(Model.StateJson())</script>
+  <noscript><p class="rounded-lg bg-amber-50 px-3 py-2 text-amber-900">@T["Session.Player.NeedsJavaScript"]</p></noscript>
+
+  <section class="mx-auto max-w-xl space-y-4" x-data="quizPlayer('quiz-state')" x-cloak @@keydown.window="onKey($event)" data-testid="player">
+    <header class="flex items-center justify-between gap-3 text-sm">
+      <div class="min-w-0">
+        <p class="truncate font-semibold">@view.Title</p>
+        <p class="text-slate-600"><span x-text="remaining" data-testid="remaining"></span> @T["Session.Player.QuestionsLeft"]</p>
+      </div>
+      @if (view.SecondsLeft is not null)
+      {
+        <p class="shrink-0 rounded-lg bg-slate-900 px-3 py-1.5 font-mono text-base text-white" role="timer" aria-live="off" data-testid="timer" x-text="clock"></p>
+      }
+    </header>
+
+    <article class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" aria-live="polite">
+      <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
+        @T["Session.Player.Question"] <span x-text="index + 1" data-testid="position"></span> / @view.Items.Count
+        <span x-show="item.type === 'MultiSelect'">· @T["Session.Player.PickAll"]</span>
+      </p>
+      <h1 class="whitespace-pre-line text-lg font-medium leading-snug outline-none" tabindex="-1" x-ref="question" x-text="item.text" data-testid="question"></h1>
+
+      <fieldset class="space-y-2">
+        <legend class="sr-only">@T["Session.Player.Options"]</legend>
+        <template x-for="option in item.options" :key="item.position + '-' + option.id">
+          <label class="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border px-3 py-2"
+                 :class="isSelected(option.id) ? 'border-brand-600 bg-brand-50' : 'border-slate-200'">
+            <input class="mt-1 size-5 shrink-0 accent-brand-600" :type="isSingle(item) ? 'radio' : 'checkbox'"
+                   :name="'q' + item.position" :value="option.id" :checked="isSelected(option.id)" @@change="choose(option.id)"
+                   data-testid="option" />
+            <span class="whitespace-pre-line" x-text="option.text"></span>
+          </label>
+        </template>
+      </fieldset>
+    </article>
+
+    <div class="grid grid-cols-3 gap-2">
+      <button type="button" class="btn btn-secondary" @@click="prev()" :disabled="isFirst" data-testid="prev">@T["Session.Player.Previous"]</button>
+      <button type="button" class="btn btn-secondary" @@click="toggleFlag()" :aria-pressed="item.flagged.toString()"
+              :class="item.flagged && 'border-amber-500 bg-amber-50 text-amber-900'" data-testid="flag">@T["Session.Player.Flag"]</button>
+      <button type="button" class="btn btn-primary" @@click="next()" :disabled="isLast" data-testid="next">@T["Session.Player.Next"]</button>
+    </div>
+
+    <nav aria-label="@T["Session.Player.Grid"]" class="space-y-2">
+      <p class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
+        <span class="inline-flex items-center gap-1"><span class="size-3 rounded-sm bg-brand-600"></span>@T["Session.Player.Answered"]</span>
+        <span class="inline-flex items-center gap-1"><span class="size-3 rounded-sm ring-2 ring-amber-500"></span>@T["Session.Player.Flagged"]</span>
+      </p>
+      <ol class="grid grid-cols-6 gap-2 sm:grid-cols-10" data-testid="grid">
+        <template x-for="(cell, i) in items" :key="cell.position">
+          <li>
+            <button type="button" class="flex size-11 items-center justify-center rounded-lg border text-sm font-medium"
+                    :class="cellClass(i)" @@click="go(i)" x-text="i + 1"
+                    :aria-current="i === index ? 'step' : null"
+                    :aria-label="'@T["Session.Player.Question"] ' + (i + 1)"
+                    :data-answered="String(cell.selected.length > 0)" :data-flagged="String(cell.flagged)" data-testid="grid-cell"></button>
+          </li>
+        </template>
+      </ol>
+    </nav>
+  </section>
+}
+
+@section Scripts {
+  <script src="~/js/quiz-player.js" asp-append-version="true"></script>
+}

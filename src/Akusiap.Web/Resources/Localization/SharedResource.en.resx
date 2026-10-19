@@ -515,4 +515,17 @@
   <data name="Session.Setup.AttemptsLeft" xml:space="preserve"><value>{0} simulations left.</value></data>
   <data name="Session.Setup.TrialNote" xml:space="preserve"><value>Trial: {0} free questions from this exam.</value></data>
   <data name="Session.Setup.Start" xml:space="preserve"><value>Start</value></data>
+  <data name="Session.Player.QuestionsLeft" xml:space="preserve"><value>questions left</value></data>
+  <data name="Session.Player.Question" xml:space="preserve"><value>Question</value></data>
+  <data name="Session.Player.PickAll" xml:space="preserve"><value>choose all that apply</value></data>
+  <data name="Session.Player.Options" xml:space="preserve"><value>Answer options</value></data>
+  <data name="Session.Player.Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Session.Player.Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Session.Player.Flag" xml:space="preserve"><value>Flag</value></data>
+  <data name="Session.Player.Grid" xml:space="preserve"><value>Question list</value></data>
+  <data name="Session.Player.Answered" xml:space="preserve"><value>Answered</value></data>
+  <data name="Session.Player.Flagged" xml:space="preserve"><value>Flagged</value></data>
+  <data name="Session.Player.Ended" xml:space="preserve"><value>This session has ended.</value></data>
+  <data name="Session.Player.BackToExam" xml:space="preserve"><value>Back to the exam</value></data>
+  <data name="Session.Player.NeedsJavaScript" xml:space="preserve"><value>The practice page needs JavaScript. Turn it on in your browser.</value></data>
 </root>
