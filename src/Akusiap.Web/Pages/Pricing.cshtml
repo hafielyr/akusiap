@@ -1,0 +1,73 @@
+@page "/harga"
+@model Akusiap.Web.Pages.PricingModel
+@using Akusiap.Web.Pages.Exams
+@* Pricing comparison (CAT-03): cards stack on phones and sit side by side from the sm breakpoint. *@
+@{
+  ViewData["Title"] = T["Pricing.Title"].Value;
+  var pricing = Model.Pricing;
+}
+
+<section class="space-y-6">
+  <div class="space-y-2">
+    <h1 class="text-2xl font-bold leading-tight">@T["Pricing.Title"]</h1>
+    <p class="text-slate-600">@T["Pricing.Lead"]</p>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <article class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="exam-card">
+      <h2 class="text-lg font-semibold">@T["Pricing.SingleExam"]</h2>
+      @if (pricing.Exam is { } exam)
+      {
+        <p class="text-slate-700">@exam.Title</p>
+        <p class="text-2xl font-bold" data-testid="exam-price"><idr value="@exam.PriceIdr" /></p>
+        <p class="text-sm text-slate-600">@T["Catalog.AccessDays", exam.AccessDays]</p>
+        <a href="@ExamRoutes.Checkout(exam.Id)" class="btn btn-secondary w-full" data-testid="buy-exam">@T["ExamPage.Buy"]</a>
+      }
+      else if (pricing.LowestExamPriceIdr is { } lowest)
+      {
+        <p class="text-sm text-slate-600">@T["Pricing.From"]</p>
+        <p class="text-2xl font-bold" data-testid="exam-price"><idr value="@lowest" /></p>
+        <p class="text-sm text-slate-600">@T["Pricing.SingleExamHint"]</p>
+        <a href="@ExamRoutes.Catalog" class="btn btn-secondary w-full">@T["Learn.Access.Browse"]</a>
+      }
+      else
+      {
+        <p class="text-slate-600">@T["Pricing.NoExams"]</p>
+      }
+    </article>
+
+    <article class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="plan-card">
+      <h2 class="text-lg font-semibold">@(pricing.PlanName ?? T["Pricing.Subscription"].Value)</h2>
+      <p class="text-sm text-slate-600">@T["Pricing.PlanHint"]</p>
+      @if (pricing.Packages.Count == 0)
+      {
+        <p class="text-slate-600" data-testid="no-packages">@T["Pricing.NoPackages"]</p>
+      }
+      else
+      {
+        <ul class="space-y-2">
+          @foreach (var package in pricing.Packages)
+          {
+            <li class="space-y-2 rounded-lg border p-3 @(package.IsCheapestMonthly ? "border-brand-600 bg-brand-50" : "border-slate-200")"
+                data-testid="package" data-months="@package.DurationMonths" data-cheapest="@(package.IsCheapestMonthly ? "true" : "false")">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <p class="font-semibold">@T["Admin.Plans.Months", package.DurationMonths]</p>
+                  <p class="text-sm text-slate-600" data-testid="monthly">≈ <idr value="@package.MonthlyIdr" /> @T["Pricing.PerMonth"]</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-lg font-bold"><idr value="@package.PriceIdr" /></p>
+                  @if (package.IsCheapestMonthly)
+                  {
+                    <p class="text-xs font-semibold text-brand-700">@T["Pricing.BestValue"]</p>
+                  }
+                </div>
+              </div>
+              <a href="@ExamRoutes.PlanCheckout(package.PlanPriceId)" class="btn @(package.IsCheapestMonthly ? "btn-primary" : "btn-secondary") w-full">@T["Pricing.Choose"]</a>
+            </li>
+          }
+        </ul>
+      }
+    </article>
+  </div>
+</section>

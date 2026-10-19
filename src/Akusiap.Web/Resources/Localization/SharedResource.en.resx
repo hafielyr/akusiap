@@ -528,4 +528,16 @@
   <data name="Session.Player.Ended" xml:space="preserve"><value>This session has ended.</value></data>
   <data name="Session.Player.BackToExam" xml:space="preserve"><value>Back to the exam</value></data>
   <data name="Session.Player.NeedsJavaScript" xml:space="preserve"><value>The practice page needs JavaScript. Turn it on in your browser.</value></data>
+  <data name="Pricing.Title" xml:space="preserve"><value>Pricing</value></data>
+  <data name="Pricing.Lead" xml:space="preserve"><value>Buy one exam, or subscribe to unlock every exam in the catalog.</value></data>
+  <data name="Pricing.SingleExam" xml:space="preserve"><value>One exam</value></data>
+  <data name="Pricing.From" xml:space="preserve"><value>From</value></data>
+  <data name="Pricing.SingleExamHint" xml:space="preserve"><value>Price and access period differ per exam.</value></data>
+  <data name="Pricing.NoExams" xml:space="preserve"><value>No paid exams yet.</value></data>
+  <data name="Pricing.Subscription" xml:space="preserve"><value>Subscription</value></data>
+  <data name="Pricing.PlanHint" xml:space="preserve"><value>Every exam in the catalog for the whole period.</value></data>
+  <data name="Pricing.NoPackages" xml:space="preserve"><value>Subscription packages aren't available yet.</value></data>
+  <data name="Pricing.PerMonth" xml:space="preserve"><value>per month</value></data>
+  <data name="Pricing.BestValue" xml:space="preserve"><value>Best value per month</value></data>
+  <data name="Pricing.Choose" xml:space="preserve"><value>Choose package</value></data>
 </root>

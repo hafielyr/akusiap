@@ -64,7 +64,7 @@
             <a href="@ExamRoutes.Checkout(exam.Id)" class="@css" data-testid="cta-buy">@T["ExamPage.Buy"] · <idr value="@(exam.PriceIdr ?? 0)" /></a>
             break;
           case ExamCta.Subscribe:
-            <a href="@ExamRoutes.Plans" class="@css" data-testid="cta-subscribe">@T["ExamPage.Subscribe"]</a>
+            <a href="@ExamRoutes.PlansFor(exam.Id)" class="@css" data-testid="cta-subscribe">@T["ExamPage.Subscribe"]</a>
             <p class="text-center text-sm text-slate-500">@T["ExamPage.SubscribeHint"]</p>
             break;
           case ExamCta.RegisterToUnlock:
