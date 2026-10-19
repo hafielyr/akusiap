@@ -1,0 +1,57 @@
+@page "/admin/transaksi/{id:long}"
+@model Akusiap.Web.Areas.Admin.Pages.Transactions.DetailModel
+@using Akusiap.Domain
+@{
+  var d = Model.Detail;
+  var p = d.Payment;
+  ViewData["Title"] = p.OrderNumber;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="@IndexModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Admin.Tx.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@p.OrderNumber</h1>
+
+  <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 rounded-xl border border-slate-200 bg-white p-4 text-sm" data-testid="tx-detail">
+    <dt class="text-slate-500">@T["Admin.Tx.Status"]</dt><dd>@T[$"Admin.Tx.Status.{p.Status}"]@(p.IsLatePayment ? " · " + T["Admin.Tx.Late"].Value : null)</dd>
+    <dt class="text-slate-500">@T["Receipt.Item"]</dt><dd>@p.Item</dd>
+    <dt class="text-slate-500">@T["Receipt.Amount"]</dt><dd><idr value="@p.AmountIdr" /></dd>
+    <dt class="text-slate-500">@T["Admin.Tx.Method"]</dt><dd>@T[$"Checkout.Method.{p.Method}"] @p.Channel @d.VaNumber</dd>
+    <dt class="text-slate-500">@T["Admin.Tx.User"]</dt><dd class="break-all"><a href="/admin/pengguna/@d.UserId" class="text-brand-700 underline">@p.UserName</a> · @p.UserEmail</dd>
+    <dt class="text-slate-500">@T["Admin.Tx.Created"]</dt><dd>@JakartaTime.Format(p.CreatedAt)</dd>
+    <dt class="text-slate-500">@T["Receipt.PaidAt"]</dt><dd>@(p.PaidAt is { } paid ? JakartaTime.Format(paid) : "-")</dd>
+    <dt class="text-slate-500">@T["Admin.Tx.Deadline"]</dt><dd>@(d.ExpiresAt is { } exp ? JakartaTime.Format(exp) : "-")</dd>
+    <dt class="text-slate-500">@T["Admin.Tx.Invoice"]</dt><dd class="break-all">@d.InvoiceNumber @(d.GatewayRequestId is null ? null : "· " + d.GatewayRequestId)</dd>
+    @if (p.FailureReason is not null)
+    {
+      <dt class="text-slate-500">@T["Admin.Tx.Failure"]</dt><dd class="text-red-800">@p.FailureReason · @T["Admin.Tx.Retries", p.RetryCount]</dd>
+    }
+  </dl>
+
+  <h2 class="text-xl font-bold">@T["Admin.Tx.Events"]</h2>
+  @if (d.Events.Count == 0)
+  {
+    <p class="text-slate-600">@T["Admin.Tx.NoEvents"]</p>
+  }
+  <ul class="space-y-2" data-testid="tx-events">
+    @foreach (var e in d.Events)
+    {
+      <li class="space-y-1 rounded-xl border border-slate-200 bg-white p-3 text-sm">
+        <p class="font-medium">@JakartaTime.Format(e.ReceivedAt) · @(e.SignatureValid ? T["Admin.Tx.SignatureOk"] : T["Admin.Tx.SignatureBad"])</p>
+        <p class="break-all text-slate-600">@e.GatewayEventId@(e.ProcessingError is null ? null : " · " + e.ProcessingError)</p>
+        <details><summary class="cursor-pointer text-brand-700">@T["Admin.Tx.Payload"]</summary><pre class="overflow-x-auto whitespace-pre-wrap break-all text-xs">@e.Payload</pre></details>
+      </li>
+    }
+  </ul>
+
+  <h2 class="text-xl font-bold">@T["Admin.Tx.Refunds"]</h2>
+  @if (d.Refunds.Count == 0)
+  {
+    <p class="text-slate-600">@T["Admin.Tx.NoRefunds"]</p>
+  }
+  <ul class="space-y-2">
+    @foreach (var r in d.Refunds)
+    {
+      <li class="rounded-xl border border-slate-200 bg-white p-3 text-sm"><idr value="@r.AmountIdr" /> · @r.Status · @JakartaTime.Format(r.RequestedAt) · @r.Reason</li>
+    }
+  </ul>
+</section>

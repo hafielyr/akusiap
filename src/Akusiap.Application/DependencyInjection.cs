@@ -39,6 +39,7 @@ public static class DependencyInjection
         services.AddScoped<CreatePayment>();
         services.AddScoped<Checkout>();
         services.AddScoped<GetPayments>();
+        services.AddScoped<AdminPayments>();
         services.AddScoped<ListPlanPricing>();
         services.AddScoped<SavePlanPrices>();
         services.AddScoped<ListPlanLimits>();

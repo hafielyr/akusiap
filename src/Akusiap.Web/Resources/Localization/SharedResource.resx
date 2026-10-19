@@ -651,4 +651,35 @@
   <data name="Receipt.PaidAt" xml:space="preserve"><value>Dibayar</value></data>
   <data name="Receipt.AccessUntil" xml:space="preserve"><value>Akses sampai</value></data>
   <data name="Receipt.Note" xml:space="preserve"><value>Simpan email ini sebagai bukti pembayaran. Hubungi kami lewat WhatsApp jika ada pertanyaan.</value></data>
+  <data name="Admin.Nav.Transactions" xml:space="preserve"><value>Transaksi</value></data>
+  <data name="Admin.Tx.Title" xml:space="preserve"><value>Transaksi</value></data>
+  <data name="Admin.Tx.Export" xml:space="preserve"><value>Ekspor CSV</value></data>
+  <data name="Admin.Tx.Search" xml:space="preserve"><value>Cari email, nama atau nomor pesanan</value></data>
+  <data name="Admin.Tx.Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Admin.Tx.AllStatuses" xml:space="preserve"><value>Semua status</value></data>
+  <data name="Admin.Tx.Method" xml:space="preserve"><value>Metode</value></data>
+  <data name="Admin.Tx.AllMethods" xml:space="preserve"><value>Semua metode</value></data>
+  <data name="Admin.Tx.From" xml:space="preserve"><value>Dari tanggal</value></data>
+  <data name="Admin.Tx.To" xml:space="preserve"><value>Sampai tanggal</value></data>
+  <data name="Admin.Tx.Total" xml:space="preserve"><value>{0} transaksi</value></data>
+  <data name="Admin.Tx.Late" xml:space="preserve"><value>pembayaran terlambat</value></data>
+  <data name="Admin.Tx.Retries" xml:space="preserve"><value>{0} kali dicoba ulang</value></data>
+  <data name="Admin.Tx.User" xml:space="preserve"><value>Pengguna</value></data>
+  <data name="Admin.Tx.Created" xml:space="preserve"><value>Dibuat</value></data>
+  <data name="Admin.Tx.Deadline" xml:space="preserve"><value>Batas bayar</value></data>
+  <data name="Admin.Tx.Invoice" xml:space="preserve"><value>Invoice gateway</value></data>
+  <data name="Admin.Tx.Failure" xml:space="preserve"><value>Alasan gagal</value></data>
+  <data name="Admin.Tx.Events" xml:space="preserve"><value>Notifikasi gateway</value></data>
+  <data name="Admin.Tx.NoEvents" xml:space="preserve"><value>Belum ada notifikasi.</value></data>
+  <data name="Admin.Tx.SignatureOk" xml:space="preserve"><value>tanda tangan valid</value></data>
+  <data name="Admin.Tx.SignatureBad" xml:space="preserve"><value>tanda tangan TIDAK valid</value></data>
+  <data name="Admin.Tx.Payload" xml:space="preserve"><value>Isi notifikasi</value></data>
+  <data name="Admin.Tx.Refunds" xml:space="preserve"><value>Refund</value></data>
+  <data name="Admin.Tx.NoRefunds" xml:space="preserve"><value>Belum ada refund.</value></data>
+  <data name="Admin.Tx.Status.Pending" xml:space="preserve"><value>Menunggu</value></data>
+  <data name="Admin.Tx.Status.Paid" xml:space="preserve"><value>Lunas</value></data>
+  <data name="Admin.Tx.Status.Expired" xml:space="preserve"><value>Kedaluwarsa</value></data>
+  <data name="Admin.Tx.Status.Canceled" xml:space="preserve"><value>Dibatalkan</value></data>
+  <data name="Admin.Tx.Status.Failed" xml:space="preserve"><value>Gagal</value></data>
+  <data name="Admin.Tx.Status.Refunded" xml:space="preserve"><value>Dikembalikan</value></data>
 </root>
