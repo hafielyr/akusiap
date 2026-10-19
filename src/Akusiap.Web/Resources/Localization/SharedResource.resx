@@ -849,4 +849,7 @@
   <data name="Shared.Name" xml:space="preserve"><value>Nama Anda</value></data>
   <data name="Shared.NameNotice" xml:space="preserve"><value>Nama dan skor Anda akan terlihat oleh pembuat ujian.</value></data>
   <data name="Shared.Start" xml:space="preserve"><value>Mulai ujian</value></data>
+  <data name="Shared.Invite.Title" xml:space="preserve"><value>Simpan hasil ini dan terus berlatih</value></data>
+  <data name="Shared.Invite.Lead" xml:space="preserve"><value>Daftar gratis di peramban ini, dan hasil ini masuk ke riwayat Anda. Anda juga bisa membuat soal dan ujian sendiri.</value></data>
+  <data name="Shared.Invite.Register" xml:space="preserve"><value>Daftar gratis</value></data>
 </root>

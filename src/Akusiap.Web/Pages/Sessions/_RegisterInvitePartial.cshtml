@@ -1,0 +1,11 @@
+@model long
+@using Akusiap.Web.Identity
+@* Shared-exam guests (SHR-04): register in this browser and the attempt moves into the new account's history. *@
+@if (User.Identity?.IsAuthenticated != true)
+{
+  <article class="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4" data-testid="register-invite">
+    <p class="font-semibold">@T["Shared.Invite.Title"]</p>
+    <p class="text-sm text-slate-700">@T["Shared.Invite.Lead"]</p>
+    <a href="@AccountRoutes.WithReturnUrl(AccountRoutes.Register, SessionRoutes.Result(Model))" class="btn btn-primary w-full" data-testid="register-invite-link">@T["Shared.Invite.Register"]</a>
+  </article>
+}

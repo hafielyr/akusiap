@@ -20,6 +20,11 @@
     <h1 class="text-2xl font-bold leading-tight">@T["Session.Review.Title"]</h1>
   </div>
 
+  @if (review.Source == Akusiap.Domain.Sessions.AttemptSource.Shared)
+  {
+    <partial name="_RegisterInvitePartial" model="review.AttemptId" />
+  }
+
   @if (review.Hidden)
   {
     <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600" data-testid="review-hidden">@T["Session.Review.Hidden"]</p>
