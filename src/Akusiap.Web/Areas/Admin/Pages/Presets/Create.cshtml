@@ -1,0 +1,11 @@
+@page "/admin/aturan/baru"
+@model Akusiap.Web.Areas.Admin.Pages.Presets.CreateModel
+@{
+  ViewData["Title"] = T["Admin.Presets.NewTitle"].Value;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="/admin/aturan" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @T["Admin.Presets.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Presets.NewTitle"]</h1>
+  <partial name="_PresetFormPartial" model="Model.Input" />
+</section>

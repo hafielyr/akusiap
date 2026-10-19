@@ -54,6 +54,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<Notification> Notifications => Set<Notification>();
 
+    public Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken) =>
+        Database.BeginTransactionAsync(cancellationToken);
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

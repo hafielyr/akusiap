@@ -1,0 +1,16 @@
+@model Akusiap.Application.RulePresets.RulePresetDetail
+@* One-line summary of a preset for lists. *@
+@{
+  var parts = new List<string>
+  {
+    Model.TimeLimitMinutes is { } minutes ? T["Admin.Presets.Minutes", minutes].Value : T["Admin.Presets.Untimed"].Value,
+    Model.QuestionCount is { } count ? T["Admin.Presets.Questions", count].Value : T["Admin.Presets.AllQuestions"].Value,
+    T[$"Admin.ShowAnswers.{Model.ShowAnswers}"].Value,
+    Model.MaxAttempts is { } attempts ? T["Admin.Presets.Attempts", attempts].Value : T["Admin.Presets.UnlimitedAttempts"].Value,
+  };
+  if (Model.PassMarkPercent is { } pass)
+  {
+    parts.Add(T["Admin.Presets.PassMarkShort", pass].Value);
+  }
+}
+<span class="block text-sm text-slate-600">@string.Join(" · ", parts)</span>

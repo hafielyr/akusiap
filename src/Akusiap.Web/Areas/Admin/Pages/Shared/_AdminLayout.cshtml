@@ -7,6 +7,7 @@
     ("/admin", T["Admin.Nav.Dashboard"].Value, path.Equals("/admin", StringComparison.OrdinalIgnoreCase)),
     ("/admin/ujian", T["Admin.Nav.Exams"].Value, path.StartsWithSegments("/admin/ujian")),
     ("/admin/soal", T["Admin.Nav.Questions"].Value, path.StartsWithSegments("/admin/soal")),
+    ("/admin/aturan", T["Admin.Nav.Presets"].Value, path.StartsWithSegments("/admin/aturan")),
     ("/admin/subjek", T["Admin.Nav.Subjects"].Value, path.StartsWithSegments("/admin/subjek") || path.StartsWithSegments("/admin/topik")),
   };
 }

@@ -1,0 +1,36 @@
+@page "/admin/aturan/{id:long}"
+@model Akusiap.Web.Areas.Admin.Pages.Presets.EditModel
+@{
+  ViewData["Title"] = T["Admin.Presets.EditTitle"].Value;
+  var preset = Model.Preset;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="/admin/aturan" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @T["Admin.Presets.Title"]</a>
+  <div class="flex flex-wrap items-center gap-2">
+    <h1 class="text-2xl font-bold leading-tight">@preset.Name</h1>
+    @if (preset.IsDefault)
+    {
+      <span class="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700" data-testid="default-badge">@T["Admin.Presets.Default"]</span>
+    }
+  </div>
+  <p class="text-sm text-slate-500">@T["Admin.Presets.UsedBy", preset.ExamCount]</p>
+  <partial name="_PresetFormPartial" model="Model.Input" />
+</section>
+
+<section class="max-w-2xl space-y-2 border-t border-slate-200 pt-4">
+  @if (preset.IsDefault || preset.ExamCount > 0)
+  {
+    <p class="text-sm text-slate-500" data-testid="delete-blocked">@T["Admin.Presets.DeleteBlocked"]</p>
+  }
+  else
+  {
+    <form method="post" asp-page-handler="Delete" x-data="{ sure: false }">
+      <button type="button" x-show="!sure" x-on:click="sure = true" class="btn btn-secondary text-red-700">@T["Admin.Presets.Delete"]</button>
+      <span x-show="sure" x-cloak class="flex flex-wrap items-center gap-2">
+        <button type="submit" class="btn bg-red-600 text-white hover:bg-red-700">@T["Admin.ConfirmDelete"]</button>
+        <button type="button" x-on:click="sure = false" class="btn btn-secondary">@T["Admin.Cancel"]</button>
+      </span>
+    </form>
+  }
+</section>
