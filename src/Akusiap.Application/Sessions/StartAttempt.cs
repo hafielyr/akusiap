@@ -38,6 +38,7 @@ public sealed class StartAttempt(
     public const string NoAccess = "Session.NoAccess";
     public const string GuestNameRequired = "Session.GuestNameRequired";
     public const string MaxAttemptsReached = "Session.MaxAttemptsReached";
+    public const string NothingWrong = "Session.Retake.NothingWrong";
 
     public static JsonSerializerOptions Json { get; } = new(JsonSerializerDefaults.Web) { Converters = { new JsonStringEnumConverter() } };
 
@@ -127,6 +128,88 @@ public sealed class StartAttempt(
         return Result.Ok(new StartedAttempt(attempt.Id, source, selected.Count));
     }
 
+    /// <summary>
+    /// "Ulangi yang salah" (SES-09, story R-04, D-80): a new Practice attempt, Source WrongOnly, with exactly the questions
+    /// answered wrong (or left blank) in a finished attempt of the viewer. The entitlement is checked again and the
+    /// questions are limited to what it allows now, so a trial retake stays within the trial set. Untimed, every wrong
+    /// question, no pass mark or attempt limit; hints, shuffling and answer display follow the original rules.
+    /// </summary>
+    public async Task<Result<StartedAttempt>> RetakeWrongAsync(long attemptId, Guid? guestToken, CancellationToken cancellationToken)
+    {
+        var userId = currentUser.UserId;
+        var source = await db.Attempts.AsNoTracking()
+            .Where(a => a.Id == attemptId)
+            .Select(a => new { a.UserId, a.GuestToken, a.ExamId, a.Status, a.RulesSnapshot })
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+        if (source is null || source.ExamId is not { } examId || source.Status == AttemptStatus.InProgress
+            || !AttemptAccess.IsOwner(currentUser, source.UserId, source.GuestToken, guestToken))
+        {
+            return Result.Fail<StartedAttempt>(Problem.NotFound);
+        }
+
+        var wrong = await db.AttemptItems
+            .Where(i => i.AttemptId == attemptId && !i.IsCorrect)
+            .Select(i => i.QuestionId)
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+        if (wrong.Count == 0)
+        {
+            return Result.Fail<StartedAttempt>(new Problem(NothingWrong));
+        }
+
+        var access = await entitlements.GetAsync(examId, shareToken: null, cancellationToken).ConfigureAwait(false);
+        if (access is null || !access.Decision.CanStart)
+        {
+            return Result.Fail<StartedAttempt>(new Problem(NoAccess));
+        }
+
+        var candidates = (await CandidatesAsync(examId, access.Decision.Scope, cancellationToken).ConfigureAwait(false))
+            .Where(c => wrong.Contains(c.QuestionId))
+            .ToList();
+        if (candidates.Count == 0)
+        {
+            return Result.Fail<StartedAttempt>(new Problem(NoAccess));
+        }
+
+        var original = JsonSerializer.Deserialize<SessionRules>(source.RulesSnapshot, Json)!;
+        var rules = original with
+        {
+            Mode = AttemptMode.Practice,
+            TimeLimitMinutes = null,
+            QuestionCount = candidates.Count,
+            MaxAttempts = null,
+            PassMarkPercent = null,
+            TopicIds = [],
+        };
+        var selected = QuestionSelection.Select(candidates, [], rules.QuestionCount, rules.ShuffleQuestions, rules.ShuffleOptions, random.Random);
+        var now = clock.UtcNow;
+        var attempt = new Attempt
+        {
+            UserId = userId,
+            GuestToken = userId is null ? source.GuestToken : null,
+            ExamId = examId,
+            Source = AttemptSource.WrongOnly,
+            Mode = rules.Mode,
+            RulesSnapshot = JsonSerializer.Serialize(rules, Json),
+            StartedAt = now,
+            LastSavedAt = now,
+            TotalCount = selected.Count,
+        };
+        foreach (var item in selected)
+        {
+            attempt.Items.Add(new AttemptItem
+            {
+                QuestionId = item.QuestionId,
+                Position = item.Position,
+                OptionOrder = JsonSerializer.Serialize(item.OptionOrder, Json),
+            });
+        }
+
+        db.Attempts.Add(attempt);
+        await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return Result.Ok(new StartedAttempt(attempt.Id, AttemptSource.WrongOnly, selected.Count));
+    }
     /// <summary>The questions the decision allows, in exam order, with topic, type and option ids.</summary>
     private async Task<IReadOnlyList<CandidateQuestion>> CandidatesAsync(long examId, QuestionScope scope, CancellationToken cancellationToken)
     {
