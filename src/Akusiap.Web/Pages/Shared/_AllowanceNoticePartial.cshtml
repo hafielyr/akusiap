@@ -1,0 +1,16 @@
+@model Akusiap.Domain.Access.Allowance
+@* Shown on own-content pages (OWN-03) when the allowance blocks creating or editing, with an upgrade link. OWN-05 adds the usage bar. *@
+@if (!Model.CanEdit)
+{
+  <div class="space-y-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" data-testid="allowance-readonly">
+    <p>@T["Own.Questions.ReadOnly"]</p>
+    <a href="/harga" class="btn btn-primary">@T["Own.Upgrade"]</a>
+  </div>
+}
+else if (!Model.CanCreateQuestion)
+{
+  <div class="space-y-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" data-testid="allowance-full">
+    <p>@T["Own.Questions.LimitReached", Model.MaxQuestions ?? 0]</p>
+    <a href="/harga" class="btn btn-primary" data-testid="upgrade">@T["Own.Upgrade"]</a>
+  </div>
+}

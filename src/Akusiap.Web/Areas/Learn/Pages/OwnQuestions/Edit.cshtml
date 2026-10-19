@@ -1,0 +1,18 @@
+@page "/learn/soal-saya/{id:long}"
+@model Akusiap.Web.Areas.Learn.Pages.OwnQuestions.EditModel
+@{
+  ViewData["Title"] = T["Own.Questions.Edit"].Value;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="@IndexModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Own.Questions.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Own.Questions.Edit"]</h1>
+  @if (TempData["Flash"] is string flash)
+  {
+    <p role="alert" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="flash">@T[flash]</p>
+  }
+  <partial name="_QuestionFormPartial" model="new Akusiap.Web.Areas.Admin.Pages.Questions.QuestionFormView(Model.Input, Model.Topics, IsNew: false)" />
+  <form method="post" asp-page-handler="Delete" class="border-t border-slate-200 pt-4">
+    <button type="submit" class="btn btn-secondary text-red-700" data-testid="delete-question">@T["Own.Questions.Delete"]</button>
+  </form>
+</section>
