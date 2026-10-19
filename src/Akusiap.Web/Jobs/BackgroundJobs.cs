@@ -25,6 +25,7 @@ public static class BackgroundJobs
     public static IServiceCollection AddBackgroundJobs(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<Payments.ReceiptJob>();
+        services.AddScoped<Payments.RenewalReminderJob>();
         if (!IsEnabled(configuration))
         {
             services.AddScoped<Akusiap.Application.Abstractions.IPaymentJobs, Payments.InlinePaymentJobs>();
@@ -59,6 +60,9 @@ public static class BackgroundJobs
         });
         var jobs = app.Services.GetRequiredService<IRecurringJobManager>();
         jobs.AddOrUpdate<SweepExpiredAttemptsJob>(SweepExpiredAttemptsJob.Id, job => job.RunAsync(CancellationToken.None), SweepExpiredAttemptsJob.Cron);
+        jobs.AddOrUpdate<Akusiap.Application.Access.ExpireAccess>(Akusiap.Application.Access.ExpireAccess.Id, job => job.RunAsync(CancellationToken.None), Akusiap.Application.Access.ExpireAccess.Cron);
+        jobs.AddOrUpdate<Akusiap.Application.Payments.ExpirePendingPayments>(Akusiap.Application.Payments.ExpirePendingPayments.Id, job => job.RunAsync(CancellationToken.None), Akusiap.Application.Payments.ExpirePendingPayments.Cron);
+        jobs.AddOrUpdate<Payments.RenewalReminderJob>(Payments.RenewalReminderJob.Id, job => job.RunAsync(CancellationToken.None), Payments.RenewalReminderJob.Cron);
         return app;
     }
 
