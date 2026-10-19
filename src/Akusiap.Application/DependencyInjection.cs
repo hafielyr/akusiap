@@ -3,6 +3,7 @@ using Akusiap.Application.Access;
 using Akusiap.Application.Catalog;
 using Akusiap.Application.Exams;
 using Akusiap.Application.Questions;
+using Akusiap.Application.Questions.Import;
 using Akusiap.Application.RulePresets;
 using Akusiap.Application.Sessions;
 using Akusiap.Application.Subjects;
@@ -37,6 +38,8 @@ public static class DependencyInjection
         services.AddScoped<ListQuestions>();
         services.AddScoped<GetQuestion>();
         services.AddScoped<SaveQuestion>();
+        services.AddMemoryCache();
+        services.AddScoped<ImportQuestions>();
         services.AddScoped<ListExams>();
         services.AddScoped<GetExam>();
         services.AddScoped<SaveExam>();

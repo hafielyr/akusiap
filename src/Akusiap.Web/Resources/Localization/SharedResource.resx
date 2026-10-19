@@ -434,4 +434,32 @@
   <data name="Account.Google.Title" xml:space="preserve"><value>Masuk dengan Google</value></data>
   <data name="Account.Google.Failed" xml:space="preserve"><value>Masuk dengan Google gagal atau dibatalkan. Silakan coba lagi.</value></data>
   <data name="Account.Google.NoEmail" xml:space="preserve"><value>Akun Google Anda tidak membagikan alamat email, jadi kami tidak bisa membuat akun.</value></data>
+  <data name="Admin.Import.Title" xml:space="preserve"><value>Impor soal</value></data>
+  <data name="Admin.Import.Link" xml:space="preserve"><value>Impor dari Excel/CSV</value></data>
+  <data name="Admin.Import.Lead" xml:space="preserve"><value>Unggah file xlsx atau csv sesuai template. Semua baris diperiksa dulu; jika ada satu baris yang salah, tidak ada soal yang disimpan.</value></data>
+  <data name="Admin.Import.Template" xml:space="preserve"><value>Unduh template (xlsx)</value></data>
+  <data name="Admin.Import.File" xml:space="preserve"><value>File soal</value></data>
+  <data name="Admin.Import.FileHint" xml:space="preserve"><value>xlsx atau csv, maksimal {0} baris dan 5 MB.</value></data>
+  <data name="Admin.Import.SaveAs" xml:space="preserve"><value>Simpan soal sebagai</value></data>
+  <data name="Admin.Import.Check" xml:space="preserve"><value>Periksa file</value></data>
+  <data name="Admin.Import.Summary" xml:space="preserve"><value>{0} baris dibaca: {1} siap, {2} bermasalah.</value></data>
+  <data name="Admin.Import.FixAndRetry" xml:space="preserve"><value>Perbaiki baris di bawah lalu unggah lagi. Belum ada soal yang disimpan.</value></data>
+  <data name="Admin.Import.Row" xml:space="preserve"><value>Baris {0}</value></data>
+  <data name="Admin.Import.Ready" xml:space="preserve"><value>Semua baris valid. Simpan sekarang?</value></data>
+  <data name="Admin.Import.More" xml:space="preserve"><value>dan {0} baris lainnya</value></data>
+  <data name="Admin.Import.Confirm" xml:space="preserve"><value>Simpan {0} soal</value></data>
+  <data name="Admin.Import.Done" xml:space="preserve"><value>{0} soal berhasil diimpor.</value></data>
+  <data name="Admin.Import.FileRequired" xml:space="preserve"><value>Pilih file untuk diunggah.</value></data>
+  <data name="Admin.Import.FileTooLarge" xml:space="preserve"><value>File maksimal 5 MB.</value></data>
+  <data name="Admin.Import.UnsupportedFile" xml:space="preserve"><value>Gunakan file .xlsx atau .csv.</value></data>
+  <data name="Admin.Import.UnreadableFile" xml:space="preserve"><value>File tidak bisa dibaca. Pastikan formatnya xlsx atau csv yang benar.</value></data>
+  <data name="Admin.Import.MissingColumns" xml:space="preserve"><value>Kolom wajib tidak ada: {0}.</value></data>
+  <data name="Admin.Import.NoRows" xml:space="preserve"><value>File tidak berisi baris soal.</value></data>
+  <data name="Admin.Import.TooManyRows" xml:space="preserve"><value>Maksimal {0} baris per file.</value></data>
+  <data name="Admin.Import.Expired" xml:space="preserve"><value>Hasil pemeriksaan sudah kedaluwarsa. Unggah file lagi.</value></data>
+  <data name="Admin.Import.TopicGone" xml:space="preserve"><value>Topik dengan id {0} sudah dihapus. Unggah file lagi.</value></data>
+  <data name="Admin.Import.TopicUnknown" xml:space="preserve"><value>Topik "{0}" tidak ditemukan.</value></data>
+  <data name="Admin.Import.TopicAmbiguous" xml:space="preserve"><value>Topik "{0}" ada di beberapa subjek. Tulis "Subjek / Topik".</value></data>
+  <data name="Admin.Import.CorrectInvalid" xml:space="preserve"><value>Jawaban benar "{0}" harus berupa huruf A–H.</value></data>
+  <data name="Admin.Import.CorrectNoOption" xml:space="preserve"><value>Jawaban benar {0} tidak punya pilihan.</value></data>
 </root>

@@ -1,7 +1,9 @@
 using Akusiap.Application.Abstractions;
+using Akusiap.Application.Questions.Import;
 using Akusiap.Domain.Users;
 using Akusiap.Infrastructure.Email;
 using Akusiap.Infrastructure.Identity;
+using Akusiap.Infrastructure.Importing;
 using Akusiap.Infrastructure.Persistence;
 using Akusiap.Infrastructure.Seeding;
 using Akusiap.Infrastructure.Time;
@@ -47,6 +49,10 @@ public static class DependencyInjection
         services.Configure<SeedOptions>(configuration.GetSection(SeedOptions.SectionName));
         services.AddScoped<DataSeeder>();
         services.AddHostedService<DatabaseInitializer>();
+
+        services.Configure<ImportOptions>(configuration.GetSection(ImportOptions.SectionName));
+        services.AddSingleton<IQuestionFileReader, QuestionFileReader>();
+        services.AddSingleton<IQuestionTemplate, QuestionTemplate>();
 
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
         if (environment.IsDevelopment())

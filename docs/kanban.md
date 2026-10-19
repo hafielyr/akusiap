@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [ADM-T7] Bulk question import · M2 · deps: ADM-T2
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 - [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07
 - [USR-01] User search · M4 · deps: AC-06
@@ -17,7 +16,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04 · (claude-opus-5.5, 2026-10-19)
+- [ADM-T7] Bulk question import · M2 · deps: ADM-T2 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -50,6 +49,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
 - [AC-04] Profile, password and role · M1 · deps: AC-01
 - [AC-03] Google sign-in · M1 · deps: AC-01
+- [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
 
 ## Backlog
 

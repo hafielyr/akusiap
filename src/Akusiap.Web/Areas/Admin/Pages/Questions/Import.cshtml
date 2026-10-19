@@ -1,0 +1,89 @@
+@page "/admin/soal/impor"
+@model Akusiap.Web.Areas.Admin.Pages.Questions.ImportModel
+@using Akusiap.Application.Questions
+@using Akusiap.Domain.Content
+@* Bulk import (ADM-T7): upload → preview with per-row errors → confirm. *@
+@{
+  ViewData["Title"] = T["Admin.Import.Title"].Value;
+  var preview = Model.Preview;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="/admin/soal" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Admin.Questions.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Import.Title"]</h1>
+  <p class="text-slate-600">@T["Admin.Import.Lead"]</p>
+  <a href="@ImportModel.Route?handler=Template" class="btn btn-secondary w-full sm:w-auto" data-testid="template-link">@T["Admin.Import.Template"]</a>
+
+  @if (Model.Errors.Count > 0)
+  {
+    <ul role="alert" class="space-y-1 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" data-testid="import-errors">
+      @foreach (var error in Model.Errors)
+      {
+        <li>@error</li>
+      }
+    </ul>
+  }
+
+  <form method="post" asp-page-handler="Preview" enctype="multipart/form-data" class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" data-testid="upload-form">
+    <div class="space-y-1">
+      <label for="import-file" class="label">@T["Admin.Import.File"]</label>
+      <input id="import-file" name="file" type="file" accept=".xlsx,.csv" class="block w-full text-sm" required />
+      <p class="text-sm text-slate-500">@T["Admin.Import.FileHint", Model.MaxRows]</p>
+    </div>
+    <div class="space-y-1">
+      <label for="import-status" class="label">@T["Admin.Import.SaveAs"]</label>
+      <select id="import-status" name="Status" class="input">
+        <option value="@QuestionStatus.Active" selected="@(Model.Status == QuestionStatus.Active)">@T["Admin.QuestionStatus.Active"]</option>
+        <option value="@QuestionStatus.Draft" selected="@(Model.Status == QuestionStatus.Draft)">@T["Admin.QuestionStatus.Draft"]</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Import.Check"]</button>
+  </form>
+</section>
+
+@if (preview is { Rows.Count: > 0 })
+{
+  <section class="max-w-2xl space-y-3" data-testid="import-preview">
+    <p class="font-semibold" data-testid="import-summary">@T["Admin.Import.Summary", preview.Rows.Count, preview.ValidCount, preview.InvalidCount]</p>
+
+    @if (preview.Key is { } key)
+    {
+      <p class="text-slate-600">@T["Admin.Import.Ready"]</p>
+      <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white text-sm">
+        @foreach (var row in preview.Rows.Take(ImportModel.PreviewLimit))
+        {
+          <li class="space-y-1 px-4 py-2">
+            <p class="text-xs text-slate-500">@T["Admin.Import.Row", row.RowNumber] · @(row.Type is { } type ? T[QuestionValidator.TypeLabel(type)] : null) · @row.Topic</p>
+            <p class="line-clamp-2">@row.Text</p>
+          </li>
+        }
+      </ul>
+      @if (preview.Rows.Count > ImportModel.PreviewLimit)
+      {
+        <p class="text-sm text-slate-500">@T["Admin.Import.More", preview.Rows.Count - ImportModel.PreviewLimit]</p>
+      }
+      <form method="post" asp-page-handler="Confirm" data-testid="confirm-form">
+        <input type="hidden" name="key" value="@key" />
+        <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Import.Confirm", preview.Rows.Count]</button>
+      </form>
+    }
+    else
+    {
+      <p class="text-slate-600">@T["Admin.Import.FixAndRetry"]</p>
+      <ul class="space-y-2" data-testid="row-errors">
+        @foreach (var row in preview.Rows.Where(r => !r.IsValid))
+        {
+          <li class="space-y-1 rounded-xl border border-red-200 bg-white p-3 text-sm" data-testid="row-error" data-row="@row.RowNumber">
+            <p class="font-semibold">@T["Admin.Import.Row", row.RowNumber]@(row.Text is null ? null : ": ")<span class="font-normal text-slate-600">@row.Text</span></p>
+            <ul class="list-disc space-y-0.5 pl-5 text-red-800">
+              @foreach (var problem in row.Problems)
+              {
+                <li>@Model.Describe(problem)</li>
+              }
+            </ul>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}

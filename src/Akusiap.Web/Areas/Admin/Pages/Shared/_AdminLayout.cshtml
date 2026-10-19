@@ -27,7 +27,7 @@
 
   @if (TempData["Flash"] is string flash)
   {
-    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash]</p>
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash, TempData["FlashArg"] ?? string.Empty]</p>
   }
 
   @RenderBody()
