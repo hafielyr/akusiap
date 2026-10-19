@@ -84,7 +84,8 @@ public sealed class ShareExamTests(PostgresFixture database)
         await using var app = new AppFactory(database);
         await app.SeedReferenceDataAsync();
         var owner = TestData.User().Build();
-        using var client = await app.CreateSignedInClientAsync(owner, RoleNames.Learner);
+        await using var flagOff = app.WithWebHostBuilder(b => b.UseSetting("Features:Sharing", "false"));
+        using var client = await flagOff.CreateSignedInClientAsync(owner, RoleNames.Learner);
         var examId = await SeedOwnExamAsync(owner);
         var page = $"/learn/ujian-saya/{examId}";
 
