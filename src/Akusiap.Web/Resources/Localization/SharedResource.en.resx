@@ -44,7 +44,6 @@
   <data name="Identity.PasswordTooShort" xml:space="preserve"><value>Password must be at least {0} characters.</value></data>
   <data name="Identity.DefaultError" xml:space="preserve"><value>Something went wrong. Please try again.</value></data>
   <data name="Catalog.Title" xml:space="preserve"><value>Exam catalog</value></data>
-  <data name="Catalog.ComingSoon" xml:space="preserve"><value>The exam catalog is being prepared and is coming soon.</value></data>
   <data name="Status.Forbidden.Title" xml:space="preserve"><value>Access denied</value></data>
   <data name="Status.Forbidden.Heading" xml:space="preserve"><value>You don't have access to this page.</value></data>
   <data name="Status.Forbidden.Body" xml:space="preserve"><value>This page is only for users with specific permissions. If you think this is a mistake, contact us on WhatsApp.</value></data>
@@ -284,4 +283,22 @@
   <data name="Admin.Publish.TakenDown" xml:space="preserve"><value>A taken-down exam cannot be published.</value></data>
   <data name="Admin.Publish.AlreadyPublished" xml:space="preserve"><value>This exam is already published.</value></data>
   <data name="Admin.Publish.NotPublished" xml:space="preserve"><value>This exam is not published.</value></data>
+  <data name="Catalog.Lead" xml:space="preserve"><value>Pick an exam to practise. Paid exams include 30 free trial questions.</value></data>
+  <data name="Catalog.Search" xml:space="preserve"><value>Search exam title or description</value></data>
+  <data name="Catalog.Subject" xml:space="preserve"><value>Subject</value></data>
+  <data name="Catalog.AllSubjects" xml:space="preserve"><value>All subjects</value></data>
+  <data name="Catalog.Apply" xml:space="preserve"><value>Search</value></data>
+  <data name="Catalog.Total" xml:space="preserve"><value>{0} exams</value></data>
+  <data name="Catalog.Empty" xml:space="preserve"><value>There are no exams in the catalog yet.</value></data>
+  <data name="Catalog.NoMatch" xml:space="preserve"><value>No exams match. Try other words.</value></data>
+  <data name="Catalog.Free" xml:space="preserve"><value>Free</value></data>
+  <data name="Catalog.YourAccess" xml:space="preserve"><value>Your access</value></data>
+  <data name="Catalog.FreeForMembers" xml:space="preserve"><value>Free for registered users</value></data>
+  <data name="Catalog.AccessDays" xml:space="preserve"><value>{0} days of access</value></data>
+  <data name="Catalog.QuestionCount" xml:space="preserve"><value>{0} questions</value></data>
+  <data name="Catalog.MoreTopics" xml:space="preserve"><value>+{0} topics</value></data>
+  <data name="Catalog.Pages" xml:space="preserve"><value>Catalog pages</value></data>
+  <data name="Catalog.Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Catalog.Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Catalog.PageOf" xml:space="preserve"><value>Page {0} of {1}</value></data>
 </root>

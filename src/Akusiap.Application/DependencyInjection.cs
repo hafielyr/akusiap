@@ -1,4 +1,5 @@
 using Akusiap.Application.Access;
+using Akusiap.Application.Catalog;
 using Akusiap.Application.Exams;
 using Akusiap.Application.Questions;
 using Akusiap.Application.RulePresets;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         // One instance per request: the viewer context is cached in it (ENT-02).
         services.AddScoped<IEntitlementService, EntitlementService>();
         services.AddScoped<ExamQuestionScope>();
+        services.AddScoped<ListCatalog>();
         services.AddScoped<ListSubjects>();
         services.AddScoped<GetSubject>();
         services.AddScoped<SaveSubject>();
