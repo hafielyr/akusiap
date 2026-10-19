@@ -695,4 +695,9 @@
   <data name="Own.Questions.ReadOnly" xml:space="preserve"><value>Soal Anda sekarang hanya bisa dilihat dan dilatih, karena jumlahnya melebihi jatah paket Anda. Berlangganan untuk mengubah atau menambah soal.</value></data>
   <data name="Own.Questions.InUse" xml:space="preserve"><value>Soal ini sudah dipakai di sesi atau ujian, jadi tidak bisa dihapus. Ubah statusnya menjadi Pensiun.</value></data>
   <data name="Own.Upgrade" xml:space="preserve"><value>Lihat paket langganan</value></data>
+  <data name="Own.Allowance.Title" xml:space="preserve"><value>Jatah konten sendiri</value></data>
+  <data name="Own.Allowance.Questions" xml:space="preserve"><value>Soal sendiri</value></data>
+  <data name="Own.Allowance.Exams" xml:space="preserve"><value>Ujian sendiri</value></data>
+  <data name="Own.Allowance.Unlimited" xml:space="preserve"><value>Tanpa batas.</value></data>
+  <data name="Own.Allowance.Upgrade" xml:space="preserve"><value>Butuh lebih? Lihat paket langganan</value></data>
 </root>

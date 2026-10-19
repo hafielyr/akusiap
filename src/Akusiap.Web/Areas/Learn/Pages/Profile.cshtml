@@ -56,6 +56,14 @@
     <button type="submit" class="btn btn-primary w-full">@T["Profile.Save"]</button>
   </form>
 
+  @if (Model.Allowance is { } allowance)
+  {
+    <section class="space-y-2" aria-labelledby="allowance-heading">
+      <h2 id="allowance-heading" class="text-lg font-semibold">@T["Own.Allowance.Title"]</h2>
+      <partial name="_AllowanceBarPartial" model="allowance" />
+    </section>
+  }
+
   <form method="post" asp-page-handler="Password" class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" novalidate data-testid="password-form">
     <h2 class="text-lg font-semibold">@T["Profile.PasswordTitle"]</h2>
     @if (Model.HasPassword)

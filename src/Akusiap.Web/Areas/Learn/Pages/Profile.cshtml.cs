@@ -14,7 +14,7 @@ namespace Akusiap.Web.Areas.Learn.Pages;
 /// name and roles show at once, and sets the culture cookie so the language changes on the next page. Each handler
 /// binds and validates only its own form (<c>TryUpdateModelAsync</c>).
 /// </summary>
-public sealed class ProfileModel(UserManager<User> users, SignInManager<User> signIn, IStringLocalizer<SharedResource> t) : PageModel
+public sealed class ProfileModel(UserManager<User> users, SignInManager<User> signIn, IStringLocalizer<SharedResource> t, Akusiap.Application.Access.GetAllowance getAllowance) : PageModel
 {
     public const string Route = "/learn/profil";
 
@@ -25,6 +25,9 @@ public sealed class ProfileModel(UserManager<User> users, SignInManager<User> si
     public string Email { get; private set; } = string.Empty;
 
     public bool HasPassword { get; private set; } = true;
+
+    /// <summary>Own-content usage for the allowance widget (OWN-05).</summary>
+    public Akusiap.Domain.Access.Allowance? Allowance { get; private set; }
 
     [TempData]
     public string? Flash { get; set; }
@@ -151,6 +154,7 @@ public sealed class ProfileModel(UserManager<User> users, SignInManager<User> si
     {
         Email = user.Email ?? string.Empty;
         HasPassword = await users.HasPasswordAsync(user);
+        Allowance = await getAllowance.HandleAsync(HttpContext.RequestAborted);
     }
 
     /// <summary>Shows the profile form with the saved values again after a password error.</summary>
