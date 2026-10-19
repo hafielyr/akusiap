@@ -1,0 +1,58 @@
+@page "/dev/pembayaran"
+@model Akusiap.Web.Pages.Dev.PaymentsModel
+@using Akusiap.Domain.Payments
+@* Development-only tool (PAY-01), so its text is not localized. *@
+@{
+  ViewData["Title"] = "Dev: payments";
+}
+
+<section class="max-w-xl space-y-4">
+  <h1 class="text-2xl font-bold leading-tight">Dev: fake payment gateway</h1>
+  <p class="text-sm text-slate-600">Development only. Starts a payment with the fake gateway and plays the gateway's notification. Unlocking the exam comes with PAY-06.</p>
+
+  @if (Model.Message is { } message)
+  {
+    <p role="status" class="rounded-lg bg-slate-100 px-3 py-2 text-sm" data-testid="dev-message">@message</p>
+  }
+
+  <form method="post" asp-page-handler="Create" class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="dev-create">
+    <label for="dev-exam" class="label">Paid exam</label>
+    <select id="dev-exam" name="examId" class="input">
+      @foreach (var exam in Model.Exams)
+      {
+        <option value="@exam.Id">@exam.Title (<idr value="@exam.PriceIdr" />)</option>
+      }
+    </select>
+    <label for="dev-method" class="label">Method</label>
+    <select id="dev-method" name="method" class="input">
+      @foreach (var method in Enum.GetValues<PaymentMethod>())
+      {
+        <option value="@method">@method</option>
+      }
+    </select>
+    <button type="submit" class="btn btn-primary w-full sm:w-auto">Start payment</button>
+  </form>
+
+  <ul class="space-y-3" data-testid="dev-payments">
+    @foreach (var payment in Model.Payments)
+    {
+      <li class="space-y-1 rounded-xl border border-slate-200 bg-white p-4 text-sm" data-testid="dev-payment" data-id="@payment.Id" data-status="@payment.Status">
+        <p class="font-semibold">@payment.OrderNumber · @payment.Status · <idr value="@payment.AmountIdr" /></p>
+        <p class="break-all text-slate-600">@payment.Method @payment.Channel @payment.VaNumber @payment.QrString @payment.DeeplinkUrl</p>
+        @if (payment.Status == PaymentStatus.Pending)
+        {
+          <div class="flex flex-wrap gap-2">
+            @foreach (var status in new[] { "PAID", "EXPIRED", "FAILED" })
+            {
+              <form method="post" asp-page-handler="Notify">
+                <input type="hidden" name="paymentId" value="@payment.Id" />
+                <input type="hidden" name="status" value="@status" />
+                <button type="submit" class="btn btn-secondary">Gateway says @status</button>
+              </form>
+            }
+          </div>
+        }
+      </li>
+    }
+  </ul>
+</section>

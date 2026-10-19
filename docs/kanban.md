@@ -7,16 +7,16 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 - [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07
 - [USR-01] User search · M4 · deps: AC-06
 - [SES-02] Session setup page · M1 · deps: SES-01
 - [SES-03] Quiz player · M1 · deps: SES-01
+- [PAY-04] DOKU client · M3 · deps: PAY-01
 
 ## In Progress
 
 ## Review
-- [ADM-T7] Bulk question import · M2 · deps: ADM-T2 · (claude-opus-5.5, 2026-10-19)
+- [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -50,6 +50,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [AC-04] Profile, password and role · M1 · deps: AC-01
 - [AC-03] Google sign-in · M1 · deps: AC-01
 - [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
+- [ADM-T7] Bulk question import · M2 · deps: ADM-T2
 
 ## Backlog
 
@@ -74,7 +75,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
 - [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03
 - [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
-- [PAY-04] DOKU client · M3 · deps: PAY-01
 - [PAY-07] Receipt email · M3 · deps: PAY-06, AC-02
 - [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
 - [PAY-09] Refund requests · M3 · deps: PAY-06

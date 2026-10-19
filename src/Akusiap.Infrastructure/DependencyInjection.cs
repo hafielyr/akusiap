@@ -4,6 +4,7 @@ using Akusiap.Domain.Users;
 using Akusiap.Infrastructure.Email;
 using Akusiap.Infrastructure.Identity;
 using Akusiap.Infrastructure.Importing;
+using Akusiap.Infrastructure.Payments;
 using Akusiap.Infrastructure.Persistence;
 using Akusiap.Infrastructure.Seeding;
 using Akusiap.Infrastructure.Time;
@@ -57,6 +58,9 @@ public static class DependencyInjection
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
         if (environment.IsDevelopment())
         {
+            // The DOKU gateway comes with PAY-04; Development and tests use the fake one (PAY-01).
+            services.AddSingleton<FakePaymentGateway>();
+            services.AddSingleton<IPaymentGateway>(sp => sp.GetRequiredService<FakePaymentGateway>());
             services.AddSingleton<IEmailSender>(sp =>
             {
                 var options = sp.GetRequiredService<IOptions<EmailOptions>>();

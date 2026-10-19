@@ -1009,6 +1009,442 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Payments.Payment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AmountIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("amount_idr");
+
+                    b.Property<string>("Channel")
+                        .HasColumnType("text")
+                        .HasColumnName("channel");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("DeeplinkUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("deeplink_url");
+
+                    b.Property<long>("DiscountIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("discount_idr");
+
+                    b.Property<long?>("ExamPurchaseId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("exam_purchase_id");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<string>("FailureReason")
+                        .HasColumnType("text")
+                        .HasColumnName("failure_reason");
+
+                    b.Property<string>("Gateway")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("gateway");
+
+                    b.Property<long?>("GatewayFeeIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("gateway_fee_idr");
+
+                    b.Property<string>("GatewayRequestId")
+                        .HasColumnType("text")
+                        .HasColumnName("gateway_request_id");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("invoice_number");
+
+                    b.Property<bool>("IsLatePayment")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_late_payment");
+
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("method");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("order_number");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("paid_at");
+
+                    b.Property<long?>("PromoCodeId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("promo_code_id");
+
+                    b.Property<string>("QrString")
+                        .HasColumnType("text")
+                        .HasColumnName("qr_string");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("retry_count");
+
+                    b.Property<long?>("SavedPaymentMethodId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("saved_payment_method_id");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<long?>("SubscriptionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("subscription_id");
+
+                    b.Property<long>("TaxIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("tax_idr");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<string>("VaNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("va_number");
+
+                    b.HasKey("Id")
+                        .HasName("pk_payments");
+
+                    b.HasIndex("InvoiceNumber")
+                        .IsUnique()
+                        .HasDatabaseName("ix_payments_invoice_number");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique()
+                        .HasDatabaseName("ix_payments_order_number");
+
+                    b.HasIndex(new[] { "ExpiresAt" }, "ix_payments_pending_deadline")
+                        .HasDatabaseName("ix_payments_pending_deadline")
+                        .HasFilter("status = 'Pending'");
+
+                    b.HasIndex(new[] { "PromoCodeId" }, "ix_payments_promo")
+                        .HasDatabaseName("ix_payments_promo");
+
+                    b.HasIndex(new[] { "SavedPaymentMethodId" }, "ix_payments_saved_method")
+                        .HasDatabaseName("ix_payments_saved_method");
+
+                    b.HasIndex(new[] { "UserId", "CreatedAt" }, "ix_payments_user")
+                        .IsDescending(false, true)
+                        .HasDatabaseName("ix_payments_user");
+
+                    b.HasIndex(new[] { "ExamPurchaseId" }, "ux_payments_one_pending_exam_purchase")
+                        .IsUnique()
+                        .HasDatabaseName("ux_payments_one_pending_exam_purchase")
+                        .HasFilter("status = 'Pending' AND exam_purchase_id IS NOT NULL");
+
+                    b.HasIndex(new[] { "SubscriptionId" }, "ux_payments_one_pending_subscription")
+                        .IsUnique()
+                        .HasDatabaseName("ux_payments_one_pending_subscription")
+                        .HasFilter("status = 'Pending' AND subscription_id IS NOT NULL");
+
+                    b.ToTable("payments", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_payments_amount_idr", "amount_idr >= 0");
+
+                            t.HasCheckConstraint("ck_payments_discount_idr", "discount_idr >= 0");
+
+                            t.HasCheckConstraint("ck_payments_gateway", "gateway = 'DOKU'");
+
+                            t.HasCheckConstraint("ck_payments_gateway_fee_idr", "gateway_fee_idr >= 0");
+
+                            t.HasCheckConstraint("ck_payments_method", "method IN ('QRIS', 'VirtualAccount', 'EWallet', 'CreditCard')");
+
+                            t.HasCheckConstraint("ck_payments_one_item", "num_nonnulls(subscription_id, exam_purchase_id) = 1");
+
+                            t.HasCheckConstraint("ck_payments_paid_at", "status NOT IN ('Paid', 'Refunded') OR paid_at IS NOT NULL");
+
+                            t.HasCheckConstraint("ck_payments_qr_string", "method <> 'QRIS' OR status <> 'Pending' OR qr_string IS NOT NULL");
+
+                            t.HasCheckConstraint("ck_payments_retry_count", "retry_count >= 0");
+
+                            t.HasCheckConstraint("ck_payments_status", "status IN ('Pending', 'Paid', 'Expired', 'Canceled', 'Failed', 'Refunded')");
+
+                            t.HasCheckConstraint("ck_payments_tax_idr", "tax_idr >= 0");
+
+                            t.HasCheckConstraint("ck_payments_va_number", "method <> 'VirtualAccount' OR status <> 'Pending' OR va_number IS NOT NULL");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Payments.PaymentWebhookEvent", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Gateway")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("gateway");
+
+                    b.Property<string>("GatewayEventId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("gateway_event_id");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("payload");
+
+                    b.Property<long?>("PaymentId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("payment_id");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.Property<string>("ProcessingError")
+                        .HasColumnType("text")
+                        .HasColumnName("processing_error");
+
+                    b.Property<DateTime>("ReceivedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("received_at");
+
+                    b.Property<bool>("SignatureValid")
+                        .HasColumnType("boolean")
+                        .HasColumnName("signature_valid");
+
+                    b.HasKey("Id")
+                        .HasName("pk_payment_webhook_events");
+
+                    b.HasIndex("Gateway", "GatewayEventId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_payment_webhook_events_gateway_gateway_event_id");
+
+                    b.HasIndex(new[] { "PaymentId" }, "ix_payment_webhook_events_payment")
+                        .HasDatabaseName("ix_payment_webhook_events_payment");
+
+                    b.ToTable("payment_webhook_events", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_payment_webhook_events_gateway", "gateway = 'DOKU'");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Payments.PromoCode", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("code");
+
+                    b.Property<long?>("DiscountAmountIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("discount_amount_idr");
+
+                    b.Property<decimal?>("DiscountPercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)")
+                        .HasColumnName("discount_percent");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<int?>("MaxUses")
+                        .HasColumnType("integer")
+                        .HasColumnName("max_uses");
+
+                    b.Property<int>("UsedCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("used_count");
+
+                    b.HasKey("Id")
+                        .HasName("pk_promo_codes");
+
+                    b.ToTable("promo_codes", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_promo_codes_discount_amount_idr", "discount_amount_idr > 0");
+
+                            t.HasCheckConstraint("ck_promo_codes_discount_percent", "discount_percent > 0 AND discount_percent <= 100");
+
+                            t.HasCheckConstraint("ck_promo_codes_max_uses", "max_uses > 0");
+
+                            t.HasCheckConstraint("ck_promo_codes_one_discount", "num_nonnulls(discount_percent, discount_amount_idr) = 1");
+
+                            t.HasCheckConstraint("ck_promo_codes_used_count", "used_count >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Payments.Refund", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AmountIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("amount_idr");
+
+                    b.Property<int>("AttemptCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("attempt_count");
+
+                    b.Property<DateTime?>("DecidedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("decided_at");
+
+                    b.Property<Guid?>("DecidedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("decided_by_user_id");
+
+                    b.Property<string>("GatewayRefundId")
+                        .HasColumnType("text")
+                        .HasColumnName("gateway_refund_id");
+
+                    b.Property<bool>("IsAutoApproved")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_auto_approved");
+
+                    b.Property<long>("PaymentId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("payment_id");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("reason");
+
+                    b.Property<DateTime?>("RefundLinkExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("refund_link_expires_at");
+
+                    b.Property<string>("RefundLinkUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("refund_link_url");
+
+                    b.Property<string>("RefundRoute")
+                        .HasColumnType("text")
+                        .HasColumnName("refund_route");
+
+                    b.Property<DateTime>("RequestedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("requested_at");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id")
+                        .HasName("pk_refunds");
+
+                    b.HasIndex(new[] { "DecidedByUserId" }, "ix_refunds_decided_by")
+                        .HasDatabaseName("ix_refunds_decided_by");
+
+                    b.HasIndex(new[] { "Status" }, "ix_refunds_open")
+                        .HasDatabaseName("ix_refunds_open")
+                        .HasFilter("status IN ('Requested', 'AwaitingDetails', 'Failed')");
+
+                    b.HasIndex(new[] { "PaymentId" }, "ix_refunds_payment")
+                        .HasDatabaseName("ix_refunds_payment");
+
+                    b.ToTable("refunds", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_refunds_amount_idr", "amount_idr > 0");
+
+                            t.HasCheckConstraint("ck_refunds_attempt_count", "attempt_count >= 0");
+
+                            t.HasCheckConstraint("ck_refunds_link_required", "status <> 'AwaitingDetails' OR refund_link_url IS NOT NULL");
+
+                            t.HasCheckConstraint("ck_refunds_refund_route", "refund_route IN ('DirectToPayerApp', 'RefundLink')");
+
+                            t.HasCheckConstraint("ck_refunds_route_required", "status IN ('Requested', 'Rejected') OR refund_route IS NOT NULL");
+
+                            t.HasCheckConstraint("ck_refunds_status", "status IN ('Requested', 'Approved', 'Rejected', 'AwaitingDetails', 'SentToDoku', 'Completed', 'Failed')");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Payments.SavedPaymentMethod", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("DisplayLabel")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("display_label");
+
+                    b.Property<string>("Gateway")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("gateway");
+
+                    b.Property<string>("GatewayToken")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("gateway_token");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_saved_payment_methods");
+
+                    b.HasIndex(new[] { "UserId" }, "ix_saved_payment_methods_user")
+                        .HasDatabaseName("ix_saved_payment_methods_user");
+
+                    b.ToTable("saved_payment_methods", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_saved_payment_methods_gateway", "gateway = 'DOKU'");
+
+                            t.HasCheckConstraint("ck_saved_payment_methods_type", "type IN ('CreditCard', 'DirectDebit')");
+                        });
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Sessions.Attempt", b =>
                 {
                     b.Property<long>("Id")
@@ -1540,6 +1976,12 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_subscriptions_plans_plan_id");
 
+                    b.HasOne("Akusiap.Domain.Payments.SavedPaymentMethod", null)
+                        .WithMany()
+                        .HasForeignKey("SavedPaymentMethodId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_subscriptions_saved_payment_methods_saved_payment_method_id");
+
                     b.HasOne("Akusiap.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -1754,6 +2196,93 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_notifications_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Payments.Payment", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Access.ExamPurchase", "ExamPurchase")
+                        .WithMany()
+                        .HasForeignKey("ExamPurchaseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_payments_exam_purchases_exam_purchase_id");
+
+                    b.HasOne("Akusiap.Domain.Payments.PromoCode", "PromoCode")
+                        .WithMany()
+                        .HasForeignKey("PromoCodeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_payments_promo_codes_promo_code_id");
+
+                    b.HasOne("Akusiap.Domain.Payments.SavedPaymentMethod", "SavedPaymentMethod")
+                        .WithMany()
+                        .HasForeignKey("SavedPaymentMethodId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_payments_saved_payment_methods_saved_payment_method_id");
+
+                    b.HasOne("Akusiap.Domain.Access.Subscription", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_payments_subscriptions_subscription_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_payments_users_user_id");
+
+                    b.Navigation("ExamPurchase");
+
+                    b.Navigation("PromoCode");
+
+                    b.Navigation("SavedPaymentMethod");
+
+                    b.Navigation("Subscription");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Payments.PaymentWebhookEvent", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Payments.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_payment_webhook_events_payments_payment_id");
+
+                    b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Payments.Refund", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Users.User", "DecidedByUser")
+                        .WithMany()
+                        .HasForeignKey("DecidedByUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_refunds_users_decided_by_user_id");
+
+                    b.HasOne("Akusiap.Domain.Payments.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_refunds_payments_payment_id");
+
+                    b.Navigation("DecidedByUser");
+
+                    b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Payments.SavedPaymentMethod", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_saved_payment_methods_users_user_id");
 
                     b.Navigation("User");
                 });
