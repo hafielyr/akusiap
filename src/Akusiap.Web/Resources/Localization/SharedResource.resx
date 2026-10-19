@@ -180,7 +180,6 @@
   <data name="Admin.Exams.AccessDaysShort" xml:space="preserve"><value>· {0} hari akses</value></data>
   <data name="Admin.Exams.QuestionCounts" xml:space="preserve"><value>{0} soal, {1} soal coba</value></data>
   <data name="Admin.Exams.Usage" xml:space="preserve"><value>{0} latihan, {1} pembelian</value></data>
-  <data name="Admin.Exams.QuestionsComingSoon" xml:space="preserve"><value>Memilih soal untuk ujian ini dan menandai soal coba akan tersedia di halaman ini.</value></data>
   <data name="Admin.Exams.Delete" xml:space="preserve"><value>Hapus ujian</value></data>
   <data name="Admin.Exams.DeleteBlocked" xml:space="preserve"><value>Ujian yang sudah terbit, dicoba atau dibeli tidak bisa dihapus. Batalkan penerbitannya saja.</value></data>
   <data name="Admin.Exams.DeletePublished" xml:space="preserve"><value>Ujian yang sedang terbit tidak bisa dihapus. Batalkan penerbitannya dulu.</value></data>
@@ -205,4 +204,22 @@
   <data name="Admin.ExamStatus.Published" xml:space="preserve"><value>Terbit</value></data>
   <data name="Admin.ExamStatus.Unpublished" xml:space="preserve"><value>Tidak terbit</value></data>
   <data name="Admin.ExamStatus.TakenDown" xml:space="preserve"><value>Diturunkan</value></data>
+  <data name="Admin.ExamQuestions.Title" xml:space="preserve"><value>Soal ujian</value></data>
+  <data name="Admin.ExamQuestions.Total" xml:space="preserve"><value>{0} soal</value></data>
+  <data name="Admin.ExamQuestions.Trial" xml:space="preserve"><value>{0} soal coba</value></data>
+  <data name="Admin.ExamQuestions.TrialNeedsRange" xml:space="preserve"><value>Untuk terbit, ujian berbayar perlu {0}–{1} soal coba.</value></data>
+  <data name="Admin.ExamQuestions.TrialNeedsAll" xml:space="preserve"><value>Ujian dengan kurang dari 30 soal: semua {0} soal harus jadi soal coba agar bisa terbit.</value></data>
+  <data name="Admin.ExamQuestions.Inactive" xml:space="preserve"><value>{0} soal berstatus draf atau pensiun dan tidak dipakai di latihan baru.</value></data>
+  <data name="Admin.ExamQuestions.TopicCount" xml:space="preserve"><value>{0} soal, {1} coba</value></data>
+  <data name="Admin.ExamQuestions.Empty" xml:space="preserve"><value>Ujian ini belum punya soal. Cari dan tambahkan soal aktif di bawah.</value></data>
+  <data name="Admin.ExamQuestions.IsTrial" xml:space="preserve"><value>Soal coba</value></data>
+  <data name="Admin.ExamQuestions.Remove" xml:space="preserve"><value>Keluarkan dari ujian</value></data>
+  <data name="Admin.ExamQuestions.AddHeading" xml:space="preserve"><value>Tambah soal aktif</value></data>
+  <data name="Admin.ExamQuestions.SearchHelp" xml:space="preserve"><value>Hanya soal berstatus Aktif yang bisa ditambahkan. Menampilkan 20 hasil terbaru.</value></data>
+  <data name="Admin.ExamQuestions.NoResults" xml:space="preserve"><value>Tidak ada soal aktif yang cocok.</value></data>
+  <data name="Admin.ExamQuestions.Add" xml:space="preserve"><value>Tambah</value></data>
+  <data name="Admin.ExamQuestions.AlreadyIn" xml:space="preserve"><value>Sudah ada</value></data>
+  <data name="Admin.ExamQuestions.AlreadyAdded" xml:space="preserve"><value>Soal ini sudah ada di ujian.</value></data>
+  <data name="Admin.ExamQuestions.NotAddable" xml:space="preserve"><value>Hanya soal aktif dari bank soal yang bisa ditambahkan.</value></data>
+  <data name="Admin.ExamQuestions.NotInExam" xml:space="preserve"><value>Soal ini tidak ada di ujian.</value></data>
 </root>
