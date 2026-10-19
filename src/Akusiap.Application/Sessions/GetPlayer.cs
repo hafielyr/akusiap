@@ -22,7 +22,15 @@ public sealed record PlayerView(
     bool HintsEnabled,
     int? TimeLimitMinutes,
     int? SecondsLeft,
-    IReadOnlyList<PlayerItem> Items);
+    IReadOnlyList<PlayerItem> Items)
+{
+    /// <summary>The result once the attempt is closed (SES-06); the full result page is SES-07.</summary>
+    public int CorrectCount { get; init; }
+
+    public int TotalCount { get; init; }
+
+    public decimal? ScorePercent { get; init; }
+}
 
 /// <summary>
 /// The quiz player's data (SES-03, D-56). Only the attempt's owner may load it: the signed-in user it belongs to, or, for
@@ -48,6 +56,9 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
                 a.Status,
                 a.RulesSnapshot,
                 a.StartedAt,
+                a.CorrectCount,
+                a.TotalCount,
+                a.ScorePercent,
             })
             .SingleOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
@@ -91,7 +102,12 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
             hints,
             timeLimit,
             secondsLeft,
-            [.. items.Select(i => new PlayerItem(i.Position, i.QuestionId, i.QuestionType, i.Text, Ordered(i.Options, i.OptionOrder), i.Selected, i.IsFlagged))]);
+            [.. items.Select(i => new PlayerItem(i.Position, i.QuestionId, i.QuestionType, i.Text, Ordered(i.Options, i.OptionOrder), i.Selected, i.IsFlagged))])
+        {
+            CorrectCount = attempt.CorrectCount,
+            TotalCount = attempt.TotalCount,
+            ScorePercent = attempt.ScorePercent,
+        };
     }
 
     /// <summary>Options in the stored order; any option missing from it (added later) goes last.</summary>

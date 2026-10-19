@@ -31,6 +31,9 @@ public static class DependencyInjection
         services.AddScoped<GetSessionSetup>();
         services.AddScoped<GetPlayer>();
         services.AddScoped<SaveAnswer>();
+        services.AddScoped<AttemptFinisher>();
+        services.AddScoped<SubmitAttempt>();
+        services.AddScoped<ExpireAttempts>();
         services.AddScoped<FindOpenAttempt>();
         services.AddScoped<CreatePayment>();
         services.AddScoped<Checkout>();

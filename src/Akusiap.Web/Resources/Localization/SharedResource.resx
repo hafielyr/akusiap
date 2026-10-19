@@ -631,4 +631,10 @@
   <data name="Pay.Pending.Link" xml:space="preserve"><value>Pembayaran yang belum diselesaikan</value></data>
   <data name="Pay.Pending.Empty" xml:space="preserve"><value>Tidak ada pembayaran yang menunggu.</value></data>
   <data name="Pay.Pending.See" xml:space="preserve"><value>Lihat instruksi</value></data>
+  <data name="Session.Player.Finish" xml:space="preserve"><value>Selesai</value></data>
+  <data name="Session.Player.Unanswered" xml:space="preserve"><value>Soal belum dijawab:</value></data>
+  <data name="Session.Player.FinishConfirm" xml:space="preserve"><value>Kirim jawaban sekarang? Jawaban tidak bisa diubah lagi.</value></data>
+  <data name="Session.Player.Back" xml:space="preserve"><value>Kembali</value></data>
+  <data name="Session.Player.Submit" xml:space="preserve"><value>Kirim jawaban</value></data>
+  <data name="Session.Player.Score" xml:space="preserve"><value>Skor Anda {0}% ({1} dari {2} benar).</value></data>
 </root>

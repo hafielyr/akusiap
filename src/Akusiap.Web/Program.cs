@@ -2,6 +2,7 @@ using Akusiap.Application;
 using Akusiap.Infrastructure;
 using Akusiap.Web.Health;
 using Akusiap.Web.Identity;
+using Akusiap.Web.Jobs;
 using Akusiap.Web.Localization;
 using Akusiap.Web.Options;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -55,6 +56,7 @@ builder.Services.AddRazorPages(options =>
 builder.Services.Configure<SupportOptions>(builder.Configuration.GetSection(SupportOptions.SectionName));
 builder.Services.Configure<SiteOptions>(builder.Configuration.GetSection(SiteOptions.SectionName));
 builder.Services.AddScoped<AccountEmails>();
+builder.Services.AddBackgroundJobs(builder.Configuration);
 // OPS-01: Brotli/gzip for pages and other dynamic responses (static files are precompressed by MapStaticAssets).
 builder.Services.AddResponseCompression(options =>
 {
@@ -84,6 +86,7 @@ app.UseRequestLocalization();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseBackgroundJobs();
 
 app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthResponseWriter.WriteAsync });
 app.MapStaticAssets();

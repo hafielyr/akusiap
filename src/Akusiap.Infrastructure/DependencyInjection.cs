@@ -56,6 +56,7 @@ public static class DependencyInjection
         services.Configure<PaymentChannelOptions>(configuration.GetSection(PaymentChannelOptions.SectionName));
         services.AddSingleton<IQuestionFileReader, QuestionFileReader>();
         services.AddSingleton<IQuestionTemplate, QuestionTemplate>();
+        services.AddScoped<Jobs.SweepExpiredAttemptsJob>();
 
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
         if (environment.IsDevelopment())
