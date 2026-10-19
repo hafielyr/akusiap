@@ -13,6 +13,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
 - [OWN-01] Plan limits admin · M5 · deps: PAY-02
 - [USR-02] Create user · M4 · deps: USR-01, AC-02
+- [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 
 ## In Progress
 
@@ -83,7 +84,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-10] Admin transactions · M3 · deps: PAY-06
 
 ### M4 Admin ops and launch (Release 1)
-- [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
 - [OPS-02] Production deployment · M4 · deps: F-08, PAY-04
 
