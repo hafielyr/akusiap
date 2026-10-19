@@ -222,4 +222,47 @@
   <data name="Admin.ExamQuestions.AlreadyAdded" xml:space="preserve"><value>Soal ini sudah ada di ujian.</value></data>
   <data name="Admin.ExamQuestions.NotAddable" xml:space="preserve"><value>Hanya soal aktif dari bank soal yang bisa ditambahkan.</value></data>
   <data name="Admin.ExamQuestions.NotInExam" xml:space="preserve"><value>Soal ini tidak ada di ujian.</value></data>
+  <data name="Admin.Nav.Presets" xml:space="preserve"><value>Aturan</value></data>
+  <data name="Admin.Presets.Title" xml:space="preserve"><value>Aturan ujian</value></data>
+  <data name="Admin.Presets.Lead" xml:space="preserve"><value>Aturan menentukan waktu, jumlah soal, petunjuk, pengacakan dan kapan jawaban ditampilkan. Setiap ujian memakai satu aturan bawaan.</value></data>
+  <data name="Admin.Presets.Add" xml:space="preserve"><value>Tambah aturan</value></data>
+  <data name="Admin.Presets.NewTitle" xml:space="preserve"><value>Aturan baru</value></data>
+  <data name="Admin.Presets.EditTitle" xml:space="preserve"><value>Ubah aturan</value></data>
+  <data name="Admin.Presets.Default" xml:space="preserve"><value>Bawaan</value></data>
+  <data name="Admin.Presets.UsedBy" xml:space="preserve"><value>Dipakai {0} ujian</value></data>
+  <data name="Admin.Presets.Delete" xml:space="preserve"><value>Hapus aturan</value></data>
+  <data name="Admin.Presets.DeleteBlocked" xml:space="preserve"><value>Aturan bawaan atau yang dipakai ujian tidak bisa dihapus.</value></data>
+  <data name="Admin.Presets.Untimed" xml:space="preserve"><value>Tanpa batas waktu</value></data>
+  <data name="Admin.Presets.Minutes" xml:space="preserve"><value>{0} menit</value></data>
+  <data name="Admin.Presets.AllQuestions" xml:space="preserve"><value>Semua soal</value></data>
+  <data name="Admin.Presets.Questions" xml:space="preserve"><value>{0} soal</value></data>
+  <data name="Admin.Presets.UnlimitedAttempts" xml:space="preserve"><value>Tanpa batas percobaan</value></data>
+  <data name="Admin.Presets.Attempts" xml:space="preserve"><value>Maks. {0} kali</value></data>
+  <data name="Admin.Presets.PassMarkShort" xml:space="preserve"><value>Lulus {0}%</value></data>
+  <data name="Admin.Presets.TimeLimitHelp" xml:space="preserve"><value>Kosongkan untuk tanpa batas waktu.</value></data>
+  <data name="Admin.Presets.QuestionCountHelp" xml:space="preserve"><value>Kosongkan untuk memakai semua soal ujian.</value></data>
+  <data name="Admin.Presets.MaxAttemptsHelp" xml:space="preserve"><value>Kosongkan untuk tanpa batas.</value></data>
+  <data name="Admin.Presets.PassMarkHelp" xml:space="preserve"><value>Kosongkan bila tidak ada nilai lulus.</value></data>
+  <data name="Admin.Presets.IsDefaultHelp" xml:space="preserve"><value>Hanya satu aturan yang bisa jadi bawaan. Aturan bawaan sebelumnya otomatis dilepas.</value></data>
+  <data name="Admin.Presets.ShowAnswersRequired" xml:space="preserve"><value>Pilih kapan jawaban ditampilkan.</value></data>
+  <data name="Admin.Presets.NameTaken" xml:space="preserve"><value>Aturan dengan nama ini sudah ada.</value></data>
+  <data name="Admin.Presets.DefaultRequired" xml:space="preserve"><value>Harus selalu ada satu aturan bawaan. Jadikan aturan lain sebagai bawaan untuk melepas yang ini.</value></data>
+  <data name="Admin.Presets.DeleteDefault" xml:space="preserve"><value>Aturan bawaan tidak bisa dihapus. Jadikan aturan lain sebagai bawaan dulu.</value></data>
+  <data name="Admin.Presets.InUse" xml:space="preserve"><value>Aturan ini dipakai oleh {0} ujian, jadi tidak bisa dihapus.</value></data>
+  <data name="Admin.Preset.Name" xml:space="preserve"><value>Nama aturan</value></data>
+  <data name="Admin.Preset.TimeLimit" xml:space="preserve"><value>Batas waktu (menit)</value></data>
+  <data name="Admin.Preset.QuestionCount" xml:space="preserve"><value>Jumlah soal per sesi</value></data>
+  <data name="Admin.Preset.MaxAttempts" xml:space="preserve"><value>Batas percobaan</value></data>
+  <data name="Admin.Preset.PassMark" xml:space="preserve"><value>Nilai lulus (%)</value></data>
+  <data name="Admin.Preset.Options" xml:space="preserve"><value>Pilihan</value></data>
+  <data name="Admin.Preset.HintsEnabled" xml:space="preserve"><value>Petunjuk boleh dipakai</value></data>
+  <data name="Admin.Preset.ShuffleQuestions" xml:space="preserve"><value>Acak urutan soal</value></data>
+  <data name="Admin.Preset.ShuffleOptions" xml:space="preserve"><value>Acak urutan pilihan</value></data>
+  <data name="Admin.Preset.ShowAnswers" xml:space="preserve"><value>Kapan jawaban ditampilkan</value></data>
+  <data name="Admin.Preset.IsDefault" xml:space="preserve"><value>Jadikan aturan bawaan untuk ujian baru</value></data>
+  <data name="Admin.ShowAnswers.AfterEach" xml:space="preserve"><value>Setelah tiap soal</value></data>
+  <data name="Admin.ShowAnswers.AfterSubmit" xml:space="preserve"><value>Setelah sesi selesai</value></data>
+  <data name="Admin.ShowAnswers.Never" xml:space="preserve"><value>Tidak ditampilkan</value></data>
+  <data name="Validation.Range" xml:space="preserve"><value>{0} harus {1} sampai {2}.</value></data>
+  <data name="Validation.WholeNumber" xml:space="preserve"><value>{0} harus berupa angka bulat.</value></data>
 </root>

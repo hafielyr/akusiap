@@ -31,6 +31,10 @@ public static class DependencyInjection
         services.AddScoped<SearchQuestionsForExam>();
         services.AddScoped<ChangeExamQuestions>();
         services.AddScoped<ListRulePresetOptions>();
+        services.AddScoped<ListRulePresets>();
+        services.AddScoped<GetRulePreset>();
+        services.AddScoped<SaveRulePreset>();
+        services.AddScoped<DeleteRulePreset>();
         return services;
     }
 }

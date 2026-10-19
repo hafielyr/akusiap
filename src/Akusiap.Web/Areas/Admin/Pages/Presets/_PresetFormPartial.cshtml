@@ -1,0 +1,76 @@
+@model Akusiap.Web.Areas.Admin.Pages.Presets.PresetInput
+@using Akusiap.Domain.Content
+@* Rule preset form (ADM-T5). Fields post as Input.*; limits are text so blank means "no limit". *@
+@{
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[$"Input.{field}"]?.Errors.FirstOrDefault()?.ErrorMessage;
+  var limits = new (string Field, string? Value, string Label, string Help)[]
+  {
+    ("TimeLimitMinutes", Model.TimeLimitMinutes, "Admin.Preset.TimeLimit", "Admin.Presets.TimeLimitHelp"),
+    ("QuestionCount", Model.QuestionCount, "Admin.Preset.QuestionCount", "Admin.Presets.QuestionCountHelp"),
+    ("MaxAttempts", Model.MaxAttempts, "Admin.Preset.MaxAttempts", "Admin.Presets.MaxAttemptsHelp"),
+    ("PassMarkPercent", Model.PassMarkPercent, "Admin.Preset.PassMark", "Admin.Presets.PassMarkHelp"),
+  };
+  var switches = new (string Field, bool Value, string Label)[]
+  {
+    ("HintsEnabled", Model.HintsEnabled, "Admin.Preset.HintsEnabled"),
+    ("ShuffleQuestions", Model.ShuffleQuestions, "Admin.Preset.ShuffleQuestions"),
+    ("ShuffleOptions", Model.ShuffleOptions, "Admin.Preset.ShuffleOptions"),
+  };
+}
+<form method="post" class="space-y-5" novalidate>
+  <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+
+  <div class="space-y-1">
+    <label for="Input_Name" class="label">@T["Admin.Preset.Name"]</label>
+    <input id="Input_Name" name="Input.Name" value="@Model.Name" maxlength="200" class="input" aria-invalid="@(ErrorFor("Name") is null ? null : "true")" />
+    @if (ErrorFor("Name") is { } nameError) { <span class="field-error">@nameError</span> }
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    @foreach (var limit in limits)
+    {
+      <div class="space-y-1">
+        <label for="Input_@limit.Field" class="label">@T[limit.Label]</label>
+        <input id="Input_@limit.Field" name="Input.@limit.Field" value="@limit.Value" inputmode="numeric" class="input"
+               aria-invalid="@(ErrorFor(limit.Field) is null ? null : "true")" />
+        <p class="text-sm text-slate-500">@T[limit.Help]</p>
+        @if (ErrorFor(limit.Field) is { } limitError) { <span class="field-error" data-testid="error-@limit.Field">@limitError</span> }
+      </div>
+    }
+  </div>
+
+  <fieldset class="space-y-1">
+    <legend class="label">@T["Admin.Preset.Options"]</legend>
+    @foreach (var item in switches)
+    {
+      <label class="flex min-h-11 items-center gap-3 text-slate-800">
+        <input type="checkbox" name="Input.@item.Field" value="true" class="size-5 accent-brand-600" checked="@item.Value" />
+        <span>@T[item.Label]</span>
+      </label>
+    }
+  </fieldset>
+
+  <fieldset class="space-y-1">
+    <legend class="label">@T["Admin.Preset.ShowAnswers"]</legend>
+    @foreach (var option in Enum.GetValues<ShowAnswers>())
+    {
+      <label class="flex min-h-11 items-center gap-3 text-slate-800">
+        <input type="radio" name="Input.ShowAnswers" value="@option" class="size-5 accent-brand-600" checked="@(option == Model.ShowAnswers)" />
+        <span>@T[$"Admin.ShowAnswers.{option}"]</span>
+      </label>
+    }
+    @if (ErrorFor("ShowAnswers") is { } showError) { <span class="field-error">@showError</span> }
+  </fieldset>
+
+  <div class="space-y-1 rounded-xl border border-slate-200 bg-white p-4">
+    <label class="flex min-h-11 items-center gap-3 font-medium text-slate-800">
+      <input type="checkbox" name="Input.IsDefault" value="true" class="size-5 accent-brand-600" checked="@Model.IsDefault" />
+      <span>@T["Admin.Preset.IsDefault"]</span>
+    </label>
+    <p class="text-sm text-slate-500">@T["Admin.Presets.IsDefaultHelp"]</p>
+    @if (ErrorFor("IsDefault") is { } defaultError) { <span class="field-error" data-testid="error-default">@defaultError</span> }
+  </div>
+
+  <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Save"]</button>
+</form>

@@ -1,0 +1,17 @@
+@model Akusiap.Application.RulePresets.RulePresetDetail
+@* One-line summary of a preset for lists. Uses the string localizer: IHtmlLocalizer's .Value would skip the {0} arguments. *@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Akusiap.Web.Localization.SharedResource> S
+@{
+  var parts = new List<string>
+  {
+    Model.TimeLimitMinutes is { } minutes ? S["Admin.Presets.Minutes", minutes] : S["Admin.Presets.Untimed"],
+    Model.QuestionCount is { } count ? S["Admin.Presets.Questions", count] : S["Admin.Presets.AllQuestions"],
+    S[$"Admin.ShowAnswers.{Model.ShowAnswers}"],
+    Model.MaxAttempts is { } attempts ? S["Admin.Presets.Attempts", attempts] : S["Admin.Presets.UnlimitedAttempts"],
+  };
+  if (Model.PassMarkPercent is { } pass)
+  {
+    parts.Add(S["Admin.Presets.PassMarkShort", pass]);
+  }
+}
+<span class="block text-sm text-slate-600" data-testid="preset-summary">@string.Join(" · ", parts)</span>
