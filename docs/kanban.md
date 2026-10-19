@@ -7,7 +7,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [ADM-T2] Question editor · M1 · deps: ADM-T1
+- [ADM-T3] Exam editor · M1 · deps: ADM-T2
 - [ADM-T5] Rule presets · M1 · deps: ADM-T1
 - [ENT-02] Entitlement query and guard · M1 · deps: ENT-01, AC-01
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
@@ -15,6 +15,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [AC-05] Legal pages · M1 · deps: F-06, AC-01
 - [AC-03] Google sign-in · M1 · deps: AC-01
 - [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
+- [ADM-T7] Bulk question import · M2 · deps: ADM-T2
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 - [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07
 - [USR-01] User search · M4 · deps: AC-06
@@ -22,7 +23,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [ADM-T1] Admin shell, subjects and topics · M1 · deps: AC-06, F-03 · (claude-opus-5.5, 2026-10-19)
+- [ADM-T2] Question editor · M1 · deps: ADM-T1 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -39,11 +40,11 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [ENT-01] EntitlementPolicy (domain) · M1 · deps: F-03
 - [F-08] CI pipeline · M1 · deps: F-05
 - [AC-06] Authorization policies · M1 · deps: AC-01
+- [ADM-T1] Admin shell, subjects and topics · M1 · deps: AC-06, F-03
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [ADM-T3] Exam editor · M1 · deps: ADM-T2
 - [ADM-T4] Exam question picker and trial set · M1 · deps: ADM-T3
 - [ADM-T6] Publish and unpublish · M1 · deps: ADM-T4
 - [CAT-01] Exam catalog · M1 · deps: ADM-T6, F-06
@@ -67,7 +68,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
 - [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
-- [ADM-T7] Bulk question import · M2 · deps: ADM-T2
 
 ### M3 Payments (Release 1)
 - [CAT-03] Pricing comparison · M3 · deps: PAY-02
