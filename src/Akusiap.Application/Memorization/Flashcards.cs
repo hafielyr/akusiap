@@ -30,8 +30,8 @@ public sealed record FlashcardSummary(long AttemptId, string? Title, int Total, 
 /// <summary>
 /// Flashcard mode (MEM-03, stories M-01, M-02, M-03, M-05, D-82). A set is an Attempt (Mode Flashcard, Source Review,
 /// ExamId = the deck's exam or null for "Kartu saya") with up to <see cref="SetSize"/> items: due cards first (oldest
-/// due first), then cards the learner keeps getting wrong (Learning or lapsed, not yet due), then questions without a
-/// card. Only questions the learner can fully use now are offered: an exam deck needs Full, Owner or Admin access, and
+/// due first; wrong answers are due at once, MEM-01), then questions without a card. Cards not yet due wait out their
+/// interval (SRS-02, D-87). Only questions the learner can fully use now are offered: an exam deck needs Full, Owner or Admin access, and
 /// "Kartu saya" keeps a card only while one of its exams still gives that access (trial access doesn't count), or
 /// while it is the learner's own Active question (SRS-01).
 /// Rating a card runs <see cref="Sm2Scheduler"/>, writes a <see cref="ReviewLog"/> and moves to the next card; after the
@@ -105,14 +105,13 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
 
         var cards = await db.ReviewCards.AsNoTracking()
             .Where(c => c.UserId == userId && pool.Contains(c.QuestionId))
-            .Select(c => new { c.QuestionId, c.DueAt, c.State, c.Lapses })
+            .Select(c => new { c.QuestionId, c.DueAt })
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
         var due = cards.Where(c => c.DueAt <= now).OrderBy(c => c.DueAt).Select(c => c.QuestionId);
-        var struggling = cards.Where(c => c.DueAt > now && (c.State == ReviewCardState.Learning || c.Lapses > 0)).OrderBy(c => c.DueAt).Select(c => c.QuestionId);
         var withCard = cards.Select(c => c.QuestionId).ToHashSet();
         var fresh = pool.Where(q => !withCard.Contains(q));
-        var picked = due.Concat(struggling).Concat(fresh).Distinct().Take(SetSize).ToList();
+        var picked = due.Concat(fresh).Distinct().Take(SetSize).ToList();
         if (picked.Count == 0)
         {
             return Result.Fail<long>(new Problem(Empty));
@@ -170,13 +169,14 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
     /// <summary>
     /// Rates the card at <paramref name="position"/>: creates the review card when the question has none, applies SM-2,
     /// logs the review and marks the item done (Good or Easy count as remembered). Closes the set after the last card.
-    /// Rating a card twice changes nothing. Returns false when the set isn't the viewer's open set.
+    /// Rating a card twice changes nothing. Returns the card's next due time (SRS-02), or null when the set isn't the
+    /// viewer's.
     /// </summary>
-    public async Task<bool> RateAsync(long attemptId, int position, ReviewRating rating, CancellationToken cancellationToken)
+    public async Task<DateTime?> RateAsync(long attemptId, int position, ReviewRating rating, CancellationToken cancellationToken)
     {
         if (!Enum.IsDefined(rating))
         {
-            return false;
+            return null;
         }
 
         var userId = UserId();
@@ -185,17 +185,17 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
             .SingleOrDefaultAsync(a => a.Id == attemptId && a.UserId == userId && a.Mode == AttemptMode.Flashcard, cancellationToken)
             .ConfigureAwait(false);
         var item = attempt?.Items.SingleOrDefault(i => i.Position == position);
-        if (attempt is null || attempt.Status != AttemptStatus.InProgress || item is null)
+        if (attempt is null || item is null || (attempt.Status != AttemptStatus.InProgress && !item.IsAnswered))
         {
-            return false;
-        }
-
-        if (item.IsAnswered)
-        {
-            return true;
+            return null;
         }
 
         var card = await db.ReviewCards.SingleOrDefaultAsync(c => c.UserId == userId && c.QuestionId == item.QuestionId, cancellationToken).ConfigureAwait(false);
+        if (item.IsAnswered)
+        {
+            return card?.DueAt;
+        }
+
         if (card is null)
         {
             card = new ReviewCard { UserId = userId, QuestionId = item.QuestionId, State = ReviewCardState.New, DueAt = now };
@@ -218,7 +218,7 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
         }
 
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        return true;
+        return card.DueAt;
     }
 
     /// <summary>How the finished set went, from its review logs; null while open or for someone else's set.</summary>

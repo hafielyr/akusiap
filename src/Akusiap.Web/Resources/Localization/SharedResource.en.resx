@@ -825,4 +825,5 @@
   <data name="Share.ForeignQuestions" xml:space="preserve"><value>An exam can only be shared when all its questions are your own.</value></data>
   <data name="Share.TakenDown" xml:space="preserve"><value>An admin took this exam down, so it can't be shared.</value></data>
   <data name="Share.Saved" xml:space="preserve"><value>Sharing updated.</value></data>
+  <data name="Flashcards.NextDue" xml:space="preserve"><value>The last card comes back on {0}.</value></data>
 </root>

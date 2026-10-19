@@ -1,7 +1,9 @@
 using Akusiap.Application.Memorization;
+using Akusiap.Domain;
 using Akusiap.Domain.Memorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Akusiap.Web.Areas.Learn.Pages.Flashcards;
 
@@ -36,6 +38,8 @@ public sealed class IndexModel(Application.Memorization.Flashcards flashcards) :
 /// </summary>
 public sealed class SetModel(Application.Memorization.Flashcards flashcards) : PageModel
 {
+    public const string NextDueKey = "NextDue";
+
     public FlashcardCard? Card { get; private set; }
 
     public FlashcardSummary? Summary { get; private set; }
@@ -49,22 +53,28 @@ public sealed class SetModel(Application.Memorization.Flashcards flashcards) : P
 
     public async Task<IActionResult> OnPostRateAsync(long id, int position, ReviewRating rating, CancellationToken cancellationToken)
     {
-        if (!await flashcards.RateAsync(id, position, rating, cancellationToken))
+        if (await flashcards.RateAsync(id, position, rating, cancellationToken) is not { } nextDue)
         {
             return NotFound();
         }
 
+        // SRS-02: say when the card just rated comes back.
+        var note = JakartaTime.FormatDate(nextDue);
         if (Request.Headers.ContainsKey("HX-Request"))
         {
+            ViewData[NextDueKey] = note;
             await LoadAsync(id, cancellationToken);
             return CurrentPartial();
         }
 
+        TempData[NextDueKey] = note;
         return Redirect(IndexModel.SetUrl(id));
     }
 
-    private PartialViewResult CurrentPartial() =>
-        Card is { } card ? Partial("_FlashcardPartial", card) : Partial("_FlashcardSummaryPartial", Summary!);
+    /// <summary>The card or summary partial, keeping this page's ViewData (the next-due note).</summary>
+    private PartialViewResult CurrentPartial() => Card is { } card
+        ? new() { ViewName = "_FlashcardPartial", ViewData = new ViewDataDictionary<FlashcardCard>(ViewData, card) }
+        : new() { ViewName = "_FlashcardSummaryPartial", ViewData = new ViewDataDictionary<FlashcardSummary>(ViewData, Summary!) };
 
     private async Task<bool> LoadAsync(long id, CancellationToken cancellationToken)
     {
