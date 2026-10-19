@@ -700,4 +700,15 @@
   <data name="Own.Allowance.Exams" xml:space="preserve"><value>Ujian sendiri</value></data>
   <data name="Own.Allowance.Unlimited" xml:space="preserve"><value>Tanpa batas.</value></data>
   <data name="Own.Allowance.Upgrade" xml:space="preserve"><value>Butuh lebih? Lihat paket langganan</value></data>
+  <data name="Session.Result.Title" xml:space="preserve"><value>Hasil latihan</value></data>
+  <data name="Session.Result.Correct" xml:space="preserve"><value>{0} dari {1} benar</value></data>
+  <data name="Session.Result.Passed" xml:space="preserve"><value>Lulus (batas lulus {0}%)</value></data>
+  <data name="Session.Result.Failed" xml:space="preserve"><value>Belum lulus (batas lulus {0}%)</value></data>
+  <data name="Session.Result.Time" xml:space="preserve"><value>Waktu {0} menit {1} detik</value></data>
+  <data name="Session.Result.Expired" xml:space="preserve"><value>waktu habis</value></data>
+  <data name="Session.Result.TrialDone" xml:space="preserve"><value>Suka soal-soalnya? Buka semua soal ujian ini.</value></data>
+  <data name="Session.Result.BuyExam" xml:space="preserve"><value>Beli ujian ini</value></data>
+  <data name="Session.Result.Month" xml:space="preserve"><value>bulan</value></data>
+  <data name="Session.Result.ByTopic" xml:space="preserve"><value>Per topik</value></data>
+  <data name="Session.Result.CorrectShort" xml:space="preserve"><value>Benar</value></data>
 </root>

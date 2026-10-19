@@ -34,6 +34,7 @@ public static class DependencyInjection
         services.AddScoped<AttemptFinisher>();
         services.AddScoped<SubmitAttempt>();
         services.AddScoped<PracticeHelp>();
+        services.AddScoped<GetResult>();
         services.AddScoped<ExpireAttempts>();
         services.AddScoped<FindOpenAttempt>();
         services.AddScoped<CreatePayment>();
