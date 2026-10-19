@@ -32,5 +32,8 @@ public class AttemptItem
 
     public DateTime? AnsweredAt { get; set; }
 
+    /// <summary>When the learner checked this answer in Practice (SES-05); the answer is locked from then on. Not in schema.sql (D-68).</summary>
+    public DateTime? CheckedAt { get; set; }
+
     public ICollection<AttemptItemOption> SelectedOptions { get; } = [];
 }

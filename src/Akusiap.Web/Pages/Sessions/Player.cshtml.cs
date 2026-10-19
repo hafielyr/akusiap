@@ -45,6 +45,8 @@ public sealed class PlayerModel(GetPlayer getPlayer, SubmitAttempt submitAttempt
         {
             attemptId = View.AttemptId,
             saveUrl = $"{SessionRoutes.Player(View.AttemptId)}/jawab",
+            helpUrl = $"{SessionRoutes.Player(View.AttemptId)}/bantuan",
+            canCheck = View.CanCheck,
             token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken,
             secondsLeft = View.SecondsLeft,
             items = View.Items.Select(i => new
@@ -55,6 +57,9 @@ public sealed class PlayerModel(GetPlayer getPlayer, SubmitAttempt submitAttempt
                 options = i.Options,
                 selected = i.Selected,
                 flagged = i.IsFlagged,
+                hasHint = i.HasHint,
+                hint = i.Hint,
+                feedback = i.Feedback,
             }),
         },
         Json);

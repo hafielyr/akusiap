@@ -9,7 +9,19 @@ namespace Akusiap.Application.Sessions;
 /// <summary>An option as the player shows it: text only, never whether it is correct.</summary>
 public sealed record PlayerOption(long Id, string Text);
 
-public sealed record PlayerItem(int Position, long QuestionId, QuestionType Type, string Text, IReadOnlyList<PlayerOption> Options, IReadOnlyList<long> Selected, bool IsFlagged);
+/// <param name="Feedback">Set once the item was checked in Practice (SES-05); the answer is then locked.</param>
+/// <param name="Hint">Set once the hint was used.</param>
+public sealed record PlayerItem(
+    int Position,
+    long QuestionId,
+    QuestionType Type,
+    string Text,
+    IReadOnlyList<PlayerOption> Options,
+    IReadOnlyList<long> Selected,
+    bool IsFlagged,
+    bool HasHint = false,
+    string? Hint = null,
+    AnswerFeedback? Feedback = null);
 
 /// <param name="SecondsLeft">Null when untimed; never negative.</param>
 public sealed record PlayerView(
@@ -30,6 +42,9 @@ public sealed record PlayerView(
     public int TotalCount { get; init; }
 
     public decimal? ScorePercent { get; init; }
+
+    /// <summary>"Periksa" is offered (Practice with answers after each question).</summary>
+    public bool CanCheck { get; init; }
 }
 
 /// <summary>
@@ -79,12 +94,19 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
                 i.Question.Text,
                 i.OptionOrder,
                 i.IsFlagged,
+                i.CheckedAt,
+                i.HintUsed,
+                i.Question.Hint,
+                i.Question.Explanation,
+                i.Question.KeyFact,
+                Correct = i.Question.Options.Where(o => o.IsCorrect).Select(o => o.Id).ToList(),
                 Options = i.Question.Options.Select(o => new PlayerOption(o.Id, o.Text)).ToList(),
                 Selected = i.SelectedOptions.Select(s => s.QuestionOptionId).ToList(),
             })
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
 
+        var practice = PracticeRules.From(attempt.RulesSnapshot);
         using var rules = JsonDocument.Parse(attempt.RulesSnapshot);
         var hints = rules.RootElement.TryGetProperty("hintsEnabled", out var h) && h.ValueKind == JsonValueKind.True;
         int? timeLimit = rules.RootElement.TryGetProperty("timeLimitMinutes", out var t) && t.ValueKind == JsonValueKind.Number ? t.GetInt32() : null;
@@ -102,8 +124,19 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
             hints,
             timeLimit,
             secondsLeft,
-            [.. items.Select(i => new PlayerItem(i.Position, i.QuestionId, i.QuestionType, i.Text, Ordered(i.Options, i.OptionOrder), i.Selected, i.IsFlagged))])
+            [.. items.Select(i => new PlayerItem(
+                i.Position,
+                i.QuestionId,
+                i.QuestionType,
+                i.Text,
+                Ordered(i.Options, i.OptionOrder),
+                i.Selected,
+                i.IsFlagged,
+                practice.HintsEnabled && !string.IsNullOrWhiteSpace(i.Hint),
+                i.HintUsed ? i.Hint : null,
+                i.CheckedAt is null ? null : new AnswerFeedback(Scoring.IsCorrect(i.QuestionType, i.Correct, i.Selected), i.Correct, i.Explanation, i.KeyFact)))])
         {
+            CanCheck = practice.CanCheck,
             CorrectCount = attempt.CorrectCount,
             TotalCount = attempt.TotalCount,
             ScorePercent = attempt.ScorePercent,

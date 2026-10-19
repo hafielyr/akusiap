@@ -637,4 +637,9 @@
   <data name="Session.Player.Back" xml:space="preserve"><value>Back</value></data>
   <data name="Session.Player.Submit" xml:space="preserve"><value>Submit answers</value></data>
   <data name="Session.Player.Score" xml:space="preserve"><value>Your score is {0}% ({1} of {2} correct).</value></data>
+  <data name="Session.Player.Check" xml:space="preserve"><value>Check</value></data>
+  <data name="Session.Player.Hint" xml:space="preserve"><value>Hint</value></data>
+  <data name="Session.Player.Correct" xml:space="preserve"><value>Correct!</value></data>
+  <data name="Session.Player.Incorrect" xml:space="preserve"><value>Not quite. The correct answer is marked green.</value></data>
+  <data name="Session.Player.KeyFact" xml:space="preserve"><value>Key fact</value></data>
 </root>

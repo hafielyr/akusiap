@@ -30,7 +30,10 @@ public sealed partial class PlayerTests(PostgresFixture database)
         var items = state.RootElement.GetProperty("items").EnumerateArray().ToList();
         Assert.Equal(3, items.Count);
         Assert.Equal([1, 2, 3], items.Select(i => i.GetProperty("position").GetInt32()));
-        Assert.DoesNotContain("isCorrect", html, StringComparison.OrdinalIgnoreCase);
+        // The embedded state carries no answers until an item is checked (SES-05).
+        var stateJson = StatePattern().Match(html).Groups[1].Value;
+        Assert.DoesNotContain("correctOptionIds", stateJson, StringComparison.Ordinal);
+        Assert.DoesNotContain("isCorrect", stateJson, StringComparison.OrdinalIgnoreCase);
         await using var db = database.CreateContext();
         var attemptId = long.Parse(player.Split('/')[^1], System.Globalization.CultureInfo.InvariantCulture);
         var first = await db.AttemptItems.SingleAsync(i => i.AttemptId == attemptId && i.Position == 1);

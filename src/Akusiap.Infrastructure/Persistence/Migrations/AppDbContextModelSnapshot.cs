@@ -1587,6 +1587,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("attempt_id");
 
+                    b.Property<DateTime?>("CheckedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("checked_at");
+
                     b.Property<bool>("HintUsed")
                         .HasColumnType("boolean")
                         .HasColumnName("hint_used");

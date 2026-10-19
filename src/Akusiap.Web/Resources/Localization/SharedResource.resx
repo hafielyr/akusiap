@@ -637,4 +637,9 @@
   <data name="Session.Player.Back" xml:space="preserve"><value>Kembali</value></data>
   <data name="Session.Player.Submit" xml:space="preserve"><value>Kirim jawaban</value></data>
   <data name="Session.Player.Score" xml:space="preserve"><value>Skor Anda {0}% ({1} dari {2} benar).</value></data>
+  <data name="Session.Player.Check" xml:space="preserve"><value>Periksa</value></data>
+  <data name="Session.Player.Hint" xml:space="preserve"><value>Petunjuk</value></data>
+  <data name="Session.Player.Correct" xml:space="preserve"><value>Benar!</value></data>
+  <data name="Session.Player.Incorrect" xml:space="preserve"><value>Belum tepat. Jawaban yang benar ditandai hijau.</value></data>
+  <data name="Session.Player.KeyFact" xml:space="preserve"><value>Fakta kunci</value></data>
 </root>
