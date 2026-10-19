@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [F-08] CI pipeline · M1 · deps: F-05
 - [AC-06] Authorization policies · M1 · deps: AC-01
 - [ENT-02] Entitlement query and guard · M1 · deps: ENT-01, AC-01
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
@@ -18,9 +17,9 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 
 ## In Progress
+- [F-08] CI pipeline · M1 · deps: F-05 · (claude-opus-5.5, 2026-10-19)
 
 ## Review
-- [ENT-01] EntitlementPolicy (domain) · M1 · deps: F-03 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -34,6 +33,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [F-05] Test infrastructure · M1 · deps: F-03
 - [F-07] Seed data · M1 · deps: F-03
 - [AC-01] Register and sign in with email · M1 · deps: F-03, F-06
+- [ENT-01] EntitlementPolicy (domain) · M1 · deps: F-03
 
 ## Backlog
 

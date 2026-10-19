@@ -1,0 +1,99 @@
+# CI: build and test every push to main and every pull request (F-08, docs/ci.md).
+# The steps mirror the local commands in README.md. Tests use a throwaway PostgreSQL 17 service container (D-15),
+# never Neon.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: akusiap
+          POSTGRES_PASSWORD: akusiap-ci
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U akusiap"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DOTNET_NOLOGO: "true"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+      # Each test run creates and drops its own akusiap_test_<guid> databases on this server.
+      ConnectionStrings__Test: Host=localhost;Port=5432;Username=akusiap;Password=akusiap-ci;Database=postgres
+      # Record a Playwright trace for every E2E test; they are uploaded only when the job fails.
+      PLAYWRIGHT_TRACES_DIR: ${{ github.workspace }}/TestResults/playwright
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+
+      - name: Set up .NET (version from global.json)
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v6
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('Directory.Packages.props', '**/*.csproj', 'global.json') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (warnings are errors)
+        run: dotnet build -warnaserror --no-restore
+
+      - name: Check the compiled CSS is up to date
+        run: |
+          tools/tailwind.sh
+          git diff --exit-code -- src/Akusiap.Web/wwwroot/css/app.css \
+            || { echo "::error::wwwroot/css/app.css is stale. Run tools/tailwind.sh and commit the result."; exit 1; }
+
+      - name: Install Playwright browsers
+        run: tools/playwright-install.sh --with-deps
+
+      - name: Test (unit, integration, E2E)
+        run: dotnet test --no-build --logger "trx" --results-directory TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results
+          path: TestResults/**/*.trx
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-traces
+          path: TestResults/playwright/
+          if-no-files-found: ignore
+          retention-days: 14
