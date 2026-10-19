@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<ExamQuestionScope>();
         services.AddScoped<GetUserAccess>();
         services.AddScoped<ManageAccess>();
+        services.AddScoped<GetMyAccess>();
         services.AddSingleton<IRandomSource, SystemRandomSource>();
         services.AddScoped<StartAttempt>();
         services.AddScoped<ListCatalog>();

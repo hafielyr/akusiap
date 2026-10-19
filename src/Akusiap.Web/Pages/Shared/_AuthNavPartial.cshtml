@@ -1,11 +1,11 @@
 @using Akusiap.Infrastructure.Identity
 @using Akusiap.Web.Identity
-@* Header account links: sign in / sign up for guests, name and sign out for signed-in users. *@
+@* Header account links: sign in / sign up for guests, name (linking to the learn area) and sign out for signed-in users. *@
 @if (User.Identity?.IsAuthenticated == true)
 {
   var isAdmin = User.IsInRole(Akusiap.Domain.Users.RoleNames.Admin);
   @* At 360px there is room for the name or the Admin link, not both: admins see the name from the sm breakpoint. *@
-  <span class="max-w-32 truncate text-slate-700 @(isAdmin ? "hidden sm:inline" : "")" data-testid="signed-in-name">@User.FindFirst(AppClaimTypes.DisplayName)?.Value</span>
+  <a href="/learn" class="max-w-32 truncate py-3 text-slate-700 hover:text-slate-900 @(isAdmin ? "hidden sm:inline-block" : "inline-block")" data-testid="signed-in-name">@User.FindFirst(AppClaimTypes.DisplayName)?.Value</a>
   @if (isAdmin)
   {
     <a href="/admin" class="inline-flex min-h-11 items-center px-1 font-semibold text-brand-700" data-testid="admin-link">@T["Nav.Admin"]</a>
