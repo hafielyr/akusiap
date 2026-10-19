@@ -846,4 +846,7 @@
   <data name="Today.TotalDue" xml:space="preserve"><value>cards due</value></data>
   <data name="Today.NoneDue" xml:space="preserve"><value>Nothing is due. Start new practice from the catalog.</value></data>
   <data name="Today.Catalog" xml:space="preserve"><value>Exam catalog</value></data>
+  <data name="Shared.Name" xml:space="preserve"><value>Your name</value></data>
+  <data name="Shared.NameNotice" xml:space="preserve"><value>Your name and score will be visible to the exam's creator.</value></data>
+  <data name="Shared.Start" xml:space="preserve"><value>Start the exam</value></data>
 </root>

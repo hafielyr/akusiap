@@ -1,10 +1,11 @@
 @page "/s/{token}"
 @model Akusiap.Web.Pages.SharedExams.LandingModel
-@* Shared exam landing page (SHR-02). SHR-03 adds the name field and the start button. *@
+@* Shared exam landing page (SHR-02, SHR-03): title, owner, question count, then a name (guests) and start. *@
 @{
   var exam = Model.Exam;
   ViewData["Title"] = exam.Available ? exam.Title : T["Shared.Unavailable"].Value;
   ViewData["NoIndex"] = true;
+  var nameError = ViewContext.ViewData.ModelState["GuestName"]?.Errors.FirstOrDefault()?.ErrorMessage;
 }
 
 <section class="mx-auto max-w-xl space-y-4">
@@ -26,6 +27,20 @@
       }
       <p class="text-sm text-slate-600" data-testid="shared-count">@T["Own.Exams.QuestionCount", exam.QuestionCount]</p>
     </div>
+
+    <form method="post" class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" novalidate data-testid="shared-start-form">
+      <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+      @if (!Model.SignedIn)
+      {
+        <div class="space-y-1">
+          <label for="GuestName" class="label">@T["Shared.Name"]</label>
+          <input id="GuestName" name="GuestName" value="@Model.GuestName" maxlength="60" autocomplete="name" class="input" aria-invalid="@(nameError is null ? null : "true")" />
+          @if (nameError is not null) { <span class="field-error" data-testid="error-name">@nameError</span> }
+          <p class="text-sm text-slate-600" data-testid="shared-notice">@T["Shared.NameNotice"]</p>
+        </div>
+      }
+      <button type="submit" class="btn btn-primary w-full" data-testid="shared-start">@T["Shared.Start"]</button>
+    </form>
     <a href="@SharedExamRoutes.Report(exam.Token)" class="inline-flex min-h-11 items-center text-sm font-medium text-slate-600 underline" data-testid="report-exam">@T["Shared.Report"]</a>
   }
 </section>

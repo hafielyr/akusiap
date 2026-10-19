@@ -7,12 +7,12 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SHR-03] Guest takes a shared exam · M6 · deps: SHR-02, SES-03
+- [SHR-04] Shared result and register invitation · M6 · deps: SHR-03
 
 ## In Progress
 
 ## Review
-- [SRS-03] Daily due list · M7 · deps: SRS-02 · (claude-opus-5.5, 2026-10-20)
+- [SHR-03] Guest takes a shared exam · M6 · deps: SHR-02, SES-03 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -84,6 +84,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SRS-01] Own questions in review · M7 · deps: MEM-03, OWN-03
 - [SRS-02] Scheduled reviews · M7 · deps: MEM-02, MEM-03
 - [SHR-02] Report shared exam and admin takedown · M6 · deps: SHR-01, SES-11
+- [SRS-03] Daily due list · M7 · deps: SRS-02
 
 ## Backlog
 
@@ -103,7 +104,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ### M5 Own content (Release 2)
 
 ### M6 Sharing (Release 2)
-- [SHR-04] Shared result and register invitation · M6 · deps: SHR-03
 - [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04
 
 ### M7 Spaced repetition (Release 2)

@@ -846,4 +846,7 @@
   <data name="Today.TotalDue" xml:space="preserve"><value>kartu jatuh tempo</value></data>
   <data name="Today.NoneDue" xml:space="preserve"><value>Tidak ada kartu jatuh tempo. Kerjakan latihan baru dari katalog.</value></data>
   <data name="Today.Catalog" xml:space="preserve"><value>Katalog ujian</value></data>
+  <data name="Shared.Name" xml:space="preserve"><value>Nama Anda</value></data>
+  <data name="Shared.NameNotice" xml:space="preserve"><value>Nama dan skor Anda akan terlihat oleh pembuat ujian.</value></data>
+  <data name="Shared.Start" xml:space="preserve"><value>Mulai ujian</value></data>
 </root>
