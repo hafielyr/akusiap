@@ -1,0 +1,8 @@
+@model (long AttemptId, int WrongCount)
+@* "Ulangi yang salah" (SES-09) on the result and review pages; hidden when nothing was wrong. *@
+@if (Model.WrongCount > 0)
+{
+  <form method="post" action="@SessionRoutes.Retake(Model.AttemptId)" asp-antiforgery="true">
+    <button type="submit" class="btn btn-secondary w-full" data-testid="retake-wrong">@T["Session.Retake.Action", Model.WrongCount]</button>
+  </form>
+}

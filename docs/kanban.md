@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SES-09] Retake wrong answers · M2 · deps: SES-08
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 - [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
 - [OWN-06] Private mixed practice set · M5 · deps: OWN-04, SES-01
@@ -16,7 +15,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [OWN-04] Own exam · M5 · deps: OWN-03 · (claude-opus-5.5, 2026-10-20)
+- [SES-09] Retake wrong answers · M2 · deps: SES-08 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -79,6 +78,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-10] Session history · M2 · deps: SES-06
 - [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
 - [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
+- [OWN-04] Own exam · M5 · deps: OWN-03
 
 ## Backlog
 

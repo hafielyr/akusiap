@@ -758,4 +758,6 @@
   <data name="Own.Exams.Status.TakenDown" xml:space="preserve"><value>Taken down by an admin</value></data>
   <data name="Own.Exams.Practise" xml:space="preserve"><value>Practise</value></data>
   <data name="Own.Exams.TakenDown" xml:space="preserve"><value>An admin took this exam down. You can still see it, but you can't start practice.</value></data>
+  <data name="Session.Retake.Action" xml:space="preserve"><value>Retake the wrong ones ({0})</value></data>
+  <data name="Session.Retake.NothingWrong" xml:space="preserve"><value>Every answer was right, so there is nothing to retake.</value></data>
 </root>

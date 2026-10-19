@@ -12,4 +12,7 @@ public static class SessionRoutes
 
     /// <summary>The answer review of a finished attempt (SES-08); <paramref name="show"/> is <c>salah</c> or <c>ditandai</c>.</summary>
     public static string Review(long attemptId, string? show = null) => show is null ? $"{Player(attemptId)}/pembahasan" : $"{Player(attemptId)}/pembahasan?tampil={show}";
+
+    /// <summary>"Ulangi yang salah" (SES-09), POST only.</summary>
+    public static string Retake(long attemptId) => $"{Player(attemptId)}/ulangi";
 }

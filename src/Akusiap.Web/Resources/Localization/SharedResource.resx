@@ -758,4 +758,6 @@
   <data name="Own.Exams.Status.TakenDown" xml:space="preserve"><value>Diturunkan admin</value></data>
   <data name="Own.Exams.Practise" xml:space="preserve"><value>Latihan</value></data>
   <data name="Own.Exams.TakenDown" xml:space="preserve"><value>Ujian ini diturunkan oleh admin. Anda masih bisa melihatnya, tetapi tidak bisa memulai latihan.</value></data>
+  <data name="Session.Retake.Action" xml:space="preserve"><value>Ulangi yang salah ({0})</value></data>
+  <data name="Session.Retake.NothingWrong" xml:space="preserve"><value>Semua jawaban benar, tidak ada yang perlu diulang.</value></data>
 </root>
