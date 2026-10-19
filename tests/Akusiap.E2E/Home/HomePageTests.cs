@@ -17,7 +17,7 @@ public sealed class HomePageTests(MobileSite site)
         Assert.True(response?.Ok, $"GET / returned {response?.Status}");
         Assert.Equal("id", await page.Locator("html").GetAttributeAsync("lang"));
         Assert.Equal(
-            "Latihan soal ujian, kapan saja dari ponsel Anda",
+            "TEMPORARY: deliberate failure to prove trace upload",
             (await page.Locator("h1").InnerTextAsync()).Trim());
         Assert.True(await page.GetByTestId("whatsapp-support").IsVisibleAsync(), "The WhatsApp support button is visible");
         var overflow = await page.EvaluateAsync<int>("() => document.documentElement.scrollWidth - window.innerWidth");
