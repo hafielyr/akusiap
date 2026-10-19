@@ -29,6 +29,8 @@ public sealed class RulePresetTests(PostgresFixture database)
         Assert.Equal(((int?)100, (int?)110, (int?)3, (int?)65), (preset.TimeLimitMinutes, preset.QuestionCount, preset.MaxAttempts, preset.PassMarkPercent));
         Assert.Equal((false, true, false, ShowAnswers.Never, false), (preset.HintsEnabled, preset.ShuffleQuestions, preset.ShuffleOptions, preset.ShowAnswers, preset.IsDefault));
         Assert.Null(preset.OwnerUserId);
+        var list = WebUtility.HtmlDecode(await admin.GetStringAsync(new Uri("/admin/aturan", UriKind.Relative)));
+        Assert.Contains("100 menit · 110 soal · Tidak ditampilkan · Maks. 3 kali · Lulus 65%", list, StringComparison.Ordinal);
     }
 
     [Fact]

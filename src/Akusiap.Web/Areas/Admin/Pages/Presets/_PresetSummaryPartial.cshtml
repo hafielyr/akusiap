@@ -1,16 +1,17 @@
 @model Akusiap.Application.RulePresets.RulePresetDetail
-@* One-line summary of a preset for lists. *@
+@* One-line summary of a preset for lists. Uses the string localizer: IHtmlLocalizer's .Value would skip the {0} arguments. *@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Akusiap.Web.Localization.SharedResource> S
 @{
   var parts = new List<string>
   {
-    Model.TimeLimitMinutes is { } minutes ? T["Admin.Presets.Minutes", minutes].Value : T["Admin.Presets.Untimed"].Value,
-    Model.QuestionCount is { } count ? T["Admin.Presets.Questions", count].Value : T["Admin.Presets.AllQuestions"].Value,
-    T[$"Admin.ShowAnswers.{Model.ShowAnswers}"].Value,
-    Model.MaxAttempts is { } attempts ? T["Admin.Presets.Attempts", attempts].Value : T["Admin.Presets.UnlimitedAttempts"].Value,
+    Model.TimeLimitMinutes is { } minutes ? S["Admin.Presets.Minutes", minutes] : S["Admin.Presets.Untimed"],
+    Model.QuestionCount is { } count ? S["Admin.Presets.Questions", count] : S["Admin.Presets.AllQuestions"],
+    S[$"Admin.ShowAnswers.{Model.ShowAnswers}"],
+    Model.MaxAttempts is { } attempts ? S["Admin.Presets.Attempts", attempts] : S["Admin.Presets.UnlimitedAttempts"],
   };
   if (Model.PassMarkPercent is { } pass)
   {
-    parts.Add(T["Admin.Presets.PassMarkShort", pass].Value);
+    parts.Add(S["Admin.Presets.PassMarkShort", pass]);
   }
 }
-<span class="block text-sm text-slate-600">@string.Join(" · ", parts)</span>
+<span class="block text-sm text-slate-600" data-testid="preset-summary">@string.Join(" · ", parts)</span>
