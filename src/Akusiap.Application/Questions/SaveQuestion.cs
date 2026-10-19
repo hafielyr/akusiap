@@ -14,7 +14,14 @@ public sealed class SaveQuestion(IAppDbContext db, IClock clock)
     /// <summary>Arg: the option text.</summary>
     public const string OptionInUse = "Admin.Questions.OptionInUse";
 
-    public async Task<Result<long>> HandleAsync(SaveQuestionRequest request, CancellationToken cancellationToken)
+    public Task<Result<long>> HandleAsync(SaveQuestionRequest request, CancellationToken cancellationToken) =>
+        SaveAsync(request, ownerUserId: null, cancellationToken);
+
+    /// <summary>Creates or edits a learner's own question (OWN-03). The caller checks the allowance first.</summary>
+    public Task<Result<long>> SaveOwnAsync(SaveQuestionRequest request, Guid ownerUserId, CancellationToken cancellationToken) =>
+        SaveAsync(request, ownerUserId, cancellationToken);
+
+    private async Task<Result<long>> SaveAsync(SaveQuestionRequest request, Guid? ownerUserId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var problems = QuestionValidator.Validate(request);
@@ -34,7 +41,7 @@ public sealed class SaveQuestion(IAppDbContext db, IClock clock)
         {
             var existing = await db.Questions
                 .Include(q => q.Options)
-                .SingleOrDefaultAsync(q => q.Id == id && q.OwnerUserId == null, cancellationToken)
+                .SingleOrDefaultAsync(q => q.Id == id && q.OwnerUserId == ownerUserId, cancellationToken)
                 .ConfigureAwait(false);
             if (existing is null)
             {
@@ -45,7 +52,7 @@ public sealed class SaveQuestion(IAppDbContext db, IClock clock)
         }
         else
         {
-            question = new Question { CreatedAt = now };
+            question = new Question { CreatedAt = now, OwnerUserId = ownerUserId };
             db.Questions.Add(question);
         }
 

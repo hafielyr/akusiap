@@ -61,6 +61,8 @@ public static class DependencyInjection
         services.AddScoped<ListQuestions>();
         services.AddScoped<GetQuestion>();
         services.AddScoped<SaveQuestion>();
+        services.AddScoped<GetAllowance>();
+        services.AddScoped<OwnQuestions.OwnQuestions>();
         services.AddMemoryCache();
         services.AddScoped<ImportQuestions>();
         services.AddScoped<ListExams>();

@@ -25,9 +25,13 @@ public sealed record QuestionDetail(
 /// <summary>An app question with its options in order, for the editor.</summary>
 public sealed class GetQuestion(IAppDbContext db)
 {
-    public async Task<QuestionDetail?> HandleAsync(long id, CancellationToken cancellationToken) =>
+    public Task<QuestionDetail?> HandleAsync(long id, CancellationToken cancellationToken) =>
+        ForOwnerAsync(id, ownerUserId: null, cancellationToken);
+
+    /// <summary>A question owned by <paramref name="ownerUserId"/> (null = an app question).</summary>
+    public async Task<QuestionDetail?> ForOwnerAsync(long id, Guid? ownerUserId, CancellationToken cancellationToken) =>
         await db.Questions
-            .Where(q => q.Id == id && q.OwnerUserId == null)
+            .Where(q => q.Id == id && q.OwnerUserId == ownerUserId)
             .Select(q => new QuestionDetail(
                 q.Id,
                 q.TopicId,

@@ -682,4 +682,17 @@
   <data name="Admin.Tx.Status.Canceled" xml:space="preserve"><value>Canceled</value></data>
   <data name="Admin.Tx.Status.Failed" xml:space="preserve"><value>Failed</value></data>
   <data name="Admin.Tx.Status.Refunded" xml:space="preserve"><value>Refunded</value></data>
+  <data name="Own.Questions.Title" xml:space="preserve"><value>My questions</value></data>
+  <data name="Own.Questions.Link" xml:space="preserve"><value>Questions you write yourself to practise</value></data>
+  <data name="Own.Questions.Add" xml:space="preserve"><value>Add question</value></data>
+  <data name="Own.Questions.New" xml:space="preserve"><value>New question</value></data>
+  <data name="Own.Questions.Edit" xml:space="preserve"><value>Edit question</value></data>
+  <data name="Own.Questions.Empty" xml:space="preserve"><value>You haven't written any questions yet.</value></data>
+  <data name="Own.Questions.Saved" xml:space="preserve"><value>Question saved.</value></data>
+  <data name="Own.Questions.Deleted" xml:space="preserve"><value>Question deleted.</value></data>
+  <data name="Own.Questions.Delete" xml:space="preserve"><value>Delete question</value></data>
+  <data name="Own.Questions.LimitReached" xml:space="preserve"><value>You've used all {0} of your questions. Subscribe to add more.</value></data>
+  <data name="Own.Questions.ReadOnly" xml:space="preserve"><value>Your questions are now view and practise only, because they exceed your plan's allowance. Subscribe to edit or add questions.</value></data>
+  <data name="Own.Questions.InUse" xml:space="preserve"><value>This question is used in a session or exam, so it can't be deleted. Set its status to Retired instead.</value></data>
+  <data name="Own.Upgrade" xml:space="preserve"><value>See subscription plans</value></data>
 </root>
