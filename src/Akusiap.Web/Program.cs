@@ -40,6 +40,11 @@ builder.Services.AddRazorPages(options =>
     {
         options.Conventions.AuthorizeAreaFolder(AuthorizationPolicies.AdminArea, "/", AuthorizationPolicies.AdminOnly);
         options.Conventions.AuthorizeAreaFolder(AuthorizationPolicies.LearnArea, "/", AuthorizationPolicies.SignedIn);
+        if (!builder.Environment.IsDevelopment())
+        {
+            // Development tools (/dev/...) have no route anywhere else, so they answer 404.
+            options.Conventions.AddFolderRouteModelConvention("/Dev", model => model.Selectors.Clear());
+        }
     })
     .AddViewLocalization()
     .AddDataAnnotationsLocalization(options =>

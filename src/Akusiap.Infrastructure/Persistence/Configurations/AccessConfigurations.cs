@@ -63,7 +63,10 @@ public sealed class SubscriptionConfiguration : IEntityTypeConfiguration<Subscri
             .HasDatabaseName("ux_subscriptions_one_per_plan")
             .IsUnique()
             .HasFilter($"status NOT IN ('{SubscriptionStatus.Abandoned}', '{SubscriptionStatus.Refunded}')");
-        // The foreign key to saved_payment_methods is added with that table in PAY-01.
+        builder.HasOne<Akusiap.Domain.Payments.SavedPaymentMethod>()
+            .WithMany()
+            .HasForeignKey(s => s.SavedPaymentMethodId)
+            .OnDelete(DeleteBehavior.NoAction);
         builder.HasIndex(s => s.SavedPaymentMethodId);
         // Reminder and expiry jobs.
         builder.HasIndex(s => s.CurrentPeriodEnd, "ix_subscriptions_period_end")

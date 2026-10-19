@@ -57,6 +57,7 @@ public sealed class SessionsMigrationTests : IAsyncLifetime
     [
         "attempts.score_percent 5,2", "review_cards.interval_days 8,2", "review_cards.ease_factor 4,2",
         "review_logs.interval_before_days 8,2", "review_logs.interval_after_days 8,2",
+        "promo_codes.discount_percent 5,2", // PAY-01
     ];
 
     private TestDatabase _database = null!;

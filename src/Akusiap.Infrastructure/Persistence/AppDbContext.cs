@@ -5,6 +5,7 @@ using Akusiap.Domain.Content;
 using Akusiap.Domain.Memorization;
 using Akusiap.Domain.Moderation;
 using Akusiap.Domain.Notifications;
+using Akusiap.Domain.Payments;
 using Akusiap.Domain.Sessions;
 using Akusiap.Domain.Users;
 using Microsoft.AspNetCore.Identity;
@@ -39,6 +40,16 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<ExamPurchase> ExamPurchases => Set<ExamPurchase>();
 
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+
+    public DbSet<Payment> Payments => Set<Payment>();
+
+    public DbSet<Refund> Refunds => Set<Refund>();
+
+    public DbSet<PaymentWebhookEvent> PaymentWebhookEvents => Set<PaymentWebhookEvent>();
+
+    public DbSet<PromoCode> PromoCodes => Set<PromoCode>();
+
+    public DbSet<SavedPaymentMethod> SavedPaymentMethods => Set<SavedPaymentMethod>();
 
     public DbSet<Attempt> Attempts => Set<Attempt>();
 

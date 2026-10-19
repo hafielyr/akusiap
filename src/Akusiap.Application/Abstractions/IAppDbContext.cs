@@ -4,6 +4,7 @@ using Akusiap.Domain.Content;
 using Akusiap.Domain.Memorization;
 using Akusiap.Domain.Moderation;
 using Akusiap.Domain.Notifications;
+using Akusiap.Domain.Payments;
 using Akusiap.Domain.Sessions;
 using Akusiap.Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,16 @@ public interface IAppDbContext
     DbSet<ExamPurchase> ExamPurchases { get; }
 
     DbSet<AuditLog> AuditLogs { get; }
+
+    DbSet<Payment> Payments { get; }
+
+    DbSet<Refund> Refunds { get; }
+
+    DbSet<PaymentWebhookEvent> PaymentWebhookEvents { get; }
+
+    DbSet<PromoCode> PromoCodes { get; }
+
+    DbSet<SavedPaymentMethod> SavedPaymentMethods { get; }
 
     DbSet<Attempt> Attempts { get; }
 
