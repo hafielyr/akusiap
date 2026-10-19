@@ -631,4 +631,10 @@
   <data name="Pay.Pending.Link" xml:space="preserve"><value>Payments you haven't finished</value></data>
   <data name="Pay.Pending.Empty" xml:space="preserve"><value>No payments are waiting.</value></data>
   <data name="Pay.Pending.See" xml:space="preserve"><value>See instructions</value></data>
+  <data name="Session.Player.Finish" xml:space="preserve"><value>Finish</value></data>
+  <data name="Session.Player.Unanswered" xml:space="preserve"><value>Unanswered questions:</value></data>
+  <data name="Session.Player.FinishConfirm" xml:space="preserve"><value>Submit your answers now? You can't change them afterwards.</value></data>
+  <data name="Session.Player.Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Session.Player.Submit" xml:space="preserve"><value>Submit answers</value></data>
+  <data name="Session.Player.Score" xml:space="preserve"><value>Your score is {0}% ({1} of {2} correct).</value></data>
 </root>

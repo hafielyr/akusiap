@@ -7,18 +7,21 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SES-06] Submit, scoring and timeout · M1 · deps: SES-04
 - [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04
 - [PAY-07] Receipt email · M3 · deps: PAY-06, AC-02
 - [PAY-09] Refund requests · M3 · deps: PAY-06
 - [PAY-10] Admin transactions · M3 · deps: PAY-06
 - [OWN-03] Own question editor · M5 · deps: OWN-02, ADM-T2
 - [OWN-05] Allowance widget · M5 · deps: OWN-02
+- [SES-07] Result page and trial CTA · M1 · deps: SES-06
+- [SES-08] Answer review · M1 · deps: SES-06
+- [SES-10] Session history · M2 · deps: SES-06
+- [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
 
 ## In Progress
 
 ## Review
-- [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02 · (claude-opus-5.5, 2026-10-19)
+- [SES-06] Submit, scoring and timeout · M1 · deps: SES-04 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -68,19 +71,16 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
 - [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03
 - [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
+- [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [SES-07] Result page and trial CTA · M1 · deps: SES-06
-- [SES-08] Answer review · M1 · deps: SES-06
 
 **M1 exit check**: An admin creates and publishes a paid exam and a free exam. A guest finds the paid exam in the catalog, takes the 30-question trial with explanations and sees the buy CTA. A registered user takes the free exam. The admin grants the paid exam to that user, who then takes the full exam in Simulation mode; it auto-submits at the time limit.
 
 ### M2 Learning loop (Release 1)
 - [SES-09] Retake wrong answers · M2 · deps: SES-08
-- [SES-10] Session history · M2 · deps: SES-06
-- [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
 - [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 

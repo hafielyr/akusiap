@@ -29,7 +29,7 @@ public enum SaveAnswerOutcome
 /// AnsweredAt, TimeSpentSeconds and the attempt's LastSavedAt. Refused once the attempt is no longer in progress or its
 /// deadline (StartedAt + time limit) has passed.
 /// </summary>
-public sealed class SaveAnswer(IAppDbContext db, ICurrentUser currentUser, IClock clock)
+public sealed class SaveAnswer(IAppDbContext db, ICurrentUser currentUser, IClock clock, AttemptFinisher finisher)
 {
     public const int MaxSecondsPerSave = 3600;
 
@@ -43,7 +43,8 @@ public sealed class SaveAnswer(IAppDbContext db, ICurrentUser currentUser, ICloc
         }
 
         var now = clock.UtcNow;
-        if (attempt.Status != AttemptStatus.InProgress || AttemptAccess.Deadline(attempt.RulesSnapshot, attempt.StartedAt) is { } deadline && now > deadline)
+        // A save past the deadline also closes the attempt (D-09).
+        if (await finisher.CloseIfOverdueAsync(attempt, now, cancellationToken).ConfigureAwait(false))
         {
             return SaveAnswerOutcome.Ended;
         }

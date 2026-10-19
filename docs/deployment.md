@@ -107,6 +107,7 @@ Email__Smtp__Host=smtp-relay.brevo.com        # or email-smtp.<region>.amazonaws
 Email__Smtp__Port=587
 Email__Smtp__UserName=…
 Email__Smtp__Password=…
+# Background jobs (Hangfire on the same database; dashboard at /admin/jobs for admins). Jobs__Enabled=false turns them off.
 # Payment channels shown at checkout (PAY-03); omit to use the defaults (all enabled, no minimum):
 # Payments__Channels__0__Code=QRIS  Payments__Channels__0__Method=QRIS  Payments__Channels__0__Label=QRIS  Payments__Channels__0__MinAmountIdr=0
 # Payments__Channels__1__Code=VA-BCA  …__Method=VirtualAccount  …__Channel=BCA  …__Label=BCA Virtual Account  …__Enabled=true

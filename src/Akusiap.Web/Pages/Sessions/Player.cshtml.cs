@@ -10,7 +10,7 @@ namespace Akusiap.Web.Pages.Sessions;
 /// <c>/sesi/{id}</c> (SES-03): one question per screen, run by the Alpine component in <c>quiz-player.js</c>. The owner
 /// (or the guest token) is checked on every request; anyone else gets 404.
 /// </summary>
-public sealed class PlayerModel(GetPlayer getPlayer, Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery) : PageModel
+public sealed class PlayerModel(GetPlayer getPlayer, SubmitAttempt submitAttempt, Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery) : PageModel
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
@@ -19,6 +19,7 @@ public sealed class PlayerModel(GetPlayer getPlayer, Microsoft.AspNetCore.Antifo
     public async Task<IActionResult> OnGetAsync(long id, CancellationToken cancellationToken)
     {
         var guestToken = User.Identity?.IsAuthenticated == true ? null : GuestTokenCookie.Read(Request);
+        await submitAttempt.CloseIfOverdueAsync(id, guestToken, cancellationToken);
         var view = await getPlayer.HandleAsync(id, guestToken, cancellationToken);
         if (view is null)
         {
@@ -27,6 +28,15 @@ public sealed class PlayerModel(GetPlayer getPlayer, Microsoft.AspNetCore.Antifo
 
         View = view;
         return Page();
+    }
+
+    /// <summary>"Selesai" or the timer reaching 0 (SES-06). Idempotent; the result is shown on the player page.</summary>
+    public async Task<IActionResult> OnPostSubmitAsync(long id, CancellationToken cancellationToken)
+    {
+        var guestToken = User.Identity?.IsAuthenticated == true ? null : GuestTokenCookie.Read(Request);
+        return await submitAttempt.HandleAsync(id, guestToken, cancellationToken)
+            ? Redirect(SessionRoutes.Result(id))
+            : NotFound();
     }
 
     /// <summary>The state handed to the Alpine component (no correct answers).</summary>

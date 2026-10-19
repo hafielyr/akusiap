@@ -40,6 +40,8 @@ public sealed class AppFactory(string connectionString) : WebApplicationFactory<
         builder.UseSetting("Seed:AdminPassword", string.Empty);
         // Email links use the test server address unless a test sets Site:BaseUrl.
         builder.UseSetting("Site:BaseUrl", string.Empty);
+        // No Hangfire server or schema in tests; jobs are run directly.
+        builder.UseSetting("Jobs:Enabled", "false");
         // Google sign-in is off unless a test turns it on (a developer may have real keys in user-secrets).
         builder.UseSetting("Authentication:Google:ClientId", string.Empty);
         builder.UseSetting("Authentication:Google:ClientSecret", string.Empty);

@@ -16,6 +16,7 @@ window.quizPlayer = function (stateElementId) {
     index: 0,
     secondsLeft: state.secondsLeft,
     ended: false,
+    confirming: false,
     saveFailed: false,
     queue: Promise.resolve(),
     enteredAt: Date.now(),
@@ -29,8 +30,10 @@ window.quizPlayer = function (stateElementId) {
           if (this.secondsLeft > 0) {
             this.secondsLeft--;
           } else {
+            // Time is up: save what is pending, then submit (the server closes it anyway, D-09).
             this.ended = true;
             clearInterval(timer);
+            this.submit();
           }
         }, 1000);
       }
@@ -90,6 +93,11 @@ window.quizPlayer = function (stateElementId) {
           this.saveFailed = !response.ok && response.status !== 409;
         })
         .catch(() => { this.saveFailed = true; });
+    },
+
+    // Sends the attempt after any saves still in flight.
+    submit() {
+      this.queue.then(() => this.$refs.submitForm.submit());
     },
 
     go(i) {
