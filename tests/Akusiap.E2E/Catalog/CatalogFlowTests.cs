@@ -25,7 +25,7 @@ public sealed class CatalogFlowTests(MobileSite site)
         await CreateTopicAndQuestionAsync(page, token);
         await PublishExamAsync(page, $"Katalog gratis {token}", free: true);
         await PublishExamAsync(page, $"Katalog lain {token}", free: true);
-        await page.GetByRole(AriaRole.Button, new() { Name = "Keluar" }).ClickAsync();
+        await page.GetByRole(AriaRole.Button, new() { Name = "Keluar", Exact = true }).ClickAsync();
 
         await page.GotoAsync("/ujian");
         await page.EvaluateAsync("() => { window.__noReload = true; }");

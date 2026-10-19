@@ -33,7 +33,9 @@ public sealed class CatalogTests(PostgresFixture database)
         var draft = await SeedAsync(TestData.Exam().Titled($"Draf {token}").Draft().WithQuestions(3));
         var unpublished = await SeedAsync(TestData.Exam().Titled($"Batal {token}").WithStatus(ExamStatus.Unpublished).WithQuestions(3));
         var takenDown = await SeedAsync(TestData.Exam().Titled($"Turun {token}").WithStatus(ExamStatus.TakenDown).WithQuestions(3));
-        var learnerExam = await SeedAsync(TestData.Exam().Titled($"Milik {token}").OwnedBy(owner).WithQuestions(3));
+        var ownExam = TestData.Exam().Titled($"Milik {token}").OwnedBy(owner).WithQuestions(3).Build();
+        (ownExam.OwnerUser, ownExam.OwnerUserId) = (null, owner.Id); // the owner is already saved
+        var learnerExam = await SeedAsync(ownExam);
 
         var html = await client.GetStringAsync(new Uri($"/ujian?q={token}", UriKind.Relative));
 
