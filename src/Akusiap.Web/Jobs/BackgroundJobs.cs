@@ -24,10 +24,14 @@ public static class BackgroundJobs
 
     public static IServiceCollection AddBackgroundJobs(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<Payments.ReceiptJob>();
         if (!IsEnabled(configuration))
         {
+            services.AddScoped<Akusiap.Application.Abstractions.IPaymentJobs, Payments.InlinePaymentJobs>();
             return services;
         }
+
+        services.AddScoped<Akusiap.Application.Abstractions.IPaymentJobs, Payments.HangfirePaymentJobs>();
 
         var connectionString = configuration.GetConnectionString("Default")
             ?? throw new InvalidOperationException("ConnectionStrings:Default is required for background jobs.");

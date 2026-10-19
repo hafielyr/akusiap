@@ -642,4 +642,13 @@
   <data name="Session.Player.Correct" xml:space="preserve"><value>Benar!</value></data>
   <data name="Session.Player.Incorrect" xml:space="preserve"><value>Belum tepat. Jawaban yang benar ditandai hijau.</value></data>
   <data name="Session.Player.KeyFact" xml:space="preserve"><value>Fakta kunci</value></data>
+  <data name="Receipt.Subject" xml:space="preserve"><value>Bukti pembayaran Akusiap {0}</value></data>
+  <data name="Receipt.Intro" xml:space="preserve"><value>Terima kasih, pembayaran Anda sudah kami terima.</value></data>
+  <data name="Receipt.Order" xml:space="preserve"><value>Nomor pesanan</value></data>
+  <data name="Receipt.Item" xml:space="preserve"><value>Pembelian</value></data>
+  <data name="Receipt.Amount" xml:space="preserve"><value>Jumlah (termasuk pajak)</value></data>
+  <data name="Receipt.Method" xml:space="preserve"><value>Metode</value></data>
+  <data name="Receipt.PaidAt" xml:space="preserve"><value>Dibayar</value></data>
+  <data name="Receipt.AccessUntil" xml:space="preserve"><value>Akses sampai</value></data>
+  <data name="Receipt.Note" xml:space="preserve"><value>Simpan email ini sebagai bukti pembayaran. Hubungi kami lewat WhatsApp jika ada pertanyaan.</value></data>
 </root>
