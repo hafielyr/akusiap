@@ -14,4 +14,35 @@
   <data name="Error.Heading" xml:space="preserve"><value>Maaf, terjadi kesalahan.</value></data>
   <data name="Error.Body" xml:space="preserve"><value>Silakan coba lagi beberapa saat lagi. Jika masalah berlanjut, hubungi kami lewat WhatsApp.</value></data>
   <data name="Error.RequestId" xml:space="preserve"><value>Kode permintaan</value></data>
+  <data name="Nav.SignIn" xml:space="preserve"><value>Masuk</value></data>
+  <data name="Nav.Register" xml:space="preserve"><value>Daftar</value></data>
+  <data name="Nav.SignOut" xml:space="preserve"><value>Keluar</value></data>
+  <data name="Account.Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Account.DisplayName" xml:space="preserve"><value>Nama tampilan</value></data>
+  <data name="Account.Password" xml:space="preserve"><value>Kata sandi</value></data>
+  <data name="Account.PasswordHint" xml:space="preserve"><value>Minimal 8 karakter.</value></data>
+  <data name="Account.ShowPassword" xml:space="preserve"><value>Tampilkan</value></data>
+  <data name="Account.HidePassword" xml:space="preserve"><value>Sembunyikan</value></data>
+  <data name="Account.Register.Title" xml:space="preserve"><value>Daftar</value></data>
+  <data name="Account.Register.Heading" xml:space="preserve"><value>Buat akun gratis</value></data>
+  <data name="Account.Register.Lead" xml:space="preserve"><value>Daftar untuk membuka ujian gratis dan menyimpan hasil latihan Anda.</value></data>
+  <data name="Account.Register.Submit" xml:space="preserve"><value>Daftar</value></data>
+  <data name="Account.Register.HaveAccount" xml:space="preserve"><value>Sudah punya akun?</value></data>
+  <data name="Account.SignIn.Title" xml:space="preserve"><value>Masuk</value></data>
+  <data name="Account.SignIn.Heading" xml:space="preserve"><value>Masuk ke Akusiap</value></data>
+  <data name="Account.SignIn.Submit" xml:space="preserve"><value>Masuk</value></data>
+  <data name="Account.SignIn.RememberMe" xml:space="preserve"><value>Ingat saya</value></data>
+  <data name="Account.SignIn.NoAccount" xml:space="preserve"><value>Belum punya akun?</value></data>
+  <data name="Account.SignIn.Failed" xml:space="preserve"><value>Email atau kata sandi salah.</value></data>
+  <data name="Account.SignIn.LockedOut" xml:space="preserve"><value>Terlalu banyak percobaan. Silakan coba lagi dalam 15 menit.</value></data>
+  <data name="Account.SignIn.Deactivated" xml:space="preserve"><value>Akun dinonaktifkan. Hubungi kami lewat WhatsApp jika ini keliru.</value></data>
+  <data name="Validation.Required" xml:space="preserve"><value>{0} wajib diisi.</value></data>
+  <data name="Validation.Email" xml:space="preserve"><value>Format email tidak valid.</value></data>
+  <data name="Validation.StringLength" xml:space="preserve"><value>{0} maksimal {1} karakter.</value></data>
+  <data name="Validation.PasswordLength" xml:space="preserve"><value>Kata sandi minimal {2} karakter.</value></data>
+  <data name="Identity.DuplicateEmail" xml:space="preserve"><value>Email {0} sudah terdaftar. Silakan masuk.</value></data>
+  <data name="Identity.PasswordTooShort" xml:space="preserve"><value>Kata sandi minimal {0} karakter.</value></data>
+  <data name="Identity.DefaultError" xml:space="preserve"><value>Terjadi kesalahan. Silakan coba lagi.</value></data>
+  <data name="Catalog.Title" xml:space="preserve"><value>Katalog ujian</value></data>
+  <data name="Catalog.ComingSoon" xml:space="preserve"><value>Katalog ujian sedang disiapkan dan segera hadir.</value></data>
 </root>

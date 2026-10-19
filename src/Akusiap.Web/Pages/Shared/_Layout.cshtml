@@ -22,6 +22,7 @@
       <a asp-page="/Index" class="text-lg font-bold text-brand-700">Akusiap</a>
       <nav class="flex items-center gap-4 text-sm font-medium text-slate-700">
         @await RenderSectionAsync("Nav", required: false)
+        <partial name="_AuthNavPartial" />
       </nav>
     </div>
   </header>

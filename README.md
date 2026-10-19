@@ -20,8 +20,10 @@ In Development the app applies pending migrations at startup and seeds roles, pl
 
 ```
 dotnet user-secrets set "Seed:AdminEmail" "admin@example.com" --project src/Akusiap.Web
-dotnet user-secrets set "Seed:AdminPassword" "<8+ chars with upper, lower, digit and symbol>" --project src/Akusiap.Web
+dotnet user-secrets set "Seed:AdminPassword" "<at least 8 characters>" --project src/Akusiap.Web
 ```
+
+Sign up at `/akun/daftar` and sign in at `/akun/masuk`; the seeded admin signs in there too.
 
 `schema.sql` is the design reference. Never run it against the app database: EF migrations build the database, and a database created from `schema.sql` cannot be migrated (D-30).
 
