@@ -540,4 +540,30 @@
   <data name="Pricing.PerMonth" xml:space="preserve"><value>per bulan</value></data>
   <data name="Pricing.BestValue" xml:space="preserve"><value>Paling hemat per bulan</value></data>
   <data name="Pricing.Choose" xml:space="preserve"><value>Pilih paket</value></data>
+  <data name="Checkout.Title" xml:space="preserve"><value>Pembayaran</value></data>
+  <data name="Checkout.ExamAccess" xml:space="preserve"><value>Semua soal ujian ini selama {0} hari.</value></data>
+  <data name="Checkout.AccessTo" xml:space="preserve"><value>Akses sampai {0}.</value></data>
+  <data name="Checkout.ExtendsTo" xml:space="preserve"><value>Akses Anda yang berjalan diperpanjang sampai {0}.</value></data>
+  <data name="Checkout.Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Checkout.TaxIncluded" xml:space="preserve"><value>Harga sudah termasuk pajak.</value></data>
+  <data name="Checkout.PendingExists" xml:space="preserve"><value>Anda sudah punya pembayaran yang menunggu ({0}).</value></data>
+  <data name="Checkout.SeeInstructions" xml:space="preserve"><value>Lihat instruksi pembayaran</value></data>
+  <data name="Checkout.ConfirmFirst" xml:space="preserve"><value>Konfirmasi email Anda dulu sebelum membayar. Periksa kotak masuk atau kirim ulang email konfirmasi.</value></data>
+  <data name="Checkout.Channel" xml:space="preserve"><value>Metode pembayaran</value></data>
+  <data name="Checkout.Method.QRIS" xml:space="preserve"><value>QRIS</value></data>
+  <data name="Checkout.Method.VirtualAccount" xml:space="preserve"><value>Virtual account</value></data>
+  <data name="Checkout.Method.EWallet" xml:space="preserve"><value>E-wallet</value></data>
+  <data name="Checkout.Method.CreditCard" xml:space="preserve"><value>Kartu kredit</value></data>
+  <data name="Checkout.NoChannels" xml:space="preserve"><value>Belum ada metode pembayaran untuk jumlah ini.</value></data>
+  <data name="Checkout.RefundNote" xml:space="preserve"><value>Sebelum membayar, baca</value></data>
+  <data name="Checkout.RefundLink" xml:space="preserve"><value>kebijakan refund</value></data>
+  <data name="Checkout.TermsLink" xml:space="preserve"><value>syarat layanan</value></data>
+  <data name="Checkout.Accept" xml:space="preserve"><value>Saya sudah membaca dan menyetujui</value></data>
+  <data name="Checkout.Pay" xml:space="preserve"><value>Bayar</value></data>
+  <data name="Checkout.Unavailable" xml:space="preserve"><value>Pembayaran belum tersedia. Coba lagi nanti.</value></data>
+  <data name="Checkout.EmailNotConfirmed" xml:space="preserve"><value>Konfirmasi email Anda dulu sebelum membayar.</value></data>
+  <data name="Checkout.TermsRequired" xml:space="preserve"><value>Centang persetujuan syarat layanan dan kebijakan refund.</value></data>
+  <data name="Checkout.ChannelRequired" xml:space="preserve"><value>Pilih metode pembayaran.</value></data>
+  <data name="Payment.PendingExists" xml:space="preserve"><value>Item ini sudah punya pembayaran yang menunggu.</value></data>
+  <data name="Payment.GatewayFailed" xml:space="preserve"><value>Pembayaran belum bisa dibuat. Coba lagi sebentar lagi.</value></data>
 </root>
