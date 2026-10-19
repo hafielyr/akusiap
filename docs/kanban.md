@@ -7,16 +7,16 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
 - [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
 - [OWN-04] Own exam · M5 · deps: OWN-03
 - [SES-09] Retake wrong answers · M2 · deps: SES-08
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
+- [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
 
 ## In Progress
 
 ## Review
-- [SES-10] Session history · M2 · deps: SES-06 · (claude-opus-5.5, 2026-10-20)
+- [MEM-01] Wrong answers become review cards · M2 · deps: SES-06 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -76,6 +76,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [OWN-05] Allowance widget · M5 · deps: OWN-02
 - [SES-07] Result page and trial CTA · M1 · deps: SES-06
 - [SES-08] Answer review · M1 · deps: SES-06
+- [SES-10] Session history · M2 · deps: SES-06
 
 ## Backlog
 
@@ -84,7 +85,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 **M1 exit check**: An admin creates and publishes a paid exam and a free exam. A guest finds the paid exam in the catalog, takes the 30-question trial with explanations and sees the buy CTA. A registered user takes the free exam. The admin grants the paid exam to that user, who then takes the full exam in Simulation mode; it auto-submits at the time limit.
 
 ### M2 Learning loop (Release 1)
-- [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
 
 ### M3 Payments (Release 1)
 
