@@ -12,8 +12,18 @@
     <h1 class="text-2xl font-bold leading-tight">@T["Admin.Reports.Title"]</h1>
     <p class="text-slate-600">@T["Admin.Reports.Lead"]</p>
   </div>
+  <nav class="flex gap-2" aria-label="@T["Admin.Reports.Title"]">
+    <a href="@IndexModel.Route" aria-current="@(Model.ShowExams ? null : "page")" class="inline-flex min-h-11 items-center rounded-full border px-3 text-sm @(Model.ShowExams ? "border-slate-300" : "border-brand-600 bg-brand-50 font-semibold text-brand-800")">@T["Admin.Reports.QuestionsTab"]</a>
+    <a href="@IndexModel.Route?tab=@IndexModel.ExamTab" aria-current="@(Model.ShowExams ? "page" : null)" class="inline-flex min-h-11 items-center rounded-full border px-3 text-sm @(Model.ShowExams ? "border-brand-600 bg-brand-50 font-semibold text-brand-800" : "border-slate-300")" data-testid="exam-tab">@T["Admin.Reports.ExamsTab"]</a>
+  </nav>
 
-  @if (Model.Groups.Count == 0)
+  @if (Model.ShowExams)
+  {
+    <partial name="_ExamReportsPartial" model="Model" />
+  }
+  else
+  {
+  if (Model.Groups.Count == 0)
   {
     <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600" data-testid="no-reports">@T["Admin.Reports.Empty"]</p>
   }
@@ -53,4 +63,5 @@
       </li>
     }
   </ul>
+  }
 </section>

@@ -1,0 +1,59 @@
+@model Akusiap.Web.Areas.Admin.Pages.Reports.IndexModel
+@using Akusiap.Domain
+@* Shared-exam reports (SHR-02, ADM-27): take down or reject per exam, and restore taken-down exams. *@
+@if (Model.ExamGroups.Count == 0)
+{
+  <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600" data-testid="no-exam-reports">@T["Admin.Reports.Empty"]</p>
+}
+<ul class="space-y-3" data-testid="exam-report-groups">
+  @foreach (var group in Model.ExamGroups)
+  {
+    <li class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="exam-report-group" data-exam="@group.ExamId">
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="font-medium">@group.Title</p>
+          <p class="text-xs text-slate-500">@T["Shared.By", group.OwnerName] · @T[$"Own.Exams.Status.{group.Status}"]</p>
+        </div>
+        <span class="shrink-0 rounded-full bg-red-100 px-2 py-0.5 text-sm font-semibold text-red-800">@group.Count</span>
+      </div>
+      <ul class="space-y-1 text-sm text-slate-700">
+        @foreach (var entry in group.Entries.Take(10))
+        {
+          <li>
+            <span class="font-semibold">@T[$"ExamReport.Reason.{entry.Category}"]</span>@(entry.Details is null ? null : ": " + entry.Details)
+            <span class="text-xs text-slate-500">· @JakartaTime.Format(entry.At)@(entry.FromGuest ? " · " + T["Admin.Reports.Guest"].Value : null)</span>
+          </li>
+        }
+      </ul>
+      <div class="flex flex-wrap gap-2">
+        <form method="post" asp-page-handler="TakeDown">
+          <input type="hidden" name="examId" value="@group.ExamId" />
+          <button type="submit" class="btn btn-primary" data-testid="take-down">@T["Admin.Reports.TakeDown"]</button>
+        </form>
+        <form method="post" asp-page-handler="RejectExam">
+          <input type="hidden" name="examId" value="@group.ExamId" />
+          <button type="submit" class="btn btn-secondary" data-testid="reject-exam">@T["Admin.Reports.Rejected"]</button>
+        </form>
+      </div>
+    </li>
+  }
+</ul>
+
+@if (Model.TakenDown.Count > 0)
+{
+  <section class="space-y-2">
+    <h2 class="font-semibold">@T["Admin.Reports.TakenDownList"]</h2>
+    <ul class="space-y-2" data-testid="taken-down-exams">
+      @foreach (var exam in Model.TakenDown)
+      {
+        <li class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="taken-down-exam" data-exam="@exam.ExamId">
+          <span>@exam.Title <span class="text-xs text-slate-500">· @T["Shared.By", exam.OwnerName]</span></span>
+          <form method="post" asp-page-handler="Restore">
+            <input type="hidden" name="examId" value="@exam.ExamId" />
+            <button type="submit" class="btn btn-secondary" data-testid="restore-exam">@T["Admin.Reports.Restore"]</button>
+          </form>
+        </li>
+      }
+    </ul>
+  </section>
+}

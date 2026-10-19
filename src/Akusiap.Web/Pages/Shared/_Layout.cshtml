@@ -11,6 +11,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1d5fd1" />
   <title>@(ViewData["Title"] is string title ? $"{title} · Akusiap" : "Akusiap")</title>
+  @if (ViewData["NoIndex"] is true)
+  {
+    <meta name="robots" content="noindex" />
+  }
   <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
   <script src="~/lib/htmx/htmx.min.js" asp-append-version="true" defer></script>
   <script src="~/lib/alpinejs/alpine.min.js" asp-append-version="true" defer></script>

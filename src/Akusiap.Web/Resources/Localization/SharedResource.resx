@@ -826,4 +826,19 @@
   <data name="Share.TakenDown" xml:space="preserve"><value>Ujian ini diturunkan admin dan tidak bisa dibagikan.</value></data>
   <data name="Share.Saved" xml:space="preserve"><value>Pengaturan berbagi disimpan.</value></data>
   <data name="Flashcards.NextDue" xml:space="preserve"><value>Kartu tadi muncul lagi {0}.</value></data>
+  <data name="Shared.Unavailable" xml:space="preserve"><value>Ujian tidak tersedia</value></data>
+  <data name="Shared.UnavailableLead" xml:space="preserve"><value>Ujian ini sudah diturunkan dan tidak bisa dikerjakan lagi.</value></data>
+  <data name="Shared.By" xml:space="preserve"><value>Dibuat oleh {0}</value></data>
+  <data name="Shared.Report" xml:space="preserve"><value>Laporkan ujian ini</value></data>
+  <data name="ExamReport.Reason.Inappropriate" xml:space="preserve"><value>Isi tidak pantas</value></data>
+  <data name="ExamReport.Reason.Copyright" xml:space="preserve"><value>Melanggar hak cipta</value></data>
+  <data name="ExamReport.Reason.Misleading" xml:space="preserve"><value>Menyesatkan atau banyak salah</value></data>
+  <data name="ExamReport.Reason.Other" xml:space="preserve"><value>Lainnya</value></data>
+  <data name="Admin.Reports.QuestionsTab" xml:space="preserve"><value>Soal</value></data>
+  <data name="Admin.Reports.ExamsTab" xml:space="preserve"><value>Ujian dibagikan</value></data>
+  <data name="Admin.Reports.TakeDown" xml:space="preserve"><value>Turunkan ujian</value></data>
+  <data name="Admin.Reports.TakenDown" xml:space="preserve"><value>Ujian diturunkan.</value></data>
+  <data name="Admin.Reports.TakenDownList" xml:space="preserve"><value>Ujian yang diturunkan</value></data>
+  <data name="Admin.Reports.Restore" xml:space="preserve"><value>Pulihkan</value></data>
+  <data name="Admin.Reports.Restored" xml:space="preserve"><value>Ujian dipulihkan.</value></data>
 </root>

@@ -1,0 +1,42 @@
+@page "/s/{token}/lapor"
+@model Akusiap.Web.Pages.SharedExams.ReportModel
+@using Akusiap.Application.Moderation
+@* "Laporkan ujian ini" (SHR-02). *@
+@{
+  ViewData["Title"] = T["Shared.Report"].Value;
+  ViewData["NoIndex"] = true;
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[field]?.Errors.FirstOrDefault()?.ErrorMessage;
+}
+
+<section class="mx-auto max-w-xl space-y-4">
+  <a href="@SharedExamRoutes.Landing(Model.Exam.Token)" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @Model.Exam.Title</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Shared.Report"]</h1>
+
+  @if (Model.Sent)
+  {
+    <p role="status" class="rounded-xl border border-green-200 bg-green-50 p-4 text-green-900" data-testid="report-sent">@T["Report.Thanks"]</p>
+  }
+  else
+  {
+    <form method="post" class="space-y-4" novalidate data-testid="report-form">
+      <fieldset class="space-y-1">
+        <legend class="label">@T["Report.Reason"]</legend>
+        @foreach (var reason in Enum.GetValues<ExamReportReason>())
+        {
+          <label class="flex min-h-11 items-center gap-3 text-slate-800">
+            <input type="radio" name="Reason" value="@reason" class="size-5 accent-brand-600" checked="@(Model.Reason == reason)" />
+            <span>@T[$"ExamReport.Reason.{reason}"]</span>
+          </label>
+        }
+        @if (ErrorFor("Reason") is { } reasonError) { <span class="field-error" data-testid="error-reason">@reasonError</span> }
+      </fieldset>
+      <div class="space-y-1">
+        <label for="Details" class="label">@T["Report.Details"]</label>
+        <textarea id="Details" name="Details" rows="4" maxlength="1000" class="input">@Model.Details</textarea>
+        @if (ErrorFor("Details") is { } detailsError) { <span class="field-error">@detailsError</span> }
+      </div>
+      <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Report.Send"]</button>
+    </form>
+  }
+</section>
