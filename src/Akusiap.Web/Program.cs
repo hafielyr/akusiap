@@ -87,6 +87,8 @@ app.UseAuthorization();
 
 app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthResponseWriter.WriteAsync });
 app.MapStaticAssets();
+app.MapPost(Akusiap.Web.Payments.PaymentWebhook.Route, Akusiap.Web.Payments.PaymentWebhook.HandleAsync)
+   .WithMetadata(new Microsoft.AspNetCore.Mvc.RequestSizeLimitAttribute(Akusiap.Web.Payments.PaymentWebhook.MaxBodyBytes));
 app.MapRazorPages()
    .WithStaticAssets();
 // Unknown addresses get 404 for every method. Without this, the static-asset catch-all (GET/HEAD only) turns a POST to

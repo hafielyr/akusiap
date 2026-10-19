@@ -94,7 +94,7 @@ public sealed class PaymentFlowTests(PostgresFixture database)
     }
 
     [Fact]
-    public async Task Expired_and_failed_notifications_close_a_pending_payment_and_later_ones_are_ignored()
+    public async Task Expired_notifications_close_a_pending_payment_and_a_later_success_is_only_flagged_as_late()
     {
         await using var app = new AppFactory(database);
         await app.SeedReferenceDataAsync();
@@ -104,8 +104,9 @@ public sealed class PaymentFlowTests(PostgresFixture database)
         var expired = await ApplyAsync(app, FakePaymentGateway.CreateNotification(payment.InvoiceNumber, "EXPIRED", payment.AmountIdr));
         var latePaid = await ApplyAsync(app, FakePaymentGateway.CreateNotification(payment.InvoiceNumber, "PAID", payment.AmountIdr));
 
-        Assert.Equal((NotificationOutcome.Applied, NotificationOutcome.Ignored), (expired, latePaid));
-        Assert.Equal(PaymentStatus.Expired, (await LoadAsync(payment.Id)).Status);
+        Assert.Equal((NotificationOutcome.Applied, NotificationOutcome.LatePayment), (expired, latePaid));
+        var after = await LoadAsync(payment.Id);
+        Assert.Equal((PaymentStatus.Expired, true), (after.Status, after.IsLatePayment));
     }
 
     [Fact]

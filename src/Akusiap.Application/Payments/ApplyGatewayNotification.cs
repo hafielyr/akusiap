@@ -1,4 +1,5 @@
 using Akusiap.Application.Abstractions;
+using Akusiap.Domain.Access;
 using Akusiap.Domain.Payments;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,14 +22,20 @@ public enum NotificationOutcome
     /// <summary>Stored; the payment was not Pending, so its status was left alone.</summary>
     Ignored,
 
-    /// <summary>Stored and applied to the payment's status.</summary>
+    /// <summary>Stored; a success for a payment already Expired or Canceled. Flagged for the admin, not fulfilled (BR-23).</summary>
+    LatePayment,
+
+    /// <summary>Stored and applied: the payment moved on (and was fulfilled when Paid).</summary>
     Applied,
 }
 
 /// <summary>
-/// Stores a gateway notification and moves a Pending payment to Paid, Expired or Failed (PAY-01, D-52). Every
-/// readable notification is kept in <c>payment_webhook_events</c> with its signature check; invalid ones are never
-/// applied. PAY-06 adds the public webhook endpoint, late payments and fulfilling the purchase or subscription.
+/// Stores a gateway notification and applies it (PAY-01, PAY-06, D-52, D-64). Every readable notification is kept in
+/// <c>payment_webhook_events</c> with its signature check; invalid ones are never applied, and each gateway event id is
+/// processed once. A Pending payment moves to Paid, Expired or Failed. On Paid, the item is fulfilled in the same save:
+/// the exam purchase becomes Active until (running end, else now) + the exam's access days (D-04), or the subscription
+/// becomes Active until (running end, else now) + the package's months (D-03). A success for a payment that already
+/// Expired or was Canceled only sets <see cref="Payment.IsLatePayment"/>; what to do with it is the owner's call.
 /// </summary>
 public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway gateway, IClock clock)
 {
@@ -60,9 +67,10 @@ public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway g
         };
         db.PaymentWebhookEvents.Add(stored);
 
-        var outcome = Apply(parsed, payment, signatureValid, now, stored);
+        var outcome = await ApplyAsync(parsed, payment, signatureValid, now, stored, cancellationToken).ConfigureAwait(false);
         try
         {
+            // One SaveChanges: the event, the payment and the fulfilment commit together.
             await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
         catch (DbUpdateException)
@@ -79,7 +87,8 @@ public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway g
         return (outcome, payment);
     }
 
-    private static NotificationOutcome Apply(GatewayEvent parsed, Payment? payment, bool signatureValid, DateTime now, PaymentWebhookEvent stored)
+    private async Task<NotificationOutcome> ApplyAsync(
+        GatewayEvent parsed, Payment? payment, bool signatureValid, DateTime now, PaymentWebhookEvent stored, CancellationToken cancellationToken)
     {
         if (!signatureValid)
         {
@@ -94,6 +103,13 @@ public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway g
             return NotificationOutcome.UnknownPayment;
         }
 
+        if (parsed.Kind == GatewayEventKind.Paid && payment.Status is PaymentStatus.Expired or PaymentStatus.Canceled)
+        {
+            payment.IsLatePayment = true;
+            stored.ProcessingError = $"Late payment: the payment was {payment.Status}. Not fulfilled; the admin decides.";
+            return NotificationOutcome.LatePayment;
+        }
+
         if (payment.Status != PaymentStatus.Pending || parsed.Kind == GatewayEventKind.Other)
         {
             stored.ProcessingError = $"Not applied: payment is {payment.Status}, event is {parsed.Kind}.";
@@ -105,6 +121,7 @@ public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway g
             case GatewayEventKind.Paid:
                 payment.Status = PaymentStatus.Paid;
                 payment.PaidAt = now;
+                await FulfilAsync(payment, now, cancellationToken).ConfigureAwait(false);
                 break;
             case GatewayEventKind.Expired:
                 payment.Status = PaymentStatus.Expired;
@@ -116,5 +133,30 @@ public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway g
         }
 
         return NotificationOutcome.Applied;
+    }
+
+    private async Task FulfilAsync(Payment payment, DateTime now, CancellationToken cancellationToken)
+    {
+        if (payment.ExamPurchaseId is { } purchaseId)
+        {
+            var purchase = await db.ExamPurchases.Include(p => p.Exam).SingleAsync(p => p.Id == purchaseId, cancellationToken).ConfigureAwait(false);
+            var running = purchase.Status == ExamPurchaseStatus.Active && purchase.AccessExpiresAt > now ? purchase.AccessExpiresAt : null;
+            var days = purchase.Exam!.AccessDays ?? throw new InvalidOperationException($"Exam {purchase.ExamId} has no access period.");
+            purchase.Status = ExamPurchaseStatus.Active;
+            purchase.PurchasedAt ??= now;
+            purchase.PricePaidIdr = payment.AmountIdr;
+            purchase.AccessExpiresAt = (running ?? now).AddDays(days);
+            return;
+        }
+
+        var subscription = await db.Subscriptions.Include(s => s.PlanPrice).SingleAsync(s => s.Id == payment.SubscriptionId, cancellationToken).ConfigureAwait(false);
+        var runningEnd = subscription.Status == SubscriptionStatus.Active && subscription.CurrentPeriodEnd > now ? subscription.CurrentPeriodEnd : null;
+        if (runningEnd is null)
+        {
+            subscription.CurrentPeriodStart = now;
+        }
+
+        subscription.Status = SubscriptionStatus.Active;
+        subscription.CurrentPeriodEnd = (runningEnd ?? now).AddMonths(subscription.PlanPrice!.DurationMonths);
     }
 }

@@ -7,16 +7,18 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03
 - [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
 - [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02
 - [SES-06] Submit, scoring and timeout · M1 · deps: SES-04
 - [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04
+- [PAY-07] Receipt email · M3 · deps: PAY-06, AC-02
+- [PAY-09] Refund requests · M3 · deps: PAY-06
+- [PAY-10] Admin transactions · M3 · deps: PAY-06
 
 ## In Progress
 
 ## Review
-- [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01 · (claude-opus-5.5, 2026-10-19)
+- [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -63,6 +65,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [USR-02] Create user · M4 · deps: USR-01, AC-02
 - [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 - [SES-04] Autosave and resume · M1 · deps: SES-03
+- [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
 
 ## Backlog
 
@@ -80,10 +83,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 
 ### M3 Payments (Release 1)
-- [PAY-07] Receipt email · M3 · deps: PAY-06, AC-02
 - [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
-- [PAY-09] Refund requests · M3 · deps: PAY-06
-- [PAY-10] Admin transactions · M3 · deps: PAY-06
 
 ### M4 Admin ops and launch (Release 1)
 - [OPS-02] Production deployment · M4 · deps: F-08, PAY-04
