@@ -1,0 +1,121 @@
+@page "/ujian/{id:long}/mulai"
+@model Akusiap.Web.Pages.Exams.StartModel
+@using Akusiap.Application.Sessions
+@using Akusiap.Domain.Sessions
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Akusiap.Web.Localization.SharedResource> S
+@* Session setup (SES-02). Alpine only shows the fields of the chosen mode; without JavaScript both show and the server
+   ignores the Practice fields in Simulation. *@
+@{
+  var setup = Model.Setup;
+  var preset = setup.Preset;
+  ViewData["Title"] = T["Session.Setup.Title"].Value;
+  var locked = new List<string>
+  {
+    preset.TimeLimitMinutes is { } minutes ? S["Admin.Presets.Minutes", minutes] : S["Admin.Presets.Untimed"],
+    S["Session.Setup.QuestionCountValue", setup.DefaultQuestionCount],
+    S["Session.Setup.NoHints"],
+  };
+  var noSimulationsLeft = setup.SimulationAttemptsLeft == 0;
+}
+
+<section class="mx-auto max-w-md space-y-5">
+  <div class="space-y-1">
+    <a href="@ExamRoutes.Detail(setup.ExamId)" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @setup.Title</a>
+    <h1 class="text-2xl font-bold leading-tight">@T["Session.Setup.Title"]</h1>
+    @if (setup.IsTrial)
+    {
+      <p class="rounded-lg bg-brand-50 px-3 py-2 text-sm text-brand-800" data-testid="trial-note">@T["Session.Setup.TrialNote", setup.AvailableCount]</p>
+    }
+  </div>
+
+  @if (Model.Errors.Count > 0)
+  {
+    <ul role="alert" class="space-y-1 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" data-testid="setup-errors">
+      @foreach (var error in Model.Errors)
+      {
+        <li>@error</li>
+      }
+    </ul>
+  }
+
+  <form method="post" class="space-y-5" novalidate
+        x-data="{ mode: '@Model.Form.Mode', untimed: @(Model.Form.Untimed ? "true" : "false") }">
+    <fieldset class="space-y-2">
+      <legend class="label">@T["Session.Setup.Mode"]</legend>
+      @foreach (var mode in new[] { AttemptMode.Practice, AttemptMode.Simulation })
+      {
+        <label class="flex min-h-11 cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-brand-600">
+          <input type="radio" name="Form.Mode" value="@mode" checked="@(Model.Form.Mode == mode)" x-model="mode" class="mt-1 size-5 accent-brand-600" data-testid="mode-@mode" />
+          <span>
+            <span class="block font-semibold">@T[$"Session.Setup.{mode}"]</span>
+            <span class="block text-sm text-slate-600">@T[$"Session.Setup.{mode}Hint"]</span>
+          </span>
+        </label>
+      }
+    </fieldset>
+
+    <div x-show="mode === 'Practice'" class="space-y-4" data-testid="practice-fields">
+      <div class="space-y-1">
+        <label asp-for="Form.QuestionCount" class="label">@T["Session.Setup.QuestionCount", setup.AvailableCount]</label>
+        <input asp-for="Form.QuestionCount" type="number" min="1" max="@setup.AvailableCount" inputmode="numeric" class="input" />
+        <span asp-validation-for="Form.QuestionCount" class="field-error"></span>
+      </div>
+
+      @if (setup.Topics.Count > 1)
+      {
+        <fieldset class="space-y-1">
+          <legend class="label">@T["Session.Setup.Topics"]</legend>
+          @foreach (var topic in setup.Topics)
+          {
+            <label class="flex min-h-11 items-center gap-3">
+              <input type="checkbox" name="Form.TopicIds" value="@topic.Id" checked="@Model.Form.TopicIds.Contains(topic.Id)" class="size-5 rounded border-slate-300 accent-brand-600" />
+              <span>@topic.Name <span class="text-sm text-slate-500">(@T["Catalog.QuestionCount", topic.QuestionCount])</span></span>
+            </label>
+          }
+          <span asp-validation-for="Form.TopicIds" class="field-error"></span>
+        </fieldset>
+      }
+
+      <div class="space-y-1">
+        <label class="flex min-h-11 items-center gap-3">
+          <input asp-for="Form.Untimed" x-model="untimed" class="size-5 rounded border-slate-300 accent-brand-600" />
+          <span>@T["Admin.Presets.Untimed"]</span>
+        </label>
+        <div x-show="!untimed" class="space-y-1">
+          <label asp-for="Form.TimeLimitMinutes" class="label">@T["Admin.Preset.TimeLimit"]</label>
+          <input asp-for="Form.TimeLimitMinutes" type="number" min="@(preset.TimeLimitMinutes ?? 1)" max="@SessionRulesBuilder.MaxTimeLimitMinutes" inputmode="numeric" class="input" />
+          @if (preset.TimeLimitMinutes is { } floor)
+          {
+            <p class="text-sm text-slate-500">@T["Session.Setup.MinTime", floor]</p>
+          }
+        </div>
+        <span asp-validation-for="Form.TimeLimitMinutes" class="field-error"></span>
+      </div>
+
+      <label class="flex min-h-11 items-center gap-3">
+        <input asp-for="Form.HintsEnabled" disabled="@(!preset.HintsEnabled)" class="size-5 rounded border-slate-300 accent-brand-600" />
+        <span>@T["Session.Setup.Hints"]@if (!preset.HintsEnabled) { <span class="text-sm text-slate-500"> · @T["Session.Rules.HintsOff"]</span> }</span>
+      </label>
+      <span asp-validation-for="Form.HintsEnabled" class="field-error"></span>
+      <label class="flex min-h-11 items-center gap-3">
+        <input asp-for="Form.ShuffleQuestions" class="size-5 rounded border-slate-300 accent-brand-600" />
+        <span>@T["Admin.Preset.ShuffleQuestions"]</span>
+      </label>
+      <label class="flex min-h-11 items-center gap-3">
+        <input asp-for="Form.ShuffleOptions" class="size-5 rounded border-slate-300 accent-brand-600" />
+        <span>@T["Admin.Preset.ShuffleOptions"]</span>
+      </label>
+    </div>
+
+    <div x-show="mode === 'Simulation'" class="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm" data-testid="simulation-rules">
+      <p class="font-semibold">@T["Session.Setup.Locked"]</p>
+      <p>@string.Join(" · ", locked)</p>
+      @if (setup.SimulationAttemptsLeft is { } left)
+      {
+        <p class="@(noSimulationsLeft ? "text-red-800" : "text-slate-600")" data-testid="attempts-left">@T["Session.Setup.AttemptsLeft", left]</p>
+      }
+    </div>
+
+    <button type="submit" class="btn btn-primary w-full" data-testid="start">@T["Session.Setup.Start"]</button>
+  </form>
+</section>

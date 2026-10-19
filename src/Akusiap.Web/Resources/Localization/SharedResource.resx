@@ -499,4 +499,20 @@
   <data name="Admin.Users.Attempts" xml:space="preserve"><value>Sesi latihan</value></data>
   <data name="Admin.Users.ManageAccess" xml:space="preserve"><value>Kelola akses</value></data>
   <data name="Admin.Users.NoAccess" xml:space="preserve"><value>Belum ada pembelian atau langganan.</value></data>
+  <data name="Session.Setup.Title" xml:space="preserve"><value>Atur sesi latihan</value></data>
+  <data name="Session.Setup.Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="Session.Setup.Practice" xml:space="preserve"><value>Latihan</value></data>
+  <data name="Session.Setup.PracticeHint" xml:space="preserve"><value>Lihat pembahasan setiap soal dan pakai petunjuk. Aturan bisa diubah.</value></data>
+  <data name="Session.Setup.Simulation" xml:space="preserve"><value>Simulasi</value></data>
+  <data name="Session.Setup.SimulationHint" xml:space="preserve"><value>Berwaktu, tanpa petunjuk, mengikuti aturan ujian.</value></data>
+  <data name="Session.Setup.QuestionCount" xml:space="preserve"><value>Jumlah soal (maks. {0})</value></data>
+  <data name="Session.Setup.QuestionCountValue" xml:space="preserve"><value>{0} soal</value></data>
+  <data name="Session.Setup.Topics" xml:space="preserve"><value>Topik (kosongkan untuk semua topik)</value></data>
+  <data name="Session.Setup.MinTime" xml:space="preserve"><value>Minimal {0} menit.</value></data>
+  <data name="Session.Setup.Hints" xml:space="preserve"><value>Tampilkan petunjuk</value></data>
+  <data name="Session.Setup.NoHints" xml:space="preserve"><value>tanpa petunjuk</value></data>
+  <data name="Session.Setup.Locked" xml:space="preserve"><value>Aturan simulasi mengikuti ujian:</value></data>
+  <data name="Session.Setup.AttemptsLeft" xml:space="preserve"><value>Sisa {0} kali simulasi.</value></data>
+  <data name="Session.Setup.TrialNote" xml:space="preserve"><value>Mode coba: {0} soal gratis dari ujian ini.</value></data>
+  <data name="Session.Setup.Start" xml:space="preserve"><value>Mulai</value></data>
 </root>
