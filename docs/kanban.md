@@ -7,17 +7,17 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SES-03] Quiz player · M1 · deps: SES-01
 - [CAT-03] Pricing comparison · M3 · deps: PAY-02
 - [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
 - [OWN-01] Plan limits admin · M5 · deps: PAY-02
 - [USR-02] Create user · M4 · deps: USR-01, AC-02
 - [USR-03] Deactivate and reactivate · M4 · deps: USR-01
+- [SES-04] Autosave and resume · M1 · deps: SES-03
 
 ## In Progress
 
 ## Review
-- [SES-02] Session setup page · M1 · deps: SES-01 · (claude-opus-5.5, 2026-10-19)
+- [SES-03] Quiz player · M1 · deps: SES-01 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -56,11 +56,11 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 - [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07
 - [USR-01] User search · M4 · deps: AC-06
+- [SES-02] Session setup page · M1 · deps: SES-01
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [SES-04] Autosave and resume · M1 · deps: SES-03
 - [SES-06] Submit, scoring and timeout · M1 · deps: SES-04
 - [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04
 - [SES-07] Result page and trial CTA · M1 · deps: SES-06

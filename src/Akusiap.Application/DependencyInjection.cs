@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddSingleton<IRandomSource, SystemRandomSource>();
         services.AddScoped<StartAttempt>();
         services.AddScoped<GetSessionSetup>();
+        services.AddScoped<GetPlayer>();
         services.AddScoped<CreatePayment>();
         services.AddScoped<ListPlanPricing>();
         services.AddScoped<SavePlanPrices>();

@@ -3,6 +3,7 @@
 /* Only scan Razor views; the compiled output is committed to wwwroot/css/app.css. */
 @source "../Pages";
 @source "../Areas";
+@source "../wwwroot/js";
 
 /* Alpine: hide elements until Alpine has initialised them. */
 [x-cloak] { display: none !important; }
