@@ -1,0 +1,30 @@
+@* Admin shell (ADM-T1): the main layout plus a scrollable tab bar and the "saved" message. *@
+@{
+  Layout = "/Pages/Shared/_Layout.cshtml";
+  var path = Context.Request.Path;
+  var tabs = new (string Href, string Label, bool Active)[]
+  {
+    ("/admin", T["Admin.Nav.Dashboard"].Value, path.Equals("/admin", StringComparison.OrdinalIgnoreCase)),
+    ("/admin/subjek", T["Admin.Nav.Subjects"].Value, path.StartsWithSegments("/admin/subjek") || path.StartsWithSegments("/admin/topik")),
+  };
+}
+<div class="space-y-6">
+  <nav aria-label="@T["Admin.Nav.Label"]" class="-mx-4 overflow-x-auto border-b border-slate-200 px-4" data-testid="admin-nav">
+    <ul class="flex gap-1 whitespace-nowrap">
+      @foreach (var tab in tabs)
+      {
+        <li>
+          <a href="@tab.Href" aria-current="@(tab.Active ? "page" : null)"
+             class="inline-flex min-h-11 items-center border-b-2 px-3 text-sm font-medium @(tab.Active ? "border-brand-600 text-brand-700" : "border-transparent text-slate-600 hover:text-slate-900")">@tab.Label</a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  @if (TempData["Flash"] is string flash)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash]</p>
+  }
+
+  @RenderBody()
+</div>

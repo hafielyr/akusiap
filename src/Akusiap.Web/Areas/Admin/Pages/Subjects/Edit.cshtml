@@ -1,0 +1,70 @@
+@page "/admin/subjek/{id:long}"
+@model Akusiap.Web.Areas.Admin.Pages.Subjects.EditModel
+@{
+  ViewData["Title"] = T["Admin.Subjects.EditTitle"].Value;
+  var topicNameError = ViewContext.ViewData.ModelState["NewTopic.Name"]?.Errors.FirstOrDefault()?.ErrorMessage;
+  var inUse = Model.Subject.Topics.Count > 0 || Model.Subject.ExamCount > 0;
+}
+
+<section class="max-w-xl space-y-4">
+  <a href="/admin/subjek" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @T["Admin.Subjects.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@Model.Subject.Name</h1>
+  <partial name="_SubjectFormPartial" model="Model.Input" />
+</section>
+
+<section class="max-w-xl space-y-3" aria-labelledby="topics-heading">
+  <h2 id="topics-heading" class="text-xl font-bold">@T["Admin.Topics.Title"]</h2>
+
+  @if (Model.Subject.Topics.Count == 0)
+  {
+    <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600">@T["Admin.Topics.Empty"]</p>
+  }
+  else
+  {
+    <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white" data-testid="topic-list">
+      @foreach (var topic in Model.Subject.Topics)
+      {
+        <li>
+          <a href="/admin/topik/@topic.Id" class="flex min-h-11 items-center justify-between gap-3 px-4 py-3 hover:bg-slate-50">
+            <span class="font-medium">@topic.Name</span>
+            <span class="shrink-0 text-sm text-slate-500">@T["Admin.Topics.QuestionCount", topic.QuestionCount]</span>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+
+  <form method="post" asp-page-handler="AddTopic" class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" novalidate>
+    <h3 class="font-semibold">@T["Admin.Topics.Add"]</h3>
+    <div class="space-y-1">
+      <label for="NewTopic_Name" class="label">@T["Admin.Topic.Name"]</label>
+      <input id="NewTopic_Name" name="NewTopic.Name" value="@Model.NewTopic.Name" maxlength="200" class="input" aria-invalid="@(topicNameError is null ? null : "true")" />
+      @if (topicNameError is not null)
+      {
+        <span class="field-error" data-testid="error-topic-name">@topicNameError</span>
+      }
+    </div>
+    <div class="space-y-1">
+      <label for="NewTopic_Description" class="label">@T["Admin.Topic.Description"]</label>
+      <input id="NewTopic_Description" name="NewTopic.Description" value="@Model.NewTopic.Description" maxlength="1000" class="input" />
+    </div>
+    <button type="submit" class="btn btn-secondary w-full sm:w-auto">@T["Admin.Topics.Add"]</button>
+  </form>
+</section>
+
+<section class="max-w-xl space-y-2 border-t border-slate-200 pt-4">
+  @if (inUse)
+  {
+    <p class="text-sm text-slate-500">@T["Admin.Subjects.DeleteBlocked"]</p>
+  }
+  else
+  {
+    <form method="post" asp-page-handler="Delete" x-data="{ sure: false }">
+      <button type="button" x-show="!sure" x-on:click="sure = true" class="btn btn-secondary text-red-700">@T["Admin.Subjects.Delete"]</button>
+      <span x-show="sure" x-cloak class="flex flex-wrap items-center gap-2">
+        <button type="submit" class="btn bg-red-600 text-white hover:bg-red-700">@T["Admin.ConfirmDelete"]</button>
+        <button type="button" x-on:click="sure = false" class="btn btn-secondary">@T["Admin.Cancel"]</button>
+      </span>
+    </form>
+  }
+</section>

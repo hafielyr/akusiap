@@ -1,0 +1,11 @@
+@page "/admin/subjek/baru"
+@model Akusiap.Web.Areas.Admin.Pages.Subjects.CreateModel
+@{
+  ViewData["Title"] = T["Admin.Subjects.NewTitle"].Value;
+}
+
+<section class="max-w-xl space-y-4">
+  <a href="/admin/subjek" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @T["Admin.Subjects.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Subjects.NewTitle"]</h1>
+  <partial name="_SubjectFormPartial" model="Model.Input" />
+</section>

@@ -1,10 +1,14 @@
 @page "/admin"
-@* Admin area entry (AdminOnly, AC-06). ADM-T1 replaces this with the admin shell and navigation. *@
 @{
   ViewData["Title"] = T["Admin.Title"].Value;
 }
 
-<section class="space-y-3 py-6">
+<section class="space-y-4">
   <h1 class="text-2xl font-bold leading-tight">@T["Admin.Title"]</h1>
-  <p class="text-slate-600">@T["Admin.ComingSoon"]</p>
+  <p class="text-slate-600">@T["Admin.Dashboard.Lead"]</p>
+  <a href="/admin/subjek" class="block rounded-xl border border-slate-200 bg-white p-4 hover:border-brand-600">
+    <span class="block font-semibold">@T["Admin.Nav.Subjects"]</span>
+    <span class="block text-sm text-slate-600">@T["Admin.Subjects.Lead"]</span>
+  </a>
+  <p class="text-sm text-slate-500">@T["Admin.ComingSoon"]</p>
 </section>

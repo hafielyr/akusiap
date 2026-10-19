@@ -52,6 +52,10 @@ public sealed class MobileSite : IAsyncLifetime, IAsyncDisposable
 
     ValueTask IAsyncDisposable.DisposeAsync() => new(DisposeAsync());
 
+    /// <summary>Creates a user with a hashed password (for flows that need an admin or a returning learner).</summary>
+    public Task<Akusiap.Domain.Users.User> CreateUserAsync(Akusiap.Domain.Users.User user, string password, params string[] roles) =>
+        (_app ?? throw new InvalidOperationException("The site is not started.")).CreateUserAsync(user, password, roles);
+
     /// <summary>Environment variable that turns on trace recording (see <see cref="Phone"/>).</summary>
     public const string TracesDirVariable = "PLAYWRIGHT_TRACES_DIR";
 
