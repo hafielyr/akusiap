@@ -372,4 +372,15 @@
   <data name="Session.Rules.TimeRange" xml:space="preserve"><value>Batas waktu harus 1 sampai {0} menit.</value></data>
   <data name="Session.Rules.HintsOff" xml:space="preserve"><value>Petunjuk dimatikan untuk ujian ini.</value></data>
   <data name="Session.Rules.NoQuestions" xml:space="preserve"><value>Tidak ada soal untuk topik yang dipilih.</value></data>
+  <data name="Learn.Access.Title" xml:space="preserve"><value>Akses saya</value></data>
+  <data name="Learn.Access.Lead" xml:space="preserve"><value>Ujian yang Anda beli dan paket langganan Anda. Tanggal dalam WIB.</value></data>
+  <data name="Learn.Access.Active" xml:space="preserve"><value>Aktif</value></data>
+  <data name="Learn.Access.Ended" xml:space="preserve"><value>Sudah berakhir</value></data>
+  <data name="Learn.Access.Empty" xml:space="preserve"><value>Anda belum punya ujian berbayar atau langganan.</value></data>
+  <data name="Learn.Access.Browse" xml:space="preserve"><value>Lihat katalog</value></data>
+  <data name="Learn.Access.AllExams" xml:space="preserve"><value>Semua ujian di katalog</value></data>
+  <data name="Learn.Access.BuyAgain" xml:space="preserve"><value>Beli lagi</value></data>
+  <data name="Learn.Access.Exam" xml:space="preserve"><value>Ujian</value></data>
+  <data name="Learn.Access.Plan" xml:space="preserve"><value>Paket</value></data>
+  <data name="Learn.Access.Link" xml:space="preserve"><value>Lihat akses ujian dan langganan Anda</value></data>
 </root>
