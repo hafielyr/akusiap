@@ -1,0 +1,36 @@
+@model Akusiap.Application.Memorization.FlashcardCard
+@using Akusiap.Domain.Memorization
+@* One flashcard (MEM-03): the question, "Lihat jawaban" flips it (Alpine), and a rating swaps in the next card (htmx). *@
+@{
+  var rateUrl = $"{IndexModel.SetUrl(Model.AttemptId)}?handler=Rate";
+}
+<article id="flashcard" x-data="{ flipped: false }" class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" data-testid="flashcard" data-position="@Model.Position">
+  <div class="space-y-1">
+    <p class="text-xs font-medium uppercase tracking-wide text-slate-500">@(Model.Title ?? T["Flashcards.MyCards"].Value) · @T["Flashcards.CardOf", Model.Position, Model.Total]</p>
+    <p class="whitespace-pre-line text-lg font-medium">@Model.Text</p>
+  </div>
+  <ul class="space-y-2">
+    @foreach (var option in Model.Options)
+    {
+      <li class="rounded-lg border border-slate-200 px-3 py-2 text-sm" @(option.IsCorrect ? Html.Raw(":class=\"flipped && 'border-green-600 bg-green-50 font-semibold'\"") : null)>@option.Text</li>
+    }
+  </ul>
+  <button type="button" class="btn btn-primary w-full" x-show="!flipped" @@click="flipped = true" data-testid="flip">@T["Flashcards.Flip"]</button>
+  <div x-show="flipped" x-cloak class="space-y-4" data-testid="answer">
+    <p class="whitespace-pre-line text-sm text-slate-700">@Model.Explanation</p>
+    @if (Model.KeyFact is not null)
+    {
+      <p class="text-sm text-slate-700"><span class="font-semibold">@T["Session.Player.KeyFact"]:</span> @Model.KeyFact</p>
+    }
+    <form method="post" action="@rateUrl" asp-antiforgery="true" hx-post="@rateUrl" hx-target="#flashcard" hx-swap="outerHTML" class="space-y-2">
+      <input type="hidden" name="position" value="@Model.Position" />
+      <p class="label">@T["Flashcards.Rate"]</p>
+      <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        @foreach (var rating in Enum.GetValues<ReviewRating>())
+        {
+          <button type="submit" name="rating" value="@rating" class="btn @(rating == ReviewRating.Forgot ? "btn-secondary" : "btn-primary")" data-testid="rate-@rating">@T[$"Flashcards.Rating.{rating}"]</button>
+        }
+      </div>
+    </form>
+  </div>
+</article>

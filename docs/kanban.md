@@ -7,14 +7,15 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
 - [OWN-06] Private mixed practice set · M5 · deps: OWN-04, SES-01
 - [SHR-01] Share, stop sharing and reset link · M6 · deps: OWN-04
+- [SRS-01] Own questions in review · M7 · deps: MEM-03, OWN-03
+- [SRS-02] Scheduled reviews · M7 · deps: MEM-02, MEM-03
 
 ## In Progress
 
 ## Review
-- [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2 · (claude-opus-5.5, 2026-10-20)
+- [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -79,6 +80,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
 - [OWN-04] Own exam · M5 · deps: OWN-03
 - [SES-09] Retake wrong answers · M2 · deps: SES-08
+- [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 
 ## Backlog
 
@@ -104,8 +106,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04
 
 ### M7 Spaced repetition (Release 2)
-- [SRS-01] Own questions in review · M7 · deps: MEM-03, OWN-03
-- [SRS-02] Scheduled reviews · M7 · deps: MEM-02, MEM-03
 - [SRS-03] Daily due list · M7 · deps: SRS-02
 
 **Release 2 exit check**: A free learner writes 50 questions, builds 1 exam and shares it. A guest takes it by entering a name, sees the explanations and is invited to register. The admin takes the exam down and the link stops working. The daily due list shows wrong answers scheduled by SM-2.

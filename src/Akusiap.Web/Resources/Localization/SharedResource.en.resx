@@ -783,4 +783,23 @@
   <data name="Admin.Reports.Rejected" xml:space="preserve"><value>Reject</value></data>
   <data name="Admin.Reports.MarkedFixed" xml:space="preserve"><value>Reports marked as fixed.</value></data>
   <data name="Admin.Reports.MarkedRejected" xml:space="preserve"><value>Reports rejected.</value></data>
+  <data name="Flashcards.Title" xml:space="preserve"><value>Flashcards</value></data>
+  <data name="Flashcards.Link" xml:space="preserve"><value>Review questions as cards, due ones first</value></data>
+  <data name="Flashcards.Lead" xml:space="preserve"><value>Pick a deck. A set has 10 cards: due ones first, then the ones you keep missing, then new ones.</value></data>
+  <data name="Flashcards.MyCards" xml:space="preserve"><value>My cards</value></data>
+  <data name="Flashcards.Due" xml:space="preserve"><value>{0} cards due</value></data>
+  <data name="Flashcards.Start" xml:space="preserve"><value>Start 10 cards</value></data>
+  <data name="Flashcards.Empty" xml:space="preserve"><value>There are no cards to practise here yet.</value></data>
+  <data name="Flashcards.NoAccess" xml:space="preserve"><value>You don't have full access to this exam.</value></data>
+  <data name="Flashcards.CardOf" xml:space="preserve"><value>Card {0} of {1}</value></data>
+  <data name="Flashcards.Flip" xml:space="preserve"><value>Show the answer</value></data>
+  <data name="Flashcards.Rate" xml:space="preserve"><value>How well did you remember?</value></data>
+  <data name="Flashcards.Rating.Forgot" xml:space="preserve"><value>Forgot</value></data>
+  <data name="Flashcards.Rating.Hard" xml:space="preserve"><value>Hard</value></data>
+  <data name="Flashcards.Rating.Good" xml:space="preserve"><value>Good</value></data>
+  <data name="Flashcards.Rating.Easy" xml:space="preserve"><value>Easy</value></data>
+  <data name="Flashcards.Done" xml:space="preserve"><value>Set complete</value></data>
+  <data name="Flashcards.SummaryTotal" xml:space="preserve"><value>{0} cards reviewed</value></data>
+  <data name="Flashcards.Again" xml:space="preserve"><value>Next set</value></data>
+  <data name="History.Open" xml:space="preserve"><value>Open</value></data>
 </root>

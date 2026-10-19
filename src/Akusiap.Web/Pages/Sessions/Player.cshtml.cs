@@ -26,6 +26,11 @@ public sealed class PlayerModel(GetPlayer getPlayer, SubmitAttempt submitAttempt
             return NotFound();
         }
 
+        if (view.Mode == Akusiap.Domain.Sessions.AttemptMode.Flashcard)
+        {
+            return Redirect(Areas.Learn.Pages.Flashcards.IndexModel.SetUrl(id));
+        }
+
         if (view.Status != Akusiap.Domain.Sessions.AttemptStatus.InProgress)
         {
             return Redirect(SessionRoutes.Result(id));
