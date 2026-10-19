@@ -11,7 +11,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -87,6 +86,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SRS-03] Daily due list · M7 · deps: SRS-02
 - [SHR-03] Guest takes a shared exam · M6 · deps: SHR-02, SES-03
 - [SHR-04] Shared result and register invitation · M6 · deps: SHR-03
+- [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04
 
 ## Backlog
 
