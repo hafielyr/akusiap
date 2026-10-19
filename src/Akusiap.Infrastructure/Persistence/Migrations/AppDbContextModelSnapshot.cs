@@ -734,6 +734,494 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.ToTable("topics", (string)null);
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Memorization.ReviewCard", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("DueAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("due_at");
+
+                    b.Property<decimal>("EaseFactor")
+                        .HasPrecision(4, 2)
+                        .HasColumnType("numeric(4,2)")
+                        .HasColumnName("ease_factor");
+
+                    b.Property<decimal>("IntervalDays")
+                        .HasPrecision(8, 2)
+                        .HasColumnType("numeric(8,2)")
+                        .HasColumnName("interval_days");
+
+                    b.Property<bool>("IsBookmarked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_bookmarked");
+
+                    b.Property<int>("Lapses")
+                        .HasColumnType("integer")
+                        .HasColumnName("lapses");
+
+                    b.Property<DateTime?>("LastReviewedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_reviewed_at");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text")
+                        .HasColumnName("note");
+
+                    b.Property<long>("QuestionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("question_id");
+
+                    b.Property<int>("Repetitions")
+                        .HasColumnType("integer")
+                        .HasColumnName("repetitions");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("state");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_review_cards");
+
+                    b.HasIndex("QuestionId")
+                        .HasDatabaseName("ix_review_cards_question_id");
+
+                    b.HasIndex("UserId", "QuestionId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_review_cards_user_id_question_id");
+
+                    b.HasIndex(new[] { "UserId", "DueAt" }, "ix_review_cards_due")
+                        .HasDatabaseName("ix_review_cards_due");
+
+                    b.ToTable("review_cards", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_review_cards_ease_factor", "ease_factor > 0");
+
+                            t.HasCheckConstraint("ck_review_cards_interval_days", "interval_days >= 0");
+
+                            t.HasCheckConstraint("ck_review_cards_lapses", "lapses >= 0");
+
+                            t.HasCheckConstraint("ck_review_cards_repetitions", "repetitions >= 0");
+
+                            t.HasCheckConstraint("ck_review_cards_state", "state IN ('New', 'Learning', 'Review', 'Memorized')");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Memorization.ReviewLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("IntervalAfterDays")
+                        .HasPrecision(8, 2)
+                        .HasColumnType("numeric(8,2)")
+                        .HasColumnName("interval_after_days");
+
+                    b.Property<decimal>("IntervalBeforeDays")
+                        .HasPrecision(8, 2)
+                        .HasColumnType("numeric(8,2)")
+                        .HasColumnName("interval_before_days");
+
+                    b.Property<string>("Rating")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("rating");
+
+                    b.Property<long>("ReviewCardId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("review_card_id");
+
+                    b.Property<DateTime>("ReviewedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("reviewed_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_review_logs");
+
+                    b.HasIndex(new[] { "ReviewCardId", "ReviewedAt" }, "ix_review_logs_card")
+                        .IsDescending(false, true)
+                        .HasDatabaseName("ix_review_logs_card");
+
+                    b.ToTable("review_logs", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_review_logs_rating", "rating IN ('Forgot', 'Hard', 'Good', 'Easy')");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Moderation.ContentReport", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<long?>("ExamId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("exam_id");
+
+                    b.Property<long?>("QuestionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("question_id");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("reason");
+
+                    b.Property<Guid?>("ReporterUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("reporter_user_id");
+
+                    b.Property<DateTime?>("ResolvedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("resolved_at");
+
+                    b.Property<Guid?>("ResolvedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("resolved_by_user_id");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id")
+                        .HasName("pk_content_reports");
+
+                    b.HasIndex("ExamId")
+                        .HasDatabaseName("ix_content_reports_exam_id");
+
+                    b.HasIndex("QuestionId")
+                        .HasDatabaseName("ix_content_reports_question_id");
+
+                    b.HasIndex("ReporterUserId")
+                        .HasDatabaseName("ix_content_reports_reporter_user_id");
+
+                    b.HasIndex("ResolvedByUserId")
+                        .HasDatabaseName("ix_content_reports_resolved_by_user_id");
+
+                    b.HasIndex(new[] { "CreatedAt" }, "ix_content_reports_open")
+                        .HasDatabaseName("ix_content_reports_open")
+                        .HasFilter("status = 'Open'");
+
+                    b.ToTable("content_reports", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_content_reports_status", "status IN ('Open', 'Fixed', 'TakenDown', 'Rejected')");
+
+                            t.HasCheckConstraint("ck_content_reports_target", "num_nonnulls(question_id, exam_id) >= 1");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Notifications.Notification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Channel")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("channel");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("text")
+                        .HasColumnName("error");
+
+                    b.Property<string>("ExternalMessageId")
+                        .HasColumnType("text")
+                        .HasColumnName("external_message_id");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("language");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("payload");
+
+                    b.Property<DateTime>("ScheduledAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("scheduled_at");
+
+                    b.Property<DateTime?>("SentAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("sent_at");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<string>("TemplateCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("template_code");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_notifications");
+
+                    b.HasIndex(new[] { "ScheduledAt" }, "ix_notifications_queue")
+                        .HasDatabaseName("ix_notifications_queue")
+                        .HasFilter("status = 'Queued'");
+
+                    b.HasIndex(new[] { "UserId", "ScheduledAt" }, "ix_notifications_user")
+                        .IsDescending(false, true)
+                        .HasDatabaseName("ix_notifications_user");
+
+                    b.ToTable("notifications", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_notifications_channel", "channel IN ('Email', 'InApp')");
+
+                            t.HasCheckConstraint("ck_notifications_language", "language IN ('id', 'en')");
+
+                            t.HasCheckConstraint("ck_notifications_status", "status IN ('Queued', 'Sent', 'Delivered', 'Read', 'Failed')");
+
+                            t.HasCheckConstraint("ck_notifications_template_code", "template_code IN ('Receipt', 'Renewal7d', 'Renewal1d', 'RefundLink', 'ReviewDue')");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Sessions.Attempt", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("ClassAssignmentId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("class_assignment_id");
+
+                    b.Property<int>("CorrectCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("correct_count");
+
+                    b.Property<long?>("ExamId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("exam_id");
+
+                    b.Property<string>("GuestName")
+                        .HasColumnType("text")
+                        .HasColumnName("guest_name");
+
+                    b.Property<Guid?>("GuestToken")
+                        .HasColumnType("uuid")
+                        .HasColumnName("guest_token");
+
+                    b.Property<DateTime>("LastSavedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_saved_at");
+
+                    b.Property<string>("Mode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("mode");
+
+                    b.Property<bool?>("Passed")
+                        .HasColumnType("boolean")
+                        .HasColumnName("passed");
+
+                    b.Property<string>("RulesSnapshot")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("rules_snapshot");
+
+                    b.Property<decimal?>("ScorePercent")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)")
+                        .HasColumnName("score_percent");
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("source");
+
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("started_at");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime?>("SubmittedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("submitted_at");
+
+                    b.Property<int>("TimeSpentSeconds")
+                        .HasColumnType("integer")
+                        .HasColumnName("time_spent_seconds");
+
+                    b.Property<int>("TotalCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_count");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_attempts");
+
+                    b.HasIndex("ClassAssignmentId")
+                        .HasDatabaseName("ix_attempts_class_assignment_id");
+
+                    b.HasIndex("ExamId")
+                        .HasDatabaseName("ix_attempts_exam_id");
+
+                    b.HasIndex(new[] { "GuestToken" }, "ix_attempts_guest_token")
+                        .HasDatabaseName("ix_attempts_guest_token")
+                        .HasFilter("guest_token IS NOT NULL");
+
+                    b.HasIndex(new[] { "UserId", "StartedAt" }, "ix_attempts_user")
+                        .IsDescending(false, true)
+                        .HasDatabaseName("ix_attempts_user");
+
+                    b.ToTable("attempts", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_attempts_correct_count", "correct_count >= 0");
+
+                            t.HasCheckConstraint("ck_attempts_correct_within_total", "correct_count <= total_count");
+
+                            t.HasCheckConstraint("ck_attempts_exam_required", "source NOT IN ('Exam', 'Trial', 'Shared') OR exam_id IS NOT NULL");
+
+                            t.HasCheckConstraint("ck_attempts_mode", "mode IN ('Practice', 'Simulation', 'Flashcard')");
+
+                            t.HasCheckConstraint("ck_attempts_score_percent", "score_percent BETWEEN 0 AND 100");
+
+                            t.HasCheckConstraint("ck_attempts_source", "source IN ('Exam', 'Trial', 'Shared', 'WrongOnly', 'Review', 'CustomMix')");
+
+                            t.HasCheckConstraint("ck_attempts_status", "status IN ('InProgress', 'Submitted', 'Expired')");
+
+                            t.HasCheckConstraint("ck_attempts_submitted_at", "status <> 'Submitted' OR submitted_at IS NOT NULL");
+
+                            t.HasCheckConstraint("ck_attempts_taker", "user_id IS NOT NULL OR source = 'Trial' OR (source = 'Shared' AND guest_name IS NOT NULL)");
+
+                            t.HasCheckConstraint("ck_attempts_time_spent_seconds", "time_spent_seconds >= 0");
+
+                            t.HasCheckConstraint("ck_attempts_total_count", "total_count >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Sessions.AttemptItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("AnsweredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("answered_at");
+
+                    b.Property<long>("AttemptId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("attempt_id");
+
+                    b.Property<bool>("HintUsed")
+                        .HasColumnType("boolean")
+                        .HasColumnName("hint_used");
+
+                    b.Property<bool>("IsAnswered")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_answered");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_correct");
+
+                    b.Property<bool>("IsFlagged")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_flagged");
+
+                    b.Property<string>("OptionOrder")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("option_order");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer")
+                        .HasColumnName("position");
+
+                    b.Property<long>("QuestionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("question_id");
+
+                    b.Property<int>("TimeSpentSeconds")
+                        .HasColumnType("integer")
+                        .HasColumnName("time_spent_seconds");
+
+                    b.HasKey("Id")
+                        .HasName("pk_attempt_items");
+
+                    b.HasIndex("QuestionId")
+                        .HasDatabaseName("ix_attempt_items_question_id");
+
+                    b.HasIndex("AttemptId", "Position")
+                        .IsUnique()
+                        .HasDatabaseName("ix_attempt_items_attempt_id_position");
+
+                    b.HasIndex("AttemptId", "QuestionId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_attempt_items_attempt_id_question_id");
+
+                    b.ToTable("attempt_items", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_attempt_items_time_spent_seconds", "time_spent_seconds >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Sessions.AttemptItemOption", b =>
+                {
+                    b.Property<long>("AttemptItemId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("attempt_item_id");
+
+                    b.Property<long>("QuestionOptionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("question_option_id");
+
+                    b.HasKey("AttemptItemId", "QuestionOptionId")
+                        .HasName("pk_attempt_item_options");
+
+                    b.HasIndex("QuestionOptionId")
+                        .HasDatabaseName("ix_attempt_item_options_question_option_id");
+
+                    b.ToTable("attempt_item_options", (string)null);
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Users.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1190,6 +1678,147 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Memorization.ReviewCard", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_review_cards_questions_question_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_review_cards_users_user_id");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Memorization.ReviewLog", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Memorization.ReviewCard", "ReviewCard")
+                        .WithMany("Logs")
+                        .HasForeignKey("ReviewCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_review_logs_review_cards_review_card_id");
+
+                    b.Navigation("ReviewCard");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Moderation.ContentReport", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_content_reports_exams_exam_id");
+
+                    b.HasOne("Akusiap.Domain.Content.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_content_reports_questions_question_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", "ReporterUser")
+                        .WithMany()
+                        .HasForeignKey("ReporterUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_content_reports_users_reporter_user_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", "ResolvedByUser")
+                        .WithMany()
+                        .HasForeignKey("ResolvedByUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_content_reports_users_resolved_by_user_id");
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("ReporterUser");
+
+                    b.Navigation("ResolvedByUser");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Notifications.Notification", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_notifications_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Sessions.Attempt", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_attempts_exams_exam_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_attempts_users_user_id");
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Sessions.AttemptItem", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Sessions.Attempt", "Attempt")
+                        .WithMany("Items")
+                        .HasForeignKey("AttemptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_attempt_items_attempts_attempt_id");
+
+                    b.HasOne("Akusiap.Domain.Content.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_attempt_items_questions_question_id");
+
+                    b.Navigation("Attempt");
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Sessions.AttemptItemOption", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Sessions.AttemptItem", "AttemptItem")
+                        .WithMany("SelectedOptions")
+                        .HasForeignKey("AttemptItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_attempt_item_options_attempt_items_attempt_item_id");
+
+                    b.HasOne("Akusiap.Domain.Content.QuestionOption", "QuestionOption")
+                        .WithMany()
+                        .HasForeignKey("QuestionOptionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_attempt_item_options_question_options_question_option_id");
+
+                    b.Navigation("AttemptItem");
+
+                    b.Navigation("QuestionOption");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Akusiap.Domain.Users.Role", null)
@@ -1265,6 +1894,21 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Akusiap.Domain.Content.Subject", b =>
                 {
                     b.Navigation("Topics");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Memorization.ReviewCard", b =>
+                {
+                    b.Navigation("Logs");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Sessions.Attempt", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Sessions.AttemptItem", b =>
+                {
+                    b.Navigation("SelectedOptions");
                 });
 #pragma warning restore 612, 618
         }

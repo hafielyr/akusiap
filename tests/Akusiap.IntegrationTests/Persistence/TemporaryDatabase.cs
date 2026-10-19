@@ -38,6 +38,24 @@ internal sealed class TemporaryDatabase : IAsyncDisposable
         return database;
     }
 
+    /// <summary>Creates the database and applies all migrations. Drops it again if that fails, because xUnit skips
+    /// DisposeAsync when InitializeAsync throws.</summary>
+    public static async Task<TemporaryDatabase> CreateMigratedAsync()
+    {
+        var database = await CreateAsync();
+        try
+        {
+            await using var db = database.CreateContext();
+            await db.Database.MigrateAsync();
+            return database;
+        }
+        catch
+        {
+            await database.DisposeAsync();
+            throw;
+        }
+    }
+
     public AppDbContext CreateContext() =>
         new(new DbContextOptionsBuilder<AppDbContext>().UseNpgsql(ConnectionString).UseSnakeCaseNamingConvention().Options);
 

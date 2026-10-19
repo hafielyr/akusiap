@@ -2,6 +2,10 @@ using Akusiap.Application.Abstractions;
 using Akusiap.Domain.Access;
 using Akusiap.Domain.Auditing;
 using Akusiap.Domain.Content;
+using Akusiap.Domain.Memorization;
+using Akusiap.Domain.Moderation;
+using Akusiap.Domain.Notifications;
+using Akusiap.Domain.Sessions;
 using Akusiap.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -35,6 +39,20 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<ExamPurchase> ExamPurchases => Set<ExamPurchase>();
 
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+
+    public DbSet<Attempt> Attempts => Set<Attempt>();
+
+    public DbSet<AttemptItem> AttemptItems => Set<AttemptItem>();
+
+    public DbSet<AttemptItemOption> AttemptItemOptions => Set<AttemptItemOption>();
+
+    public DbSet<ReviewCard> ReviewCards => Set<ReviewCard>();
+
+    public DbSet<ReviewLog> ReviewLogs => Set<ReviewLog>();
+
+    public DbSet<ContentReport> ContentReports => Set<ContentReport>();
+
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

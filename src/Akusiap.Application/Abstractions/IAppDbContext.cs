@@ -1,6 +1,10 @@
 using Akusiap.Domain.Access;
 using Akusiap.Domain.Auditing;
 using Akusiap.Domain.Content;
+using Akusiap.Domain.Memorization;
+using Akusiap.Domain.Moderation;
+using Akusiap.Domain.Notifications;
+using Akusiap.Domain.Sessions;
 using Akusiap.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +40,20 @@ public interface IAppDbContext
     DbSet<ExamPurchase> ExamPurchases { get; }
 
     DbSet<AuditLog> AuditLogs { get; }
+
+    DbSet<Attempt> Attempts { get; }
+
+    DbSet<AttemptItem> AttemptItems { get; }
+
+    DbSet<AttemptItemOption> AttemptItemOptions { get; }
+
+    DbSet<ReviewCard> ReviewCards { get; }
+
+    DbSet<ReviewLog> ReviewLogs { get; }
+
+    DbSet<ContentReport> ContentReports { get; }
+
+    DbSet<Notification> Notifications { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
