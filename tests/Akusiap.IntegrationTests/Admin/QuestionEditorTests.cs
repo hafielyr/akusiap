@@ -291,7 +291,8 @@ public sealed class QuestionEditorTests(PostgresFixture database)
         return int.Parse(html[start..html.IndexOf(' ', start)], CultureInfo.InvariantCulture);
     }
 
-    private static int Rows(string html) => html.Split("href=\"/admin/soal/").Length - 1 - (html.Contains("href=\"/admin/soal/baru\"", StringComparison.Ordinal) ? 1 : 0);
+    /// <summary>Question rows link to <c>/admin/soal/{id}</c>; "baru" and "impor" are not rows.</summary>
+    private static int Rows(string html) => System.Text.RegularExpressions.Regex.Count(html, "href=\"/admin/soal/[0-9]+\"");
 
     private static long IdFrom(HttpResponseMessage response) =>
         long.Parse(response.Headers.Location!.OriginalString.Split('/')[^1], CultureInfo.InvariantCulture);
