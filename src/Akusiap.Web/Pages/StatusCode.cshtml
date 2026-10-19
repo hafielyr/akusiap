@@ -1,0 +1,20 @@
+@page "/status/{code:int}"
+@model StatusCodeModel
+@{
+  var key = Model.Code switch
+  {
+    403 => "Status.Forbidden",
+    404 => "Status.NotFound",
+    _ => "Status.Other",
+  };
+  ViewData["Title"] = T[$"{key}.Title"].Value;
+}
+
+<section class="space-y-4 py-6" data-testid="status-page" data-status="@Model.Code">
+  <p class="text-sm font-semibold text-brand-700">@Model.Code</p>
+  <h1 class="text-2xl font-bold leading-tight">@T[$"{key}.Heading"]</h1>
+  <p class="text-slate-600">@T[$"{key}.Body"]</p>
+  <div class="flex flex-wrap gap-3">
+    <a href="/" class="btn btn-primary">@T["Status.Home"]</a>
+  </div>
+</section>
