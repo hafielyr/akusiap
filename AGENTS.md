@@ -13,7 +13,7 @@ Requirements come from `Quiz Practice App — User Stories.docx` (story IDs) and
 1. **Pick**: Take the top card in `## Ready` on `docs/kanban.md`. Move it to `## In Progress` with `(your-agent-name, YYYY-MM-DD)`. If In Progress already has 3 cards, stop.
 2. **Branch**: `git switch -c task/<ID>-<short-slug>` (for example `task/ENT-01-entitlement-policy`).
 3. **Build**: Implement only the card's scope. Write tests first for domain rules. Keep changes inside the folders named in `architecture.md`.
-4. **Verify**: Run `dotnet build -warnaserror` and `dotnet test`, plus the card's E2E test if it has one. Check every AC bullet yourself.
+4. **Verify**: Run `dotnet build -warnaserror` and `dotnet test`, plus the card's E2E test if it has one. Check every AC bullet yourself. The PR's **CI / Build and test** check must be green before it is handed off (`docs/ci.md`); if your network blocks the database port, CI is the place where DB and E2E tests run.
 5. **Record**: When you had to make a choice the docs don't cover, add a `D-xx` row to `docs/decisions.md` with Status `Assumed`.
 6. **Hand off**: Move the card to `## Review`. Then, for every card in `## Backlog` whose deps are now all in Review or Done, move it to the end of `## Ready`, keeping backlog priority order. Commit as `<ID>: <title>` and open a PR listing each AC bullet with ✅ or ❌.
 7. **Blocked**: If you can't finish (missing credentials, a conflicting requirement or a failing dependency), move the card to `## Blocked` with one line saying what is needed. Don't guess at payment, legal or pricing rules.

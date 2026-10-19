@@ -17,9 +17,9 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 
 ## In Progress
-- [F-08] CI pipeline · M1 · deps: F-05 · (claude-opus-5.5, 2026-10-19)
 
 ## Review
+- [F-08] CI pipeline · M1 · deps: F-05 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
