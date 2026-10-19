@@ -27,6 +27,9 @@ public static class DependencyInjection
         services.AddScoped<GetExam>();
         services.AddScoped<SaveExam>();
         services.AddScoped<DeleteExam>();
+        services.AddScoped<GetExamQuestions>();
+        services.AddScoped<SearchQuestionsForExam>();
+        services.AddScoped<ChangeExamQuestions>();
         services.AddScoped<ListRulePresetOptions>();
         return services;
     }

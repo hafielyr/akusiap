@@ -1,0 +1,32 @@
+@model Akusiap.Web.Areas.Admin.Pages.Exams.QuestionSearchResults
+@* Active questions that can be added to the exam (ADM-T4). Rows have ids so an add can mark them out-of-band. *@
+<div id="question-search-results">
+  @if (Model.Candidates.Count == 0)
+  {
+    <p class="rounded-xl border border-dashed border-slate-300 p-4 text-sm text-slate-600">@T["Admin.ExamQuestions.NoResults"]</p>
+  }
+  else
+  {
+    <ul class="space-y-2" data-testid="search-results">
+      @foreach (var candidate in Model.Candidates)
+      {
+        <li id="search-row-@candidate.QuestionId" class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 p-3 @(candidate.AlreadyAdded ? "bg-slate-50" : "bg-white")">
+          <span class="min-w-0">
+            <span class="line-clamp-2 block text-sm @(candidate.AlreadyAdded ? "text-slate-500" : "font-medium")">@candidate.Text</span>
+            <span class="block text-xs text-slate-500">@candidate.TopicName · @T[$"Admin.QuestionType.{candidate.Type}"]</span>
+          </span>
+          @if (candidate.AlreadyAdded)
+          {
+            <span class="shrink-0 text-sm font-medium text-slate-500" data-testid="already-added">@T["Admin.ExamQuestions.AlreadyIn"]</span>
+          }
+          else
+          {
+            <button type="button" class="btn btn-secondary shrink-0 px-3"
+                    hx-post="/admin/ujian/@Model.ExamId?handler=AddQuestion" hx-vals='{"questionId": @candidate.QuestionId}'
+                    hx-target="#exam-questions-panel" hx-swap="outerHTML">@T["Admin.ExamQuestions.Add"]</button>
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>

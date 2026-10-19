@@ -1,0 +1,92 @@
+@model Akusiap.Web.Areas.Admin.Pages.Exams.ExamQuestionsPanel
+@using Akusiap.Domain.Content
+@* The exam's question list and counters (ADM-T4). Swapped as a whole (outerHTML) after every htmx change. *@
+@{
+  var view = Model.View;
+  var url = $"/admin/ujian/{view.ExamId}";
+  var requirement = view.TrialRequirement;
+  var trialOk = requirement.IsMetBy(view.TrialCount);
+}
+<div id="exam-questions-panel" class="space-y-4">
+  <div class="space-y-2 rounded-xl border border-slate-200 bg-white p-4" data-testid="exam-question-counters">
+    <p class="font-semibold">
+      <span data-testid="count-total">@T["Admin.ExamQuestions.Total", view.Total]</span> ·
+      <span data-testid="count-trial">@T["Admin.ExamQuestions.Trial", view.TrialCount]</span>
+    </p>
+    @if (!view.IsFree && view.Total > 0)
+    {
+      <p class="text-sm @(trialOk ? "text-green-800" : "text-amber-800")" data-testid="trial-requirement">
+        @(requirement.Min == requirement.Max
+            ? T["Admin.ExamQuestions.TrialNeedsAll", requirement.Min]
+            : T["Admin.ExamQuestions.TrialNeedsRange", requirement.Min, requirement.Max])
+      </p>
+    }
+    @if (view.InactiveCount > 0)
+    {
+      <p class="text-sm text-amber-800">@T["Admin.ExamQuestions.Inactive", view.InactiveCount]</p>
+    }
+    @if (view.ByTopic.Count > 0)
+    {
+      <ul class="flex flex-wrap gap-2 text-xs" data-testid="count-by-topic">
+        @foreach (var topic in view.ByTopic)
+        {
+          <li class="rounded-full bg-slate-100 px-2 py-1 text-slate-700">@topic.TopicName · @T["Admin.ExamQuestions.TopicCount", topic.Total, topic.Trial]</li>
+        }
+      </ul>
+    }
+  </div>
+
+  @if (Model.Message is not null)
+  {
+    <p role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="panel-message">@Model.Message</p>
+  }
+
+  @if (view.Items.Count == 0)
+  {
+    <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600">@T["Admin.ExamQuestions.Empty"]</p>
+  }
+  else
+  {
+    <ol class="space-y-2" data-testid="exam-question-list">
+      @foreach (var item in view.Items)
+      {
+        <li class="space-y-2 rounded-xl border border-slate-200 bg-white p-3" data-testid="exam-question-row" data-question-id="@item.QuestionId">
+          <div class="flex gap-3">
+            <span class="w-6 shrink-0 text-right font-semibold text-slate-500">@item.Position</span>
+            <div class="min-w-0 space-y-1">
+              <a href="/admin/soal/@item.QuestionId" class="line-clamp-2 font-medium hover:text-brand-700">@item.Text</a>
+              <p class="text-sm text-slate-500">@item.TopicName</p>
+              @if (item.Status != QuestionStatus.Active)
+              {
+                <span class="inline-block rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800">@T[$"Admin.QuestionStatus.{item.Status}"]</span>
+              }
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-1 pl-9">
+            <label class="mr-auto flex min-h-11 items-center gap-2 text-sm text-slate-700">
+              <input type="checkbox" name="isTrial" value="true" class="size-5 accent-brand-600" checked="@item.IsTrial"
+                     hx-post="@url?handler=Trial" hx-vals='{"questionId": @item.QuestionId}' hx-trigger="change"
+                     hx-target="#exam-questions-panel" hx-swap="outerHTML" />
+              <span>@T["Admin.ExamQuestions.IsTrial"]</span>
+            </label>
+            <button type="button" class="btn btn-secondary px-3" aria-label="@T["Admin.Questions.MoveUp"]" disabled="@(item.Position == 1)"
+                    hx-post="@url?handler=MoveQuestion" hx-vals='{"questionId": @item.QuestionId, "step": -1}' hx-target="#exam-questions-panel" hx-swap="outerHTML">↑</button>
+            <button type="button" class="btn btn-secondary px-3" aria-label="@T["Admin.Questions.MoveDown"]" disabled="@(item.Position == view.Total)"
+                    hx-post="@url?handler=MoveQuestion" hx-vals='{"questionId": @item.QuestionId, "step": 1}' hx-target="#exam-questions-panel" hx-swap="outerHTML">↓</button>
+            <button type="button" class="btn btn-secondary px-3 text-red-700" aria-label="@T["Admin.ExamQuestions.Remove"]"
+                    hx-post="@url?handler=RemoveQuestion" hx-vals='{"questionId": @item.QuestionId}' hx-target="#exam-questions-panel" hx-swap="outerHTML">✕</button>
+          </div>
+        </li>
+      }
+    </ol>
+  }
+</div>
+
+@if (Model.AddedQuestionId is { } addedId && view.Items.FirstOrDefault(i => i.QuestionId == addedId) is { } added)
+{
+  @* Out-of-band: mark the search result as added without re-running the search. *@
+  <li id="search-row-@addedId" hx-swap-oob="true" class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+    <span class="line-clamp-2 min-w-0 text-sm text-slate-500">@added.Text</span>
+    <span class="shrink-0 text-sm font-medium text-slate-500" data-testid="already-added">@T["Admin.ExamQuestions.AlreadyIn"]</span>
+  </li>
+}

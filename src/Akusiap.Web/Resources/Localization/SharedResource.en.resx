@@ -180,7 +180,6 @@
   <data name="Admin.Exams.AccessDaysShort" xml:space="preserve"><value>· {0} days of access</value></data>
   <data name="Admin.Exams.QuestionCounts" xml:space="preserve"><value>{0} questions, {1} trial</value></data>
   <data name="Admin.Exams.Usage" xml:space="preserve"><value>{0} attempts, {1} purchases</value></data>
-  <data name="Admin.Exams.QuestionsComingSoon" xml:space="preserve"><value>Picking this exam's questions and marking trial questions will be available on this page.</value></data>
   <data name="Admin.Exams.Delete" xml:space="preserve"><value>Delete exam</value></data>
   <data name="Admin.Exams.DeleteBlocked" xml:space="preserve"><value>An exam that is published, attempted or bought cannot be deleted. Unpublish it instead.</value></data>
   <data name="Admin.Exams.DeletePublished" xml:space="preserve"><value>A published exam cannot be deleted. Unpublish it first.</value></data>
@@ -205,4 +204,22 @@
   <data name="Admin.ExamStatus.Published" xml:space="preserve"><value>Published</value></data>
   <data name="Admin.ExamStatus.Unpublished" xml:space="preserve"><value>Unpublished</value></data>
   <data name="Admin.ExamStatus.TakenDown" xml:space="preserve"><value>Taken down</value></data>
+  <data name="Admin.ExamQuestions.Title" xml:space="preserve"><value>Exam questions</value></data>
+  <data name="Admin.ExamQuestions.Total" xml:space="preserve"><value>{0} questions</value></data>
+  <data name="Admin.ExamQuestions.Trial" xml:space="preserve"><value>{0} trial</value></data>
+  <data name="Admin.ExamQuestions.TrialNeedsRange" xml:space="preserve"><value>To publish, a paid exam needs {0}–{1} trial questions.</value></data>
+  <data name="Admin.ExamQuestions.TrialNeedsAll" xml:space="preserve"><value>An exam with fewer than 30 questions needs all {0} questions as trial questions to publish.</value></data>
+  <data name="Admin.ExamQuestions.Inactive" xml:space="preserve"><value>{0} questions are draft or retired and are not used in new practice.</value></data>
+  <data name="Admin.ExamQuestions.TopicCount" xml:space="preserve"><value>{0} questions, {1} trial</value></data>
+  <data name="Admin.ExamQuestions.Empty" xml:space="preserve"><value>This exam has no questions yet. Search for active questions below and add them.</value></data>
+  <data name="Admin.ExamQuestions.IsTrial" xml:space="preserve"><value>Trial question</value></data>
+  <data name="Admin.ExamQuestions.Remove" xml:space="preserve"><value>Remove from exam</value></data>
+  <data name="Admin.ExamQuestions.AddHeading" xml:space="preserve"><value>Add active questions</value></data>
+  <data name="Admin.ExamQuestions.SearchHelp" xml:space="preserve"><value>Only Active questions can be added. Showing the 20 most recent matches.</value></data>
+  <data name="Admin.ExamQuestions.NoResults" xml:space="preserve"><value>No active questions match.</value></data>
+  <data name="Admin.ExamQuestions.Add" xml:space="preserve"><value>Add</value></data>
+  <data name="Admin.ExamQuestions.AlreadyIn" xml:space="preserve"><value>Already added</value></data>
+  <data name="Admin.ExamQuestions.AlreadyAdded" xml:space="preserve"><value>This question is already in the exam.</value></data>
+  <data name="Admin.ExamQuestions.NotAddable" xml:space="preserve"><value>Only active questions from the question bank can be added.</value></data>
+  <data name="Admin.ExamQuestions.NotInExam" xml:space="preserve"><value>This question is not in the exam.</value></data>
 </root>

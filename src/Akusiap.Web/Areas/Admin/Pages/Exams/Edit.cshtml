@@ -1,6 +1,7 @@
 @page "/admin/ujian/{id:long}"
 @model Akusiap.Web.Areas.Admin.Pages.Exams.EditModel
 @using Akusiap.Domain.Content
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @{
   ViewData["Title"] = T["Admin.Exams.EditTitle"].Value;
   var exam = Model.Exam;
@@ -16,8 +17,42 @@
   <p class="text-sm text-slate-500" data-testid="exam-usage">
     @T["Admin.Exams.QuestionCounts", exam.QuestionCount, exam.TrialCount] · @T["Admin.Exams.Usage", exam.AttemptCount, exam.PurchaseCount]
   </p>
-  <p class="rounded-lg bg-slate-100 px-3 py-2 text-sm text-slate-600">@T["Admin.Exams.QuestionsComingSoon"]</p>
   <partial name="_ExamFormPartial" model="Model.Form" />
+</section>
+
+@* Question picker (ADM-T4). htmx sends the antiforgery token from hx-headers with every request in this section. *@
+<section class="max-w-2xl space-y-4 border-t border-slate-200 pt-4" aria-labelledby="exam-questions-heading"
+         hx-headers="@System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, string?> { ["RequestVerificationToken"] = Antiforgery.GetAndStoreTokens(HttpContext).RequestToken })">
+  <h2 id="exam-questions-heading" class="text-xl font-bold">@T["Admin.ExamQuestions.Title"]</h2>
+  <partial name="_ExamQuestionsPanelPartial" model="new Akusiap.Web.Areas.Admin.Pages.Exams.ExamQuestionsPanel(Model.Questions)" />
+
+  <div class="space-y-3 rounded-xl border border-slate-200 bg-white p-4">
+    <h3 class="font-semibold">@T["Admin.ExamQuestions.AddHeading"]</h3>
+    <form class="grid gap-3 sm:grid-cols-2" hx-get="/admin/ujian/@exam.Id?handler=Search" hx-target="#question-search-results"
+          hx-swap="outerHTML" hx-trigger="submit, input delay:300ms, change">
+      <div class="space-y-1">
+        <label for="search-q" class="label">@T["Admin.Questions.Search"]</label>
+        <input id="search-q" name="q" type="search" class="input" autocomplete="off" />
+      </div>
+      <div class="space-y-1">
+        <label for="search-topic" class="label">@T["Admin.Question.Topic"]</label>
+        <select id="search-topic" name="topik" class="input">
+          <option value="">@T["Admin.Questions.All"]</option>
+          @foreach (var group in Model.Topics.GroupBy(t => t.SubjectName))
+          {
+            <optgroup label="@group.Key">
+              @foreach (var topic in group)
+              {
+                <option value="@topic.Id">@topic.Name</option>
+              }
+            </optgroup>
+          }
+        </select>
+      </div>
+    </form>
+    <p class="text-sm text-slate-500">@T["Admin.ExamQuestions.SearchHelp"]</p>
+    <partial name="_QuestionSearchResultsPartial" model="new Akusiap.Web.Areas.Admin.Pages.Exams.QuestionSearchResults(exam.Id, Model.Candidates)" />
+  </div>
 </section>
 
 <section class="max-w-2xl space-y-2 border-t border-slate-200 pt-4">
