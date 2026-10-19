@@ -1,4 +1,6 @@
+using Akusiap.Application.Exams;
 using Akusiap.Application.Questions;
+using Akusiap.Application.RulePresets;
 using Akusiap.Application.Subjects;
 using Akusiap.Application.Topics;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,11 @@ public static class DependencyInjection
         services.AddScoped<ListQuestions>();
         services.AddScoped<GetQuestion>();
         services.AddScoped<SaveQuestion>();
+        services.AddScoped<ListExams>();
+        services.AddScoped<GetExam>();
+        services.AddScoped<SaveExam>();
+        services.AddScoped<DeleteExam>();
+        services.AddScoped<ListRulePresetOptions>();
         return services;
     }
 }

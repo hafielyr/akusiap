@@ -1,0 +1,4 @@
+@model Akusiap.Domain.Content.ExamStatus
+@using Akusiap.Domain.Content
+<span class="rounded-full px-2 py-1 text-xs font-medium @(Model switch { ExamStatus.Published => "bg-green-50 text-green-800", ExamStatus.TakenDown => "bg-red-50 text-red-800", ExamStatus.Unpublished => "bg-slate-100 text-slate-600", _ => "bg-amber-50 text-amber-800" })"
+      data-testid="exam-status">@T[$"Admin.ExamStatus.{Model}"]</span>

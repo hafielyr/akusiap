@@ -56,7 +56,7 @@
   <data name="Status.Other.Body" xml:space="preserve"><value>Please try again. If the problem continues, contact us on WhatsApp.</value></data>
   <data name="Status.Home" xml:space="preserve"><value>Back to home</value></data>
   <data name="Admin.Title" xml:space="preserve"><value>Admin dashboard</value></data>
-  <data name="Admin.ComingSoon" xml:space="preserve"><value>Exams, users and payments are coming here.</value></data>
+  <data name="Admin.ComingSoon" xml:space="preserve"><value>Users and payments are coming here.</value></data>
   <data name="Learn.Title" xml:space="preserve"><value>My learning</value></data>
   <data name="Learn.ComingSoon" xml:space="preserve"><value>Your practice history and exam access will appear here.</value></data>
   <data name="Nav.Admin" xml:space="preserve"><value>Admin</value></data>
@@ -163,4 +163,46 @@
   <data name="Admin.Difficulty.3" xml:space="preserve"><value>3 · Medium</value></data>
   <data name="Admin.Difficulty.4" xml:space="preserve"><value>4 · Hard</value></data>
   <data name="Admin.Difficulty.5" xml:space="preserve"><value>5 · Very hard</value></data>
+  <data name="Admin.Nav.Exams" xml:space="preserve"><value>Exams</value></data>
+  <data name="Admin.Exams.Title" xml:space="preserve"><value>Exams</value></data>
+  <data name="Admin.Exams.Lead" xml:space="preserve"><value>Admin-made exams that are sold or free in the catalog.</value></data>
+  <data name="Admin.Exams.Add" xml:space="preserve"><value>Add exam</value></data>
+  <data name="Admin.Exams.Empty" xml:space="preserve"><value>No exams yet. Add the first one.</value></data>
+  <data name="Admin.Exams.NewTitle" xml:space="preserve"><value>New exam</value></data>
+  <data name="Admin.Exams.EditTitle" xml:space="preserve"><value>Edit exam</value></data>
+  <data name="Admin.Exams.StartsAsDraft" xml:space="preserve"><value>A new exam is saved as a draft and is not in the catalog yet.</value></data>
+  <data name="Admin.Exams.Created" xml:space="preserve"><value>Exam created as a draft.</value></data>
+  <data name="Admin.Exams.Access" xml:space="preserve"><value>Price and access</value></data>
+  <data name="Admin.Exams.FreeHelp" xml:space="preserve"><value>A free exam is open to every registered user. Price and access period are not used.</value></data>
+  <data name="Admin.Exams.AllowanceHelp" xml:space="preserve"><value>How many of their own questions buyers of this exam may write.</value></data>
+  <data name="Admin.Exams.DefaultPreset" xml:space="preserve"><value>default</value></data>
+  <data name="Admin.Exams.FreeLabel" xml:space="preserve"><value>Free</value></data>
+  <data name="Admin.Exams.AccessDaysShort" xml:space="preserve"><value>· {0} days of access</value></data>
+  <data name="Admin.Exams.QuestionCounts" xml:space="preserve"><value>{0} questions, {1} trial</value></data>
+  <data name="Admin.Exams.Usage" xml:space="preserve"><value>{0} attempts, {1} purchases</value></data>
+  <data name="Admin.Exams.QuestionsComingSoon" xml:space="preserve"><value>Picking this exam's questions and marking trial questions will be available on this page.</value></data>
+  <data name="Admin.Exams.Delete" xml:space="preserve"><value>Delete exam</value></data>
+  <data name="Admin.Exams.DeleteBlocked" xml:space="preserve"><value>An exam that is published, attempted or bought cannot be deleted. Unpublish it instead.</value></data>
+  <data name="Admin.Exams.DeletePublished" xml:space="preserve"><value>A published exam cannot be deleted. Unpublish it first.</value></data>
+  <data name="Admin.Exams.InUse" xml:space="preserve"><value>This exam has been used ({0} attempts, {1} purchases), so it cannot be deleted.</value></data>
+  <data name="Admin.Exams.PriceRequired" xml:space="preserve"><value>A paid exam needs a price above Rp0.</value></data>
+  <data name="Admin.Exams.PriceTooHigh" xml:space="preserve"><value>The price can be at most Rp100.000.000.</value></data>
+  <data name="Admin.Exams.PriceInvalid" xml:space="preserve"><value>Write the price in whole rupiah, for example 49000 or Rp49.000.</value></data>
+  <data name="Admin.Exams.AccessDaysRequired" xml:space="preserve"><value>A paid exam needs an access period above 0 days.</value></data>
+  <data name="Admin.Exams.AccessDaysTooHigh" xml:space="preserve"><value>The access period can be at most 3650 days.</value></data>
+  <data name="Admin.Exams.AllowanceRange" xml:space="preserve"><value>The own-question allowance must be 0 to {0}.</value></data>
+  <data name="Admin.Exams.RulePresetRequired" xml:space="preserve"><value>Choose an existing rule preset.</value></data>
+  <data name="Admin.Exams.SubjectMissing" xml:space="preserve"><value>Choose an existing subject.</value></data>
+  <data name="Admin.Exam.Title" xml:space="preserve"><value>Exam title</value></data>
+  <data name="Admin.Exam.Description" xml:space="preserve"><value>Description (optional)</value></data>
+  <data name="Admin.Exam.Subject" xml:space="preserve"><value>Subject (optional)</value></data>
+  <data name="Admin.Exam.RulePreset" xml:space="preserve"><value>Default rules</value></data>
+  <data name="Admin.Exam.IsFree" xml:space="preserve"><value>Free for registered users</value></data>
+  <data name="Admin.Exam.Price" xml:space="preserve"><value>Price (Rp)</value></data>
+  <data name="Admin.Exam.AccessDays" xml:space="preserve"><value>Access period (days)</value></data>
+  <data name="Admin.Exam.Allowance" xml:space="preserve"><value>Own-question allowance for buyers</value></data>
+  <data name="Admin.ExamStatus.Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Admin.ExamStatus.Published" xml:space="preserve"><value>Published</value></data>
+  <data name="Admin.ExamStatus.Unpublished" xml:space="preserve"><value>Unpublished</value></data>
+  <data name="Admin.ExamStatus.TakenDown" xml:space="preserve"><value>Taken down</value></data>
 </root>
