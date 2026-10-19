@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [USR-02] Create user · M4 · deps: USR-01, AC-02
 - [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 - [SES-04] Autosave and resume · M1 · deps: SES-03
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
@@ -18,7 +17,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [OWN-01] Plan limits admin · M5 · deps: PAY-02 · (claude-opus-5.5, 2026-10-19)
+- [USR-02] Create user · M4 · deps: USR-01, AC-02 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -61,6 +60,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-03] Quiz player · M1 · deps: SES-01
 - [CAT-03] Pricing comparison · M3 · deps: PAY-02
 - [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
+- [OWN-01] Plan limits admin · M5 · deps: PAY-02
 
 ## Backlog
 

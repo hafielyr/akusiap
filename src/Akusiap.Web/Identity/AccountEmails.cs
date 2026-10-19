@@ -41,6 +41,17 @@ public sealed partial class AccountEmails(
         return await SendAsync(user, "Email.Reset", $"{AccountRoutes.ResetPassword}?email={Uri.EscapeDataString(user.Email!)}&code={code}", cancellationToken);
     }
 
+    /// <summary>
+    /// For accounts an admin created (USR-02): a "set your password" link. It uses the password-reset flow, which also
+    /// confirms the email.
+    /// </summary>
+    public async Task<bool> SendInviteAsync(User user, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+        var code = Encode(await users.GeneratePasswordResetTokenAsync(user));
+        return await SendAsync(user, "Email.Invite", $"{AccountRoutes.ResetPassword}?email={Uri.EscapeDataString(user.Email!)}&code={code}", cancellationToken);
+    }
+
     /// <summary>Turns a code from a link back into the Identity token; null when it isn't valid Base64Url.</summary>
     public static string? Decode(string? code)
     {

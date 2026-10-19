@@ -9,7 +9,10 @@
 }
 
 <section class="space-y-4">
-  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Users.Title"]</h1>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <h1 class="text-2xl font-bold leading-tight">@T["Admin.Users.Title"]</h1>
+    <a href="/admin/pengguna/baru" class="btn btn-primary" data-testid="create-user-link">@T["Admin.Users.Create"]</a>
+  </div>
 
   <form method="get" action="@IndexModel.Route" role="search" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5" data-testid="user-filters">
     <label for="users-q" class="sr-only">@T["Admin.Users.Search"]</label>
