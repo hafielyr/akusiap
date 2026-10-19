@@ -14,27 +14,6 @@ public static class SharedExamRoutes
     public static string Report(string token) => $"{Landing(token)}/lapor";
 }
 
-/// <summary>
-/// <c>/s/{token}</c> (SHR-02, SHR-03): the shared exam's landing page. A link that doesn't work is 404; a taken-down
-/// exam shows "Ujian tidak tersedia".
-/// </summary>
-public sealed class LandingModel(ExamReports exams) : PageModel
-{
-    public SharedExamInfo Exam { get; private set; } = null!;
-
-    public async Task<IActionResult> OnGetAsync(string token, CancellationToken cancellationToken)
-    {
-        var exam = await exams.FindSharedAsync(token, cancellationToken);
-        if (exam is null)
-        {
-            return NotFound();
-        }
-
-        Exam = exam;
-        return Page();
-    }
-}
-
 /// <summary><c>/s/{token}/lapor</c> (SHR-02): "Laporkan ujian ini", for anyone holding the link.</summary>
 public sealed class ReportModel(ExamReports exams, IStringLocalizer<SharedResource> t) : PageModel
 {

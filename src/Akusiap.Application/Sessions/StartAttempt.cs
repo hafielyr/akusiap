@@ -101,6 +101,12 @@ public sealed class StartAttempt(
         var source = decision.Scope == QuestionScope.TrialOnly ? AttemptSource.Trial
             : decision.Level == AccessLevel.Shared ? AttemptSource.Shared
             : AttemptSource.Exam;
+        if (source == AttemptSource.Shared)
+        {
+            // Shared-exam takers always see explanations, after submitting (SHR-03, D-89).
+            rules = rules with { ShowAnswers = ShowAnswers.AfterSubmit };
+        }
+
         var now = clock.UtcNow;
         var attempt = new Attempt
         {
