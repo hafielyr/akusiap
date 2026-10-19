@@ -7,17 +7,17 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [F-05] Test infrastructure · M1 · deps: F-03
 - [F-07] Seed data · M1 · deps: F-03
 - [AC-01] Register and sign in with email · M1 · deps: F-03, F-06
 - [ENT-01] EntitlementPolicy (domain) · M1 · deps: F-03
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 - [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
+- [F-08] CI pipeline · M1 · deps: F-05
 
 ## In Progress
 
 ## Review
-- [F-04] Session and memorization schema · M1 · deps: F-03 · (claude-opus-5.5, 2026-10-19)
+- [F-05] Test infrastructure · M1 · deps: F-03 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -27,11 +27,11 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [F-06] Localization and Rupiah · M1 · deps: F-01
 - [F-02] Database and dev infrastructure · M1 · deps: F-01
 - [F-03] Content and access schema · M1 · deps: F-02
+- [F-04] Session and memorization schema · M1 · deps: F-03
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [F-08] CI pipeline · M1 · deps: F-05
 - [AC-06] Authorization policies · M1 · deps: AC-01
 - [ADM-T1] Admin shell, subjects and topics · M1 · deps: AC-06, F-03
 - [ADM-T2] Question editor · M1 · deps: ADM-T1

@@ -42,9 +42,11 @@ tools/tailwind.sh --watch    # rebuild on change
 
 ## Test
 
-Integration tests start the app, so they need the connection string from "Run locally" (until F-05 adds a per-run test database).
+Database tests create a throwaway database (`akusiap_test_<guid>`) on the server from `ConnectionStrings:Test`, or `ConnectionStrings:Default` when Test is not set, and drop it afterwards. E2E tests drive a headless Chromium at 360×640 against the app on a real port; install the browser once:
 
 ```
+tools/playwright-install.sh                                       # Git Bash / Linux / macOS
+powershell -ExecutionPolicy Bypass -File tools/playwright-install.ps1   # Windows PowerShell
 dotnet build -warnaserror
 dotnet test
 ```

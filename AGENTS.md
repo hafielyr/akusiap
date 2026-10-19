@@ -28,7 +28,7 @@ Only a human or a review agent moves a card from Review to Done, after the PR me
 - Get every access check from `IEntitlementService`. Never query purchases or subscriptions from a page.
 - Put UI strings in `src/Akusiap.Web/Resources/Localization/SharedResource.resx` (Indonesian, the neutral/default) and `SharedResource.en.resx`, with dotted keys like `Catalog.SearchPlaceholder`. In views use `@T["Key"]` (injected in `_ViewImports`). Format money with `<idr value="..." />` or `Money.FormatIdr`. Keep code, identifiers, commits and docs in English.
 - Migrations: one per card that changes the schema, named `<ID>_<Change>`. Never edit an applied migration.
-- Tests: unit tests for domain, integration tests (per-run test database, D-15) for handlers and pages, Playwright for flows named in the AC. Use `TestData` builders; no shared mutable fixtures between tests.
+- Tests: unit tests for domain, integration tests (per-run test database, D-15) for handlers and pages, Playwright for flows named in the AC. Use `TestData` builders; no shared mutable fixtures between tests. Support code lives in `tests/Akusiap.TestSupport` (D-29): put DB tests in `[Collection(UsesDatabase.Name)]`, take `PostgresFixture` in the constructor, create `new AppFactory(database)` per test (test clock and fake email), and only rely on rows the test created. Schema tests that need an empty database use `TestDatabase.CreateMigratedAsync()`. E2E tests use `[Collection(UsesMobileSite.Name)]` and `site.NewPhoneAsync()`.
 - Secrets come from user-secrets or env vars only. Never commit keys (DOKU, Xendit, Google, SMTP).
 - Pages must work at 360 px width and keep JS minimal: Alpine for local state, htmx for server round-trips, no SPA frameworks.
 
@@ -40,6 +40,7 @@ dotnet build -warnaserror
 dotnet test
 dotnet run --project src/Akusiap.Web
 dotnet ef migrations add <Name> -p src/Akusiap.Infrastructure -s src/Akusiap.Web
-pwsh tests/Akusiap.E2E/bin/Debug/net10.0/playwright.ps1 install   # once
+dotnet user-secrets set "ConnectionStrings:Test" "<neon>" --project src/Akusiap.Web      # optional; tests fall back to Default (D-19)
+tools/playwright-install.sh                           # once: Chromium for E2E (or: powershell -File tools/playwright-install.ps1)
 tools/tailwind.sh                                     # rebuild CSS after changing Tailwind classes
 ```

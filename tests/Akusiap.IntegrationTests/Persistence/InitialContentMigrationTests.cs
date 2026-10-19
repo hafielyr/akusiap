@@ -3,6 +3,7 @@ using Akusiap.Domain.Auditing;
 using Akusiap.Domain.Content;
 using Akusiap.Domain.Users;
 using Microsoft.AspNetCore.Identity;
+using Akusiap.TestSupport.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Akusiap.IntegrationTests.Persistence;
@@ -71,11 +72,11 @@ public sealed class InitialContentMigrationTests : IAsyncLifetime
         ],
     };
 
-    private TemporaryDatabase _database = null!;
+    private TestDatabase _database = null!;
 
     public async Task InitializeAsync()
     {
-        _database = await TemporaryDatabase.CreateMigratedAsync();
+        _database = await TestDatabase.CreateMigratedAsync();
     }
 
     public async Task DisposeAsync() => await _database.DisposeAsync();

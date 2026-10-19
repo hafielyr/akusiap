@@ -1,9 +1,12 @@
 using System.Net;
+using Akusiap.TestSupport.Database;
+using Akusiap.TestSupport.Web;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Akusiap.IntegrationTests.Localization;
 
-public sealed class LocalizationTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+[Collection(UsesDatabase.Name)]
+public sealed class LocalizationTests(PostgresFixture database)
 {
     private const string IndonesianHeading = "Latihan soal ujian, kapan saja dari ponsel Anda";
     private const string EnglishHeading = "Practise exam questions anytime from your phone";
@@ -11,7 +14,8 @@ public sealed class LocalizationTests(WebApplicationFactory<Program> factory) : 
     [Fact]
     public async Task Default_ui_is_indonesian_even_when_browser_prefers_english()
     {
-        using var client = factory.CreateClient();
+        await using var app = new AppFactory(database);
+        using var client = app.CreateClient();
         client.DefaultRequestHeaders.AcceptLanguage.ParseAdd("en-US,en;q=0.9");
 
         var html = await client.GetStringAsync(new Uri("/", UriKind.Relative));
@@ -23,7 +27,8 @@ public sealed class LocalizationTests(WebApplicationFactory<Program> factory) : 
     [Fact]
     public async Task Switching_to_english_persists_across_requests()
     {
-        using var client = factory.CreateClient();
+        await using var app = new AppFactory(database);
+        using var client = app.CreateClient();
 
         var switched = await client.GetStringAsync(new Uri("/bahasa/en?returnUrl=%2F", UriKind.Relative));
         var nextRequest = await client.GetStringAsync(new Uri("/", UriKind.Relative));
@@ -36,7 +41,8 @@ public sealed class LocalizationTests(WebApplicationFactory<Program> factory) : 
     [Fact]
     public async Task Switching_back_to_indonesian_works()
     {
-        using var client = factory.CreateClient();
+        await using var app = new AppFactory(database);
+        using var client = app.CreateClient();
 
         await client.GetStringAsync(new Uri("/bahasa/en", UriKind.Relative));
         var html = await client.GetStringAsync(new Uri("/bahasa/id-ID", UriKind.Relative));
@@ -47,7 +53,8 @@ public sealed class LocalizationTests(WebApplicationFactory<Program> factory) : 
     [Fact]
     public async Task Unsupported_culture_is_ignored()
     {
-        using var client = factory.CreateClient();
+        await using var app = new AppFactory(database);
+        using var client = app.CreateClient();
 
         var html = await client.GetStringAsync(new Uri("/bahasa/fr", UriKind.Relative));
 
@@ -57,7 +64,8 @@ public sealed class LocalizationTests(WebApplicationFactory<Program> factory) : 
     [Fact]
     public async Task External_return_url_is_rejected()
     {
-        using var client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        await using var app = new AppFactory(database);
+        using var client = app.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
 
         using var response = await client.GetAsync(new Uri("/bahasa/en?returnUrl=https%3A%2F%2Fevil.example", UriKind.Relative));
 
