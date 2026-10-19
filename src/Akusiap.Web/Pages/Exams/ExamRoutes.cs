@@ -21,5 +21,11 @@ public static class ExamRoutes
     /// <summary>Single-exam checkout (PAY-03).</summary>
     public static string Checkout(long examId) => $"/checkout?exam={Id(examId)}";
 
+    /// <summary>Checkout for a plan package (PAY-03).</summary>
+    public static string PlanCheckout(long planPriceId) => $"/checkout?planPrice={Id(planPriceId)}";
+
+    /// <summary>The plans page with this exam next to the packages (CAT-03).</summary>
+    public static string PlansFor(long examId) => $"{Plans}?ujian={Id(examId)}";
+
     private static string Id(long examId) => examId.ToString(CultureInfo.InvariantCulture);
 }

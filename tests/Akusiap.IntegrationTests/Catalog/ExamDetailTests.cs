@@ -32,7 +32,7 @@ public sealed partial class ExamDetailTests(PostgresFixture database)
         Assert.Contains("Coba 4 soal gratis", html, StringComparison.Ordinal);
         Assert.Contains($"href=\"/ujian/{examId}/mulai\"", html, StringComparison.Ordinal);
         Assert.Contains($"href=\"/checkout?exam={examId}\"", html, StringComparison.Ordinal);
-        Assert.Contains("href=\"/harga\"", html, StringComparison.Ordinal);
+        Assert.Contains($"href=\"/harga?ujian={examId}\"", html, StringComparison.Ordinal);
         Assert.Contains("Rp49.000", html, StringComparison.Ordinal);
         Assert.Contains("60 hari akses", html, StringComparison.Ordinal);
     }

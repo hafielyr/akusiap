@@ -528,4 +528,16 @@
   <data name="Session.Player.Ended" xml:space="preserve"><value>Sesi ini sudah selesai.</value></data>
   <data name="Session.Player.BackToExam" xml:space="preserve"><value>Kembali ke ujian</value></data>
   <data name="Session.Player.NeedsJavaScript" xml:space="preserve"><value>Halaman latihan memerlukan JavaScript. Aktifkan JavaScript di browser Anda.</value></data>
+  <data name="Pricing.Title" xml:space="preserve"><value>Harga</value></data>
+  <data name="Pricing.Lead" xml:space="preserve"><value>Beli satu ujian, atau berlangganan untuk membuka semua ujian di katalog.</value></data>
+  <data name="Pricing.SingleExam" xml:space="preserve"><value>Satu ujian</value></data>
+  <data name="Pricing.From" xml:space="preserve"><value>Mulai dari</value></data>
+  <data name="Pricing.SingleExamHint" xml:space="preserve"><value>Harga dan masa akses berbeda untuk tiap ujian.</value></data>
+  <data name="Pricing.NoExams" xml:space="preserve"><value>Belum ada ujian berbayar.</value></data>
+  <data name="Pricing.Subscription" xml:space="preserve"><value>Langganan</value></data>
+  <data name="Pricing.PlanHint" xml:space="preserve"><value>Semua ujian di katalog selama masa langganan.</value></data>
+  <data name="Pricing.NoPackages" xml:space="preserve"><value>Paket langganan belum tersedia.</value></data>
+  <data name="Pricing.PerMonth" xml:space="preserve"><value>per bulan</value></data>
+  <data name="Pricing.BestValue" xml:space="preserve"><value>Paling hemat per bulan</value></data>
+  <data name="Pricing.Choose" xml:space="preserve"><value>Pilih paket</value></data>
 </root>
