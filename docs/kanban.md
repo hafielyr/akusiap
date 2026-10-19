@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SES-10] Session history · M2 · deps: SES-06
 - [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
 - [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
 - [OWN-04] Own exam · M5 · deps: OWN-03
@@ -17,7 +16,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [SES-08] Answer review · M1 · deps: SES-06 · (claude-opus-5.5, 2026-10-19)
+- [SES-10] Session history · M2 · deps: SES-06 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -76,6 +75,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [OWN-03] Own question editor · M5 · deps: OWN-02, ADM-T2
 - [OWN-05] Allowance widget · M5 · deps: OWN-02
 - [SES-07] Result page and trial CTA · M1 · deps: SES-06
+- [SES-08] Answer review · M1 · deps: SES-06
 
 ## Backlog
 

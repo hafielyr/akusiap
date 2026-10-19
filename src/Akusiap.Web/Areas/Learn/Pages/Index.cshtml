@@ -1,6 +1,6 @@
 @page "/learn"
 @model Akusiap.Web.Areas.Learn.Pages.IndexModel
-@* Learn area entry (SignedIn, AC-06). Later cards add /learn/pembayaran and session history. *@
+@* Learn area entry (SignedIn, AC-06): links to access, history, own questions, payments and the profile. *@
 @{
   ViewData["Title"] = T["Learn.Title"].Value;
 }
@@ -37,6 +37,12 @@
       </a>
     </li>
     <li>
+      <a href="/learn/riwayat" class="flex min-h-11 flex-col gap-1 px-4 py-3 hover:bg-slate-50" data-testid="learn-history-link">
+        <span class="font-semibold">@T["History.Title"]</span>
+        <span class="text-sm text-slate-600">@T["History.Link"]</span>
+      </a>
+    </li>
+    <li>
       <a href="/learn/pembayaran" class="flex min-h-11 flex-col gap-1 px-4 py-3 hover:bg-slate-50" data-testid="learn-payments-link">
         <span class="font-semibold">@T["Pay.Pending.Title"]</span>
         <span class="text-sm text-slate-600">@T["Pay.Pending.Link"]</span>
@@ -49,5 +55,4 @@
       </a>
     </li>
   </ul>
-  <p class="text-slate-600">@T["Learn.ComingSoon"]</p>
 </section>

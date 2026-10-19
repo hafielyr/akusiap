@@ -57,7 +57,6 @@
   <data name="Admin.Title" xml:space="preserve"><value>Admin dashboard</value></data>
   <data name="Admin.ComingSoon" xml:space="preserve"><value>Users and payments are coming here.</value></data>
   <data name="Learn.Title" xml:space="preserve"><value>My learning</value></data>
-  <data name="Learn.ComingSoon" xml:space="preserve"><value>Your practice history and exam access will appear here.</value></data>
   <data name="Nav.Admin" xml:space="preserve"><value>Admin</value></data>
   <data name="Admin.Nav.Label" xml:space="preserve"><value>Admin menu</value></data>
   <data name="Admin.Nav.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
@@ -723,4 +722,12 @@
   <data name="Session.Review.YourAnswer" xml:space="preserve"><value>Your answer</value></data>
   <data name="Session.Review.CorrectAnswer" xml:space="preserve"><value>Correct answer</value></data>
   <data name="Session.Result.SeeReview" xml:space="preserve"><value>See the answers</value></data>
+  <data name="History.Title" xml:space="preserve"><value>Session history</value></data>
+  <data name="History.Link" xml:space="preserve"><value>Sessions you finished or started</value></data>
+  <data name="History.Empty" xml:space="preserve"><value>No sessions yet. Start from the exam catalog.</value></data>
+  <data name="History.Mixed" xml:space="preserve"><value>Mixed practice</value></data>
+  <data name="History.Flashcard" xml:space="preserve"><value>Flashcards</value></data>
+  <data name="History.Minutes" xml:space="preserve"><value>{0} min {1} s</value></data>
+  <data name="History.Result" xml:space="preserve"><value>Result</value></data>
+  <data name="History.Review" xml:space="preserve"><value>Answers</value></data>
 </root>
