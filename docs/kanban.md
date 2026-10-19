@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
 - [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02
 - [SES-06] Submit, scoring and timeout · M1 · deps: SES-04
 - [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04
@@ -18,7 +17,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03 · (claude-opus-5.5, 2026-10-19)
+- [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -66,6 +65,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 - [SES-04] Autosave and resume · M1 · deps: SES-03
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
+- [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03
 
 ## Backlog
 

@@ -63,6 +63,17 @@ public sealed class MobileSite : IAsyncLifetime, IAsyncDisposable
         return await Akusiap.TestSupport.Builders.TestData.SaveAsync(db, exam);
     }
 
+    /// <summary>The app's current (test) time.</summary>
+    public DateTime Now => (_app ?? throw new InvalidOperationException("The site is not started.")).Clock.UtcNow;
+
+    /// <summary>Runs <paramref name="work"/> against the site's database (for flows that need rows the UI can't create yet).</summary>
+    public async Task WithDatabaseAsync(Func<Akusiap.Infrastructure.Persistence.AppDbContext, Task> work)
+    {
+        ArgumentNullException.ThrowIfNull(work);
+        await using var db = _database.CreateContext();
+        await work(db);
+    }
+
     /// <summary>Environment variable that turns on trace recording (see <see cref="Phone"/>).</summary>
     public const string TracesDirVariable = "PLAYWRIGHT_TRACES_DIR";
 

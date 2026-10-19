@@ -597,4 +597,38 @@
   <data name="Session.Player.SaveFailed" xml:space="preserve"><value>Jawaban belum tersimpan. Periksa koneksi Anda; perubahan berikutnya akan dicoba lagi.</value></data>
   <data name="ExamPage.Resume" xml:space="preserve"><value>Anda punya sesi yang belum selesai untuk ujian ini.</value></data>
   <data name="ExamPage.ResumeAction" xml:space="preserve"><value>Lanjutkan sesi</value></data>
+  <data name="Pay.Title" xml:space="preserve"><value>Selesaikan pembayaran</value></data>
+  <data name="Pay.Order" xml:space="preserve"><value>Nomor pesanan {0}</value></data>
+  <data name="Pay.Paid" xml:space="preserve"><value>Pembayaran berhasil. Akses Anda sudah aktif.</value></data>
+  <data name="Pay.Expired" xml:space="preserve"><value>Waktu pembayaran habis.</value></data>
+  <data name="Pay.Failed" xml:space="preserve"><value>Pembayaran gagal.</value></data>
+  <data name="Pay.PayWithin" xml:space="preserve"><value>Bayar dalam</value></data>
+  <data name="Pay.Until" xml:space="preserve"><value>Batas bayar {0}</value></data>
+  <data name="Pay.ScanQris" xml:space="preserve"><value>Pindai dengan aplikasi bank atau e-wallet</value></data>
+  <data name="Pay.QrisHint" xml:space="preserve"><value>Di ponsel, simpan gambar ini lalu buka dari aplikasi pembayaran Anda.</value></data>
+  <data name="Pay.OpenApp" xml:space="preserve"><value>Buka aplikasi pembayaran</value></data>
+  <data name="Pay.VaNumber" xml:space="preserve"><value>Nomor virtual account {0}</value></data>
+  <data name="Pay.Copy" xml:space="preserve"><value>Salin</value></data>
+  <data name="Pay.Copied" xml:space="preserve"><value>Disalin</value></data>
+  <data name="Pay.Va.Mobile" xml:space="preserve"><value>Mobile banking {0}</value></data>
+  <data name="Pay.Va.Atm" xml:space="preserve"><value>ATM {0}</value></data>
+  <data name="Pay.Va.Internet" xml:space="preserve"><value>Internet banking {0}</value></data>
+  <data name="Pay.Va.Mobile.Step1" xml:space="preserve"><value>Buka aplikasi mobile banking {0}.</value></data>
+  <data name="Pay.Va.Mobile.Step2" xml:space="preserve"><value>Pilih menu Transfer, lalu Virtual Account.</value></data>
+  <data name="Pay.Va.Mobile.Step3" xml:space="preserve"><value>Masukkan nomor {1} dan periksa nama serta jumlahnya.</value></data>
+  <data name="Pay.Va.Mobile.Step4" xml:space="preserve"><value>Konfirmasi dengan PIN Anda.</value></data>
+  <data name="Pay.Va.Atm.Step1" xml:space="preserve"><value>Masukkan kartu ATM {0} dan PIN Anda.</value></data>
+  <data name="Pay.Va.Atm.Step2" xml:space="preserve"><value>Pilih Transaksi Lainnya, lalu Transfer ke Virtual Account.</value></data>
+  <data name="Pay.Va.Atm.Step3" xml:space="preserve"><value>Masukkan nomor {1} dan periksa jumlahnya.</value></data>
+  <data name="Pay.Va.Atm.Step4" xml:space="preserve"><value>Ikuti petunjuk di layar sampai selesai dan simpan struknya.</value></data>
+  <data name="Pay.Va.Internet.Step1" xml:space="preserve"><value>Masuk ke internet banking {0}.</value></data>
+  <data name="Pay.Va.Internet.Step2" xml:space="preserve"><value>Pilih Transfer, lalu Virtual Account.</value></data>
+  <data name="Pay.Va.Internet.Step3" xml:space="preserve"><value>Masukkan nomor {1} dan periksa jumlahnya.</value></data>
+  <data name="Pay.Va.Internet.Step4" xml:space="preserve"><value>Konfirmasi dengan token atau OTP Anda.</value></data>
+  <data name="Pay.Va.General" xml:space="preserve"><value>Langkah di atas umum; nama menu bisa sedikit berbeda di aplikasi bank Anda.</value></data>
+  <data name="Pay.Waiting" xml:space="preserve"><value>Halaman ini diperbarui otomatis setelah pembayaran diterima.</value></data>
+  <data name="Pay.Pending.Title" xml:space="preserve"><value>Pembayaran tertunda</value></data>
+  <data name="Pay.Pending.Link" xml:space="preserve"><value>Pembayaran yang belum diselesaikan</value></data>
+  <data name="Pay.Pending.Empty" xml:space="preserve"><value>Tidak ada pembayaran yang menunggu.</value></data>
+  <data name="Pay.Pending.See" xml:space="preserve"><value>Lihat instruksi</value></data>
 </root>
