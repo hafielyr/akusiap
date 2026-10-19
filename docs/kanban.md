@@ -7,8 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [PAY-07] Receipt email · M3 · deps: PAY-06, AC-02
-- [PAY-09] Refund requests · M3 · deps: PAY-06
 - [PAY-10] Admin transactions · M3 · deps: PAY-06
 - [OWN-03] Own question editor · M5 · deps: OWN-02, ADM-T2
 - [OWN-05] Allowance widget · M5 · deps: OWN-02
@@ -16,16 +14,18 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-08] Answer review · M1 · deps: SES-06
 - [SES-10] Session history · M2 · deps: SES-06
 - [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
+- [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
 
 ## In Progress
 
 ## Review
-- [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04 · (claude-opus-5.5, 2026-10-19)
+- [PAY-07] Receipt email · M3 · deps: PAY-06, AC-02 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
 - [AC-05] Legal pages · M1 · deps: F-06, AC-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: the Terms of Service and Privacy Policy text (Indonesian and English), the business name and contact to show in them, and confirmation that the "proposed" refund policy in the stories doc is final. The stories doc has no Terms or Privacy text, and legal text must not be guessed.
 - [PAY-04] DOKU client · M3 · deps: PAY-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: DOKU sandbox credentials (`Doku:ClientId`, `Doku:SecretKey`, set with user-secrets) and the DOKU product to use (Checkout or Direct API). The AC needs real sandbox charges and recorded notification fixtures, which can't be made without the account.
+- [PAY-09] Refund requests · M3 · deps: PAY-06 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: confirmation that the "proposed" refund policy in the stories doc is final (windows, the 20% usage rule, one first-payment refund per account, the review rules), ideally as part of the AC-05 legal text. Payment rules must not be guessed. PAY-04 (DOKU refunds) is also still blocked.
 
 ## Done
 - [F-01] Solution skeleton · M1 · deps: none
@@ -72,6 +72,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
 - [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02
 - [SES-06] Submit, scoring and timeout · M1 · deps: SES-04
+- [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04
 
 ## Backlog
 
@@ -85,7 +86,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 
 ### M3 Payments (Release 1)
-- [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
 
 ### M4 Admin ops and launch (Release 1)
 - [OPS-02] Production deployment · M4 · deps: F-08, PAY-04

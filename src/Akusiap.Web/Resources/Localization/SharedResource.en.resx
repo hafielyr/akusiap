@@ -642,4 +642,13 @@
   <data name="Session.Player.Correct" xml:space="preserve"><value>Correct!</value></data>
   <data name="Session.Player.Incorrect" xml:space="preserve"><value>Not quite. The correct answer is marked green.</value></data>
   <data name="Session.Player.KeyFact" xml:space="preserve"><value>Key fact</value></data>
+  <data name="Receipt.Subject" xml:space="preserve"><value>Akusiap receipt {0}</value></data>
+  <data name="Receipt.Intro" xml:space="preserve"><value>Thank you, we have received your payment.</value></data>
+  <data name="Receipt.Order" xml:space="preserve"><value>Order number</value></data>
+  <data name="Receipt.Item" xml:space="preserve"><value>Purchase</value></data>
+  <data name="Receipt.Amount" xml:space="preserve"><value>Amount (tax included)</value></data>
+  <data name="Receipt.Method" xml:space="preserve"><value>Method</value></data>
+  <data name="Receipt.PaidAt" xml:space="preserve"><value>Paid</value></data>
+  <data name="Receipt.AccessUntil" xml:space="preserve"><value>Access until</value></data>
+  <data name="Receipt.Note" xml:space="preserve"><value>Keep this email as proof of payment. Contact us on WhatsApp with any questions.</value></data>
 </root>

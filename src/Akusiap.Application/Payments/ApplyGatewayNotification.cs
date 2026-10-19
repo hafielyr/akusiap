@@ -37,7 +37,7 @@ public enum NotificationOutcome
 /// becomes Active until (running end, else now) + the package's months (D-03). A success for a payment that already
 /// Expired or was Canceled only sets <see cref="Payment.IsLatePayment"/>; what to do with it is the owner's call.
 /// </summary>
-public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway gateway, IClock clock)
+public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway gateway, IClock clock, IPaymentJobs jobs)
 {
     public async Task<(NotificationOutcome Outcome, Payment? Payment)> HandleAsync(GatewayNotification notification, CancellationToken cancellationToken)
     {
@@ -82,6 +82,11 @@ public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway g
             }
 
             throw;
+        }
+
+        if (outcome == NotificationOutcome.Applied && payment is { Status: PaymentStatus.Paid })
+        {
+            await jobs.QueueReceiptAsync(payment.Id, cancellationToken).ConfigureAwait(false);
         }
 
         return (outcome, payment);
