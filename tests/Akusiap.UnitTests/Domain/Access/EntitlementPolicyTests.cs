@@ -134,6 +134,18 @@ public sealed class EntitlementPolicyTests
         Assert.Equal(AccessReason.NotPublished, Evaluate(subscriber, exam).Reason);
     }
 
+    [Fact]
+    public void Rule5_a_learners_published_exam_is_never_in_the_catalog()
+    {
+        // OWN-04 (D-79): Published only means "ready to share"; other people need the share link (rule 4).
+        var exam = OwnExam(OtherLearnerId) with { Status = ExamStatus.Published };
+        var subscriber = Viewer(LearnerId, subscriptions: [Subscription(includesAllExams: true)]);
+
+        Assert.Equal(Decision(AccessLevel.None, AccessReason.NotPublished, QuestionScope.None), Evaluate(Viewer(LearnerId), exam));
+        Assert.Equal(AccessReason.NotPublished, Evaluate(subscriber, exam).Reason);
+        Assert.Equal(AccessLevel.Owner, Evaluate(Viewer(OtherLearnerId), exam).Level);
+    }
+
     // ---------- Rule 6: free exams ----------
 
     [Fact]

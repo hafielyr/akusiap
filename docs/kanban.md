@@ -7,15 +7,16 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [OWN-04] Own exam · M5 · deps: OWN-03
 - [SES-09] Retake wrong answers · M2 · deps: SES-08
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 - [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
+- [OWN-06] Private mixed practice set · M5 · deps: OWN-04, SES-01
+- [SHR-01] Share, stop sharing and reset link · M6 · deps: OWN-04
 
 ## In Progress
 
 ## Review
-- [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07 · (claude-opus-5.5, 2026-10-20)
+- [OWN-04] Own exam · M5 · deps: OWN-03 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -77,6 +78,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-08] Answer review · M1 · deps: SES-06
 - [SES-10] Session history · M2 · deps: SES-06
 - [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
+- [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
 
 ## Backlog
 
@@ -94,10 +96,8 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 **Release 1 exit check**: In the DOKU sandbox, a guest completes trial → register → QRIS payment → full exam → review → flashcards. The receipt email arrives. A refund within 7 days is auto-approved and access ends.
 
 ### M5 Own content (Release 2)
-- [OWN-06] Private mixed practice set · M5 · deps: OWN-04, SES-01
 
 ### M6 Sharing (Release 2)
-- [SHR-01] Share, stop sharing and reset link · M6 · deps: OWN-04
 - [SHR-02] Report shared exam and admin takedown · M6 · deps: SHR-01, SES-11
 - [SHR-03] Guest takes a shared exam · M6 · deps: SHR-02, SES-03
 - [SHR-04] Shared result and register invitation · M6 · deps: SHR-03

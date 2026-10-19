@@ -736,4 +736,26 @@
   <data name="Reminder.Tomorrow" xml:space="preserve"><value>besok</value></data>
   <data name="Reminder.Today" xml:space="preserve"><value>hari ini</value></data>
   <data name="Reminder.Renew" xml:space="preserve"><value>Perpanjang paket</value></data>
+  <data name="Own.Exams.Title" xml:space="preserve"><value>Ujian saya</value></data>
+  <data name="Own.Exams.Link" xml:space="preserve"><value>Susun ujian dari soal buatan Anda sendiri</value></data>
+  <data name="Own.Exams.Add" xml:space="preserve"><value>Buat ujian</value></data>
+  <data name="Own.Exams.New" xml:space="preserve"><value>Ujian baru</value></data>
+  <data name="Own.Exams.Edit" xml:space="preserve"><value>Ubah ujian</value></data>
+  <data name="Own.Exams.Empty" xml:space="preserve"><value>Anda belum membuat ujian sendiri.</value></data>
+  <data name="Own.Exams.Saved" xml:space="preserve"><value>Ujian disimpan.</value></data>
+  <data name="Own.Exams.LimitReached" xml:space="preserve"><value>Anda sudah memakai semua jatah {0} ujian. Berlangganan untuk membuat lebih banyak ujian.</value></data>
+  <data name="Own.Exams.ReadOnly" xml:space="preserve"><value>Ujian Anda sekarang hanya bisa dilihat dan dilatih, karena jumlahnya melebihi jatah paket Anda. Berlangganan untuk mengubah atau menambah ujian.</value></data>
+  <data name="Own.Exams.NoQuestions" xml:space="preserve"><value>Pilih minimal satu soal milik Anda.</value></data>
+  <data name="Own.Exams.Questions" xml:space="preserve"><value>Soal dalam ujian</value></data>
+  <data name="Own.Exams.NoOwnQuestions" xml:space="preserve"><value>Anda belum punya soal sendiri.</value></data>
+  <data name="Own.Exams.Rules" xml:space="preserve"><value>Aturan latihan</value></data>
+  <data name="Own.Exams.Published" xml:space="preserve"><value>Siap dibagikan</value></data>
+  <data name="Own.Exams.PublishedHelp" xml:space="preserve"><value>Tandai jika ujian sudah selesai disusun. Anda tetap bisa melatihnya kapan saja.</value></data>
+  <data name="Own.Exams.QuestionCount" xml:space="preserve"><value>{0} soal</value></data>
+  <data name="Own.Exams.Status.Draft" xml:space="preserve"><value>Draf</value></data>
+  <data name="Own.Exams.Status.Published" xml:space="preserve"><value>Siap dibagikan</value></data>
+  <data name="Own.Exams.Status.Unpublished" xml:space="preserve"><value>Tidak aktif</value></data>
+  <data name="Own.Exams.Status.TakenDown" xml:space="preserve"><value>Diturunkan admin</value></data>
+  <data name="Own.Exams.Practise" xml:space="preserve"><value>Latihan</value></data>
+  <data name="Own.Exams.TakenDown" xml:space="preserve"><value>Ujian ini diturunkan oleh admin. Anda masih bisa melihatnya, tetapi tidak bisa memulai latihan.</value></data>
 </root>

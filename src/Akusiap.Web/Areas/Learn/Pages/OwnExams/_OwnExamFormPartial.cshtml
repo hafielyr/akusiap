@@ -1,0 +1,108 @@
+@model Akusiap.Web.Areas.Learn.Pages.OwnExams.OwnExamFormView
+@using Akusiap.Domain.Content
+@* Own exam form (OWN-04): title, description, own questions (checkboxes, in list order), personal rules, Draft/Published. *@
+@{
+  var input = Model.Input;
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[$"Input.{field}"]?.Errors.FirstOrDefault()?.ErrorMessage;
+  var limits = new (string Field, string? Value, string Label, string Help)[]
+  {
+    ("TimeLimitMinutes", input.TimeLimitMinutes, "Admin.Preset.TimeLimit", "Admin.Presets.TimeLimitHelp"),
+    ("QuestionCount", input.QuestionCount, "Admin.Preset.QuestionCount", "Admin.Presets.QuestionCountHelp"),
+    ("PassMarkPercent", input.PassMarkPercent, "Admin.Preset.PassMark", "Admin.Presets.PassMarkHelp"),
+  };
+  var switches = new (string Field, bool Value, string Label)[]
+  {
+    ("HintsEnabled", input.HintsEnabled, "Admin.Preset.HintsEnabled"),
+    ("ShuffleQuestions", input.ShuffleQuestions, "Admin.Preset.ShuffleQuestions"),
+    ("ShuffleOptions", input.ShuffleOptions, "Admin.Preset.ShuffleOptions"),
+  };
+}
+<form method="post" class="space-y-5" novalidate data-testid="own-exam-form">
+  <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+
+  <div class="space-y-1">
+    <label for="Input_Title" class="label">@T["Admin.Exam.Title"]</label>
+    <input id="Input_Title" name="Input.Title" value="@input.Title" maxlength="200" class="input" aria-invalid="@(ErrorFor("Title") is null ? null : "true")" />
+    @if (ErrorFor("Title") is { } titleError) { <span class="field-error">@titleError</span> }
+  </div>
+
+  <div class="space-y-1">
+    <label for="Input_Description" class="label">@T["Admin.Exam.Description"]</label>
+    <textarea id="Input_Description" name="Input.Description" rows="3" maxlength="4000" class="input">@input.Description</textarea>
+    @if (ErrorFor("Description") is { } descriptionError) { <span class="field-error">@descriptionError</span> }
+  </div>
+
+  <fieldset class="space-y-2">
+    <legend class="label">@T["Own.Exams.Questions"]</legend>
+    @if (Model.Questions.Count == 0)
+    {
+      <p class="text-sm text-slate-600">@T["Own.Exams.NoOwnQuestions"] <a href="/learn/soal-saya/baru" class="font-medium text-brand-700">@T["Own.Questions.Add"]</a></p>
+    }
+    <ul class="max-h-96 space-y-1 overflow-y-auto rounded-xl border border-slate-200 bg-white p-2">
+      @foreach (var q in Model.Questions)
+      {
+        <li>
+          <label class="flex min-h-11 items-start gap-3 rounded-lg px-2 py-2 hover:bg-slate-50">
+            <input type="checkbox" name="Input.QuestionIds" value="@q.Id" class="mt-0.5 size-5 shrink-0 accent-brand-600" checked="@input.QuestionIds.Contains(q.Id)" data-testid="own-exam-question" />
+            <span class="min-w-0">
+              <span class="line-clamp-2 block text-sm font-medium">@q.Text</span>
+              <span class="block text-xs text-slate-500">@q.TopicName</span>
+            </span>
+          </label>
+        </li>
+      }
+    </ul>
+    @if (ErrorFor("QuestionIds") is { } questionsError) { <span class="field-error" data-testid="error-questions">@questionsError</span> }
+  </fieldset>
+
+  <details class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" open="@(limits.Any(l => ErrorFor(l.Field) is not null))">
+    <summary class="min-h-11 cursor-pointer font-medium">@T["Own.Exams.Rules"]</summary>
+    <div class="grid gap-4 sm:grid-cols-2">
+      @foreach (var limit in limits)
+      {
+        <div class="space-y-1">
+          <label for="Input_@limit.Field" class="label">@T[limit.Label]</label>
+          <input id="Input_@limit.Field" name="Input.@limit.Field" value="@limit.Value" inputmode="numeric" class="input"
+                 aria-invalid="@(ErrorFor(limit.Field) is null ? null : "true")" />
+          <p class="text-sm text-slate-500">@T[limit.Help]</p>
+          @if (ErrorFor(limit.Field) is { } limitError) { <span class="field-error" data-testid="error-@limit.Field">@limitError</span> }
+        </div>
+      }
+    </div>
+    <fieldset class="space-y-1">
+      <legend class="label">@T["Admin.Preset.Options"]</legend>
+      @foreach (var item in switches)
+      {
+        <label class="flex min-h-11 items-center gap-3 text-slate-800">
+          <input type="checkbox" name="Input.@item.Field" value="true" class="size-5 accent-brand-600" checked="@item.Value" />
+          <span>@T[item.Label]</span>
+        </label>
+      }
+    </fieldset>
+    <fieldset class="space-y-1">
+      <legend class="label">@T["Admin.Preset.ShowAnswers"]</legend>
+      @foreach (var option in Enum.GetValues<ShowAnswers>())
+      {
+        <label class="flex min-h-11 items-center gap-3 text-slate-800">
+          <input type="radio" name="Input.ShowAnswers" value="@option" class="size-5 accent-brand-600" checked="@(option == input.ShowAnswers)" />
+          <span>@T[$"Admin.ShowAnswers.{option}"]</span>
+        </label>
+      }
+      @if (ErrorFor("ShowAnswers") is { } showError) { <span class="field-error">@showError</span> }
+    </fieldset>
+  </details>
+
+  <div class="space-y-1 rounded-xl border border-slate-200 bg-white p-4">
+    <label class="flex min-h-11 items-center gap-3 font-medium text-slate-800">
+      <input type="checkbox" name="Input.Published" value="true" class="size-5 accent-brand-600" checked="@input.Published" />
+      <span>@T["Own.Exams.Published"]</span>
+    </label>
+    <p class="text-sm text-slate-500">@T["Own.Exams.PublishedHelp"]</p>
+  </div>
+
+  @if (Model.CanSave)
+  {
+    <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Save"]</button>
+  }
+</form>
