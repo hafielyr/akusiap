@@ -730,4 +730,10 @@
   <data name="History.Minutes" xml:space="preserve"><value>{0} min {1} s</value></data>
   <data name="History.Result" xml:space="preserve"><value>Result</value></data>
   <data name="History.Review" xml:space="preserve"><value>Answers</value></data>
+  <data name="Reminder.Subject" xml:space="preserve"><value>Your {0} package ends {1}</value></data>
+  <data name="Reminder.Body" xml:space="preserve"><value>Your {0} package ends {1}, at {2}. Renew now so your practice isn't interrupted.</value></data>
+  <data name="Reminder.InDays" xml:space="preserve"><value>in {0} days</value></data>
+  <data name="Reminder.Tomorrow" xml:space="preserve"><value>tomorrow</value></data>
+  <data name="Reminder.Today" xml:space="preserve"><value>today</value></data>
+  <data name="Reminder.Renew" xml:space="preserve"><value>Renew the package</value></data>
 </root>

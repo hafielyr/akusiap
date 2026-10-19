@@ -730,4 +730,10 @@
   <data name="History.Minutes" xml:space="preserve"><value>{0} mnt {1} dtk</value></data>
   <data name="History.Result" xml:space="preserve"><value>Hasil</value></data>
   <data name="History.Review" xml:space="preserve"><value>Pembahasan</value></data>
+  <data name="Reminder.Subject" xml:space="preserve"><value>Paket {0} Anda berakhir {1}</value></data>
+  <data name="Reminder.Body" xml:space="preserve"><value>Paket {0} Anda berakhir {1}, pada {2}. Perpanjang sekarang agar latihan Anda tidak terputus.</value></data>
+  <data name="Reminder.InDays" xml:space="preserve"><value>dalam {0} hari</value></data>
+  <data name="Reminder.Tomorrow" xml:space="preserve"><value>besok</value></data>
+  <data name="Reminder.Today" xml:space="preserve"><value>hari ini</value></data>
+  <data name="Reminder.Renew" xml:space="preserve"><value>Perpanjang paket</value></data>
 </root>
