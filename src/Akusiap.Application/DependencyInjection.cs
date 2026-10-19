@@ -10,6 +10,7 @@ using Akusiap.Application.RulePresets;
 using Akusiap.Application.Sessions;
 using Akusiap.Application.Subjects;
 using Akusiap.Application.Topics;
+using Akusiap.Application.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Akusiap.Application;
@@ -30,6 +31,8 @@ public static class DependencyInjection
         services.AddScoped<CreatePayment>();
         services.AddScoped<ListPlanPricing>();
         services.AddScoped<SavePlanPrices>();
+        services.AddScoped<ListUsers>();
+        services.AddScoped<GetUserDetail>();
         services.AddScoped<ApplyGatewayNotification>();
         services.AddScoped<ListCatalog>();
         services.AddScoped<GetCatalogExam>();

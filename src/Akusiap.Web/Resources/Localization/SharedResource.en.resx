@@ -476,4 +476,27 @@
   <data name="Admin.Plans.PriceRange" xml:space="preserve"><value>The {0}-month price must be more than 0.</value></data>
   <data name="Admin.Plans.ActiveNeedsPrice" xml:space="preserve"><value>The {0}-month package needs a price before it can be on sale.</value></data>
   <data name="Admin.Plans.PriceInUse" xml:space="preserve"><value>The {0}-month package has been bought, so its price can't be removed. Switch off "On sale" instead.</value></data>
+  <data name="Admin.Nav.Users" xml:space="preserve"><value>Users</value></data>
+  <data name="Admin.Users.Title" xml:space="preserve"><value>Users</value></data>
+  <data name="Admin.Users.Search" xml:space="preserve"><value>Search email or name</value></data>
+  <data name="Admin.Users.Role" xml:space="preserve"><value>Role</value></data>
+  <data name="Admin.Users.AllRoles" xml:space="preserve"><value>All roles</value></data>
+  <data name="Admin.Users.RoleName.Learner" xml:space="preserve"><value>Learner</value></data>
+  <data name="Admin.Users.RoleName.Teacher" xml:space="preserve"><value>Teacher</value></data>
+  <data name="Admin.Users.RoleName.Admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Admin.Users.Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Admin.Users.AllStatuses" xml:space="preserve"><value>Active and deactivated</value></data>
+  <data name="Admin.Users.Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Admin.Users.Subscription" xml:space="preserve"><value>Subscription</value></data>
+  <data name="Admin.Users.Sub.Any" xml:space="preserve"><value>Any subscription</value></data>
+  <data name="Admin.Users.Sub.Active" xml:space="preserve"><value>Subscribed</value></data>
+  <data name="Admin.Users.Sub.None" xml:space="preserve"><value>Not subscribed</value></data>
+  <data name="Admin.Users.Subscribed" xml:space="preserve"><value>Subscribed</value></data>
+  <data name="Admin.Users.Total" xml:space="preserve"><value>{0} users</value></data>
+  <data name="Admin.Users.Unconfirmed" xml:space="preserve"><value>(not confirmed)</value></data>
+  <data name="Admin.Users.Roles" xml:space="preserve"><value>Roles</value></data>
+  <data name="Admin.Users.Joined" xml:space="preserve"><value>Joined</value></data>
+  <data name="Admin.Users.Attempts" xml:space="preserve"><value>Practice sessions</value></data>
+  <data name="Admin.Users.ManageAccess" xml:space="preserve"><value>Manage access</value></data>
+  <data name="Admin.Users.NoAccess" xml:space="preserve"><value>No purchases or subscriptions yet.</value></data>
 </root>

@@ -1,0 +1,56 @@
+@page "/admin/pengguna/{id:guid}"
+@model Akusiap.Web.Areas.Admin.Pages.Users.DetailModel
+@using Akusiap.Domain
+@{
+  var user = Model.Detail;
+  ViewData["Title"] = user.DisplayName;
+}
+
+<section class="max-w-xl space-y-4">
+  <a href="@IndexModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Admin.Users.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@user.DisplayName</h1>
+
+  <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 rounded-xl border border-slate-200 bg-white p-4 text-sm" data-testid="user-profile">
+    <dt class="text-slate-500">@T["Profile.Email"]</dt>
+    <dd class="break-all">@user.Email @(user.EmailConfirmed ? null : T["Admin.Users.Unconfirmed"])</dd>
+    <dt class="text-slate-500">@T["Profile.Phone"]</dt>
+    <dd>@(user.PhoneNumber ?? "–")</dd>
+    <dt class="text-slate-500">@T["Profile.Language"]</dt>
+    <dd>@(user.PreferredLanguage == "en" ? "English" : "Bahasa Indonesia")</dd>
+    <dt class="text-slate-500">@T["Admin.Users.Roles"]</dt>
+    <dd data-testid="user-roles">@string.Join(", ", user.Roles.Select(r => T[$"Admin.Users.RoleName.{r}"].Value))</dd>
+    <dt class="text-slate-500">@T["Admin.Users.Status"]</dt>
+    <dd>@(user.IsActive ? T["Admin.Users.Active"] : T["Admin.Access.Inactive"])</dd>
+    <dt class="text-slate-500">@T["Admin.Users.Joined"]</dt>
+    <dd>@JakartaTime.FormatDate(user.CreatedAt)</dd>
+    <dt class="text-slate-500">@T["Admin.Users.Attempts"]</dt>
+    <dd data-testid="user-attempts">@user.AttemptCount</dd>
+  </dl>
+
+  <section class="space-y-2" aria-labelledby="access-heading">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <h2 id="access-heading" class="text-xl font-bold">@T["Admin.Nav.Access"]</h2>
+      <a href="@Akusiap.Web.Areas.Admin.Pages.Access.IndexModel.UrlFor(user.Email)" class="btn btn-secondary" data-testid="manage-access">@T["Admin.Users.ManageAccess"]</a>
+    </div>
+    @if (user.Access.Purchases.Count == 0 && user.Access.Subscriptions.Count == 0)
+    {
+      <p class="text-slate-600">@T["Admin.Users.NoAccess"]</p>
+    }
+    <ul class="space-y-2" data-testid="user-access">
+      @foreach (var row in user.Access.Subscriptions)
+      {
+        <li class="space-y-1 rounded-xl border border-slate-200 bg-white p-3">
+          <p class="font-medium">@row.PlanName</p>
+          <partial name="_AccessStatePartial" model="(row.State, row.EndsAt, row.DaysLeft)" />
+        </li>
+      }
+      @foreach (var row in user.Access.Purchases)
+      {
+        <li class="space-y-1 rounded-xl border border-slate-200 bg-white p-3">
+          <p class="font-medium">@row.ExamTitle</p>
+          <partial name="_AccessStatePartial" model="(row.State, row.EndsAt, row.DaysLeft)" />
+        </li>
+      }
+    </ul>
+  </section>
+</section>

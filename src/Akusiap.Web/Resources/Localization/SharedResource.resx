@@ -476,4 +476,27 @@
   <data name="Admin.Plans.PriceRange" xml:space="preserve"><value>Harga {0} bulan harus lebih dari 0.</value></data>
   <data name="Admin.Plans.ActiveNeedsPrice" xml:space="preserve"><value>Paket {0} bulan perlu harga sebelum dijual.</value></data>
   <data name="Admin.Plans.PriceInUse" xml:space="preserve"><value>Paket {0} bulan sudah dibeli, jadi harganya tidak bisa dihapus. Matikan "Dijual" saja.</value></data>
+  <data name="Admin.Nav.Users" xml:space="preserve"><value>Pengguna</value></data>
+  <data name="Admin.Users.Title" xml:space="preserve"><value>Pengguna</value></data>
+  <data name="Admin.Users.Search" xml:space="preserve"><value>Cari email atau nama</value></data>
+  <data name="Admin.Users.Role" xml:space="preserve"><value>Peran</value></data>
+  <data name="Admin.Users.AllRoles" xml:space="preserve"><value>Semua peran</value></data>
+  <data name="Admin.Users.RoleName.Learner" xml:space="preserve"><value>Pelajar</value></data>
+  <data name="Admin.Users.RoleName.Teacher" xml:space="preserve"><value>Pengajar</value></data>
+  <data name="Admin.Users.RoleName.Admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Admin.Users.Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Admin.Users.AllStatuses" xml:space="preserve"><value>Aktif dan nonaktif</value></data>
+  <data name="Admin.Users.Active" xml:space="preserve"><value>Aktif</value></data>
+  <data name="Admin.Users.Subscription" xml:space="preserve"><value>Langganan</value></data>
+  <data name="Admin.Users.Sub.Any" xml:space="preserve"><value>Semua langganan</value></data>
+  <data name="Admin.Users.Sub.Active" xml:space="preserve"><value>Berlangganan</value></data>
+  <data name="Admin.Users.Sub.None" xml:space="preserve"><value>Tidak berlangganan</value></data>
+  <data name="Admin.Users.Subscribed" xml:space="preserve"><value>Berlangganan</value></data>
+  <data name="Admin.Users.Total" xml:space="preserve"><value>{0} pengguna</value></data>
+  <data name="Admin.Users.Unconfirmed" xml:space="preserve"><value>(belum dikonfirmasi)</value></data>
+  <data name="Admin.Users.Roles" xml:space="preserve"><value>Peran</value></data>
+  <data name="Admin.Users.Joined" xml:space="preserve"><value>Bergabung</value></data>
+  <data name="Admin.Users.Attempts" xml:space="preserve"><value>Sesi latihan</value></data>
+  <data name="Admin.Users.ManageAccess" xml:space="preserve"><value>Kelola akses</value></data>
+  <data name="Admin.Users.NoAccess" xml:space="preserve"><value>Belum ada pembelian atau langganan.</value></data>
 </root>
