@@ -1,6 +1,8 @@
 using Akusiap.Application.Abstractions;
+using Akusiap.Domain.Users;
 using Akusiap.Infrastructure.Email;
 using Akusiap.Infrastructure.Persistence;
+using Akusiap.Infrastructure.Seeding;
 using Akusiap.Infrastructure.Time;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +32,16 @@ public static class DependencyInjection
 
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton<IClock, SystemClock>();
+
+        // Users and roles. Cookie sign-in and the account pages come with AC-01.
+        services.AddIdentityCore<User>(options => options.User.RequireUniqueEmail = true)
+            .AddRoles<Role>()
+            .AddEntityFrameworkStores<AppDbContext>();
+
+        services.Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SectionName));
+        services.Configure<SeedOptions>(configuration.GetSection(SeedOptions.SectionName));
+        services.AddScoped<DataSeeder>();
+        services.AddHostedService<DatabaseInitializer>();
 
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
         if (environment.IsDevelopment())

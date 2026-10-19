@@ -32,6 +32,9 @@ public sealed class AppFactory(string connectionString) : WebApplicationFactory<
         builder.UseEnvironment("Development");
         builder.UseSetting("ConnectionStrings:Default", connectionString);
         builder.UseSetting("Support:WhatsAppNumber", SupportWhatsAppNumber);
+        // The per-run database is already migrated, and tests seed what they need (seeder tests call DataSeeder).
+        builder.UseSetting("Database:MigrateOnStartup", "false");
+        builder.UseSetting("Seed:OnStartup", "false");
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IClock>();
