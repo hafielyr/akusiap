@@ -3,6 +3,7 @@ using Akusiap.Application.Access;
 using Akusiap.Application.Catalog;
 using Akusiap.Application.Exams;
 using Akusiap.Application.Payments;
+using Akusiap.Application.Plans;
 using Akusiap.Application.Questions;
 using Akusiap.Application.Questions.Import;
 using Akusiap.Application.RulePresets;
@@ -27,6 +28,8 @@ public static class DependencyInjection
         services.AddSingleton<IRandomSource, SystemRandomSource>();
         services.AddScoped<StartAttempt>();
         services.AddScoped<CreatePayment>();
+        services.AddScoped<ListPlanPricing>();
+        services.AddScoped<SavePlanPrices>();
         services.AddScoped<ApplyGatewayNotification>();
         services.AddScoped<ListCatalog>();
         services.AddScoped<GetCatalogExam>();
