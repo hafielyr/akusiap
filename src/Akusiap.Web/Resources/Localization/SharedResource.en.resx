@@ -45,4 +45,18 @@
   <data name="Identity.DefaultError" xml:space="preserve"><value>Something went wrong. Please try again.</value></data>
   <data name="Catalog.Title" xml:space="preserve"><value>Exam catalog</value></data>
   <data name="Catalog.ComingSoon" xml:space="preserve"><value>The exam catalog is being prepared and is coming soon.</value></data>
+  <data name="Status.Forbidden.Title" xml:space="preserve"><value>Access denied</value></data>
+  <data name="Status.Forbidden.Heading" xml:space="preserve"><value>You don't have access to this page.</value></data>
+  <data name="Status.Forbidden.Body" xml:space="preserve"><value>This page is only for users with specific permissions. If you think this is a mistake, contact us on WhatsApp.</value></data>
+  <data name="Status.NotFound.Title" xml:space="preserve"><value>Page not found</value></data>
+  <data name="Status.NotFound.Heading" xml:space="preserve"><value>Page not found.</value></data>
+  <data name="Status.NotFound.Body" xml:space="preserve"><value>The address you opened doesn't exist or has moved. Check the address or go back to the home page.</value></data>
+  <data name="Status.Other.Title" xml:space="preserve"><value>Something went wrong</value></data>
+  <data name="Status.Other.Heading" xml:space="preserve"><value>The request could not be processed.</value></data>
+  <data name="Status.Other.Body" xml:space="preserve"><value>Please try again. If the problem continues, contact us on WhatsApp.</value></data>
+  <data name="Status.Home" xml:space="preserve"><value>Back to home</value></data>
+  <data name="Admin.Title" xml:space="preserve"><value>Admin dashboard</value></data>
+  <data name="Admin.ComingSoon" xml:space="preserve"><value>Managing questions, exams, users and payments will be available here.</value></data>
+  <data name="Learn.Title" xml:space="preserve"><value>My learning</value></data>
+  <data name="Learn.ComingSoon" xml:space="preserve"><value>Your practice history and exam access will appear here.</value></data>
 </root>

@@ -20,9 +20,20 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SecurePolicy = builder.Environment.IsDevelopment() ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
     options.ExpireTimeSpan = TimeSpan.FromDays(14);
     options.SlidingExpiration = true;
+    // A signed-in user without the right role gets a real 403 and the Indonesian status page, not a redirect.
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+        return Task.CompletedTask;
+    };
 });
+builder.Services.AddAppAuthorization();
 builder.Services.AddAppLocalization();
-builder.Services.AddRazorPages()
+builder.Services.AddRazorPages(options =>
+    {
+        options.Conventions.AuthorizeAreaFolder(AuthorizationPolicies.AdminArea, "/", AuthorizationPolicies.AdminOnly);
+        options.Conventions.AuthorizeAreaFolder(AuthorizationPolicies.LearnArea, "/", AuthorizationPolicies.SignedIn);
+    })
     .AddViewLocalization()
     .AddDataAnnotationsLocalization(options =>
         options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)));
@@ -36,6 +47,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Empty 4xx/5xx responses (403, 404 …) are re-run through /status/{code}; placed before localization so the page
+// is shown in the visitor's language.
+app.UseStatusCodePagesWithReExecute("/status/{0}");
 app.UseHttpsRedirection();
 app.UseRequestLocalization();
 app.UseRouting();
@@ -46,6 +60,13 @@ app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthR
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+// Unknown addresses get 404 for every method. Without this, the static-asset catch-all (GET/HEAD only) turns a POST to
+// an unknown address into 405. The empty 404 is then shown as the friendly status page.
+app.MapFallback(context =>
+{
+    context.Response.StatusCode = StatusCodes.Status404NotFound;
+    return Task.CompletedTask;
+});
 
 app.Run();
 

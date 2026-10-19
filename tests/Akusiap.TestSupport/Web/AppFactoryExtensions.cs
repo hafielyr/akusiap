@@ -32,6 +32,29 @@ public static class AppFactoryExtensions
         return user;
     }
 
+    /// <summary>
+    /// Creates a user with the given roles and returns a client already signed in as them through <c>/akun/masuk</c>.
+    /// The client does not follow redirects, so tests can assert on them.
+    /// </summary>
+    public static async Task<HttpClient> CreateSignedInClientAsync(
+        this WebApplicationFactory<Program> app, User user, params string[] roles)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+        const string password = "test-sandi-2026";
+        await app.CreateUserAsync(user, password, roles);
+        var client = app.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var response = await client.PostFormAsync(
+            "/akun/masuk",
+            new Dictionary<string, string> { ["Input.Email"] = user.Email!, ["Input.Password"] = password });
+        if (response.StatusCode != System.Net.HttpStatusCode.Redirect)
+        {
+            client.Dispose();
+            throw new InvalidOperationException($"Signing in {user.Email} returned {(int)response.StatusCode} instead of a redirect.");
+        }
+
+        return client;
+    }
+
     private static void Check(IdentityResult result)
     {
         if (!result.Succeeded)
