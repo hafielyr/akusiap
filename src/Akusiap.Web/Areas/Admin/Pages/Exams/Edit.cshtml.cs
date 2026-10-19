@@ -25,6 +25,7 @@ public sealed class EditModel(
     SearchQuestionsForExam searchQuestions,
     ChangeExamQuestions changeQuestions,
     ListTopicOptions listTopics,
+    PublishExam publishExam,
     IStringLocalizer<SharedResource> t) : PageModel
 {
     [BindProperty(SupportsGet = true)]
@@ -42,6 +43,50 @@ public sealed class EditModel(
     public IReadOnlyList<QuestionCandidate> Candidates { get; private set; } = [];
 
     public IReadOnlyList<TopicOption> Topics { get; private set; } = [];
+
+    /// <summary>Why the exam can't be published yet (empty when it can, or when it is already published).</summary>
+    public IReadOnlyList<string> PublishProblems { get; private set; } = [];
+
+    /// <summary>True after a refused publish, so the list is shown as an error rather than a checklist.</summary>
+    public bool PublishRefused { get; private set; }
+
+    public async Task<IActionResult> OnPostPublishAsync(CancellationToken cancellationToken)
+    {
+        var result = await publishExam.PublishAsync(Id, cancellationToken);
+        if (result.IsNotFound)
+        {
+            return NotFound();
+        }
+
+        if (result.Succeeded)
+        {
+            TempData["Flash"] = "Admin.Publish.Done";
+            return Redirect($"/admin/ujian/{Id}");
+        }
+
+        if (!await LoadAsync(cancellationToken))
+        {
+            return NotFound();
+        }
+
+        Input = ExamInput.From(Exam);
+        await ShowAsync(cancellationToken);
+        PublishProblems = [.. result.Problems.Select(p => ProblemModelState.Describe(p, t))];
+        PublishRefused = true;
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostUnpublishAsync(CancellationToken cancellationToken)
+    {
+        var result = await publishExam.UnpublishAsync(Id, cancellationToken);
+        if (result.IsNotFound)
+        {
+            return NotFound();
+        }
+
+        TempData["Flash"] = result.Succeeded ? "Admin.Publish.UnpublishDone" : "Admin.Publish.NotPublished";
+        return Redirect($"/admin/ujian/{Id}");
+    }
 
     /// <summary>htmx: Active questions matching the search box and topic filter.</summary>
     public async Task<IActionResult> OnGetSearchAsync(
@@ -141,6 +186,12 @@ public sealed class EditModel(
         Questions = (await getExamQuestions.HandleAsync(Id, cancellationToken))!;
         Candidates = await searchQuestions.HandleAsync(Id, search: null, topicId: null, cancellationToken);
         Topics = await listTopics.HandleAsync(cancellationToken);
+        if (Exam.Status != Domain.Content.ExamStatus.Published)
+        {
+            var problems = await publishExam.CheckAsync(Id, cancellationToken) ?? [];
+            PublishProblems = [.. problems.Select(p => ProblemModelState.Describe(p, t))];
+        }
+
         return Page();
     }
 

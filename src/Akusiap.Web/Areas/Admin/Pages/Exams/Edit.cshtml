@@ -17,6 +17,43 @@
   <p class="text-sm text-slate-500" data-testid="exam-usage">
     @T["Admin.Exams.QuestionCounts", exam.QuestionCount, exam.TrialCount] · @T["Admin.Exams.Usage", exam.AttemptCount, exam.PurchaseCount]
   </p>
+  <div class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="publish-section">
+    <h2 class="font-semibold">@T["Admin.Publish.Title"]</h2>
+    @if (exam.Status == ExamStatus.Published)
+    {
+      <p class="text-sm text-slate-600">@T["Admin.Publish.IsPublished"]</p>
+      <form method="post" asp-page-handler="Unpublish" x-data="{ sure: false }">
+        <button type="button" x-show="!sure" x-on:click="sure = true" class="btn btn-secondary">@T["Admin.Publish.Unpublish"]</button>
+        <span x-show="sure" x-cloak class="block space-y-2">
+          <span class="block text-sm text-amber-900">@T["Admin.Publish.UnpublishWarning"]</span>
+          <span class="flex flex-wrap items-center gap-2">
+            <button type="submit" class="btn bg-amber-600 text-white hover:bg-amber-700">@T["Admin.Publish.UnpublishConfirm"]</button>
+            <button type="button" x-on:click="sure = false" class="btn btn-secondary">@T["Admin.Cancel"]</button>
+          </span>
+        </span>
+      </form>
+    }
+    else
+    {
+      @if (Model.PublishProblems.Count == 0)
+      {
+        <p class="text-sm text-green-800" data-testid="publish-ready">@T["Admin.Publish.Ready"]</p>
+      }
+      else
+      {
+        <div class="space-y-1 rounded-lg p-3 @(Model.PublishRefused ? "bg-red-50" : "bg-amber-50")" role="@(Model.PublishRefused ? "alert" : null)" data-testid="publish-problems">
+          <p class="text-sm font-medium @(Model.PublishRefused ? "text-red-800" : "text-amber-900")">@T[Model.PublishRefused ? "Admin.Publish.Refused" : "Admin.Publish.NotReady"]</p>
+          <ul class="list-disc space-y-1 pl-5 text-sm @(Model.PublishRefused ? "text-red-800" : "text-amber-900")">
+            @foreach (var problem in Model.PublishProblems) { <li>@problem</li> }
+          </ul>
+        </div>
+      }
+      <form method="post" asp-page-handler="Publish">
+        <button type="submit" class="btn btn-primary">@T["Admin.Publish.Publish"]</button>
+      </form>
+    }
+  </div>
+
   <partial name="_ExamFormPartial" model="Model.Form" />
 </section>
 
