@@ -32,7 +32,8 @@ public sealed record FlashcardSummary(long AttemptId, string? Title, int Total, 
 /// ExamId = the deck's exam or null for "Kartu saya") with up to <see cref="SetSize"/> items: due cards first (oldest
 /// due first), then cards the learner keeps getting wrong (Learning or lapsed, not yet due), then questions without a
 /// card. Only questions the learner can fully use now are offered: an exam deck needs Full, Owner or Admin access, and
-/// "Kartu saya" keeps a card only while one of its exams still gives that access (trial access doesn't count).
+/// "Kartu saya" keeps a card only while one of its exams still gives that access (trial access doesn't count), or
+/// while it is the learner's own Active question (SRS-01).
 /// Rating a card runs <see cref="Sm2Scheduler"/>, writes a <see cref="ReviewLog"/> and moves to the next card; after the
 /// last card the set is closed and summarised.
 /// </summary>
@@ -75,6 +76,7 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
             decks.Add(new FlashcardDeck(exam.Facts.Id, exam.Title, due.Count));
         }
 
+        allowedDue.UnionWith(await OwnActiveAsync(userId, dueByQuestion, cancellationToken).ConfigureAwait(false));
         decks.Insert(0, new FlashcardDeck(null, null, allowedDue.Count));
         return decks;
     }
@@ -249,6 +251,7 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
     /// <summary>The questions among <paramref name="questionIds"/> that one of their exams still gives full access to.</summary>
     private async Task<IReadOnlyList<long>> AllowedAsync(List<long> questionIds, CancellationToken cancellationToken)
     {
+        var allowed = (await OwnActiveAsync(UserId(), questionIds, cancellationToken).ConfigureAwait(false)).ToHashSet();
         var links = await db.ExamQuestions.AsNoTracking()
             .Where(eq => questionIds.Contains(eq.QuestionId) && eq.Question!.Status == QuestionStatus.Active)
             .Select(eq => new
@@ -258,7 +261,6 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
             })
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
-        var allowed = new HashSet<long>();
         var decisions = new Dictionary<long, bool>();
         foreach (var link in links)
         {
@@ -276,6 +278,14 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
 
         return [.. questionIds.Where(allowed.Contains)];
     }
+
+    /// <summary>The learner's own Active questions among <paramref name="questionIds"/> (SRS-01): always theirs to review.</summary>
+    private async Task<List<long>> OwnActiveAsync(Guid userId, List<long> questionIds, CancellationToken cancellationToken) =>
+        await db.Questions
+            .Where(q => questionIds.Contains(q.Id) && q.OwnerUserId == userId && q.Status == QuestionStatus.Active)
+            .Select(q => q.Id)
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
 
     private async Task<SetFacts?> OwnSetAsync(long attemptId, CancellationToken cancellationToken)
     {
