@@ -802,4 +802,14 @@
   <data name="Flashcards.SummaryTotal" xml:space="preserve"><value>{0} kartu diulang</value></data>
   <data name="Flashcards.Again" xml:space="preserve"><value>Set berikutnya</value></data>
   <data name="History.Open" xml:space="preserve"><value>Buka</value></data>
+  <data name="Mix.Title" xml:space="preserve"><value>Latihan campuran</value></data>
+  <data name="Mix.Link" xml:space="preserve"><value>Gabungkan soal Anda dengan soal dari ujian yang Anda punya</value></data>
+  <data name="Mix.Lead" xml:space="preserve"><value>Pilih soal buatan Anda dan ujian (atau topik) yang bisa Anda akses penuh. Set ini hanya untuk Anda dan tidak bisa dibagikan.</value></data>
+  <data name="Mix.Own" xml:space="preserve"><value>Soal saya ({0})</value></data>
+  <data name="Mix.WholeExam" xml:space="preserve"><value>semua topik</value></data>
+  <data name="Mix.NoExams" xml:space="preserve"><value>Belum ada ujian dengan akses penuh. Beli ujian atau berlangganan untuk mencampur soalnya.</value></data>
+  <data name="Mix.Start" xml:space="preserve"><value>Mulai latihan</value></data>
+  <data name="Mix.NothingSelected" xml:space="preserve"><value>Pilih minimal satu sumber soal.</value></data>
+  <data name="Mix.Empty" xml:space="preserve"><value>Tidak ada soal yang bisa dipakai dari pilihan ini.</value></data>
+  <data name="Mix.Count" xml:space="preserve"><value>Jumlah soal</value></data>
 </root>

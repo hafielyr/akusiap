@@ -802,4 +802,14 @@
   <data name="Flashcards.SummaryTotal" xml:space="preserve"><value>{0} cards reviewed</value></data>
   <data name="Flashcards.Again" xml:space="preserve"><value>Next set</value></data>
   <data name="History.Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Mix.Title" xml:space="preserve"><value>Mixed practice</value></data>
+  <data name="Mix.Link" xml:space="preserve"><value>Mix your questions with questions from exams you have</value></data>
+  <data name="Mix.Lead" xml:space="preserve"><value>Pick your own questions and exams (or topics) you have full access to. The set is just for you and can't be shared.</value></data>
+  <data name="Mix.Own" xml:space="preserve"><value>My questions ({0})</value></data>
+  <data name="Mix.WholeExam" xml:space="preserve"><value>all topics</value></data>
+  <data name="Mix.NoExams" xml:space="preserve"><value>You have no exams with full access yet. Buy an exam or subscribe to mix its questions.</value></data>
+  <data name="Mix.Start" xml:space="preserve"><value>Start practice</value></data>
+  <data name="Mix.NothingSelected" xml:space="preserve"><value>Choose at least one source of questions.</value></data>
+  <data name="Mix.Empty" xml:space="preserve"><value>There are no questions you can use in this choice.</value></data>
+  <data name="Mix.Count" xml:space="preserve"><value>Number of questions</value></data>
 </root>

@@ -18,7 +18,7 @@ public sealed record ReviewOption(long Id, string Text, bool IsCorrect, bool Sel
 public sealed record ReviewItem(int Position, QuestionType Type, string Text, IReadOnlyList<ReviewOption> Options, bool IsCorrect, bool IsFlagged, string Explanation, string? KeyFact);
 
 /// <param name="Hidden">The rules say answers are never shown (ShowAnswers = Never).</param>
-public sealed record AttemptReview(long AttemptId, string Title, bool Hidden, int WrongCount, int FlaggedCount, IReadOnlyList<ReviewItem> Items);
+public sealed record AttemptReview(long AttemptId, string Title, bool Hidden, int WrongCount, int FlaggedCount, IReadOnlyList<ReviewItem> Items, bool HasExam = true);
 
 /// <summary>
 /// The answer review of a finished attempt (SES-08, stories R-02, G-03, M-03, D-74): every item in its position with
@@ -31,7 +31,7 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
     public async Task<AttemptReview?> HandleAsync(long attemptId, Guid? guestToken, ReviewFilter filter, CancellationToken cancellationToken)
     {
         var attempt = await db.Attempts.AsNoTracking().Where(a => a.Id == attemptId)
-            .Select(a => new { a.UserId, a.GuestToken, a.Status, a.RulesSnapshot, Title = a.Exam == null ? null : a.Exam.Title })
+            .Select(a => new { a.UserId, a.GuestToken, a.Status, a.RulesSnapshot, a.ExamId, Title = a.Exam == null ? null : a.Exam.Title })
             .SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
         if (attempt is null || attempt.Status == AttemptStatus.InProgress || !AttemptAccess.IsOwner(currentUser, attempt.UserId, attempt.GuestToken, guestToken))
         {
@@ -40,7 +40,7 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
 
         if (IsHidden(attempt.RulesSnapshot))
         {
-            return new AttemptReview(attemptId, attempt.Title ?? string.Empty, true, 0, 0, []);
+            return new AttemptReview(attemptId, attempt.Title ?? string.Empty, true, 0, 0, [], attempt.ExamId is not null);
         }
 
         var rows = await db.AttemptItems.AsNoTracking()
@@ -77,7 +77,7 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
             ReviewFilter.Flagged => items.Where(i => i.IsFlagged),
             _ => items,
         };
-        return new AttemptReview(attemptId, attempt.Title ?? string.Empty, false, items.Count(i => !i.IsCorrect), items.Count(i => i.IsFlagged), [.. filtered]);
+        return new AttemptReview(attemptId, attempt.Title ?? string.Empty, false, items.Count(i => !i.IsCorrect), items.Count(i => i.IsFlagged), [.. filtered], attempt.ExamId is not null);
     }
 
     private static bool IsHidden(string rulesSnapshot)

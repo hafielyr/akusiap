@@ -1,0 +1,59 @@
+@page "/learn/campuran"
+@model Akusiap.Web.Areas.Learn.Pages.MixModel
+@* Private mixed practice (OWN-06): own questions plus exams with full access, whole or by topic. *@
+@{
+  ViewData["Title"] = T["Mix.Title"].Value;
+  var options = Model.Options;
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[field]?.Errors.FirstOrDefault()?.ErrorMessage;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="/learn" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Learn.Title"]</a>
+  <div class="space-y-1">
+    <h1 class="text-2xl font-bold leading-tight">@T["Mix.Title"]</h1>
+    <p class="text-slate-600">@T["Mix.Lead"]</p>
+  </div>
+
+  <form method="post" class="space-y-5" novalidate data-testid="mix-form">
+    <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+
+    <label class="flex min-h-11 items-center gap-3 rounded-xl border border-slate-200 bg-white p-4 font-medium">
+      <input type="checkbox" name="IncludeOwn" value="true" class="size-5 accent-brand-600" checked="@Model.IncludeOwn" disabled="@(options.OwnQuestionCount == 0)" data-testid="mix-own" />
+      <span>@T["Mix.Own", options.OwnQuestionCount]</span>
+    </label>
+
+    @if (options.Exams.Count == 0)
+    {
+      <p class="rounded-xl border border-dashed border-slate-300 p-4 text-sm text-slate-600" data-testid="mix-no-exams">@T["Mix.NoExams"] <a href="/harga" class="font-medium text-brand-700">@T["Own.Upgrade"]</a></p>
+    }
+    @foreach (var exam in options.Exams)
+    {
+      <fieldset class="space-y-1 rounded-xl border border-slate-200 bg-white p-4" data-testid="mix-exam" data-exam="@exam.ExamId">
+        <legend class="sr-only">@exam.Title</legend>
+        <label class="flex min-h-11 items-center gap-3 font-medium">
+          <input type="checkbox" name="ExamIds" value="@exam.ExamId" class="size-5 accent-brand-600" checked="@Model.ExamIds.Contains(exam.ExamId)" />
+          <span>@exam.Title · @T["Mix.WholeExam"]</span>
+        </label>
+        <div class="space-y-1 pl-8">
+          @foreach (var topic in exam.Topics)
+          {
+            var key = $"{exam.ExamId}:{topic.TopicId}";
+            <label class="flex min-h-11 items-center gap-3 text-sm text-slate-700">
+              <input type="checkbox" name="TopicKeys" value="@key" class="size-5 accent-brand-600" checked="@Model.TopicKeys.Contains(key)" />
+              <span>@topic.Name (@topic.QuestionCount)</span>
+            </label>
+          }
+        </div>
+      </fieldset>
+    }
+
+    <div class="space-y-1">
+      <label for="QuestionCount" class="label">@T["Mix.Count"]</label>
+      <input id="QuestionCount" name="QuestionCount" type="number" min="1" max="100" value="@Model.QuestionCount" inputmode="numeric" class="input w-32" />
+      @if (ErrorFor("QuestionCount") is { } countError) { <span class="field-error">@countError</span> }
+    </div>
+
+    <button type="submit" class="btn btn-primary w-full sm:w-auto" data-testid="mix-start">@T["Mix.Start"]</button>
+  </form>
+</section>
