@@ -313,4 +313,53 @@
   <data name="ExamPage.Register" xml:space="preserve"><value>Register free to unlock</value></data>
   <data name="ExamPage.Draft" xml:space="preserve"><value>Admin preview: this exam isn't in the catalog.</value></data>
   <data name="ExamPage.Actions" xml:space="preserve"><value>Options for this exam</value></data>
+  <data name="Admin.Nav.Access" xml:space="preserve"><value>Access</value></data>
+  <data name="Admin.Access.Title" xml:space="preserve"><value>User access</value></data>
+  <data name="Admin.Access.Lead" xml:space="preserve"><value>Find a user by their full email to see, grant, extend or end their access.</value></data>
+  <data name="Admin.Access.Email" xml:space="preserve"><value>User email</value></data>
+  <data name="Admin.Access.Find" xml:space="preserve"><value>Find</value></data>
+  <data name="Admin.Access.NoUser" xml:space="preserve"><value>No user has that email.</value></data>
+  <data name="Admin.Access.Inactive" xml:space="preserve"><value>Deactivated</value></data>
+  <data name="Admin.Access.Purchases" xml:space="preserve"><value>Exams</value></data>
+  <data name="Admin.Access.Subscriptions" xml:space="preserve"><value>Subscriptions</value></data>
+  <data name="Admin.Access.NoPurchases" xml:space="preserve"><value>No exam purchases yet.</value></data>
+  <data name="Admin.Access.NoSubscriptions" xml:space="preserve"><value>No subscriptions yet.</value></data>
+  <data name="Admin.Access.Free" xml:space="preserve"><value>Granted by admin</value></data>
+  <data name="Admin.Access.ChangeEnd" xml:space="preserve"><value>Change end date</value></data>
+  <data name="Admin.Access.NewEnd" xml:space="preserve"><value>Access until</value></data>
+  <data name="Admin.Access.SaveEnd" xml:space="preserve"><value>Save date</value></data>
+  <data name="Admin.Access.EndNow" xml:space="preserve"><value>End now</value></data>
+  <data name="Admin.Access.Grant" xml:space="preserve"><value>Grant access</value></data>
+  <data name="Admin.Access.GrantExam" xml:space="preserve"><value>Grant exam</value></data>
+  <data name="Admin.Access.Exam" xml:space="preserve"><value>Exam</value></data>
+  <data name="Admin.Access.ExamDays" xml:space="preserve"><value>{0} ({1} days)</value></data>
+  <data name="Admin.Access.ExamNoDays" xml:space="preserve"><value>{0} (needs a date)</value></data>
+  <data name="Admin.Access.Until" xml:space="preserve"><value>Until (optional)</value></data>
+  <data name="Admin.Access.UntilHint" xml:space="preserve"><value>Leave empty to use the exam's access period. Running access is extended.</value></data>
+  <data name="Admin.Access.GrantPlan" xml:space="preserve"><value>Grant plan</value></data>
+  <data name="Admin.Access.Plan" xml:space="preserve"><value>Plan</value></data>
+  <data name="Admin.Access.PlanNoPrice" xml:space="preserve"><value>{0} (no price yet)</value></data>
+  <data name="Admin.Access.Days" xml:space="preserve"><value>Number of days</value></data>
+  <data name="Admin.Access.NoExams" xml:space="preserve"><value>No paid exams yet.</value></data>
+  <data name="Admin.Access.Granted" xml:space="preserve"><value>Access granted.</value></data>
+  <data name="Admin.Access.Changed" xml:space="preserve"><value>End date changed.</value></data>
+  <data name="Admin.Access.Ended" xml:space="preserve"><value>Access ended.</value></data>
+  <data name="Admin.Access.ExamIsFree" xml:space="preserve"><value>Free exams don't need granting.</value></data>
+  <data name="Admin.Access.NeedsDate" xml:space="preserve"><value>This exam has no access period yet. Enter an end date.</value></data>
+  <data name="Admin.Access.DateInPast" xml:space="preserve"><value>The end date must be after today.</value></data>
+  <data name="Admin.Access.DateRequired" xml:space="preserve"><value>Enter an end date.</value></data>
+  <data name="Admin.Access.PlanNotGrantable" xml:space="preserve"><value>This plan can't be granted.</value></data>
+  <data name="Admin.Access.PlanHasNoPrice" xml:space="preserve"><value>{0} has no price yet. Add a plan price first.</value></data>
+  <data name="Admin.Access.InvalidDays" xml:space="preserve"><value>The number of days must be 1 to {0}.</value></data>
+  <data name="Admin.Access.NotChangeable" xml:space="preserve"><value>Only active or ended access can be changed.</value></data>
+  <data name="Admin.Access.NotActive" xml:space="preserve"><value>This access is no longer active.</value></data>
+  <data name="Access.State.Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Access.State.Ended" xml:space="preserve"><value>Ended</value></data>
+  <data name="Access.State.AwaitingPayment" xml:space="preserve"><value>Awaiting payment</value></data>
+  <data name="Access.State.Abandoned" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Access.State.Refunded" xml:space="preserve"><value>Refunded</value></data>
+  <data name="Access.Until" xml:space="preserve"><value>Until {0}</value></data>
+  <data name="Access.EndedOn" xml:space="preserve"><value>Ended {0}</value></data>
+  <data name="Access.DaysLeft" xml:space="preserve"><value>{0} days left</value></data>
+  <data name="Access.LastDay" xml:space="preserve"><value>Last day</value></data>
 </root>

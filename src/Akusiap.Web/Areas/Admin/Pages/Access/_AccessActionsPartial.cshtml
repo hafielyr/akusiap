@@ -1,0 +1,30 @@
+@model (Guid UserId, Akusiap.Application.Access.AccessKind Kind, long Id, Akusiap.Application.Access.AccessState State, string? Email)
+@using Akusiap.Application.Access
+@* Change the end date (active or ended rows) and end now (active rows). Pending, cancelled and refunded rows are read-only. *@
+@if (Model.State is AccessState.Active or AccessState.Ended)
+{
+  <div class="flex flex-wrap items-start gap-2">
+    <details class="w-full sm:w-auto">
+      <summary class="inline-flex min-h-11 cursor-pointer items-center text-sm font-medium text-brand-700">@T["Admin.Access.ChangeEnd"]</summary>
+      <form method="post" asp-page-handler="ChangeEnd" class="mt-2 space-y-2" data-testid="change-end">
+        <input type="hidden" name="userId" value="@Model.UserId" />
+        <input type="hidden" name="kind" value="@Model.Kind" />
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="email" value="@Model.Email" />
+        <label for="until-@Model.Kind-@Model.Id" class="label">@T["Admin.Access.NewEnd"]</label>
+        <input id="until-@Model.Kind-@Model.Id" name="until" type="date" class="input" required />
+        <button type="submit" class="btn btn-secondary w-full sm:w-auto">@T["Admin.Access.SaveEnd"]</button>
+      </form>
+    </details>
+    @if (Model.State == AccessState.Active)
+    {
+      <form method="post" asp-page-handler="End" data-testid="end-now">
+        <input type="hidden" name="userId" value="@Model.UserId" />
+        <input type="hidden" name="kind" value="@Model.Kind" />
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="email" value="@Model.Email" />
+        <button type="submit" class="btn btn-secondary text-red-700">@T["Admin.Access.EndNow"]</button>
+      </form>
+    }
+  </div>
+}
