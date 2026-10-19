@@ -14,7 +14,10 @@ builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddScoped<IdentityErrorDescriber, LocalizedIdentityErrorDescriber>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<Akusiap.Application.Abstractions.ICurrentUser, HttpCurrentUser>();
-builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();
+var authentication = builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme);
+authentication.AddIdentityCookies();
+authentication.AddGoogleIfConfigured(builder.Configuration);
+builder.Services.AddScoped<GoogleAccounts>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = AccountRoutes.SignIn;

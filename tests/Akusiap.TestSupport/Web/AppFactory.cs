@@ -40,6 +40,9 @@ public sealed class AppFactory(string connectionString) : WebApplicationFactory<
         builder.UseSetting("Seed:AdminPassword", string.Empty);
         // Email links use the test server address unless a test sets Site:BaseUrl.
         builder.UseSetting("Site:BaseUrl", string.Empty);
+        // Google sign-in is off unless a test turns it on (a developer may have real keys in user-secrets).
+        builder.UseSetting("Authentication:Google:ClientId", string.Empty);
+        builder.UseSetting("Authentication:Google:ClientSecret", string.Empty);
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IClock>();
