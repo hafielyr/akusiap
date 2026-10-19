@@ -1,0 +1,42 @@
+@model (Akusiap.Application.Sharing.ShareState State, string? Link)
+@* Share panel on the own-exam page (SHR-01): turn the link on or off, copy it, or reset it. Only with Features:Sharing. *@
+@{
+  var state = Model.State;
+}
+<section class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="share-panel" x-data="{ copied: false }">
+  <h2 class="font-semibold">@T["Share.Title"]</h2>
+  @if (state.IsShared && Model.Link is { } link)
+  {
+    <p class="text-sm text-slate-600">@T["Share.On"]</p>
+    <div class="flex gap-2">
+      <input readonly value="@link" class="input min-w-0 flex-1 text-sm" aria-label="@T["Share.Link"]" data-testid="share-link" />
+      <button type="button" class="btn btn-secondary shrink-0" @@click="navigator.clipboard.writeText('@link').then(() => copied = true)">
+        <span x-show="!copied">@T["Share.Copy"]</span><span x-show="copied" x-cloak>@T["Share.Copied"]</span>
+      </button>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <form method="post" asp-page-handler="ResetShare">
+        <button type="submit" class="btn btn-secondary" data-testid="share-reset">@T["Share.Reset"]</button>
+      </form>
+      <form method="post" asp-page-handler="StopShare">
+        <button type="submit" class="btn btn-secondary" data-testid="share-stop">@T["Share.Stop"]</button>
+      </form>
+    </div>
+    <p class="text-xs text-slate-500">@T["Share.ResetHelp"]</p>
+  }
+  else if (state.TakenDown)
+  {
+    <p class="text-sm text-red-800">@T["Own.Exams.TakenDown"]</p>
+  }
+  else if (!state.CanShare)
+  {
+    <p class="text-sm text-amber-900" data-testid="share-blocked">@T["Share.ForeignQuestions"]</p>
+  }
+  else
+  {
+    <p class="text-sm text-slate-600">@T["Share.Off"]</p>
+    <form method="post" asp-page-handler="Share">
+      <button type="submit" class="btn btn-primary" data-testid="share-start">@T["Share.Start"]</button>
+    </form>
+  }
+</section>

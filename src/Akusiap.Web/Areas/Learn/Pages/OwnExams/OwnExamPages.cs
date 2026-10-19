@@ -1,14 +1,17 @@
 using Akusiap.Application.Access;
 using Akusiap.Application.Common;
 using Akusiap.Application.OwnExams;
+using Akusiap.Application.Sharing;
 using Akusiap.Domain.Access;
 using Akusiap.Domain.Content;
 using Akusiap.Web.Areas.Admin.Pages.Presets;
 using Akusiap.Web.Forms;
 using Akusiap.Web.Localization;
+using Akusiap.Web.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 
 namespace Akusiap.Web.Areas.Learn.Pages.OwnExams;
 
@@ -138,8 +141,18 @@ public sealed class CreateModel(Application.OwnExams.OwnExams own, GetAllowance 
 }
 
 /// <summary><c>/learn/ujian-saya/{id}</c> (OWN-04): edit, and start practice.</summary>
-public sealed class EditModel(Application.OwnExams.OwnExams own, GetAllowance getAllowance, IStringLocalizer<SharedResource> t) : PageModel
+public sealed class EditModel(
+    Application.OwnExams.OwnExams own,
+    GetAllowance getAllowance,
+    ShareExam share,
+    IOptions<SiteOptions> site,
+    IStringLocalizer<SharedResource> t) : PageModel
 {
+    /// <summary>The share panel (SHR-01); null while Features:Sharing is off.</summary>
+    public ShareState? Share { get; private set; }
+
+    public string? ShareLink { get; private set; }
+
     [BindProperty(SupportsGet = true)]
     public long Id { get; set; }
 
@@ -188,9 +201,33 @@ public sealed class EditModel(Application.OwnExams.OwnExams own, GetAllowance ge
         return Redirect($"{IndexModel.Route}/{Id}");
     }
 
+    public Task<IActionResult> OnPostShareAsync(CancellationToken cancellationToken) => ChangeShareAsync(share.ShareAsync, cancellationToken);
+
+    public Task<IActionResult> OnPostStopShareAsync(CancellationToken cancellationToken) => ChangeShareAsync(share.StopAsync, cancellationToken);
+
+    public Task<IActionResult> OnPostResetShareAsync(CancellationToken cancellationToken) => ChangeShareAsync(share.ResetAsync, cancellationToken);
+
+    private async Task<IActionResult> ChangeShareAsync(Func<long, CancellationToken, Task<Result<ShareState>>> change, CancellationToken cancellationToken)
+    {
+        var result = await change(Id, cancellationToken);
+        if (result.IsNotFound)
+        {
+            return NotFound();
+        }
+
+        TempData["Flash"] = result.Succeeded ? "Share.Saved" : result.Problems[0].Code;
+        return Redirect($"{IndexModel.Route}/{Id}");
+    }
+
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
         Questions = await own.QuestionOptionsAsync(cancellationToken);
         Allowance = await getAllowance.HandleAsync(cancellationToken);
+        Share = await share.GetAsync(Id, cancellationToken);
+        if (Share is { IsShared: true, ShareToken: { } token })
+        {
+            var baseUrl = string.IsNullOrWhiteSpace(site.Value.BaseUrl) ? $"{Request.Scheme}://{Request.Host}" : site.Value.BaseUrl.TrimEnd('/');
+            ShareLink = $"{baseUrl}/s/{token}";
+        }
     }
 }

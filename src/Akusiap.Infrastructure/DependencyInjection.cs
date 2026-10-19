@@ -54,6 +54,7 @@ public static class DependencyInjection
 
         services.Configure<ImportOptions>(configuration.GetSection(ImportOptions.SectionName));
         services.Configure<PaymentChannelOptions>(configuration.GetSection(PaymentChannelOptions.SectionName));
+        services.Configure<Akusiap.Application.Sharing.FeatureOptions>(configuration.GetSection(Akusiap.Application.Sharing.FeatureOptions.SectionName));
         services.AddSingleton<IQuestionFileReader, QuestionFileReader>();
         services.AddSingleton<IQuestionTemplate, QuestionTemplate>();
         services.AddScoped<Jobs.SweepExpiredAttemptsJob>();

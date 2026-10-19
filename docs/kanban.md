@@ -7,14 +7,14 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SHR-01] Share, stop sharing and reset link · M6 · deps: OWN-04
 - [SRS-01] Own questions in review · M7 · deps: MEM-03, OWN-03
 - [SRS-02] Scheduled reviews · M7 · deps: MEM-02, MEM-03
+- [SHR-02] Report shared exam and admin takedown · M6 · deps: SHR-01, SES-11
 
 ## In Progress
 
 ## Review
-- [OWN-06] Private mixed practice set · M5 · deps: OWN-04, SES-01 · (claude-opus-5.5, 2026-10-20)
+- [SHR-01] Share, stop sharing and reset link · M6 · deps: OWN-04 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -81,6 +81,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-09] Retake wrong answers · M2 · deps: SES-08
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 - [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
+- [OWN-06] Private mixed practice set · M5 · deps: OWN-04, SES-01
 
 ## Backlog
 
@@ -100,7 +101,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ### M5 Own content (Release 2)
 
 ### M6 Sharing (Release 2)
-- [SHR-02] Report shared exam and admin takedown · M6 · deps: SHR-01, SES-11
 - [SHR-03] Guest takes a shared exam · M6 · deps: SHR-02, SES-03
 - [SHR-04] Shared result and register invitation · M6 · deps: SHR-03
 - [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04
