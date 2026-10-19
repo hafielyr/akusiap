@@ -313,4 +313,53 @@
   <data name="ExamPage.Register" xml:space="preserve"><value>Daftar gratis untuk membuka</value></data>
   <data name="ExamPage.Draft" xml:space="preserve"><value>Pratinjau admin: ujian ini belum tampil di katalog.</value></data>
   <data name="ExamPage.Actions" xml:space="preserve"><value>Pilihan untuk ujian ini</value></data>
+  <data name="Admin.Nav.Access" xml:space="preserve"><value>Akses</value></data>
+  <data name="Admin.Access.Title" xml:space="preserve"><value>Akses pengguna</value></data>
+  <data name="Admin.Access.Lead" xml:space="preserve"><value>Cari pengguna dengan email lengkap untuk melihat, memberi, memperpanjang atau mengakhiri aksesnya.</value></data>
+  <data name="Admin.Access.Email" xml:space="preserve"><value>Email pengguna</value></data>
+  <data name="Admin.Access.Find" xml:space="preserve"><value>Cari</value></data>
+  <data name="Admin.Access.NoUser" xml:space="preserve"><value>Tidak ada pengguna dengan email itu.</value></data>
+  <data name="Admin.Access.Inactive" xml:space="preserve"><value>Nonaktif</value></data>
+  <data name="Admin.Access.Purchases" xml:space="preserve"><value>Ujian</value></data>
+  <data name="Admin.Access.Subscriptions" xml:space="preserve"><value>Paket langganan</value></data>
+  <data name="Admin.Access.NoPurchases" xml:space="preserve"><value>Belum ada pembelian ujian.</value></data>
+  <data name="Admin.Access.NoSubscriptions" xml:space="preserve"><value>Belum ada langganan.</value></data>
+  <data name="Admin.Access.Free" xml:space="preserve"><value>Diberikan admin</value></data>
+  <data name="Admin.Access.ChangeEnd" xml:space="preserve"><value>Ubah tanggal akhir</value></data>
+  <data name="Admin.Access.NewEnd" xml:space="preserve"><value>Akses sampai tanggal</value></data>
+  <data name="Admin.Access.SaveEnd" xml:space="preserve"><value>Simpan tanggal</value></data>
+  <data name="Admin.Access.EndNow" xml:space="preserve"><value>Akhiri sekarang</value></data>
+  <data name="Admin.Access.Grant" xml:space="preserve"><value>Berikan akses</value></data>
+  <data name="Admin.Access.GrantExam" xml:space="preserve"><value>Berikan ujian</value></data>
+  <data name="Admin.Access.Exam" xml:space="preserve"><value>Ujian</value></data>
+  <data name="Admin.Access.ExamDays" xml:space="preserve"><value>{0} ({1} hari)</value></data>
+  <data name="Admin.Access.ExamNoDays" xml:space="preserve"><value>{0} (perlu tanggal)</value></data>
+  <data name="Admin.Access.Until" xml:space="preserve"><value>Sampai tanggal (opsional)</value></data>
+  <data name="Admin.Access.UntilHint" xml:space="preserve"><value>Kosongkan untuk memakai masa akses ujian. Akses yang masih berjalan diperpanjang.</value></data>
+  <data name="Admin.Access.GrantPlan" xml:space="preserve"><value>Berikan paket</value></data>
+  <data name="Admin.Access.Plan" xml:space="preserve"><value>Paket</value></data>
+  <data name="Admin.Access.PlanNoPrice" xml:space="preserve"><value>{0} (belum ada harga)</value></data>
+  <data name="Admin.Access.Days" xml:space="preserve"><value>Jumlah hari</value></data>
+  <data name="Admin.Access.NoExams" xml:space="preserve"><value>Belum ada ujian berbayar.</value></data>
+  <data name="Admin.Access.Granted" xml:space="preserve"><value>Akses diberikan.</value></data>
+  <data name="Admin.Access.Changed" xml:space="preserve"><value>Tanggal akhir diubah.</value></data>
+  <data name="Admin.Access.Ended" xml:space="preserve"><value>Akses diakhiri.</value></data>
+  <data name="Admin.Access.ExamIsFree" xml:space="preserve"><value>Ujian gratis tidak perlu diberikan.</value></data>
+  <data name="Admin.Access.NeedsDate" xml:space="preserve"><value>Ujian ini belum punya masa akses. Isi tanggal akhir.</value></data>
+  <data name="Admin.Access.DateInPast" xml:space="preserve"><value>Tanggal akhir harus setelah hari ini.</value></data>
+  <data name="Admin.Access.DateRequired" xml:space="preserve"><value>Isi tanggal akhir.</value></data>
+  <data name="Admin.Access.PlanNotGrantable" xml:space="preserve"><value>Paket ini tidak bisa diberikan.</value></data>
+  <data name="Admin.Access.PlanHasNoPrice" xml:space="preserve"><value>{0} belum punya harga. Tambahkan harga paket dulu.</value></data>
+  <data name="Admin.Access.InvalidDays" xml:space="preserve"><value>Jumlah hari harus 1 sampai {0}.</value></data>
+  <data name="Admin.Access.NotChangeable" xml:space="preserve"><value>Hanya akses aktif atau yang sudah berakhir yang bisa diubah.</value></data>
+  <data name="Admin.Access.NotActive" xml:space="preserve"><value>Akses ini sudah tidak aktif.</value></data>
+  <data name="Access.State.Active" xml:space="preserve"><value>Aktif</value></data>
+  <data name="Access.State.Ended" xml:space="preserve"><value>Berakhir</value></data>
+  <data name="Access.State.AwaitingPayment" xml:space="preserve"><value>Menunggu pembayaran</value></data>
+  <data name="Access.State.Abandoned" xml:space="preserve"><value>Dibatalkan</value></data>
+  <data name="Access.State.Refunded" xml:space="preserve"><value>Dikembalikan</value></data>
+  <data name="Access.Until" xml:space="preserve"><value>Sampai {0}</value></data>
+  <data name="Access.EndedOn" xml:space="preserve"><value>Berakhir {0}</value></data>
+  <data name="Access.DaysLeft" xml:space="preserve"><value>{0} hari lagi</value></data>
+  <data name="Access.LastDay" xml:space="preserve"><value>Hari terakhir</value></data>
 </root>

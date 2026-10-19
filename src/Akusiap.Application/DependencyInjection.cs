@@ -17,6 +17,8 @@ public static class DependencyInjection
         // One instance per request: the viewer context is cached in it (ENT-02).
         services.AddScoped<IEntitlementService, EntitlementService>();
         services.AddScoped<ExamQuestionScope>();
+        services.AddScoped<GetUserAccess>();
+        services.AddScoped<ManageAccess>();
         services.AddScoped<ListCatalog>();
         services.AddScoped<GetCatalogExam>();
         services.AddScoped<ListSubjects>();

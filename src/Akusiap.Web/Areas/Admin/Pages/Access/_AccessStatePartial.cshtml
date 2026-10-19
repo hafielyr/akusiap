@@ -1,0 +1,18 @@
+@model (Akusiap.Application.Access.AccessState State, DateTime? EndsAt, int? DaysLeft)
+@using Akusiap.Application.Access
+@using Akusiap.Domain
+@* State badge, end date (WIB) and days left for one purchase or subscription. *@
+@{
+  var badge = Model.State == AccessState.Active ? "bg-green-50 text-green-800" : "bg-slate-100 text-slate-700";
+}
+<p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-700">
+  <span class="rounded-full px-2 py-1 text-xs font-semibold @badge" data-testid="access-state">@T[$"Access.State.{Model.State}"]</span>
+  @if (Model.EndsAt is { } end)
+  {
+    <span data-testid="access-end">@(Model.State == AccessState.Active ? T["Access.Until", JakartaTime.Format(end)] : T["Access.EndedOn", JakartaTime.Format(end)])</span>
+  }
+  @if (Model.DaysLeft is { } days)
+  {
+    <span class="text-slate-500" data-testid="access-days-left">· @(days <= 0 ? T["Access.LastDay"] : T["Access.DaysLeft", days])</span>
+  }
+</p>
