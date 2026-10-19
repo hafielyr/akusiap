@@ -1,0 +1,53 @@
+@page "/learn/hari-ini"
+@model Akusiap.Web.Areas.Learn.Pages.TodayModel
+@* Daily due list (SRS-03): total and per-exam due counts, each starting a set of 10 cards. *@
+@{
+  ViewData["Title"] = T["Today.Title"].Value;
+  const string startUrl = "/learn/kartu?handler=Start";
+}
+
+<section class="space-y-4">
+  <div class="space-y-1">
+    <h1 class="text-2xl font-bold leading-tight">@T["Today.Title"]</h1>
+    <p class="text-slate-600">@T["Today.Lead"]</p>
+  </div>
+
+  <article class="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4" data-testid="today-total">
+    <p class="text-4xl font-bold" data-testid="today-total-count">@Model.All.DueCount</p>
+    <p class="text-slate-700">@T["Today.TotalDue"]</p>
+    @if (Model.All.DueCount > 0)
+    {
+      <form method="post" action="@startUrl" asp-antiforgery="true">
+        <button type="submit" class="btn btn-primary w-full sm:w-auto" data-testid="today-start-all">@T["Flashcards.Start"]</button>
+      </form>
+    }
+    else
+    {
+      <p class="text-sm text-slate-600" data-testid="today-none">@T["Today.NoneDue"]</p>
+    }
+  </article>
+
+  @if (Model.Exams.Count > 0)
+  {
+    <ul class="space-y-2" data-testid="today-exams">
+      @foreach (var deck in Model.Exams)
+      {
+        <li class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="today-exam" data-exam="@deck.ExamId">
+          <div class="min-w-0">
+            <p class="font-semibold">@deck.Title</p>
+            <p class="text-sm text-slate-600" data-testid="today-exam-due">@T["Flashcards.Due", deck.DueCount]</p>
+          </div>
+          <form method="post" action="@startUrl" asp-antiforgery="true" class="w-full sm:w-auto">
+            <input type="hidden" name="examId" value="@deck.ExamId" />
+            <button type="submit" class="btn btn-secondary w-full">@T["Flashcards.Start"]</button>
+          </form>
+        </li>
+      }
+    </ul>
+  }
+
+  <div class="flex flex-wrap gap-2">
+    <a href="/ujian" class="btn btn-secondary">@T["Today.Catalog"]</a>
+    <a href="/learn" class="btn btn-secondary">@T["Learn.Title"]</a>
+  </div>
+</section>
