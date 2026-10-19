@@ -33,7 +33,7 @@ public sealed partial class SubmitTests(PostgresFixture database)
         using var submitted = await SubmitAsync(learner, player);
         app.Clock.Advance(TimeSpan.FromMinutes(5));
         using var again = await SubmitAsync(learner, player);
-        var page = WebUtility.HtmlDecode(await learner.GetStringAsync(new Uri(player, UriKind.Relative)));
+        var page = WebUtility.HtmlDecode(await learner.GetStringAsync(new Uri($"{player}/hasil", UriKind.Relative)));
 
         Assert.Equal((HttpStatusCode.Redirect, HttpStatusCode.Redirect), (submitted.StatusCode, again.StatusCode));
         var attempt = await LoadAsync(player);
@@ -57,9 +57,9 @@ public sealed partial class SubmitTests(PostgresFixture database)
         var startedAt = app.Clock.UtcNow;
         app.Clock.Advance(TimeSpan.FromMinutes(12));
 
-        var page = await learner.GetStringAsync(new Uri(player, UriKind.Relative));
+        using var reopened = await learner.GetAsync(new Uri(player, UriKind.Relative));
 
-        Assert.Contains("data-testid=\"session-ended\"", page, StringComparison.Ordinal);
+        Assert.Equal($"{player}/hasil", reopened.Headers.Location!.OriginalString);
         var attempt = await LoadAsync(player);
         Assert.Equal((AttemptStatus.Submitted, startedAt.AddMinutes(10), 600, 1), (attempt.Status, attempt.SubmittedAt!.Value, attempt.TimeSpentSeconds, attempt.CorrectCount));
     }
@@ -162,8 +162,9 @@ public sealed partial class SubmitTests(PostgresFixture database)
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
 
+    /// <summary>The antiforgery token comes from the profile page, since a finished attempt's player redirects to its result.</summary>
     private static Task<HttpResponseMessage> SubmitAsync(HttpClient client, string player) =>
-        client.PostFormAsync(player, new Dictionary<string, string>(), $"{player}?handler=Submit");
+        client.PostFormAsync("/learn/profil", new Dictionary<string, string>(), $"{player}?handler=Submit");
 
     [GeneratedRegex("<script type=\"application/json\" id=\"quiz-state\">(.*?)</script>", RegexOptions.Singleline)]
     private static partial Regex StatePattern();

@@ -26,6 +26,11 @@ public sealed class PlayerModel(GetPlayer getPlayer, SubmitAttempt submitAttempt
             return NotFound();
         }
 
+        if (view.Status != Akusiap.Domain.Sessions.AttemptStatus.InProgress)
+        {
+            return Redirect(SessionRoutes.Result(id));
+        }
+
         View = view;
         return Page();
     }

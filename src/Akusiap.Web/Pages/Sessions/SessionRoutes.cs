@@ -7,6 +7,6 @@ public static class SessionRoutes
 {
     public static string Player(long attemptId) => $"/sesi/{attemptId.ToString(CultureInfo.InvariantCulture)}";
 
-    /// <summary>Where a finished attempt goes: the player shows the score until SES-07 adds the result page.</summary>
-    public static string Result(long attemptId) => Player(attemptId);
+    /// <summary>The result page of a finished attempt (SES-07).</summary>
+    public static string Result(long attemptId) => $"{Player(attemptId)}/hasil";
 }
