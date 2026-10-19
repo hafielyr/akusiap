@@ -20,6 +20,10 @@ public static class JakartaTime
     public static DateTime EndOfDayUtc(DateOnly date) =>
         DateTime.SpecifyKind(date.ToDateTime(new TimeOnly(23, 59, 59)) - Offset, DateTimeKind.Utc);
 
+    /// <summary>Midnight at the start of <paramref name="date"/> in Jakarta, as UTC.</summary>
+    public static DateTime StartOfDayUtc(DateOnly date) =>
+        DateTime.SpecifyKind(date.ToDateTime(TimeOnly.MinValue) - Offset, DateTimeKind.Utc);
+
     /// <summary>"31 Des 2026 23.59 WIB" in the current culture.</summary>
     public static string Format(DateTime utc) =>
         ToLocal(utc).ToString("d MMM yyyy HH:mm", CultureInfo.CurrentCulture) + " WIB";

@@ -68,6 +68,27 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     public Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken) =>
         Database.BeginTransactionAsync(cancellationToken);
 
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        RefuseDeletingPayments();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    {
+        RefuseDeletingPayments();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    /// <summary>Payments are financial records and are never deleted (PAY-10).</summary>
+    private void RefuseDeletingPayments()
+    {
+        if (ChangeTracker.Entries<Payment>().Any(e => e.State == EntityState.Deleted))
+        {
+            throw new InvalidOperationException("Payments are never deleted; change their status instead.");
+        }
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

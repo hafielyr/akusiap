@@ -651,4 +651,35 @@
   <data name="Receipt.PaidAt" xml:space="preserve"><value>Paid</value></data>
   <data name="Receipt.AccessUntil" xml:space="preserve"><value>Access until</value></data>
   <data name="Receipt.Note" xml:space="preserve"><value>Keep this email as proof of payment. Contact us on WhatsApp with any questions.</value></data>
+  <data name="Admin.Nav.Transactions" xml:space="preserve"><value>Transactions</value></data>
+  <data name="Admin.Tx.Title" xml:space="preserve"><value>Transactions</value></data>
+  <data name="Admin.Tx.Export" xml:space="preserve"><value>Export CSV</value></data>
+  <data name="Admin.Tx.Search" xml:space="preserve"><value>Search email, name or order number</value></data>
+  <data name="Admin.Tx.Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Admin.Tx.AllStatuses" xml:space="preserve"><value>All statuses</value></data>
+  <data name="Admin.Tx.Method" xml:space="preserve"><value>Method</value></data>
+  <data name="Admin.Tx.AllMethods" xml:space="preserve"><value>All methods</value></data>
+  <data name="Admin.Tx.From" xml:space="preserve"><value>From</value></data>
+  <data name="Admin.Tx.To" xml:space="preserve"><value>To</value></data>
+  <data name="Admin.Tx.Total" xml:space="preserve"><value>{0} transactions</value></data>
+  <data name="Admin.Tx.Late" xml:space="preserve"><value>late payment</value></data>
+  <data name="Admin.Tx.Retries" xml:space="preserve"><value>{0} retries</value></data>
+  <data name="Admin.Tx.User" xml:space="preserve"><value>User</value></data>
+  <data name="Admin.Tx.Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Admin.Tx.Deadline" xml:space="preserve"><value>Pay by</value></data>
+  <data name="Admin.Tx.Invoice" xml:space="preserve"><value>Gateway invoice</value></data>
+  <data name="Admin.Tx.Failure" xml:space="preserve"><value>Failure reason</value></data>
+  <data name="Admin.Tx.Events" xml:space="preserve"><value>Gateway notifications</value></data>
+  <data name="Admin.Tx.NoEvents" xml:space="preserve"><value>No notifications yet.</value></data>
+  <data name="Admin.Tx.SignatureOk" xml:space="preserve"><value>signature valid</value></data>
+  <data name="Admin.Tx.SignatureBad" xml:space="preserve"><value>signature NOT valid</value></data>
+  <data name="Admin.Tx.Payload" xml:space="preserve"><value>Payload</value></data>
+  <data name="Admin.Tx.Refunds" xml:space="preserve"><value>Refunds</value></data>
+  <data name="Admin.Tx.NoRefunds" xml:space="preserve"><value>No refunds.</value></data>
+  <data name="Admin.Tx.Status.Pending" xml:space="preserve"><value>Pending</value></data>
+  <data name="Admin.Tx.Status.Paid" xml:space="preserve"><value>Paid</value></data>
+  <data name="Admin.Tx.Status.Expired" xml:space="preserve"><value>Expired</value></data>
+  <data name="Admin.Tx.Status.Canceled" xml:space="preserve"><value>Canceled</value></data>
+  <data name="Admin.Tx.Status.Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="Admin.Tx.Status.Refunded" xml:space="preserve"><value>Refunded</value></data>
 </root>
