@@ -9,6 +9,9 @@ namespace Akusiap.Web.Areas.Admin.Pages.Exams;
 /// <summary>Exam form fields, posted as <c>Input.*</c>. Rules live in <see cref="ExamValidator"/>.</summary>
 public sealed class ExamInput
 {
+    /// <summary>Suggested access period on a blank form.</summary>
+    public const int DefaultAccessDays = 30;
+
     public string? Title { get; set; }
 
     public string? Description { get; set; }
@@ -20,7 +23,8 @@ public sealed class ExamInput
     /// <summary>As typed: "49000", "49.000" or "Rp49.000".</summary>
     public string? PriceIdr { get; set; }
 
-    public int? AccessDays { get; set; } = 30;
+    /// <summary>No default here: an unreadable value ("abc") must arrive as missing, not as a silent 30.</summary>
+    public int? AccessDays { get; set; }
 
     public int OwnQuestionAllowance { get; set; }
 
@@ -30,7 +34,7 @@ public sealed class ExamInput
     {
         ArgumentNullException.ThrowIfNull(presets);
         var preset = presets.FirstOrDefault(p => p.IsDefault) ?? (presets.Count > 0 ? presets[0] : null);
-        return new ExamInput { RulePresetId = preset?.Id ?? 0 };
+        return new ExamInput { RulePresetId = preset?.Id ?? 0, AccessDays = DefaultAccessDays };
     }
 
     public static ExamInput From(ExamDetail exam)
@@ -43,7 +47,7 @@ public sealed class ExamInput
             SubjectId = exam.SubjectId,
             IsFree = exam.IsFree,
             PriceIdr = exam.PriceIdr is { } price ? Money.FormatIdr(price) : null,
-            AccessDays = exam.AccessDays ?? 30,
+            AccessDays = exam.AccessDays ?? DefaultAccessDays,
             OwnQuestionAllowance = exam.OwnQuestionAllowance,
             RulePresetId = exam.RulePresetId,
         };

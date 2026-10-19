@@ -34,7 +34,7 @@ public sealed class ExamEditorFlowTests(MobileSite site)
         Assert.Equal("Rp49.000", await page.GetByLabel("Harga (Rp)").InputValueAsync());
 
         await page.GetByLabel("Gratis untuk pengguna terdaftar").CheckAsync();
-        Assert.False(await page.GetByLabel("Harga (Rp)").IsVisibleAsync());
+        await Assertions.Expect(page.GetByLabel("Harga (Rp)")).ToBeHiddenAsync();
         await page.GetByRole(AriaRole.Button, new() { Name = "Simpan" }).ClickAsync();
 
         await Assertions.Expect(page.GetByTestId("flash")).ToHaveTextAsync("Perubahan disimpan.");
