@@ -24,19 +24,19 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Access.ExamPurchase", b =>
                 {
-                    b.Property<int>("ExamPurchaseId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("exam_purchase_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ExamPurchaseId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("AccessExpiresAt")
+                    b.Property<DateTime?>("AccessExpiresAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("access_expires_at");
 
-                    b.Property<int>("ExamId")
-                        .HasColumnType("integer")
+                    b.Property<long>("ExamId")
+                        .HasColumnType("bigint")
                         .HasColumnName("exam_id");
 
                     b.Property<long>("PricePaidIdr")
@@ -49,46 +49,46 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("status");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.HasKey("ExamPurchaseId")
+                    b.HasKey("Id")
                         .HasName("pk_exam_purchases");
 
                     b.HasIndex("ExamId")
                         .HasDatabaseName("ix_exam_purchases_exam_id");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_exam_purchases_user_id");
+                    b.HasIndex(new[] { "UserId", "ExamId" }, "ux_exam_purchases_one_per_exam")
+                        .IsUnique()
+                        .HasDatabaseName("ux_exam_purchases_one_per_exam")
+                        .HasFilter("status NOT IN ('Abandoned', 'Refunded')");
 
                     b.ToTable("exam_purchases", null, t =>
                         {
-                            t.HasCheckConstraint("ck_exam_purchases_active_paid", "status <> 'Active' OR purchased_at IS NOT NULL");
+                            t.HasCheckConstraint("ck_exam_purchases_active_paid", "status <> 'Active' OR (purchased_at IS NOT NULL AND access_expires_at IS NOT NULL)");
 
                             t.HasCheckConstraint("ck_exam_purchases_price_paid_idr", "price_paid_idr >= 0");
 
-                            t.HasCheckConstraint("ck_exam_purchases_status", "status IN ('PendingPayment', 'Active', 'Expired', 'Refunded')");
+                            t.HasCheckConstraint("ck_exam_purchases_status", "status IN ('AwaitingPayment', 'Active', 'Expired', 'Abandoned', 'Refunded')");
                         });
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Access.Plan", b =>
                 {
-                    b.Property<int>("PlanId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("plan_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PlanId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("code");
 
                     b.Property<bool>("IncludesAllExams")
@@ -107,25 +107,24 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
 
-                    b.Property<int>("MaxImportRows")
+                    b.Property<int?>("MaxImportRows")
                         .HasColumnType("integer")
                         .HasColumnName("max_import_rows");
 
-                    b.Property<int>("MaxOwnExams")
+                    b.Property<int?>("MaxOwnExams")
                         .HasColumnType("integer")
                         .HasColumnName("max_own_exams");
 
-                    b.Property<int>("MaxOwnQuestions")
+                    b.Property<int?>("MaxOwnQuestions")
                         .HasColumnType("integer")
                         .HasColumnName("max_own_questions");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("PlanId")
+                    b.HasKey("Id")
                         .HasName("pk_plans");
 
                     b.HasIndex("Code")
@@ -146,12 +145,12 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Access.PlanPrice", b =>
                 {
-                    b.Property<int>("PlanPriceId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("plan_price_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PlanPriceId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<int>("DurationMonths")
                         .HasColumnType("integer")
@@ -161,19 +160,19 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
 
-                    b.Property<int>("PlanId")
-                        .HasColumnType("integer")
+                    b.Property<long>("PlanId")
+                        .HasColumnType("bigint")
                         .HasColumnName("plan_id");
 
                     b.Property<long>("PriceIdr")
                         .HasColumnType("bigint")
                         .HasColumnName("price_idr");
 
-                    b.HasKey("PlanPriceId")
+                    b.HasKey("Id")
                         .HasName("pk_plan_prices");
 
-                    b.HasAlternateKey("PlanPriceId", "PlanId")
-                        .HasName("ak_plan_prices_plan_price_id_plan_id");
+                    b.HasAlternateKey("Id", "PlanId")
+                        .HasName("ak_plan_prices_id_plan_id");
 
                     b.HasIndex("PlanId", "DurationMonths")
                         .IsUnique()
@@ -189,76 +188,69 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Access.Subscription", b =>
                 {
-                    b.Property<int>("SubscriptionId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("subscription_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SubscriptionId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<DateTime>("CurrentPeriodEnd")
+                    b.Property<DateTime?>("CurrentPeriodEnd")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("current_period_end");
 
-                    b.Property<DateTime>("CurrentPeriodStart")
+                    b.Property<DateTime?>("CurrentPeriodStart")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("current_period_start");
 
                     b.Property<string>("GatewaySubscriptionId")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("gateway_subscription_id");
 
                     b.Property<DateTime?>("GraceUntil")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("grace_until");
 
-                    b.Property<int>("PlanId")
-                        .HasColumnType("integer")
+                    b.Property<long>("PlanId")
+                        .HasColumnType("bigint")
                         .HasColumnName("plan_id");
 
-                    b.Property<int>("PlanPriceId")
-                        .HasColumnType("integer")
+                    b.Property<long>("PlanPriceId")
+                        .HasColumnType("bigint")
                         .HasColumnName("plan_price_id");
 
                     b.Property<DateTime?>("Reminder1dSentAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("reminder1d_sent_at");
+                        .HasColumnName("reminder_1d_sent_at");
 
                     b.Property<DateTime?>("Reminder7dSentAt")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("reminder7d_sent_at");
+                        .HasColumnName("reminder_7d_sent_at");
 
                     b.Property<string>("RenewalMode")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("renewal_mode");
 
-                    b.Property<int?>("SavedPaymentMethodId")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SavedPaymentMethodId")
+                        .HasColumnType("bigint")
                         .HasColumnName("saved_payment_method_id");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("status");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.HasKey("SubscriptionId")
+                    b.HasKey("Id")
                         .HasName("pk_subscriptions");
-
-                    b.HasIndex("CurrentPeriodEnd")
-                        .HasDatabaseName("ix_subscriptions_current_period_end")
-                        .HasFilter("status = 'Active'");
 
                     b.HasIndex("PlanId")
                         .HasDatabaseName("ix_subscriptions_plan_id");
@@ -266,47 +258,51 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasIndex("SavedPaymentMethodId")
                         .HasDatabaseName("ix_subscriptions_saved_payment_method_id");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_subscriptions_user_id");
-
                     b.HasIndex("PlanPriceId", "PlanId")
                         .HasDatabaseName("ix_subscriptions_plan_price_id_plan_id");
 
+                    b.HasIndex(new[] { "CurrentPeriodEnd" }, "ix_subscriptions_period_end")
+                        .HasDatabaseName("ix_subscriptions_period_end")
+                        .HasFilter("status = 'Active'");
+
+                    b.HasIndex(new[] { "UserId", "PlanId" }, "ux_subscriptions_one_per_plan")
+                        .IsUnique()
+                        .HasDatabaseName("ux_subscriptions_one_per_plan")
+                        .HasFilter("status NOT IN ('Abandoned', 'Refunded')");
+
                     b.ToTable("subscriptions", null, t =>
                         {
-                            t.HasCheckConstraint("ck_subscriptions_active_period", "status <> 'Active' OR current_period_end > current_period_start");
+                            t.HasCheckConstraint("ck_subscriptions_active_period", "status <> 'Active' OR (current_period_start IS NOT NULL AND current_period_end > current_period_start)");
 
                             t.HasCheckConstraint("ck_subscriptions_auto_debit_method", "renewal_mode = 'Manual' OR saved_payment_method_id IS NOT NULL");
 
                             t.HasCheckConstraint("ck_subscriptions_renewal_mode", "renewal_mode IN ('Manual', 'AutoDebit')");
 
-                            t.HasCheckConstraint("ck_subscriptions_status", "status IN ('PendingPayment', 'Active', 'Expired', 'Canceled')");
+                            t.HasCheckConstraint("ck_subscriptions_status", "status IN ('AwaitingPayment', 'Active', 'Expired', 'Abandoned', 'Refunded')");
                         });
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Auditing.AuditLog", b =>
                 {
-                    b.Property<int>("AuditLogId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("audit_log_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditLogId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Action")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("action");
 
                     b.Property<Guid>("ActorUserId")
                         .HasColumnType("uuid")
                         .HasColumnName("actor_user_id");
 
-                    b.Property<string>("ChangesJson")
-                        .IsRequired()
+                    b.Property<string>("Changes")
                         .HasColumnType("jsonb")
-                        .HasColumnName("changes_json");
+                        .HasColumnName("changes");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -314,36 +310,36 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("EntityId")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("entity_id");
 
                     b.Property<string>("EntityName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("entity_name");
 
-                    b.HasKey("AuditLogId")
+                    b.HasKey("Id")
                         .HasName("pk_audit_logs");
 
-                    b.HasIndex("ActorUserId")
-                        .HasDatabaseName("ix_audit_logs_actor_user_id");
+                    b.HasIndex(new[] { "ActorUserId", "CreatedAt" }, "ix_audit_logs_actor")
+                        .IsDescending(false, true)
+                        .HasDatabaseName("ix_audit_logs_actor");
 
-                    b.HasIndex("EntityName", "EntityId")
-                        .HasDatabaseName("ix_audit_logs_entity_name_entity_id");
+                    b.HasIndex(new[] { "EntityName", "EntityId", "CreatedAt" }, "ix_audit_logs_entity")
+                        .IsDescending(false, false, true)
+                        .HasDatabaseName("ix_audit_logs_entity");
 
                     b.ToTable("audit_logs", (string)null);
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Content.Exam", b =>
                 {
-                    b.Property<int>("ExamId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("exam_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ExamId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<int?>("AccessDays")
                         .HasColumnType("integer")
@@ -354,7 +350,6 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnName("created_at");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
@@ -372,8 +367,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("OwnerKind")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("owner_kind");
 
                     b.Property<Guid?>("OwnerUserId")
@@ -384,32 +378,29 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("price_idr");
 
-                    b.Property<int>("RulePresetId")
-                        .HasColumnType("integer")
+                    b.Property<long>("RulePresetId")
+                        .HasColumnType("bigint")
                         .HasColumnName("rule_preset_id");
 
                     b.Property<string>("ShareToken")
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)")
+                        .HasColumnType("text")
                         .HasColumnName("share_token");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("status");
 
-                    b.Property<int?>("SubjectId")
-                        .HasColumnType("integer")
+                    b.Property<long?>("SubjectId")
+                        .HasColumnType("bigint")
                         .HasColumnName("subject_id");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.HasKey("ExamId")
+                    b.HasKey("Id")
                         .HasName("pk_exams");
 
                     b.HasIndex("OwnerUserId")
@@ -425,7 +416,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasIndex("SubjectId")
                         .HasDatabaseName("ix_exams_subject_id");
 
-                    b.HasIndex("Status", "SubjectId")
+                    b.HasIndex(new[] { "Status", "SubjectId" }, "ix_exams_catalog")
                         .HasDatabaseName("ix_exams_catalog")
                         .HasFilter("owner_kind = 'App'");
 
@@ -451,12 +442,12 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Content.ExamQuestion", b =>
                 {
-                    b.Property<int>("ExamId")
-                        .HasColumnType("integer")
+                    b.Property<long>("ExamId")
+                        .HasColumnType("bigint")
                         .HasColumnName("exam_id");
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("integer")
+                    b.Property<long>("QuestionId")
+                        .HasColumnType("bigint")
                         .HasColumnName("question_id");
 
                     b.Property<bool>("IsTrial")
@@ -473,24 +464,28 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasIndex("QuestionId")
                         .HasDatabaseName("ix_exam_questions_question_id");
 
+                    b.HasIndex(new[] { "ExamId" }, "ix_exam_questions_trial")
+                        .HasDatabaseName("ix_exam_questions_trial")
+                        .HasFilter("is_trial");
+
                     b.ToTable("exam_questions", (string)null);
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Content.Question", b =>
                 {
-                    b.Property<int>("QuestionId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("question_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("QuestionId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("Difficulty")
-                        .HasColumnType("integer")
+                    b.Property<short?>("Difficulty")
+                        .HasColumnType("smallint")
                         .HasColumnName("difficulty");
 
                     b.Property<string>("Explanation")
@@ -503,9 +498,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnName("hint");
 
                     b.Property<string>("KeyFact")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("key_fact");
 
                     b.Property<Guid?>("OwnerUserId")
@@ -514,20 +507,16 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("QuestionType")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("question_type");
 
                     b.Property<string>("SourceNote")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .HasColumnType("text")
                         .HasColumnName("source_note");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("status");
 
                     b.Property<string>("Text")
@@ -535,8 +524,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("text");
 
-                    b.Property<int>("TopicId")
-                        .HasColumnType("integer")
+                    b.Property<long>("TopicId")
+                        .HasColumnType("bigint")
                         .HasColumnName("topic_id");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -547,7 +536,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("variant_group_id");
 
-                    b.HasKey("QuestionId")
+                    b.HasKey("Id")
                         .HasName("pk_questions");
 
                     b.HasIndex("OwnerUserId")
@@ -572,19 +561,19 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Content.QuestionOption", b =>
                 {
-                    b.Property<int>("QuestionOptionId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("question_option_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("QuestionOptionId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean")
                         .HasColumnName("is_correct");
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("integer")
+                    b.Property<long>("QuestionId")
+                        .HasColumnType("bigint")
                         .HasColumnName("question_id");
 
                     b.Property<int>("SortOrder")
@@ -596,7 +585,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("text");
 
-                    b.HasKey("QuestionOptionId")
+                    b.HasKey("Id")
                         .HasName("pk_question_options");
 
                     b.HasIndex("QuestionId")
@@ -607,12 +596,12 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Content.RulePreset", b =>
                 {
-                    b.Property<int>("RulePresetId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("rule_preset_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RulePresetId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("HintsEnabled")
                         .HasColumnType("boolean")
@@ -628,8 +617,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.Property<Guid?>("OwnerUserId")
@@ -646,8 +634,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("ShowAnswers")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
+                        .HasColumnType("text")
                         .HasColumnName("show_answers");
 
                     b.Property<bool>("ShuffleOptions")
@@ -662,16 +649,16 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("time_limit_minutes");
 
-                    b.HasKey("RulePresetId")
+                    b.HasKey("Id")
                         .HasName("pk_rule_presets");
-
-                    b.HasIndex("IsDefault")
-                        .IsUnique()
-                        .HasDatabaseName("ux_rule_presets_one_system_default")
-                        .HasFilter("is_default AND owner_user_id IS NULL");
 
                     b.HasIndex("OwnerUserId")
                         .HasDatabaseName("ix_rule_presets_owner_user_id");
+
+                    b.HasIndex(new[] { "IsDefault" }, "ux_rule_presets_one_system_default")
+                        .IsUnique()
+                        .HasDatabaseName("ux_rule_presets_one_system_default")
+                        .HasFilter("is_default AND owner_user_id IS NULL");
 
                     b.ToTable("rule_presets", null, t =>
                         {
@@ -689,25 +676,23 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Content.Subject", b =>
                 {
-                    b.Property<int>("SubjectId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("subject_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SubjectId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.HasKey("SubjectId")
+                    b.HasKey("Id")
                         .HasName("pk_subjects");
 
                     b.HasIndex("Name")
@@ -719,29 +704,27 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Content.Topic", b =>
                 {
-                    b.Property<int>("TopicId")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("topic_id");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("TopicId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("integer")
+                    b.Property<long>("SubjectId")
+                        .HasColumnType("bigint")
                         .HasColumnName("subject_id");
 
-                    b.HasKey("TopicId")
+                    b.HasKey("Id")
                         .HasName("pk_topics");
 
                     b.HasIndex("SubjectId", "Name")
@@ -756,7 +739,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("role_id");
+                        .HasColumnName("id");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -766,7 +749,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("name");
 
                     b.Property<string>("NormalizedName")
@@ -793,7 +776,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("user_id");
+                        .HasColumnName("id");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer")
@@ -814,14 +797,13 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("display_name");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("email");
 
                     b.Property<bool>("EmailConfirmed")
@@ -864,8 +846,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("PreferredLanguage")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasColumnType("text")
                         .HasColumnName("preferred_language");
 
                     b.Property<string>("SecurityStamp")
@@ -881,20 +862,11 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(256)")
                         .HasColumnName("user_name");
 
-                    b.Property<bool>("WhatsAppOptIn")
-                        .HasColumnType("boolean")
-                        .HasColumnName("whats_app_opt_in");
-
                     b.HasKey("Id")
                         .HasName("pk_users");
 
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("ix_users_email");
-
                     b.HasIndex("NormalizedEmail")
-                        .IsUnique()
-                        .HasDatabaseName("email_index");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
@@ -1043,14 +1015,14 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
                         .WithMany()
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_exam_purchases_exams_exam_id");
 
                     b.HasOne("Akusiap.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_exam_purchases_users_user_id");
 
@@ -1064,7 +1036,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Access.Plan", "Plan")
                         .WithMany("Prices")
                         .HasForeignKey("PlanId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_plan_prices_plans_plan_id");
 
@@ -1076,22 +1048,22 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Access.Plan", "Plan")
                         .WithMany()
                         .HasForeignKey("PlanId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_subscriptions_plans_plan_id");
 
                     b.HasOne("Akusiap.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_subscriptions_users_user_id");
 
                     b.HasOne("Akusiap.Domain.Access.PlanPrice", "PlanPrice")
                         .WithMany()
                         .HasForeignKey("PlanPriceId", "PlanId")
-                        .HasPrincipalKey("PlanPriceId", "PlanId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasPrincipalKey("Id", "PlanId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_subscriptions_plan_prices_plan_price_id_plan_id");
 
@@ -1107,7 +1079,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Users.User", "ActorUser")
                         .WithMany()
                         .HasForeignKey("ActorUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_audit_logs_users_actor_user_id");
 
@@ -1119,20 +1091,20 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Users.User", "OwnerUser")
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("fk_exams_users_owner_user_id");
 
                     b.HasOne("Akusiap.Domain.Content.RulePreset", "RulePreset")
                         .WithMany()
                         .HasForeignKey("RulePresetId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_exams_rule_presets_rule_preset_id");
 
                     b.HasOne("Akusiap.Domain.Content.Subject", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("fk_exams_subjects_subject_id");
 
                     b.Navigation("OwnerUser");
@@ -1154,7 +1126,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Content.Question", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_exam_questions_questions_question_id");
 
@@ -1168,13 +1140,13 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Users.User", "OwnerUser")
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("fk_questions_users_owner_user_id");
 
                     b.HasOne("Akusiap.Domain.Content.Topic", "Topic")
                         .WithMany()
                         .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_questions_topics_topic_id");
 
@@ -1200,7 +1172,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Users.User", "OwnerUser")
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("fk_rule_presets_users_owner_user_id");
 
                     b.Navigation("OwnerUser");
@@ -1211,7 +1183,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasOne("Akusiap.Domain.Content.Subject", "Subject")
                         .WithMany("Topics")
                         .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_topics_subjects_subject_id");
 

@@ -4,32 +4,32 @@ namespace Akusiap.Domain.Content;
 
 public class Exam
 {
-    public int ExamId { get; set; }
+    public long Id { get; set; }
 
-    /// <summary>Null for app (owner-created) exams.</summary>
+    /// <summary>Null exactly when <see cref="OwnerKind"/> is App.</summary>
     public Guid? OwnerUserId { get; set; }
 
     public User? OwnerUser { get; set; }
 
     public OwnerKind OwnerKind { get; set; } = OwnerKind.App;
 
-    public int? SubjectId { get; set; }
+    public long? SubjectId { get; set; }
 
     public Subject? Subject { get; set; }
 
     /// <summary>Default rules.</summary>
-    public int RulePresetId { get; set; }
+    public long RulePresetId { get; set; }
 
     public RulePreset? RulePreset { get; set; }
 
     public string Title { get; set; } = string.Empty;
 
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     /// <summary>Free for registered users.</summary>
     public bool IsFree { get; set; }
 
-    /// <summary>Rupiah, tax-inclusive. App exams only.</summary>
+    /// <summary>Rupiah, tax-inclusive. Only app exams are sold.</summary>
     public long? PriceIdr { get; set; }
 
     /// <summary>Access length for a paid exam.</summary>
@@ -40,6 +40,7 @@ public class Exam
 
     public ExamStatus Status { get; set; } = ExamStatus.Draft;
 
+    /// <summary>Requires a <see cref="ShareToken"/>.</summary>
     public bool IsShared { get; set; }
 
     /// <summary>Link token for non-users.</summary>

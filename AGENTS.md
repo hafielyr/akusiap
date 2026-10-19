@@ -6,7 +6,7 @@ Read before every task:
 3. `docs/kanban.md`: what to work on.
 4. `docs/backlog.md`: the full card for your task.
 
-Requirements come from `Quiz Practice App — User Stories.docx` (story IDs) and `ERD.jpg` (schema). If the backlog card and those disagree, the stories and ERD win; record the conflict in `docs/decisions.md`.
+Requirements come from `Quiz Practice App — User Stories.docx` (story IDs) and `schema.sql` (database schema, D-26; it supersedes `ERD.jpg`). If the backlog card and those disagree, the stories and `schema.sql` win; record the conflict in `docs/decisions.md`.
 
 ## Workflow for one task
 
@@ -29,7 +29,7 @@ Only a human or a review agent moves a card from Review to Done, after the PR me
 - Put UI strings in `src/Akusiap.Web/Resources/Localization/SharedResource.resx` (Indonesian, the neutral/default) and `SharedResource.en.resx`, with dotted keys like `Catalog.SearchPlaceholder`. In views use `@T["Key"]` (injected in `_ViewImports`). Format money with `<idr value="..." />` or `Money.FormatIdr`. Keep code, identifiers, commits and docs in English.
 - Migrations: one per card that changes the schema, named `<ID>_<Change>`. Never edit an applied migration.
 - Tests: unit tests for domain, integration tests (per-run test database, D-15) for handlers and pages, Playwright for flows named in the AC. Use `TestData` builders; no shared mutable fixtures between tests.
-- Secrets come from user-secrets or env vars only. Never commit keys (Midtrans, Google, SMTP).
+- Secrets come from user-secrets or env vars only. Never commit keys (DOKU, Xendit, Google, SMTP).
 - Pages must work at 360 px width and keep JS minimal: Alpine for local state, htmx for server round-trips, no SPA frameworks.
 
 ## Commands

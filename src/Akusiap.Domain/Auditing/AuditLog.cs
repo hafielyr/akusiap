@@ -4,7 +4,7 @@ namespace Akusiap.Domain.Auditing;
 
 public class AuditLog
 {
-    public int AuditLogId { get; set; }
+    public long Id { get; set; }
 
     public Guid ActorUserId { get; set; }
 
@@ -16,8 +16,8 @@ public class AuditLog
 
     public string EntityId { get; set; } = string.Empty;
 
-    /// <summary>JSON, stored as jsonb.</summary>
-    public string ChangesJson { get; set; } = "{}";
+    /// <summary>JSON (jsonb), optional.</summary>
+    public string? Changes { get; set; }
 
     public DateTime CreatedAt { get; set; }
 }

@@ -4,7 +4,7 @@ namespace Akusiap.Domain.Content;
 
 public class RulePreset
 {
-    public int RulePresetId { get; set; }
+    public long Id { get; set; }
 
     /// <summary>Null for system presets.</summary>
     public Guid? OwnerUserId { get; set; }
@@ -19,18 +19,20 @@ public class RulePreset
     /// <summary>Null means all questions.</summary>
     public int? QuestionCount { get; set; }
 
-    public bool HintsEnabled { get; set; }
+    public bool HintsEnabled { get; set; } = true;
 
-    public bool ShuffleQuestions { get; set; }
+    public bool ShuffleQuestions { get; set; } = true;
 
-    public bool ShuffleOptions { get; set; }
+    public bool ShuffleOptions { get; set; } = true;
 
     /// <summary>Null means unlimited.</summary>
     public int? MaxAttempts { get; set; }
 
+    /// <summary>0–100, or null for no pass mark.</summary>
     public int? PassMarkPercent { get; set; }
 
     public ShowAnswers ShowAnswers { get; set; } = ShowAnswers.AfterSubmit;
 
+    /// <summary>Only one system preset can be the default.</summary>
     public bool IsDefault { get; set; }
 }

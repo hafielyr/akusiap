@@ -1,6 +1,6 @@
 # Architecture
 
-Source of truth for requirements: `Quiz Practice App — User Stories.docx` (story IDs such as G-01 and ADM-07) and `ERD.jpg` (tables and columns). This file holds the technical decisions that agents must follow.
+Source of truth for requirements: `Quiz Practice App — User Stories.docx` (story IDs such as G-01 and ADM-07) and `schema.sql` (tables, columns, constraints; D-26). `ERD.jpg` is an older diagram kept for reference; where they differ, `schema.sql` wins. This file holds the technical decisions that agents must follow.
 
 ## Stack
 
@@ -8,10 +8,10 @@ Source of truth for requirements: `Quiz Practice App — User Stories.docx` (sto
 |---|---|
 | Runtime | .NET 10 (LTS), ASP.NET Core |
 | UI | Razor Pages + htmx + Alpine.js, Tailwind CSS via the standalone CLI (no Node toolchain). htmx and Alpine are vendored in `wwwroot/lib` |
-| Data | PostgreSQL 17 (Neon in dev, D-15), EF Core 10 (Npgsql), code-first migrations. Use JSONB for `*Json` columns |
+| Data | PostgreSQL 17 (Neon in dev, D-15), EF Core 10 (Npgsql), code-first migrations. Use JSONB for JSON columns (`payload`, `rules_snapshot`, `option_order`, `changes`) |
 | Auth | ASP.NET Core Identity (`User` : `IdentityUser<Guid>`), Google login. Roles: `Learner`, `Teacher`, `Admin` |
 | Jobs | Hangfire with PostgreSQL storage. Dashboard at `/admin/jobs` (Admin only) |
-| Payments | Midtrans Core API behind `IPaymentGateway`; `FakePaymentGateway` for dev and tests |
+| Payments | DOKU behind `IPaymentGateway` (D-10); Xendit added later for international payments through the same interface. `FakePaymentGateway` for dev and tests |
 | Email | `IEmailSender` → Brevo or SES in production; `.eml` files in `.dev-mail/` during development (D-15) |
 | i18n | `.resx` localization. `id-ID` is the default culture, `en` is optional. Money is formatted as `Rp49.000` |
 | Import | ClosedXML (xlsx) + CsvHelper |
@@ -27,7 +27,7 @@ Akusiap.slnx
 src/
   Akusiap.Domain/          entities, enums, pure domain services (EntitlementPolicy, Scoring, Sm2Scheduler, RefundPolicy, AllowancePolicy)
   Akusiap.Application/     use cases grouped by feature folder; interfaces (IAppDbContext, IPaymentGateway, IEmailSender, IClock)
-  Akusiap.Infrastructure/  AppDbContext, EF configurations, migrations, Midtrans client, email, Hangfire jobs, importers
+  Akusiap.Infrastructure/  AppDbContext, EF configurations, migrations, DOKU client, email, Hangfire jobs, importers
   Akusiap.Web/             Razor Pages (Areas: Admin, Account, Learn), htmx partials, Alpine components, webhook endpoints
 tests/
   Akusiap.UnitTests/         domain and application tests (no DB)
@@ -43,7 +43,7 @@ Rules:
 - Store money as `long` Rupiah (column suffix `Idr`), tax-inclusive. Never use `decimal` for prices.
 - Get every access decision from `EntitlementPolicy` (below). Pages and handlers never check purchases directly.
 
-## Enums (from ERD)
+## Enums (from schema.sql)
 
 | Entity.Field | Values |
 |---|---|
@@ -52,19 +52,24 @@ Rules:
 | Question.QuestionType | SingleChoice, MultiSelect, TrueFalse |
 | Question.Status | Draft, Active, Retired |
 | RulePreset.ShowAnswers | AfterEach, AfterSubmit, Never |
-| ExamPurchase.Status | PendingPayment, Active, Expired, Refunded |
-| Subscription.Status | PendingPayment, Active, Expired, Canceled |
+| ExamPurchase.Status | AwaitingPayment, Active, Expired, Abandoned, Refunded |
+| Subscription.Status | AwaitingPayment, Active, Expired, Abandoned, Refunded |
 | Subscription.RenewalMode | Manual, AutoDebit |
+| SavedPaymentMethod.Type | CreditCard, DirectDebit |
 | Attempt.Source | Exam, Trial, Shared, WrongOnly, Review, CustomMix |
 | Attempt.Mode | Practice, Simulation, Flashcard |
 | Attempt.Status | InProgress, Submitted, Expired |
-| Payment.Status | Pending, Paid, Expired, Failed, Refunded |
-| Payment.Method | QRIS, VirtualAccount, EWallet, RetailOutlet, PayLater, Card |
-| Refund.Status | Requested, Approved, Rejected, Processed |
+| Payment.Gateway | DOKU (Xendit later) |
+| Payment.Status | Pending, Paid, Expired, Canceled, Failed, Refunded |
+| Payment.Method | QRIS, VirtualAccount, EWallet, CreditCard |
+| Refund.Status | Requested, Approved, Rejected, AwaitingDetails, SentToDoku, Completed, Failed |
+| Refund.RefundRoute | DirectToPayerApp, RefundLink |
 | ReviewCard.State | New, Learning, Review, Memorized |
 | ReviewLog.Rating | Forgot, Hard, Good, Easy |
 | ContentReport.Status | Open, Fixed, TakenDown, Rejected |
-| Notification.Channel | WhatsApp, Email, InApp |
+| Notification.Channel | Email, InApp |
+| Notification.TemplateCode | Receipt, Renewal7d, Renewal1d, RefundLink, ReviewDue |
+| Notification.Status | Queued, Sent, Delivered, Read, Failed |
 | Plan.Code | Free, Learner, Teacher, Combined |
 
 ## Entitlement rules (priority: access to owner-created exams)

@@ -35,13 +35,13 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### F-03 Content and access schema · M
 - Depends on: F-02
-- Scope: Entities and EF configurations exactly as in the ERD for User (Identity, `Guid` key), Role/UserRole (Identity roles), Subject, Topic, Question, QuestionOption, Exam, ExamQuestion, RulePreset, Plan, PlanPrice, Subscription, ExamPurchase and AuditLog. Enums from `architecture.md`, stored as strings. Unique indexes: User.Email, Exam.ShareToken, (ExamId, QuestionId). Migration `InitialContent`.
-- AC: The migration applies to an empty DB. Every ERD column for these tables exists with the right nullability. Money columns are `bigint`.
+- Scope: Entities and EF configurations exactly as in `schema.sql` (D-26) for User (Identity, `Guid` key), Role/UserRole (Identity roles), Subject, Topic, Question, QuestionOption, Exam, ExamQuestion, RulePreset, Plan, PlanPrice, Subscription, ExamPurchase and AuditLog. Enums from `architecture.md`, stored as strings. Its CHECK constraints and unique/partial indexes, including case-insensitive User.Email, Exam.ShareToken and (ExamId, QuestionId). Migration `F03_InitialContent`.
+- AC: The migration applies to an empty DB. Every `schema.sql` column for these tables exists with the right type and nullability. Money columns are `bigint`.
 - Tests: an integration test that applies migrations and round-trips one of each entity.
 
 ### F-04 Session and memorization schema · S
 - Depends on: F-03
-- Scope: Attempt, AttemptItem, AttemptItemOption, ReviewCard, ReviewLog, ContentReport and Notification as in the ERD. Migration `Sessions`.
+- Scope: Attempt, AttemptItem, AttemptItemOption, ReviewCard, ReviewLog, ContentReport and Notification as in `schema.sql`, with its CHECK constraints and indexes. Migration `F04_Sessions`.
 - AC: Same as F-03 for these tables. Composite key on AttemptItemOption.
 
 ### F-05 Test infrastructure · M
@@ -57,7 +57,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### F-07 Seed data · S
 - Depends on: F-03
-- Scope: An idempotent seeder at startup for roles (Learner, Teacher, Admin); plans Free (MaxOwnQuestions 50, MaxOwnExams 1), Learner (IncludesAllExams), Teacher (IncludesAuthoring, IncludesClasses) and Combined; a system RulePreset "Standar" (IsDefault); and an admin user from config `Seed:AdminEmail/AdminPassword`. In Development, also seed one Subject, topics and a sample paid exam with 40 questions (30 trial) plus one free exam.
+- Scope: An idempotent seeder at startup for roles (Learner, Teacher, Admin); the plans and the default system RulePreset with the values in the `schema.sql` seed section (Free "Gratis" with caps 50/1/50; Learner "Paket Pelajar", Teacher "Paket Pengajar" and Combined "Paket Lengkap" with caps left null until decided, which the app treats as blocked; preset "Latihan standar", AfterEach, IsDefault); and an admin user from config `Seed:AdminEmail/AdminPassword`. In Development, also seed one Subject, topics and a sample paid exam with 40 questions (30 trial) plus one free exam.
 - AC: Running twice creates no duplicates. In dev, the admin can sign in.
 
 ### F-08 CI pipeline · S
@@ -85,7 +85,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### AC-04 Profile, password and role · S
 - Stories: A-03, A-04 · Depends on: AC-01
-- Scope: Profile page (display name, phone in +62 format, preferred language, WhatsApp opt-in), change password, and an "Saya juga mengajar" toggle that adds the Teacher role.
+- Scope: Profile page (display name, phone in +62 format, preferred language), change password, and an "Saya juga mengajar" toggle that adds the Teacher role.
 - AC: Phone numbers are validated (+62 followed by 8–12 digits). The language change applies immediately.
 
 ### AC-05 Legal pages · S
@@ -261,7 +261,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### PAY-01 Payment schema and gateway abstraction · M
 - Depends on: F-03
-- Scope: Payment, PaymentWebhookEvent (unique Gateway+GatewayEventId), Refund, PromoCode (table only) and SavedPaymentMethod (table only). Migration. `IPaymentGateway`: CreateCharge(order, channel) → instructions (QR string, VA number, deeplink, expiry); ParseWebhook(request) → event; VerifySignature; Refund. `FakePaymentGateway` with a dev page to simulate "paid".
+- Scope: Payment, PaymentWebhookEvent (unique Gateway+GatewayEventId), Refund, PromoCode (table only) and SavedPaymentMethod (table only), with the columns, constraints and indexes in `schema.sql` (Gateway `DOKU`). Migration `PAY01_Payments`, which also adds the foreign key from `subscriptions.saved_payment_method_id`. `IPaymentGateway`: CreateCharge(order, channel) → instructions (QR string, VA number, deeplink, expiry); ParseWebhook(request) → event; VerifySignature; Refund. `FakePaymentGateway` with a dev page to simulate "paid".
 - AC: The fake gateway can complete a payment end to end in dev. `OrderNumber` is unique and human-readable (`AKS-20261006-XXXX`).
 
 ### PAY-02 Plans and prices admin · S
@@ -271,13 +271,13 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### PAY-03 Checkout · M
 - Stories: P-01, P-02, P-03, ID-18 · Depends on: PAY-01, PAY-02, CAT-02, AC-02
-- Scope: `/checkout?exam={id}` or `?planPrice={id}` shows the summary: what you get, the access end date (computed with D-03 and D-04), the price incl. tax, the refund policy excerpt and a checkbox. Channel list with QRIS first, then VA banks, then e-wallets, filtered by admin channel settings (enabled, minimum amount; stored in a `PaymentChannelSetting` table or config). Requires a confirmed email. Creates Payment (Pending) and ExamPurchase or Subscription (PendingPayment).
+- Scope: `/checkout?exam={id}` or `?planPrice={id}` shows the summary: what you get, the access end date (computed with D-03 and D-04), the price incl. tax, the refund policy excerpt and a checkbox. Channel list with QRIS first, then VA banks, then e-wallets, filtered by admin channel settings (enabled, minimum amount; stored in a `PaymentChannelSetting` table or config). Requires a confirmed email. Creates Payment (Pending) and ExamPurchase or Subscription (AwaitingPayment); at most one Pending payment per item.
 - AC: A disabled channel or one below its minimum is hidden. An unconfirmed user is prompted to confirm the email first.
 
-### PAY-04 Midtrans client · M
+### PAY-04 DOKU client · M
 - Stories: ID-10, ID-11, ID-12, P-04 · Depends on: PAY-01
-- Scope: Implement `IPaymentGateway` with the Midtrans Core API (sandbox in dev): QRIS, bank transfer VA (BCA, BNI, BRI, Mandiri, Permata), GoPay and ShopeePay (deeplink + QR). Signature check `SHA512(order_id+status_code+gross_amount+ServerKey)`. Typed HttpClient with retries.
-- AC: Against the sandbox (manual, behind an env flag), a QRIS and a VA charge return instructions. Unit tests use recorded JSON fixtures.
+- Scope: Implement `IPaymentGateway` with DOKU (sandbox in dev; D-10): QRIS, bank transfer VA, e-wallets (deeplink) and credit card, matching `Payment.Method`. Store DOKU's `invoice_number` and `Request-Id` on the payment. Verify the signature of every DOKU HTTP notification as DOKU documents it before trusting it. Credentials (`Doku:ClientId`, `Doku:SecretKey`) from user-secrets/env only. Typed HttpClient with retries. Pick the DOKU product (Checkout or Direct API) in this card and record it as a decision.
+- AC: Against the sandbox (manual, behind an env flag), a QRIS and a VA charge return instructions, and a sample notification passes signature verification. Unit tests use recorded JSON fixtures.
 
 ### PAY-05 Payment instructions and pending payments · M
 - Stories: ID-10, ID-11, ID-12, ID-13 · Depends on: PAY-03, PAY-01
@@ -286,7 +286,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### PAY-06 Webhook processing and fulfillment · L
 - Stories: ID-14, ID-19, P-01, P-02 · Depends on: PAY-01, PAY-03
-- Scope: POST `/webhooks/midtrans` stores the raw payload in PaymentWebhookEvent (SignatureValid flag) and returns 200 fast. Processing (in-request, in a transaction, with a unique constraint as the guard) moves Payment to Paid, Expired or Failed. On Paid: ExamPurchase Active with AccessExpiresAt (D-04), or Subscription Active with the period (D-03). Duplicate events are no-ops. Invalid signatures are stored but never processed.
+- Scope: POST `/webhooks/doku` stores the raw payload in PaymentWebhookEvent (SignatureValid flag) and returns 200 fast. Processing (in-request, in a transaction, with a unique constraint as the guard) moves Payment to Paid, Expired or Failed. A success notification for a payment already Expired or Canceled sets `IsLatePayment` for admin follow-up (how to fulfil it is an owner decision). On Paid: ExamPurchase Active with AccessExpiresAt (D-04), or Subscription Active with the period (D-03). Duplicate events are no-ops. Invalid signatures are stored but never processed.
 - AC: Sending the same event twice gives one fulfillment. Access is available on the next request after Paid.
 - Tests: integration tests for paid → access, duplicate event, bad signature and expired.
 
@@ -302,7 +302,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### PAY-09 Refund requests · L
 - Stories: P-10, ADM-30 · Depends on: PAY-06
-- Scope: Domain `RefundPolicy` encodes the table in the stories doc: first subscription payment ≤ 7 days; renewal ≤ 48 h and no practice since; single exam ≤ 7 days and < 20% of non-trial questions answered; plus the always-refund reasons; one first-payment refund per account. `/learn/pembayaran/{id}/refund` shows eligibility with the reason before submitting. Eligible requests are auto-approved: call gateway Refund, set Payment Refunded, end access (purchase Refunded or subscription Canceled). Others go to Requested for admin review (an admin page to approve or reject with a reason).
+- Scope: Domain `RefundPolicy` encodes the table in the stories doc: first subscription payment ≤ 7 days; renewal ≤ 48 h and no practice since; single exam ≤ 7 days and < 20% of non-trial questions answered; plus the always-refund reasons; one first-payment refund per account. `/learn/pembayaran/{id}/refund` shows eligibility with the reason before submitting. Eligible requests are auto-approved: call gateway Refund, set Payment Refunded, end access (purchase or subscription Refunded). Refunds follow the `schema.sql` statuses: DOKU refunds straight to the payer app where the method allows (`DirectToPayerApp`), otherwise via a DOKU refund link (`RefundLink`, status AwaitingDetails until the payer fills it in). Others go to Requested for admin review (an admin page to approve or reject with a reason).
 - AC: Every policy row has unit tests. Access ends on approval.
 
 ### PAY-10 Admin transactions · S
@@ -336,7 +336,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### OPS-02 Production deployment · M
 - Depends on: F-08, PAY-04
-- Scope (D-16): `Dockerfile` using the `noble-chiseled-extra` ASP.NET runtime image (the plain chiseled image has no ICU, which breaks `id-ID` formatting). GitHub Actions on `main`: build, test, push the image to GHCR, build an EF migrations bundle, then SSH to the VPS to run the bundle against Neon and `docker compose pull && up -d`. `deploy/` holds a cloud-init file for the Hetzner VPS (non-root deploy user, SSH keys only, ufw allowing 22/80/443, unattended-upgrades, Docker), `compose.yaml` (app + Caddy) and a `Caddyfile` (automatic HTTPS, forwarded headers). Secrets (Neon, Midtrans, Google, SMTP) come from a root-only `.env` on the server, filled from GitHub secrets; nothing is committed. Protect the Hangfire dashboard, add structured logging, and document a rollback (redeploy the previous image tag).
+- Scope (D-16): `Dockerfile` using the `noble-chiseled-extra` ASP.NET runtime image (the plain chiseled image has no ICU, which breaks `id-ID` formatting). GitHub Actions on `main`: build, test, push the image to GHCR, build an EF migrations bundle, then SSH to the VPS to run the bundle against Neon and `docker compose pull && up -d`. `deploy/` holds a cloud-init file for the Hetzner VPS (non-root deploy user, SSH keys only, ufw allowing 22/80/443, unattended-upgrades, Docker), `compose.yaml` (app + Caddy) and a `Caddyfile` (automatic HTTPS, forwarded headers). Secrets (Neon, DOKU, Google, SMTP) come from a root-only `.env` on the server, filled from GitHub secrets; nothing is committed. Protect the Hangfire dashboard, add structured logging, and document a rollback (redeploy the previous image tag).
 - AC: The image builds in CI (nothing is built locally). A fresh VPS created with the cloud-init file serves the app over HTTPS after one deploy run. The container starts with only env vars, `/health` reports DB status, and a rollback to the previous tag works.
 
 ---

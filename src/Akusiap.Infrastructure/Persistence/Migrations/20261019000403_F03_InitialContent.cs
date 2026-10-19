@@ -16,21 +16,21 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 name: "plans",
                 columns: table => new
                 {
-                    plan_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    code = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    code = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
                     includes_all_exams = table.Column<bool>(type: "boolean", nullable: false),
                     includes_authoring = table.Column<bool>(type: "boolean", nullable: false),
                     includes_classes = table.Column<bool>(type: "boolean", nullable: false),
-                    max_own_questions = table.Column<int>(type: "integer", nullable: false),
-                    max_own_exams = table.Column<int>(type: "integer", nullable: false),
-                    max_import_rows = table.Column<int>(type: "integer", nullable: false),
+                    max_own_questions = table.Column<int>(type: "integer", nullable: true),
+                    max_own_exams = table.Column<int>(type: "integer", nullable: true),
+                    max_import_rows = table.Column<int>(type: "integer", nullable: true),
                     is_active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_plans", x => x.plan_id);
+                    table.PrimaryKey("pk_plans", x => x.id);
                     table.CheckConstraint("ck_plans_code", "code IN ('Free', 'Learner', 'Teacher', 'Combined')");
                     table.CheckConstraint("ck_plans_max_import_rows", "max_import_rows >= 0");
                     table.CheckConstraint("ck_plans_max_own_exams", "max_own_exams >= 0");
@@ -41,44 +41,43 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 name: "roles",
                 columns: table => new
                 {
-                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", maxLength: 256, nullable: false),
                     normalized_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     concurrency_stamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_roles", x => x.role_id);
+                    table.PrimaryKey("pk_roles", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "subjects",
                 columns: table => new
                 {
-                    subject_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_subjects", x => x.subject_id);
+                    table.PrimaryKey("pk_subjects", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    display_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    preferred_language = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    whats_app_opt_in = table.Column<bool>(type: "boolean", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    display_name = table.Column<string>(type: "text", nullable: false),
+                    preferred_language = table.Column<string>(type: "text", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     deactivated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    email = table.Column<string>(type: "text", maxLength: 256, nullable: false),
                     normalized_email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     email_confirmed = table.Column<bool>(type: "boolean", nullable: false),
                     password_hash = table.Column<string>(type: "text", nullable: true),
@@ -93,7 +92,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_users", x => x.user_id);
+                    table.PrimaryKey("pk_users", x => x.id);
                     table.CheckConstraint("ck_users_deactivated_at", "is_active OR deactivated_at IS NOT NULL");
                     table.CheckConstraint("ck_users_preferred_language", "preferred_language IN ('id', 'en')");
                 });
@@ -102,25 +101,24 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 name: "plan_prices",
                 columns: table => new
                 {
-                    plan_price_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    plan_id = table.Column<int>(type: "integer", nullable: false),
+                    plan_id = table.Column<long>(type: "bigint", nullable: false),
                     duration_months = table.Column<int>(type: "integer", nullable: false),
                     price_idr = table.Column<long>(type: "bigint", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_plan_prices", x => x.plan_price_id);
-                    table.UniqueConstraint("ak_plan_prices_plan_price_id_plan_id", x => new { x.plan_price_id, x.plan_id });
+                    table.PrimaryKey("pk_plan_prices", x => x.id);
+                    table.UniqueConstraint("ak_plan_prices_id_plan_id", x => new { x.id, x.plan_id });
                     table.CheckConstraint("ck_plan_prices_duration_months", "duration_months IN (1, 3, 6, 12)");
                     table.CheckConstraint("ck_plan_prices_price_idr", "price_idr >= 0");
                     table.ForeignKey(
                         name: "fk_plan_prices_plans_plan_id",
                         column: x => x.plan_id,
                         principalTable: "plans",
-                        principalColumn: "plan_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -140,7 +138,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_role_claims_asp_net_roles_role_id",
                         column: x => x.role_id,
                         principalTable: "roles",
-                        principalColumn: "role_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -148,55 +146,53 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 name: "topics",
                 columns: table => new
                 {
-                    topic_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    subject_id = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false)
+                    subject_id = table.Column<long>(type: "bigint", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_topics", x => x.topic_id);
+                    table.PrimaryKey("pk_topics", x => x.id);
                     table.ForeignKey(
                         name: "fk_topics_subjects_subject_id",
                         column: x => x.subject_id,
                         principalTable: "subjects",
-                        principalColumn: "subject_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "audit_logs",
                 columns: table => new
                 {
-                    audit_log_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     actor_user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    action = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    entity_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    entity_id = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    changes_json = table.Column<string>(type: "jsonb", nullable: false),
+                    action = table.Column<string>(type: "text", nullable: false),
+                    entity_name = table.Column<string>(type: "text", nullable: false),
+                    entity_id = table.Column<string>(type: "text", nullable: false),
+                    changes = table.Column<string>(type: "jsonb", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_audit_logs", x => x.audit_log_id);
+                    table.PrimaryKey("pk_audit_logs", x => x.id);
                     table.ForeignKey(
                         name: "fk_audit_logs_users_actor_user_id",
                         column: x => x.actor_user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "rule_presets",
                 columns: table => new
                 {
-                    rule_preset_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     owner_user_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
                     time_limit_minutes = table.Column<int>(type: "integer", nullable: true),
                     question_count = table.Column<int>(type: "integer", nullable: true),
                     hints_enabled = table.Column<bool>(type: "boolean", nullable: false),
@@ -204,12 +200,12 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     shuffle_options = table.Column<bool>(type: "boolean", nullable: false),
                     max_attempts = table.Column<int>(type: "integer", nullable: true),
                     pass_mark_percent = table.Column<int>(type: "integer", nullable: true),
-                    show_answers = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    show_answers = table.Column<string>(type: "text", nullable: false),
                     is_default = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_rule_presets", x => x.rule_preset_id);
+                    table.PrimaryKey("pk_rule_presets", x => x.id);
                     table.CheckConstraint("ck_rule_presets_max_attempts", "max_attempts > 0");
                     table.CheckConstraint("ck_rule_presets_pass_mark_percent", "pass_mark_percent BETWEEN 0 AND 100");
                     table.CheckConstraint("ck_rule_presets_question_count", "question_count > 0");
@@ -219,8 +215,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_rule_presets_users_owner_user_id",
                         column: x => x.owner_user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -240,7 +235,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_user_claims_asp_net_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -260,7 +255,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_user_logins_asp_net_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -278,13 +273,13 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_user_roles_asp_net_roles_role_id",
                         column: x => x.role_id,
                         principalTable: "roles",
-                        principalColumn: "role_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_user_roles_asp_net_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -304,7 +299,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_user_tokens_asp_net_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -312,72 +307,69 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 name: "subscriptions",
                 columns: table => new
                 {
-                    subscription_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    plan_id = table.Column<int>(type: "integer", nullable: false),
-                    plan_price_id = table.Column<int>(type: "integer", nullable: false),
-                    status = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    current_period_start = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    current_period_end = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    renewal_mode = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    saved_payment_method_id = table.Column<int>(type: "integer", nullable: true),
+                    plan_id = table.Column<long>(type: "bigint", nullable: false),
+                    plan_price_id = table.Column<long>(type: "bigint", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    current_period_start = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    current_period_end = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    renewal_mode = table.Column<string>(type: "text", nullable: false),
+                    saved_payment_method_id = table.Column<long>(type: "bigint", nullable: true),
                     grace_until = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    reminder7d_sent_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    reminder1d_sent_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    gateway_subscription_id = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    reminder_7d_sent_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    reminder_1d_sent_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    gateway_subscription_id = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_subscriptions", x => x.subscription_id);
-                    table.CheckConstraint("ck_subscriptions_active_period", "status <> 'Active' OR current_period_end > current_period_start");
+                    table.PrimaryKey("pk_subscriptions", x => x.id);
+                    table.CheckConstraint("ck_subscriptions_active_period", "status <> 'Active' OR (current_period_start IS NOT NULL AND current_period_end > current_period_start)");
                     table.CheckConstraint("ck_subscriptions_auto_debit_method", "renewal_mode = 'Manual' OR saved_payment_method_id IS NOT NULL");
                     table.CheckConstraint("ck_subscriptions_renewal_mode", "renewal_mode IN ('Manual', 'AutoDebit')");
-                    table.CheckConstraint("ck_subscriptions_status", "status IN ('PendingPayment', 'Active', 'Expired', 'Canceled')");
+                    table.CheckConstraint("ck_subscriptions_status", "status IN ('AwaitingPayment', 'Active', 'Expired', 'Abandoned', 'Refunded')");
                     table.ForeignKey(
                         name: "fk_subscriptions_plan_prices_plan_price_id_plan_id",
                         columns: x => new { x.plan_price_id, x.plan_id },
                         principalTable: "plan_prices",
-                        principalColumns: new[] { "plan_price_id", "plan_id" },
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumns: new[] { "id", "plan_id" });
                     table.ForeignKey(
                         name: "fk_subscriptions_plans_plan_id",
                         column: x => x.plan_id,
                         principalTable: "plans",
-                        principalColumn: "plan_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_subscriptions_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "questions",
                 columns: table => new
                 {
-                    question_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     owner_user_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    topic_id = table.Column<int>(type: "integer", nullable: false),
-                    question_type = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    topic_id = table.Column<long>(type: "bigint", nullable: false),
+                    question_type = table.Column<string>(type: "text", nullable: false),
                     text = table.Column<string>(type: "text", nullable: false),
                     explanation = table.Column<string>(type: "text", nullable: false),
-                    key_fact = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    key_fact = table.Column<string>(type: "text", nullable: true),
                     hint = table.Column<string>(type: "text", nullable: true),
-                    difficulty = table.Column<int>(type: "integer", nullable: false),
-                    source_note = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    difficulty = table.Column<short>(type: "smallint", nullable: true),
+                    source_note = table.Column<string>(type: "text", nullable: true),
                     variant_group_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    status = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_questions", x => x.question_id);
+                    table.PrimaryKey("pk_questions", x => x.id);
                     table.CheckConstraint("ck_questions_difficulty", "difficulty BETWEEN 1 AND 5");
                     table.CheckConstraint("ck_questions_question_type", "question_type IN ('SingleChoice', 'MultiSelect', 'TrueFalse')");
                     table.CheckConstraint("ck_questions_status", "status IN ('Draft', 'Active', 'Retired')");
@@ -385,40 +377,38 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_questions_topics_topic_id",
                         column: x => x.topic_id,
                         principalTable: "topics",
-                        principalColumn: "topic_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_questions_users_owner_user_id",
                         column: x => x.owner_user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "exams",
                 columns: table => new
                 {
-                    exam_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     owner_user_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    owner_kind = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
-                    subject_id = table.Column<int>(type: "integer", nullable: true),
-                    rule_preset_id = table.Column<int>(type: "integer", nullable: false),
-                    title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
+                    owner_kind = table.Column<string>(type: "text", nullable: false),
+                    subject_id = table.Column<long>(type: "bigint", nullable: true),
+                    rule_preset_id = table.Column<long>(type: "bigint", nullable: false),
+                    title = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
                     is_free = table.Column<bool>(type: "boolean", nullable: false),
                     price_idr = table.Column<long>(type: "bigint", nullable: true),
                     access_days = table.Column<int>(type: "integer", nullable: true),
                     own_question_allowance = table.Column<int>(type: "integer", nullable: false),
-                    status = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
                     is_shared = table.Column<bool>(type: "boolean", nullable: false),
-                    share_token = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    share_token = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_exams", x => x.exam_id);
+                    table.PrimaryKey("pk_exams", x => x.id);
                     table.CheckConstraint("ck_exams_access_days", "access_days > 0");
                     table.CheckConstraint("ck_exams_own_question_allowance", "own_question_allowance >= 0");
                     table.CheckConstraint("ck_exams_owner", "(owner_kind = 'App') = (owner_user_id IS NULL)");
@@ -431,41 +421,38 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_exams_rule_presets_rule_preset_id",
                         column: x => x.rule_preset_id,
                         principalTable: "rule_presets",
-                        principalColumn: "rule_preset_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_exams_subjects_subject_id",
                         column: x => x.subject_id,
                         principalTable: "subjects",
-                        principalColumn: "subject_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_exams_users_owner_user_id",
                         column: x => x.owner_user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "question_options",
                 columns: table => new
                 {
-                    question_option_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    question_id = table.Column<int>(type: "integer", nullable: false),
+                    question_id = table.Column<long>(type: "bigint", nullable: false),
                     text = table.Column<string>(type: "text", nullable: false),
                     is_correct = table.Column<bool>(type: "boolean", nullable: false),
                     sort_order = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_question_options", x => x.question_option_id);
+                    table.PrimaryKey("pk_question_options", x => x.id);
                     table.ForeignKey(
                         name: "fk_question_options_questions_question_id",
                         column: x => x.question_id,
                         principalTable: "questions",
-                        principalColumn: "question_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -473,41 +460,39 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 name: "exam_purchases",
                 columns: table => new
                 {
-                    exam_purchase_id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    exam_id = table.Column<int>(type: "integer", nullable: false),
+                    exam_id = table.Column<long>(type: "bigint", nullable: false),
                     price_paid_idr = table.Column<long>(type: "bigint", nullable: false),
-                    status = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
                     purchased_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    access_expires_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    access_expires_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_exam_purchases", x => x.exam_purchase_id);
-                    table.CheckConstraint("ck_exam_purchases_active_paid", "status <> 'Active' OR purchased_at IS NOT NULL");
+                    table.PrimaryKey("pk_exam_purchases", x => x.id);
+                    table.CheckConstraint("ck_exam_purchases_active_paid", "status <> 'Active' OR (purchased_at IS NOT NULL AND access_expires_at IS NOT NULL)");
                     table.CheckConstraint("ck_exam_purchases_price_paid_idr", "price_paid_idr >= 0");
-                    table.CheckConstraint("ck_exam_purchases_status", "status IN ('PendingPayment', 'Active', 'Expired', 'Refunded')");
+                    table.CheckConstraint("ck_exam_purchases_status", "status IN ('AwaitingPayment', 'Active', 'Expired', 'Abandoned', 'Refunded')");
                     table.ForeignKey(
                         name: "fk_exam_purchases_exams_exam_id",
                         column: x => x.exam_id,
                         principalTable: "exams",
-                        principalColumn: "exam_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_exam_purchases_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "exam_questions",
                 columns: table => new
                 {
-                    exam_id = table.Column<int>(type: "integer", nullable: false),
-                    question_id = table.Column<int>(type: "integer", nullable: false),
+                    exam_id = table.Column<long>(type: "bigint", nullable: false),
+                    question_id = table.Column<long>(type: "bigint", nullable: false),
                     sort_order = table.Column<int>(type: "integer", nullable: false),
                     is_trial = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -518,25 +503,27 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         name: "fk_exam_questions_exams_exam_id",
                         column: x => x.exam_id,
                         principalTable: "exams",
-                        principalColumn: "exam_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_exam_questions_questions_question_id",
                         column: x => x.question_id,
                         principalTable: "questions",
-                        principalColumn: "question_id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_audit_logs_actor_user_id",
+                name: "ix_audit_logs_actor",
                 table: "audit_logs",
-                column: "actor_user_id");
+                columns: new[] { "actor_user_id", "created_at" },
+                descending: new[] { false, true });
 
             migrationBuilder.CreateIndex(
-                name: "ix_audit_logs_entity_name_entity_id",
+                name: "ix_audit_logs_entity",
                 table: "audit_logs",
-                columns: new[] { "entity_name", "entity_id" });
+                columns: new[] { "entity_name", "entity_id", "created_at" },
+                descending: new[] { false, false, true });
 
             migrationBuilder.CreateIndex(
                 name: "ix_exam_purchases_exam_id",
@@ -544,14 +531,22 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 column: "exam_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_exam_purchases_user_id",
+                name: "ux_exam_purchases_one_per_exam",
                 table: "exam_purchases",
-                column: "user_id");
+                columns: new[] { "user_id", "exam_id" },
+                unique: true,
+                filter: "status NOT IN ('Abandoned', 'Refunded')");
 
             migrationBuilder.CreateIndex(
                 name: "ix_exam_questions_question_id",
                 table: "exam_questions",
                 column: "question_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_exam_questions_trial",
+                table: "exam_questions",
+                column: "exam_id",
+                filter: "is_trial");
 
             migrationBuilder.CreateIndex(
                 name: "ix_exams_catalog",
@@ -649,7 +644,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ix_subscriptions_current_period_end",
+                name: "ix_subscriptions_period_end",
                 table: "subscriptions",
                 column: "current_period_end",
                 filter: "status = 'Active'");
@@ -670,9 +665,11 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 column: "saved_payment_method_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_subscriptions_user_id",
+                name: "ux_subscriptions_one_per_plan",
                 table: "subscriptions",
-                column: "user_id");
+                columns: new[] { "user_id", "plan_id" },
+                unique: true,
+                filter: "status NOT IN ('Abandoned', 'Refunded')");
 
             migrationBuilder.CreateIndex(
                 name: "ix_topics_subject_id_name",
@@ -696,27 +693,25 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                 column: "role_id");
 
             migrationBuilder.CreateIndex(
-                name: "email_index",
+                name: "EmailIndex",
                 table: "users",
-                column: "normalized_email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "ix_users_email",
-                table: "users",
-                column: "email",
-                unique: true);
+                column: "normalized_email");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "users",
                 column: "normalized_user_name",
                 unique: true);
+
+            // Case-insensitive unique email (schema.sql). EF cannot model expression indexes, so it lives here only.
+            migrationBuilder.Sql("CREATE UNIQUE INDEX ux_users_email ON users (lower(email));");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("DROP INDEX IF EXISTS ux_users_email;");
+
             migrationBuilder.DropTable(
                 name: "audit_logs");
 

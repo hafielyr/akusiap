@@ -1,6 +1,6 @@
 # Akusiap: Quiz Practice App
 
-Exam practice web app for Indonesian learners. Requirements: `Quiz Practice App — User Stories.docx` and `ERD.jpg`. Technical design: `docs/architecture.md`. Work tracking: `docs/kanban.md`. Agents: read `AGENTS.md` first.
+Exam practice web app for Indonesian learners. Requirements: `Quiz Practice App — User Stories.docx` and `schema.sql` (database schema; `ERD.jpg` is an older diagram). Technical design: `docs/architecture.md`. Work tracking: `docs/kanban.md`. Agents: read `AGENTS.md` first.
 
 ## Prerequisites
 

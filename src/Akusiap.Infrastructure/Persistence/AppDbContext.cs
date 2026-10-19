@@ -12,9 +12,6 @@ namespace Akusiap.Infrastructure.Persistence;
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     : IdentityDbContext<User, Role, Guid>(options), IAppDbContext
 {
-    /// <summary>Max length of columns that hold enum names.</summary>
-    public const int EnumMaxLength = 32;
-
     public DbSet<Subject> Subjects => Set<Subject>();
 
     public DbSet<Topic> Topics => Set<Topic>();
@@ -88,7 +85,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
         var enumTypes = typeof(User).Assembly.GetTypes().Where(t => t.IsEnum && t.IsPublic);
         foreach (var enumType in enumTypes)
         {
-            configurationBuilder.Properties(enumType).HaveConversion<string>().HaveMaxLength(EnumMaxLength);
+            configurationBuilder.Properties(enumType).HaveConversion<string>();
         }
     }
 }

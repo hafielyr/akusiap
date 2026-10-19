@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Identity;
 namespace Akusiap.Domain.Users;
 
 /// <summary>
-/// ERD <c>User</c>. Identity supplies Id (UserId), Email, PhoneNumber, EmailConfirmed and PasswordHash.
+/// Table <c>users</c>. Identity supplies Id, Email, PhoneNumber (+62 format), EmailConfirmed and PasswordHash
+/// (null for Google-only sign-in).
 /// </summary>
 public class User : IdentityUser<Guid>
 {
@@ -12,12 +13,10 @@ public class User : IdentityUser<Guid>
     /// <summary>"id" (default) or "en".</summary>
     public string PreferredLanguage { get; set; } = Languages.Indonesian;
 
-    /// <summary>Consent for WhatsApp messages.</summary>
-    public bool WhatsAppOptIn { get; set; }
-
     /// <summary>Users are deactivated instead of deleted.</summary>
     public bool IsActive { get; set; } = true;
 
+    /// <summary>Required when <see cref="IsActive"/> is false.</summary>
     public DateTime? DeactivatedAt { get; set; }
 
     public DateTime CreatedAt { get; set; }

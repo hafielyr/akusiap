@@ -2,9 +2,9 @@ namespace Akusiap.Domain.Content;
 
 public class QuestionOption
 {
-    public int QuestionOptionId { get; set; }
+    public long Id { get; set; }
 
-    public int QuestionId { get; set; }
+    public long QuestionId { get; set; }
 
     public Question? Question { get; set; }
 
