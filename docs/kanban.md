@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SES-02] Session setup page · M1 · deps: SES-01
 - [SES-03] Quiz player · M1 · deps: SES-01
 - [CAT-03] Pricing comparison · M3 · deps: PAY-02
 - [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
@@ -18,7 +17,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [USR-01] User search · M4 · deps: AC-06 · (claude-opus-5.5, 2026-10-19)
+- [SES-02] Session setup page · M1 · deps: SES-01 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -56,6 +55,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [ADM-T7] Bulk question import · M2 · deps: ADM-T2
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 - [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07
+- [USR-01] User search · M4 · deps: AC-06
 
 ## Backlog
 
