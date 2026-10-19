@@ -434,4 +434,32 @@
   <data name="Account.Google.Title" xml:space="preserve"><value>Sign in with Google</value></data>
   <data name="Account.Google.Failed" xml:space="preserve"><value>Signing in with Google failed or was cancelled. Please try again.</value></data>
   <data name="Account.Google.NoEmail" xml:space="preserve"><value>Your Google account didn't share an email address, so we can't create an account.</value></data>
+  <data name="Admin.Import.Title" xml:space="preserve"><value>Import questions</value></data>
+  <data name="Admin.Import.Link" xml:space="preserve"><value>Import from Excel/CSV</value></data>
+  <data name="Admin.Import.Lead" xml:space="preserve"><value>Upload an xlsx or csv file that follows the template. Every row is checked first; if any row is wrong, nothing is saved.</value></data>
+  <data name="Admin.Import.Template" xml:space="preserve"><value>Download the template (xlsx)</value></data>
+  <data name="Admin.Import.File" xml:space="preserve"><value>Question file</value></data>
+  <data name="Admin.Import.FileHint" xml:space="preserve"><value>xlsx or csv, up to {0} rows and 5 MB.</value></data>
+  <data name="Admin.Import.SaveAs" xml:space="preserve"><value>Save questions as</value></data>
+  <data name="Admin.Import.Check" xml:space="preserve"><value>Check file</value></data>
+  <data name="Admin.Import.Summary" xml:space="preserve"><value>{0} rows read: {1} ready, {2} with problems.</value></data>
+  <data name="Admin.Import.FixAndRetry" xml:space="preserve"><value>Fix the rows below and upload again. Nothing has been saved.</value></data>
+  <data name="Admin.Import.Row" xml:space="preserve"><value>Row {0}</value></data>
+  <data name="Admin.Import.Ready" xml:space="preserve"><value>Every row is valid. Save now?</value></data>
+  <data name="Admin.Import.More" xml:space="preserve"><value>and {0} more rows</value></data>
+  <data name="Admin.Import.Confirm" xml:space="preserve"><value>Save {0} questions</value></data>
+  <data name="Admin.Import.Done" xml:space="preserve"><value>{0} questions imported.</value></data>
+  <data name="Admin.Import.FileRequired" xml:space="preserve"><value>Choose a file to upload.</value></data>
+  <data name="Admin.Import.FileTooLarge" xml:space="preserve"><value>The file can be at most 5 MB.</value></data>
+  <data name="Admin.Import.UnsupportedFile" xml:space="preserve"><value>Use an .xlsx or .csv file.</value></data>
+  <data name="Admin.Import.UnreadableFile" xml:space="preserve"><value>The file can't be read. Make sure it's a valid xlsx or csv.</value></data>
+  <data name="Admin.Import.MissingColumns" xml:space="preserve"><value>Required columns are missing: {0}.</value></data>
+  <data name="Admin.Import.NoRows" xml:space="preserve"><value>The file has no question rows.</value></data>
+  <data name="Admin.Import.TooManyRows" xml:space="preserve"><value>At most {0} rows per file.</value></data>
+  <data name="Admin.Import.Expired" xml:space="preserve"><value>The check has expired. Upload the file again.</value></data>
+  <data name="Admin.Import.TopicGone" xml:space="preserve"><value>Topic {0} has been deleted. Upload the file again.</value></data>
+  <data name="Admin.Import.TopicUnknown" xml:space="preserve"><value>Topic "{0}" was not found.</value></data>
+  <data name="Admin.Import.TopicAmbiguous" xml:space="preserve"><value>Topic "{0}" exists in several subjects. Write "Subject / Topic".</value></data>
+  <data name="Admin.Import.CorrectInvalid" xml:space="preserve"><value>The correct answer "{0}" must be letters A–H.</value></data>
+  <data name="Admin.Import.CorrectNoOption" xml:space="preserve"><value>Correct answer {0} has no option.</value></data>
 </root>
