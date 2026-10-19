@@ -18,6 +18,8 @@ public interface IAppDbContext
 
     DbSet<Role> Roles { get; }
 
+    DbSet<Microsoft.AspNetCore.Identity.IdentityUserRole<Guid>> UserRoles { get; }
+
     DbSet<Subject> Subjects { get; }
 
     DbSet<Topic> Topics { get; }

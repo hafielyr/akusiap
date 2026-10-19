@@ -7,22 +7,23 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [USR-01] User search · M4 · deps: AC-06
 - [SES-02] Session setup page · M1 · deps: SES-01
 - [SES-03] Quiz player · M1 · deps: SES-01
-- [PAY-04] DOKU client · M3 · deps: PAY-01
 - [CAT-03] Pricing comparison · M3 · deps: PAY-02
 - [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
 - [OWN-01] Plan limits admin · M5 · deps: PAY-02
+- [USR-02] Create user · M4 · deps: USR-01, AC-02
+- [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 
 ## In Progress
 
 ## Review
-- [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07 · (claude-opus-5.5, 2026-10-19)
+- [USR-01] User search · M4 · deps: AC-06 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
 - [AC-05] Legal pages · M1 · deps: F-06, AC-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: the Terms of Service and Privacy Policy text (Indonesian and English), the business name and contact to show in them, and confirmation that the "proposed" refund policy in the stories doc is final. The stories doc has no Terms or Privacy text, and legal text must not be guessed.
+- [PAY-04] DOKU client · M3 · deps: PAY-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: DOKU sandbox credentials (`Doku:ClientId`, `Doku:SecretKey`, set with user-secrets) and the DOKU product to use (Checkout or Direct API). The AC needs real sandbox charges and recorded notification fixtures, which can't be made without the account.
 
 ## Done
 - [F-01] Solution skeleton · M1 · deps: none
@@ -54,6 +55,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
 - [ADM-T7] Bulk question import · M2 · deps: ADM-T2
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
+- [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07
 
 ## Backlog
 
@@ -82,8 +84,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-10] Admin transactions · M3 · deps: PAY-06
 
 ### M4 Admin ops and launch (Release 1)
-- [USR-02] Create user · M4 · deps: USR-01, AC-02
-- [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
 - [OPS-02] Production deployment · M4 · deps: F-08, PAY-04
 
