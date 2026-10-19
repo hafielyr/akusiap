@@ -7,16 +7,17 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [F-04] Session and memorization schema · M1 · deps: F-03
 - [F-05] Test infrastructure · M1 · deps: F-03
 - [F-07] Seed data · M1 · deps: F-03
 - [AC-01] Register and sign in with email · M1 · deps: F-03, F-06
 - [ENT-01] EntitlementPolicy (domain) · M1 · deps: F-03
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
+- [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
 
 ## In Progress
 
 ## Review
+- [F-04] Session and memorization schema · M1 · deps: F-03 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -62,7 +63,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-09] Retake wrong answers · M2 · deps: SES-08
 - [SES-10] Session history · M2 · deps: SES-06
 - [MEM-01] Wrong answers become review cards · M2 · deps: SES-06
-- [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
 - [MEM-03] Flashcard mode · M2 · deps: MEM-01, MEM-02, ENT-02
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 - [ADM-T7] Bulk question import · M2 · deps: ADM-T2

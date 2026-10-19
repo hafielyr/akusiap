@@ -4,7 +4,6 @@ using Akusiap.Domain.Content;
 using Akusiap.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace Akusiap.IntegrationTests.Persistence;
 
@@ -76,9 +75,7 @@ public sealed class InitialContentMigrationTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        _database = await TemporaryDatabase.CreateAsync();
-        await using var db = _database.CreateContext();
-        await db.Database.MigrateAsync();
+        _database = await TemporaryDatabase.CreateMigratedAsync();
     }
 
     public async Task DisposeAsync() => await _database.DisposeAsync();
@@ -89,62 +86,44 @@ public sealed class InitialContentMigrationTests : IAsyncLifetime
         await using var db = _database.CreateContext();
 
         Assert.Empty(await db.Database.GetPendingMigrationsAsync());
-        Assert.Contains("F03_InitialContent", (await db.Database.GetAppliedMigrationsAsync()).Single(), StringComparison.Ordinal);
+        Assert.Contains(await db.Database.GetAppliedMigrationsAsync(), m => m.EndsWith("_F03_InitialContent", StringComparison.Ordinal));
     }
 
     [Fact]
     public async Task Every_schema_column_exists_with_the_right_type_and_nullability()
     {
         await using var db = _database.CreateContext();
-        var actual = await db.Database
-            .SqlQueryRaw<ColumnInfo>(
-                "SELECT table_name AS \"Table\", column_name AS \"Column\", udt_name AS \"Type\", is_nullable = 'YES' AS \"Nullable\" " +
-                "FROM information_schema.columns WHERE table_schema = 'public'")
-            .ToListAsync();
-        var columns = actual.ToDictionary(c => (c.Table, c.Column));
 
-        var problems = new List<string>();
-        foreach (var (table, expectedColumns) in SchemaColumns)
-        {
-            foreach (var spec in expectedColumns)
-            {
-                var parts = spec.Split(' ');
-                var nullable = parts[1].EndsWith('?');
-                var type = parts[1].TrimEnd('?');
-                if (!columns.TryGetValue((table, parts[0]), out var column))
-                {
-                    problems.Add($"{table}.{parts[0]} is missing");
-                }
-                else if (column.Type != type || column.Nullable != nullable)
-                {
-                    problems.Add($"{table}.{parts[0]} is {column.Type}{(column.Nullable ? "?" : "")}, expected {parts[1]}");
-                }
-            }
-        }
-
-        Assert.Empty(problems);
+        Assert.Empty(await SchemaAssertions.FindColumnProblemsAsync(db, SchemaColumns));
     }
 
     [Fact]
     public async Task Unique_indexes_exist()
     {
+        (string Table, string Columns)[] expected =
+        [
+            ("users", "lower(email)"),
+            ("exams", "share_token"),
+            ("exam_questions", "exam_id, question_id"),
+            ("plans", "code"),
+            ("subjects", "name"),
+            ("topics", "subject_id, name"),
+            ("plan_prices", "plan_id, duration_months"),
+            ("subscriptions", "user_id, plan_id"),
+            ("exam_purchases", "user_id, exam_id"),
+        ];
         await using var db = _database.CreateContext();
-        var uniqueIndexes = await db.Database
-            .SqlQueryRaw<string>(
-                "SELECT tablename || ': ' || indexdef AS \"Value\" FROM pg_indexes WHERE schemaname = 'public' AND indexdef LIKE 'CREATE UNIQUE%'")
-            .ToListAsync();
-        bool Has(string table, string columns) =>
-            uniqueIndexes.Any(i => i.StartsWith(table + ":", StringComparison.Ordinal) && i.Contains($"({columns})", StringComparison.Ordinal));
 
-        Assert.True(Has("users", "lower(email)"), "users(lower(email))");
-        Assert.True(Has("exams", "share_token"), "exams(share_token)");
-        Assert.True(Has("exam_questions", "exam_id, question_id"), "exam_questions(exam_id, question_id)");
-        Assert.True(Has("plans", "code"), "plans(code)");
-        Assert.True(Has("subjects", "name"), "subjects(name)");
-        Assert.True(Has("topics", "subject_id, name"), "topics(subject_id, name)");
-        Assert.True(Has("plan_prices", "plan_id, duration_months"), "plan_prices(plan_id, duration_months)");
-        Assert.True(Has("subscriptions", "user_id, plan_id"), "subscriptions(user_id, plan_id)");
-        Assert.True(Has("exam_purchases", "user_id, exam_id"), "exam_purchases(user_id, exam_id)");
+        var missing = new List<string>();
+        foreach (var (table, columns) in expected)
+        {
+            if (!await SchemaAssertions.HasUniqueIndexAsync(db, table, columns))
+            {
+                missing.Add($"{table}({columns})");
+            }
+        }
+
+        Assert.Empty(missing);
     }
 
     [Fact]
@@ -251,26 +230,9 @@ public sealed class InitialContentMigrationTests : IAsyncLifetime
             ),
         ];
 
-        var problems = new List<string>();
         await using var db = _database.CreateContext();
-        foreach (var (sql, constraint) in cases)
-        {
-            try
-            {
-                await db.Database.ExecuteSqlRawAsync(sql);
-                problems.Add($"accepted: {sql}");
-            }
-            catch (PostgresException ex) when (ex.ConstraintName != constraint)
-            {
-                problems.Add($"{sql} broke {ex.ConstraintName ?? ex.SqlState}, expected {constraint}");
-            }
-            catch (PostgresException)
-            {
-                // Rejected by the expected constraint.
-            }
-        }
 
-        Assert.Empty(problems);
+        Assert.Empty(await SchemaAssertions.FindUnenforcedRulesAsync(db, cases));
     }
 
     [Fact]
@@ -373,6 +335,4 @@ public sealed class InitialContentMigrationTests : IAsyncLifetime
         });
         await db.SaveChangesAsync();
     }
-
-    private sealed record ColumnInfo(string Table, string Column, string Type, bool Nullable);
 }
