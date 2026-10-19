@@ -1,0 +1,56 @@
+@page "/admin/laporan"
+@model Akusiap.Web.Areas.Admin.Pages.Reports.IndexModel
+@using Akusiap.Domain
+@using Akusiap.Domain.Moderation
+@* Report queue (SES-11, ADM-04): one card per reported question, newest report first. *@
+@{
+  ViewData["Title"] = T["Admin.Reports.Title"].Value;
+}
+
+<section class="space-y-4">
+  <div class="space-y-1">
+    <h1 class="text-2xl font-bold leading-tight">@T["Admin.Reports.Title"]</h1>
+    <p class="text-slate-600">@T["Admin.Reports.Lead"]</p>
+  </div>
+
+  @if (Model.Groups.Count == 0)
+  {
+    <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600" data-testid="no-reports">@T["Admin.Reports.Empty"]</p>
+  }
+  <ul class="space-y-3" data-testid="report-groups">
+    @foreach (var group in Model.Groups)
+    {
+      <li class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="report-group" data-question="@group.QuestionId">
+        <div class="flex items-start justify-between gap-3">
+          <p class="line-clamp-3 whitespace-pre-line font-medium">@group.QuestionText</p>
+          <span class="shrink-0 rounded-full bg-red-100 px-2 py-0.5 text-sm font-semibold text-red-800" data-testid="report-count">@group.Count</span>
+        </div>
+        <ul class="space-y-1 text-sm text-slate-700">
+          @foreach (var entry in group.Entries.Take(10))
+          {
+            <li>
+              <span class="font-semibold">@T[$"Report.Reason.{entry.Reason}"]</span>@(entry.Details is null ? null : ": " + entry.Details)
+              <span class="text-xs text-slate-500">· @JakartaTime.Format(entry.At)@(entry.FromGuest ? " · " + T["Admin.Reports.Guest"].Value : null)</span>
+            </li>
+          }
+        </ul>
+        <div class="flex flex-wrap gap-2">
+          @if (group.IsAppQuestion)
+          {
+            <a href="/admin/soal/@group.QuestionId" class="btn btn-secondary" data-testid="open-editor">@T["Admin.Reports.OpenEditor"]</a>
+          }
+          <form method="post" asp-page-handler="Resolve">
+            <input type="hidden" name="questionId" value="@group.QuestionId" />
+            <input type="hidden" name="status" value="@ContentReportStatus.Fixed" />
+            <button type="submit" class="btn btn-primary" data-testid="mark-fixed">@T["Admin.Reports.Fixed"]</button>
+          </form>
+          <form method="post" asp-page-handler="Resolve">
+            <input type="hidden" name="questionId" value="@group.QuestionId" />
+            <input type="hidden" name="status" value="@ContentReportStatus.Rejected" />
+            <button type="submit" class="btn btn-secondary" data-testid="mark-rejected">@T["Admin.Reports.Rejected"]</button>
+          </form>
+        </div>
+      </li>
+    }
+  </ul>
+</section>

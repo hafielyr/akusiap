@@ -62,6 +62,7 @@
           {
             <p class="text-sm text-slate-700"><span class="font-semibold">@T["Session.Player.KeyFact"]:</span> @item.KeyFact</p>
           }
+          <a href="@SessionRoutes.Report(review.AttemptId, item.Position)" class="inline-flex min-h-11 items-center text-sm font-medium text-slate-600 underline" data-testid="report-question">@T["Report.Link"]</a>
         </li>
       }
     </ol>

@@ -70,6 +70,7 @@ else
         </p>
         <p class="whitespace-pre-line text-slate-700" x-text="item.feedback?.explanation"></p>
         <p x-show="item.feedback?.keyFact" class="text-slate-700"><span class="font-semibold">@T["Session.Player.KeyFact"]:</span> <span x-text="item.feedback?.keyFact"></span></p>
+        <a :href="'@SessionRoutes.Player(view.AttemptId)/lapor/' + item.position" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center text-sm font-medium text-slate-600 underline" data-testid="report-question">@T["Report.Link"]</a>
       </div>
     </article>
 

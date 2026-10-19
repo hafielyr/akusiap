@@ -760,4 +760,27 @@
   <data name="Own.Exams.TakenDown" xml:space="preserve"><value>An admin took this exam down. You can still see it, but you can't start practice.</value></data>
   <data name="Session.Retake.Action" xml:space="preserve"><value>Retake the wrong ones ({0})</value></data>
   <data name="Session.Retake.NothingWrong" xml:space="preserve"><value>Every answer was right, so there is nothing to retake.</value></data>
+  <data name="Report.Title" xml:space="preserve"><value>Report a question</value></data>
+  <data name="Report.Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Report.Reason" xml:space="preserve"><value>What's wrong?</value></data>
+  <data name="Report.Reason.WrongAnswer" xml:space="preserve"><value>The answer key is wrong</value></data>
+  <data name="Report.Reason.Unclear" xml:space="preserve"><value>The question is unclear</value></data>
+  <data name="Report.Reason.Typo" xml:space="preserve"><value>A typo</value></data>
+  <data name="Report.Reason.Other" xml:space="preserve"><value>Something else</value></data>
+  <data name="Report.Details" xml:space="preserve"><value>Details (optional)</value></data>
+  <data name="Report.DetailsHint" xml:space="preserve"><value>For example: the right answer should be B because …</value></data>
+  <data name="Report.Send" xml:space="preserve"><value>Send the report</value></data>
+  <data name="Report.Thanks" xml:space="preserve"><value>Thank you. We have your report and an admin will check it.</value></data>
+  <data name="Report.ReasonRequired" xml:space="preserve"><value>Choose what's wrong.</value></data>
+  <data name="Report.Link" xml:space="preserve"><value>Report this question</value></data>
+  <data name="Admin.Nav.Reports" xml:space="preserve"><value>Reports</value></data>
+  <data name="Admin.Reports.Title" xml:space="preserve"><value>Question reports</value></data>
+  <data name="Admin.Reports.Lead" xml:space="preserve"><value>Questions people reported, newest first.</value></data>
+  <data name="Admin.Reports.Empty" xml:space="preserve"><value>No open reports.</value></data>
+  <data name="Admin.Reports.Guest" xml:space="preserve"><value>guest</value></data>
+  <data name="Admin.Reports.OpenEditor" xml:space="preserve"><value>Open the editor</value></data>
+  <data name="Admin.Reports.Fixed" xml:space="preserve"><value>Fixed</value></data>
+  <data name="Admin.Reports.Rejected" xml:space="preserve"><value>Reject</value></data>
+  <data name="Admin.Reports.MarkedFixed" xml:space="preserve"><value>Reports marked as fixed.</value></data>
+  <data name="Admin.Reports.MarkedRejected" xml:space="preserve"><value>Reports rejected.</value></data>
 </root>

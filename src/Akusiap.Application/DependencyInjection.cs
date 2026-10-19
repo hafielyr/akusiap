@@ -41,6 +41,7 @@ public static class DependencyInjection
         services.AddScoped<ExpirePendingPayments>();
         services.AddScoped<ListDueReminders>();
         services.AddScoped<OwnExams.OwnExams>();
+        services.AddScoped<Moderation.QuestionReports>();
         services.AddScoped<ExpireAttempts>();
         services.AddScoped<FindOpenAttempt>();
         services.AddScoped<CreatePayment>();

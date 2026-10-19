@@ -15,4 +15,7 @@ public static class SessionRoutes
 
     /// <summary>"Ulangi yang salah" (SES-09), POST only.</summary>
     public static string Retake(long attemptId) => $"{Player(attemptId)}/ulangi";
+
+    /// <summary>"Laporkan soal" (SES-11) for the item at <paramref name="position"/>.</summary>
+    public static string Report(long attemptId, int position) => $"{Player(attemptId)}/lapor/{position.ToString(CultureInfo.InvariantCulture)}";
 }
