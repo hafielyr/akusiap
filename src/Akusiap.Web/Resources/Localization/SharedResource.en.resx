@@ -462,4 +462,18 @@
   <data name="Admin.Import.TopicAmbiguous" xml:space="preserve"><value>Topic "{0}" exists in several subjects. Write "Subject / Topic".</value></data>
   <data name="Admin.Import.CorrectInvalid" xml:space="preserve"><value>The correct answer "{0}" must be letters A–H.</value></data>
   <data name="Admin.Import.CorrectNoOption" xml:space="preserve"><value>Correct answer {0} has no option.</value></data>
+  <data name="Admin.Nav.Plans" xml:space="preserve"><value>Plans</value></data>
+  <data name="Admin.Plans.Title" xml:space="preserve"><value>Subscription plans</value></data>
+  <data name="Admin.Plans.Lead" xml:space="preserve"><value>Set the prices of the 1, 3, 6 and 12-month packages. Leave a price empty when that duration isn't sold. Packages someone has bought can't be removed, only switched off.</value></data>
+  <data name="Admin.Plans.AllExams" xml:space="preserve"><value>All exams</value></data>
+  <data name="Admin.Plans.Months" xml:space="preserve"><value>{0} months</value></data>
+  <data name="Admin.Plans.Price" xml:space="preserve"><value>{0}-month price (Rp)</value></data>
+  <data name="Admin.Plans.Active" xml:space="preserve"><value>On sale</value></data>
+  <data name="Admin.Plans.InUse" xml:space="preserve"><value>{0} subscriptions</value></data>
+  <data name="Admin.Plans.Save" xml:space="preserve"><value>Save prices</value></data>
+  <data name="Admin.Plans.Saved" xml:space="preserve"><value>Plan prices saved.</value></data>
+  <data name="Admin.Plans.PriceInvalid" xml:space="preserve"><value>{0}-month price: write whole rupiah, for example 99000 or Rp99.000.</value></data>
+  <data name="Admin.Plans.PriceRange" xml:space="preserve"><value>The {0}-month price must be more than 0.</value></data>
+  <data name="Admin.Plans.ActiveNeedsPrice" xml:space="preserve"><value>The {0}-month package needs a price before it can be on sale.</value></data>
+  <data name="Admin.Plans.PriceInUse" xml:space="preserve"><value>The {0}-month package has been bought, so its price can't be removed. Switch off "On sale" instead.</value></data>
 </root>

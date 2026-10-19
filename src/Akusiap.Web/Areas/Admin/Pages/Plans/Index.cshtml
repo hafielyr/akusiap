@@ -1,0 +1,60 @@
+@page "/admin/paket"
+@model Akusiap.Web.Areas.Admin.Pages.Plans.IndexModel
+@* Plan prices (PAY-02): one form per paid plan; each package is a price box and an "on sale" switch. *@
+@{
+  ViewData["Title"] = T["Admin.Plans.Title"].Value;
+}
+
+<section class="max-w-2xl space-y-4">
+  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Plans.Title"]</h1>
+  <p class="text-slate-600">@T["Admin.Plans.Lead"]</p>
+
+  @foreach (var plan in Model.Plans)
+  {
+    <form method="post" class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="plan-form" data-plan="@plan.Code" novalidate>
+      <input type="hidden" name="planId" value="@plan.PlanId" />
+      <div class="flex flex-wrap items-center gap-2">
+        <h2 class="text-lg font-semibold">@plan.Name</h2>
+        @if (plan.IncludesAllExams)
+        {
+          <span class="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">@T["Admin.Plans.AllExams"]</span>
+        }
+      </div>
+
+      @if (Model.FailedPlanId == plan.PlanId && Model.Errors.Count > 0)
+      {
+        <ul role="alert" class="space-y-1 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" data-testid="plan-errors">
+          @foreach (var error in Model.Errors)
+          {
+            <li>@error</li>
+          }
+        </ul>
+      }
+
+      <div class="grid gap-3 sm:grid-cols-2">
+        @for (var i = 0; i < plan.Packages.Count; i++)
+        {
+          var package = plan.Packages[i];
+          var id = $"price-{plan.PlanId}-{package.DurationMonths}";
+          <div class="space-y-2 rounded-lg border border-slate-200 p-3" data-testid="package" data-months="@package.DurationMonths">
+            <input type="hidden" name="packages[@i].DurationMonths" value="@package.DurationMonths" />
+            <label for="@id" class="label">@T["Admin.Plans.Price", package.DurationMonths]</label>
+            <input id="@id" name="packages[@i].Price" value="@Model.PriceText(plan, package)" inputmode="numeric" autocomplete="off" class="input" />
+            <div class="flex items-center justify-between gap-2">
+              <label class="flex min-h-11 items-center gap-2 text-sm text-slate-700">
+                <input type="checkbox" name="packages[@i].IsActive" value="true" checked="@Model.ActiveValue(plan, package)" class="size-5 rounded border-slate-300 accent-brand-600" />
+                @T["Admin.Plans.Active"]
+              </label>
+              @if (package.InUse)
+              {
+                <span class="text-xs text-slate-500">@T["Admin.Plans.InUse", package.SubscriptionCount]</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Plans.Save"]</button>
+    </form>
+  }
+</section>

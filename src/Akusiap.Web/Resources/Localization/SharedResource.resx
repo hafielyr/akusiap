@@ -462,4 +462,18 @@
   <data name="Admin.Import.TopicAmbiguous" xml:space="preserve"><value>Topik "{0}" ada di beberapa subjek. Tulis "Subjek / Topik".</value></data>
   <data name="Admin.Import.CorrectInvalid" xml:space="preserve"><value>Jawaban benar "{0}" harus berupa huruf A–H.</value></data>
   <data name="Admin.Import.CorrectNoOption" xml:space="preserve"><value>Jawaban benar {0} tidak punya pilihan.</value></data>
+  <data name="Admin.Nav.Plans" xml:space="preserve"><value>Paket</value></data>
+  <data name="Admin.Plans.Title" xml:space="preserve"><value>Paket langganan</value></data>
+  <data name="Admin.Plans.Lead" xml:space="preserve"><value>Atur harga paket 1, 3, 6 dan 12 bulan. Kosongkan harga bila durasi itu tidak dijual. Paket yang sudah dibeli tidak bisa dihapus, hanya dinonaktifkan.</value></data>
+  <data name="Admin.Plans.AllExams" xml:space="preserve"><value>Semua ujian</value></data>
+  <data name="Admin.Plans.Months" xml:space="preserve"><value>{0} bulan</value></data>
+  <data name="Admin.Plans.Price" xml:space="preserve"><value>Harga {0} bulan (Rp)</value></data>
+  <data name="Admin.Plans.Active" xml:space="preserve"><value>Dijual</value></data>
+  <data name="Admin.Plans.InUse" xml:space="preserve"><value>{0} langganan</value></data>
+  <data name="Admin.Plans.Save" xml:space="preserve"><value>Simpan harga</value></data>
+  <data name="Admin.Plans.Saved" xml:space="preserve"><value>Harga paket disimpan.</value></data>
+  <data name="Admin.Plans.PriceInvalid" xml:space="preserve"><value>Harga {0} bulan: tulis rupiah tanpa desimal, misalnya 99000 atau Rp99.000.</value></data>
+  <data name="Admin.Plans.PriceRange" xml:space="preserve"><value>Harga {0} bulan harus lebih dari 0.</value></data>
+  <data name="Admin.Plans.ActiveNeedsPrice" xml:space="preserve"><value>Paket {0} bulan perlu harga sebelum dijual.</value></data>
+  <data name="Admin.Plans.PriceInUse" xml:space="preserve"><value>Paket {0} bulan sudah dibeli, jadi harganya tidak bisa dihapus. Matikan "Dijual" saja.</value></data>
 </root>

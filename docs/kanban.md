@@ -7,16 +7,18 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07
 - [USR-01] User search · M4 · deps: AC-06
 - [SES-02] Session setup page · M1 · deps: SES-01
 - [SES-03] Quiz player · M1 · deps: SES-01
 - [PAY-04] DOKU client · M3 · deps: PAY-01
+- [CAT-03] Pricing comparison · M3 · deps: PAY-02
+- [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
+- [OWN-01] Plan limits admin · M5 · deps: PAY-02
 
 ## In Progress
 
 ## Review
-- [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03 · (claude-opus-5.5, 2026-10-19)
+- [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -51,6 +53,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [AC-03] Google sign-in · M1 · deps: AC-01
 - [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
 - [ADM-T7] Bulk question import · M2 · deps: ADM-T2
+- [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 
 ## Backlog
 
@@ -71,8 +74,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-11] Report a question and admin queue · M2 · deps: SES-08, ADM-T2
 
 ### M3 Payments (Release 1)
-- [CAT-03] Pricing comparison · M3 · deps: PAY-02
-- [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
 - [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03
 - [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
 - [PAY-07] Receipt email · M3 · deps: PAY-06, AC-02
@@ -89,7 +90,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 **Release 1 exit check**: In the DOKU sandbox, a guest completes trial → register → QRIS payment → full exam → review → flashcards. The receipt email arrives. A refund within 7 days is auto-approved and access ends.
 
 ### M5 Own content (Release 2)
-- [OWN-01] Plan limits admin · M5 · deps: PAY-02
 - [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02
 - [OWN-03] Own question editor · M5 · deps: OWN-02, ADM-T2
 - [OWN-04] Own exam · M5 · deps: OWN-03
