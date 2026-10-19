@@ -597,4 +597,38 @@
   <data name="Session.Player.SaveFailed" xml:space="preserve"><value>Your answer isn't saved yet. Check your connection; the next change will try again.</value></data>
   <data name="ExamPage.Resume" xml:space="preserve"><value>You have an unfinished session for this exam.</value></data>
   <data name="ExamPage.ResumeAction" xml:space="preserve"><value>Continue session</value></data>
+  <data name="Pay.Title" xml:space="preserve"><value>Complete your payment</value></data>
+  <data name="Pay.Order" xml:space="preserve"><value>Order number {0}</value></data>
+  <data name="Pay.Paid" xml:space="preserve"><value>Payment received. Your access is active.</value></data>
+  <data name="Pay.Expired" xml:space="preserve"><value>The payment time has run out.</value></data>
+  <data name="Pay.Failed" xml:space="preserve"><value>The payment failed.</value></data>
+  <data name="Pay.PayWithin" xml:space="preserve"><value>Pay within</value></data>
+  <data name="Pay.Until" xml:space="preserve"><value>Pay by {0}</value></data>
+  <data name="Pay.ScanQris" xml:space="preserve"><value>Scan with your banking or e-wallet app</value></data>
+  <data name="Pay.QrisHint" xml:space="preserve"><value>On a phone, save this image and open it from your payment app.</value></data>
+  <data name="Pay.OpenApp" xml:space="preserve"><value>Open the payment app</value></data>
+  <data name="Pay.VaNumber" xml:space="preserve"><value>{0} virtual account number</value></data>
+  <data name="Pay.Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Pay.Copied" xml:space="preserve"><value>Copied</value></data>
+  <data name="Pay.Va.Mobile" xml:space="preserve"><value>{0} mobile banking</value></data>
+  <data name="Pay.Va.Atm" xml:space="preserve"><value>{0} ATM</value></data>
+  <data name="Pay.Va.Internet" xml:space="preserve"><value>{0} internet banking</value></data>
+  <data name="Pay.Va.Mobile.Step1" xml:space="preserve"><value>Open the {0} mobile banking app.</value></data>
+  <data name="Pay.Va.Mobile.Step2" xml:space="preserve"><value>Choose Transfer, then Virtual Account.</value></data>
+  <data name="Pay.Va.Mobile.Step3" xml:space="preserve"><value>Enter {1} and check the name and amount.</value></data>
+  <data name="Pay.Va.Mobile.Step4" xml:space="preserve"><value>Confirm with your PIN.</value></data>
+  <data name="Pay.Va.Atm.Step1" xml:space="preserve"><value>Insert your {0} card and enter your PIN.</value></data>
+  <data name="Pay.Va.Atm.Step2" xml:space="preserve"><value>Choose Other Transactions, then Transfer to Virtual Account.</value></data>
+  <data name="Pay.Va.Atm.Step3" xml:space="preserve"><value>Enter {1} and check the amount.</value></data>
+  <data name="Pay.Va.Atm.Step4" xml:space="preserve"><value>Follow the screen to finish and keep the receipt.</value></data>
+  <data name="Pay.Va.Internet.Step1" xml:space="preserve"><value>Sign in to {0} internet banking.</value></data>
+  <data name="Pay.Va.Internet.Step2" xml:space="preserve"><value>Choose Transfer, then Virtual Account.</value></data>
+  <data name="Pay.Va.Internet.Step3" xml:space="preserve"><value>Enter {1} and check the amount.</value></data>
+  <data name="Pay.Va.Internet.Step4" xml:space="preserve"><value>Confirm with your token or OTP.</value></data>
+  <data name="Pay.Va.General" xml:space="preserve"><value>These steps are general; menu names may differ slightly in your bank's app.</value></data>
+  <data name="Pay.Waiting" xml:space="preserve"><value>This page updates by itself once the payment arrives.</value></data>
+  <data name="Pay.Pending.Title" xml:space="preserve"><value>Pending payments</value></data>
+  <data name="Pay.Pending.Link" xml:space="preserve"><value>Payments you haven't finished</value></data>
+  <data name="Pay.Pending.Empty" xml:space="preserve"><value>No payments are waiting.</value></data>
+  <data name="Pay.Pending.See" xml:space="preserve"><value>See instructions</value></data>
 </root>
