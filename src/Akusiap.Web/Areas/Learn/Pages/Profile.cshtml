@@ -1,0 +1,77 @@
+@page "/learn/profil"
+@model Akusiap.Web.Areas.Learn.Pages.ProfileModel
+@using Akusiap.Domain.Users
+@* Profile and password (AC-04). Two forms with their own handlers; each redirects back with a message. *@
+@{
+  ViewData["Title"] = T["Profile.Title"].Value;
+}
+
+<section class="mx-auto max-w-md space-y-6">
+  <div class="space-y-2">
+    <a href="/learn" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Learn.Title"]</a>
+    <h1 class="text-2xl font-bold leading-tight">@T["Profile.Title"]</h1>
+    <p class="text-slate-600">@T["Profile.Lead"]</p>
+  </div>
+
+  @if (Model.Flash is { } flash)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash]</p>
+  }
+
+  <form method="post" asp-page-handler="Profile" class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" novalidate data-testid="profile-form">
+    <div class="space-y-1">
+      <p class="label">@T["Profile.Email"]</p>
+      <p class="break-all text-slate-700">@Model.Email</p>
+    </div>
+
+    <div class="space-y-1">
+      <label asp-for="Input.DisplayName" class="label"></label>
+      <input asp-for="Input.DisplayName" autocomplete="name" class="input" />
+      <span asp-validation-for="Input.DisplayName" class="field-error"></span>
+    </div>
+
+    <div class="space-y-1">
+      <label asp-for="Input.PhoneNumber" class="label"></label>
+      <input asp-for="Input.PhoneNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="+62" class="input" />
+      <p class="text-sm text-slate-500">@T["Profile.PhoneHint"]</p>
+      <span asp-validation-for="Input.PhoneNumber" class="field-error" data-testid="error-phone"></span>
+    </div>
+
+    <div class="space-y-1">
+      <label asp-for="Input.PreferredLanguage" class="label"></label>
+      <select asp-for="Input.PreferredLanguage" class="input">
+        <option value="@Languages.Indonesian">Bahasa Indonesia</option>
+        <option value="@Languages.English">English</option>
+      </select>
+    </div>
+
+    <label class="flex min-h-11 items-start gap-3 text-slate-700">
+      <input asp-for="Input.IsTeacher" class="mt-1 size-5 rounded border-slate-300 accent-brand-600" />
+      <span>
+        <span class="block font-medium">@T["Profile.Teacher"]</span>
+        <span class="block text-sm text-slate-500">@T["Profile.TeacherHint"]</span>
+      </span>
+    </label>
+
+    <button type="submit" class="btn btn-primary w-full">@T["Profile.Save"]</button>
+  </form>
+
+  <form method="post" asp-page-handler="Password" class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" novalidate data-testid="password-form">
+    <h2 class="text-lg font-semibold">@T["Profile.PasswordTitle"]</h2>
+    @if (Model.HasPassword)
+    {
+      <div class="space-y-1">
+        <label asp-for="Password.Current" class="label"></label>
+        <input asp-for="Password.Current" autocomplete="current-password" class="input" />
+        <span asp-validation-for="Password.Current" class="field-error" data-testid="error-current-password"></span>
+      </div>
+    }
+    <div class="space-y-1">
+      <label asp-for="Password.New" class="label"></label>
+      <input asp-for="Password.New" autocomplete="new-password" class="input" />
+      <p class="text-sm text-slate-500">@T["Account.PasswordHint"]</p>
+      <span asp-validation-for="Password.New" class="field-error"></span>
+    </div>
+    <button type="submit" class="btn btn-secondary w-full">@T["Profile.ChangePassword"]</button>
+  </form>
+</section>

@@ -411,4 +411,22 @@
   <data name="Account.Reset.Submit" xml:space="preserve"><value>Simpan kata sandi</value></data>
   <data name="Account.Reset.Invalid" xml:space="preserve"><value>Tautan sudah tidak berlaku. Minta tautan baru.</value></data>
   <data name="Account.Reset.Done" xml:space="preserve"><value>Kata sandi sudah diubah. Silakan masuk.</value></data>
+  <data name="Profile.Title" xml:space="preserve"><value>Profil</value></data>
+  <data name="Profile.Lead" xml:space="preserve"><value>Ubah data akun, bahasa, dan kata sandi Anda.</value></data>
+  <data name="Profile.Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Profile.Phone" xml:space="preserve"><value>Nomor HP (opsional)</value></data>
+  <data name="Profile.PhoneHint" xml:space="preserve"><value>Contoh: +62 812 3456 7890</value></data>
+  <data name="Profile.Language" xml:space="preserve"><value>Bahasa</value></data>
+  <data name="Profile.Teacher" xml:space="preserve"><value>Saya juga mengajar</value></data>
+  <data name="Profile.TeacherHint" xml:space="preserve"><value>Menambahkan fitur pengajar ke akun Anda.</value></data>
+  <data name="Profile.Save" xml:space="preserve"><value>Simpan profil</value></data>
+  <data name="Profile.Saved" xml:space="preserve"><value>Profil disimpan.</value></data>
+  <data name="Profile.PasswordTitle" xml:space="preserve"><value>Ubah kata sandi</value></data>
+  <data name="Profile.CurrentPassword" xml:space="preserve"><value>Kata sandi sekarang</value></data>
+  <data name="Profile.NewPassword" xml:space="preserve"><value>Kata sandi baru</value></data>
+  <data name="Profile.ChangePassword" xml:space="preserve"><value>Ubah kata sandi</value></data>
+  <data name="Profile.PasswordChanged" xml:space="preserve"><value>Kata sandi diubah.</value></data>
+  <data name="Profile.WrongPassword" xml:space="preserve"><value>Kata sandi sekarang salah.</value></data>
+  <data name="Profile.Link" xml:space="preserve"><value>Nama, nomor HP, bahasa, dan kata sandi</value></data>
+  <data name="Validation.Phone" xml:space="preserve"><value>Nomor HP harus +62 diikuti 8–12 angka.</value></data>
 </root>
