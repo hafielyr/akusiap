@@ -1,0 +1,68 @@
+@page "/sesi/{id:long}/pembahasan"
+@model Akusiap.Web.Pages.Sessions.ReviewModel
+@using Akusiap.Application.Sessions
+@* Answer review (SES-08): options in the attempt's stored order; green = correct, red = your wrong choice. *@
+@{
+  var review = Model.Review;
+  ViewData["Title"] = T["Session.Review.Title"].Value;
+  var filters = new (ReviewFilter Filter, string? Query, string Label)[]
+  {
+    (ReviewFilter.All, null, T["Session.Review.All"].Value),
+    (ReviewFilter.Wrong, "salah", T["Session.Review.Wrong", review.WrongCount].Value),
+    (ReviewFilter.Flagged, "ditandai", T["Session.Review.Flagged", review.FlaggedCount].Value),
+  };
+}
+
+<section class="mx-auto max-w-xl space-y-4">
+  <a href="@SessionRoutes.Result(review.AttemptId)" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Session.Result.Title"]</a>
+  <div class="space-y-1">
+    <p class="text-sm text-slate-600">@review.Title</p>
+    <h1 class="text-2xl font-bold leading-tight">@T["Session.Review.Title"]</h1>
+  </div>
+
+  @if (review.Hidden)
+  {
+    <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600" data-testid="review-hidden">@T["Session.Review.Hidden"]</p>
+  }
+  else
+  {
+    <nav class="flex flex-wrap gap-2" aria-label="@T["Session.Review.Filter"]">
+      @foreach (var f in filters)
+      {
+        <a href="@SessionRoutes.Review(review.AttemptId, f.Query)" aria-current="@(Model.Filter == f.Filter ? "page" : null)"
+           class="inline-flex min-h-11 items-center rounded-full border px-3 text-sm @(Model.Filter == f.Filter ? "border-brand-600 bg-brand-50 font-semibold text-brand-800" : "border-slate-300")">@f.Label</a>
+      }
+    </nav>
+
+    @if (review.Items.Count == 0)
+    {
+      <p class="text-slate-600" data-testid="review-empty">@T["Session.Review.Empty"]</p>
+    }
+    <ol class="space-y-4" data-testid="review-items">
+      @foreach (var item in review.Items)
+      {
+        <li class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="review-item" data-position="@item.Position" data-correct="@(item.IsCorrect ? "true" : "false")">
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
+            @T["Session.Player.Question"] @item.Position · <span class="@(item.IsCorrect ? "text-green-700" : "text-red-700")">@(item.IsCorrect ? T["Session.Review.RightShort"] : T["Session.Review.WrongShort"])</span>@(item.IsFlagged ? " · " + T["Session.Player.Flagged"].Value : null)
+          </p>
+          <p class="whitespace-pre-line font-medium">@item.Text</p>
+          <ul class="space-y-2">
+            @foreach (var option in item.Options)
+            {
+              var css = option.IsCorrect ? "border-green-600 bg-green-50" : option.Selected ? "border-red-600 bg-red-50" : "border-slate-200";
+              <li class="flex items-start justify-between gap-3 rounded-lg border px-3 py-2 text-sm @css" data-testid="review-option" data-option="@option.Id" data-selected="@(option.Selected ? "true" : "false")" data-is-correct="@(option.IsCorrect ? "true" : "false")">
+                <span class="whitespace-pre-line">@option.Text</span>
+                <span class="shrink-0 text-xs font-semibold">@(option.Selected ? T["Session.Review.YourAnswer"] : null)@(option.IsCorrect ? (option.Selected ? " · " : null) + T["Session.Review.CorrectAnswer"].Value : null)</span>
+              </li>
+            }
+          </ul>
+          <p class="whitespace-pre-line text-sm text-slate-700">@item.Explanation</p>
+          @if (item.KeyFact is not null)
+          {
+            <p class="text-sm text-slate-700"><span class="font-semibold">@T["Session.Player.KeyFact"]:</span> @item.KeyFact</p>
+          }
+        </li>
+      }
+    </ol>
+  }
+</section>

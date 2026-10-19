@@ -711,4 +711,16 @@
   <data name="Session.Result.Month" xml:space="preserve"><value>month</value></data>
   <data name="Session.Result.ByTopic" xml:space="preserve"><value>By topic</value></data>
   <data name="Session.Result.CorrectShort" xml:space="preserve"><value>Correct</value></data>
+  <data name="Session.Review.Title" xml:space="preserve"><value>Answer review</value></data>
+  <data name="Session.Review.All" xml:space="preserve"><value>All</value></data>
+  <data name="Session.Review.Wrong" xml:space="preserve"><value>Wrong ({0})</value></data>
+  <data name="Session.Review.Flagged" xml:space="preserve"><value>Flagged ({0})</value></data>
+  <data name="Session.Review.Filter" xml:space="preserve"><value>Filter the review</value></data>
+  <data name="Session.Review.Empty" xml:space="preserve"><value>Nothing here.</value></data>
+  <data name="Session.Review.Hidden" xml:space="preserve"><value>Answers aren't shown for this exam.</value></data>
+  <data name="Session.Review.RightShort" xml:space="preserve"><value>Correct</value></data>
+  <data name="Session.Review.WrongShort" xml:space="preserve"><value>Wrong</value></data>
+  <data name="Session.Review.YourAnswer" xml:space="preserve"><value>Your answer</value></data>
+  <data name="Session.Review.CorrectAnswer" xml:space="preserve"><value>Correct answer</value></data>
+  <data name="Session.Result.SeeReview" xml:space="preserve"><value>See the answers</value></data>
 </root>
