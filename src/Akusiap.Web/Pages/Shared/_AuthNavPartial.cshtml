@@ -1,0 +1,16 @@
+@using Akusiap.Infrastructure.Identity
+@using Akusiap.Web.Identity
+@* Header account links: sign in / sign up for guests, name and sign out for signed-in users. *@
+@if (User.Identity?.IsAuthenticated == true)
+{
+  <span class="max-w-32 truncate text-slate-700" data-testid="signed-in-name">@User.FindFirst(AppClaimTypes.DisplayName)?.Value</span>
+  <form method="post" action="@AccountRoutes.SignOut">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="inline-flex min-h-11 items-center px-1 text-slate-700 hover:text-slate-900">@T["Nav.SignOut"]</button>
+  </form>
+}
+else
+{
+  <a href="@AccountRoutes.SignIn" class="inline-flex min-h-11 items-center px-1 hover:text-slate-900">@T["Nav.SignIn"]</a>
+  <a href="@AccountRoutes.Register" class="btn btn-primary min-h-11 px-3 py-1.5 text-sm">@T["Nav.Register"]</a>
+}

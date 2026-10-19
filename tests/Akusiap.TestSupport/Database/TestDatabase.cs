@@ -20,7 +20,8 @@ public sealed class TestDatabase : IAsyncDisposable
     {
         _serverConnectionString = serverConnectionString;
         Name = name;
-        ConnectionString = new NpgsqlConnectionStringBuilder(serverConnectionString) { Database = name, Pooling = false }.ConnectionString;
+        // Pooled: opening a new TLS connection to a hosted server costs hundreds of milliseconds per query.
+        ConnectionString = new NpgsqlConnectionStringBuilder(serverConnectionString) { Database = name }.ConnectionString;
     }
 
     public string Name { get; }
@@ -58,8 +59,16 @@ public sealed class TestDatabase : IAsyncDisposable
     public AppDbContext CreateContext() =>
         new(new DbContextOptionsBuilder<AppDbContext>().UseNpgsql(ConnectionString).UseSnakeCaseNamingConvention().Options);
 
-    public async ValueTask DisposeAsync() =>
+    public async ValueTask DisposeAsync()
+    {
+        // Close this database's idle pooled connections first; FORCE ends any that are still busy.
+        await using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            NpgsqlConnection.ClearPool(connection);
+        }
+
         await ExecuteOnServerAsync($"DROP DATABASE IF EXISTS \"{Name}\" WITH (FORCE)");
+    }
 
     private static string ReadServerConnectionString()
     {

@@ -7,16 +7,20 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [AC-01] Register and sign in with email · M1 · deps: F-03, F-06
 - [ENT-01] EntitlementPolicy (domain) · M1 · deps: F-03
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 - [MEM-02] Sm2Scheduler (domain) · M2 · deps: F-04
 - [F-08] CI pipeline · M1 · deps: F-05
+- [AC-06] Authorization policies · M1 · deps: AC-01
+- [AC-02] Email confirmation and password reset · M1 · deps: AC-01
+- [AC-04] Profile, password and role · M1 · deps: AC-01
+- [AC-05] Legal pages · M1 · deps: F-06, AC-01
+- [AC-03] Google sign-in · M1 · deps: AC-01
 
 ## In Progress
 
 ## Review
-- [F-07] Seed data · M1 · deps: F-03 · (claude-opus-5.5, 2026-10-19)
+- [AC-01] Register and sign in with email · M1 · deps: F-03, F-06 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -28,11 +32,11 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [F-03] Content and access schema · M1 · deps: F-02
 - [F-04] Session and memorization schema · M1 · deps: F-03
 - [F-05] Test infrastructure · M1 · deps: F-03
+- [F-07] Seed data · M1 · deps: F-03
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [AC-06] Authorization policies · M1 · deps: AC-01
 - [ADM-T1] Admin shell, subjects and topics · M1 · deps: AC-06, F-03
 - [ADM-T2] Question editor · M1 · deps: ADM-T1
 - [ADM-T3] Exam editor · M1 · deps: ADM-T2
@@ -52,10 +56,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-07] Result page and trial CTA · M1 · deps: SES-06
 - [SES-08] Answer review · M1 · deps: SES-06
 - [ENT-04] My access page · M1 · deps: ENT-02
-- [AC-02] Email confirmation and password reset · M1 · deps: AC-01
-- [AC-04] Profile, password and role · M1 · deps: AC-01
-- [AC-05] Legal pages · M1 · deps: F-06, AC-01
-- [AC-03] Google sign-in · M1 · deps: AC-01
 
 **M1 exit check**: An admin creates and publishes a paid exam and a free exam. A guest finds the paid exam in the catalog, takes the 30-question trial with explanations and sees the buy CTA. A registered user takes the free exam. The admin grants the paid exam to that user, who then takes the full exam in Simulation mode; it auto-submits at the time limit.
 

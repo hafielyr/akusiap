@@ -35,6 +35,9 @@ public sealed class AppFactory(string connectionString) : WebApplicationFactory<
         // The per-run database is already migrated, and tests seed what they need (seeder tests call DataSeeder).
         builder.UseSetting("Database:MigrateOnStartup", "false");
         builder.UseSetting("Seed:OnStartup", "false");
+        // Never pick up a developer's admin from user-secrets; tests that need one set it explicitly.
+        builder.UseSetting("Seed:AdminEmail", string.Empty);
+        builder.UseSetting("Seed:AdminPassword", string.Empty);
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IClock>();

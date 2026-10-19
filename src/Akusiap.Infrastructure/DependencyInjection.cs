@@ -1,9 +1,11 @@
 using Akusiap.Application.Abstractions;
 using Akusiap.Domain.Users;
 using Akusiap.Infrastructure.Email;
+using Akusiap.Infrastructure.Identity;
 using Akusiap.Infrastructure.Persistence;
 using Akusiap.Infrastructure.Seeding;
 using Akusiap.Infrastructure.Time;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,10 +35,13 @@ public static class DependencyInjection
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton<IClock, SystemClock>();
 
-        // Users and roles. Cookie sign-in and the account pages come with AC-01.
-        services.AddIdentityCore<User>(options => options.User.RequireUniqueEmail = true)
+        // Users, roles and sign-in (D-31). The Web project adds the cookie scheme and the account pages.
+        services.AddIdentityCore<User>(ConfigureIdentity)
             .AddRoles<Role>()
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddSignInManager<AppSignInManager>()
+            .AddClaimsPrincipalFactory<AppClaimsPrincipalFactory>()
+            .AddDefaultTokenProviders();
 
         services.Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SectionName));
         services.Configure<SeedOptions>(configuration.GetSection(SeedOptions.SectionName));
@@ -56,6 +61,23 @@ public static class DependencyInjection
         }
 
         return services;
+    }
+
+    /// <summary>Account rules (D-31): 8+ character passwords without character-class rules, lockout after 5 failures.</summary>
+    public static void ConfigureIdentity(IdentityOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        options.User.RequireUniqueEmail = true;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredUniqueChars = 1;
+        options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        options.Lockout.AllowedForNewUsers = true;
+        options.SignIn.RequireConfirmedEmail = false;
     }
 
     /// <summary>Reads <c>ConnectionStrings:Default</c> or fails startup with a message that names the setting.</summary>

@@ -27,6 +27,7 @@ public sealed class MobileSite : IAsyncLifetime, IAsyncDisposable
         _app.UseKestrel(0);
         _app.StartServer();
         BaseAddress = _app.ClientOptions.BaseAddress;
+        await _app.SeedReferenceDataAsync();
 
         _playwright = await Playwright.CreateAsync();
         _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
