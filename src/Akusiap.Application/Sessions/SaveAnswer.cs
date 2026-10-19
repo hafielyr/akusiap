@@ -54,8 +54,9 @@ public sealed class SaveAnswer(IAppDbContext db, ICurrentUser currentUser, ICloc
             .Include(i => i.Question!).ThenInclude(q => q.Options)
             .SingleOrDefaultAsync(i => i.AttemptId == attempt.Id && i.Position == request.Position, cancellationToken)
             .ConfigureAwait(false);
-        if (item is null)
+        if (item is null || item.CheckedAt is not null)
         {
+            // A checked answer is locked (SES-05).
             return SaveAnswerOutcome.Invalid;
         }
 

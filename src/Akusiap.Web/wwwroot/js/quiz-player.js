@@ -53,8 +53,10 @@ window.quizPlayer = function (stateElementId) {
     isSingle(item) { return item.type !== 'MultiSelect'; },
     isSelected(id) { return this.item.selected.includes(id); },
 
+    canCheck: !!state.canCheck,
+
     choose(id) {
-      if (this.ended) return;
+      if (this.ended || this.item.feedback) return;
       const item = this.item;
       if (this.isSingle(item)) {
         item.selected = [id];
@@ -93,6 +95,33 @@ window.quizPlayer = function (stateElementId) {
           this.saveFailed = !response.ok && response.status !== 409;
         })
         .catch(() => { this.saveFailed = true; });
+    },
+
+    // Practice help (SES-05): "Periksa" locks the answer and shows the feedback; "Petunjuk" shows the hint.
+    help(handler, item) {
+      const body = new URLSearchParams({ position: item.position });
+      return this.queue.then(() => fetch(`${state.helpUrl}?handler=${handler}`, { method: 'POST', body, headers: { RequestVerificationToken: state.token } }))
+        .then((response) => {
+          if (response.status === 409) { this.ended = true; return null; }
+          return response.ok ? response.json() : null;
+        })
+        .catch(() => null);
+    },
+    check() {
+      const item = this.item;
+      this.help('Check', item).then((feedback) => { if (feedback) item.feedback = feedback; });
+    },
+    hint() {
+      const item = this.item;
+      this.help('Hint', item).then((result) => { if (result) item.hint = result.hint; });
+    },
+    optionClass(id) {
+      const feedback = this.item.feedback;
+      if (feedback) {
+        if (feedback.correctOptionIds.includes(id)) return 'border-green-600 bg-green-50';
+        return this.isSelected(id) ? 'border-red-600 bg-red-50' : 'border-slate-200';
+      }
+      return this.isSelected(id) ? 'border-brand-600 bg-brand-50' : 'border-slate-200';
     },
 
     // Sends the attempt after any saves still in flight.

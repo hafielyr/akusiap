@@ -50,15 +50,27 @@ else
       <fieldset class="space-y-2">
         <legend class="sr-only">@T["Session.Player.Options"]</legend>
         <template x-for="option in item.options" :key="item.position + '-' + option.id">
-          <label class="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border px-3 py-2"
-                 :class="isSelected(option.id) ? 'border-brand-600 bg-brand-50' : 'border-slate-200'">
+          <label class="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border px-3 py-2" :class="optionClass(option.id)">
             <input class="mt-1 size-5 shrink-0 accent-brand-600" :type="isSingle(item) ? 'radio' : 'checkbox'"
-                   :name="'q' + item.position" :value="option.id" :checked="isSelected(option.id)" :disabled="ended" @@change="choose(option.id)"
+                   :name="'q' + item.position" :value="option.id" :checked="isSelected(option.id)" :disabled="ended || !!item.feedback" @@change="choose(option.id)"
                    data-testid="option" />
             <span class="whitespace-pre-line" x-text="option.text"></span>
           </label>
         </template>
       </fieldset>
+
+      <div class="flex flex-wrap gap-2" x-show="!ended">
+        <button type="button" class="btn btn-secondary" x-show="canCheck && item.selected.length > 0 && !item.feedback" @@click="check()" data-testid="check">@T["Session.Player.Check"]</button>
+        <button type="button" class="btn btn-secondary" x-show="item.hasHint && !item.hint" @@click="hint()" data-testid="hint-button">@T["Session.Player.Hint"]</button>
+      </div>
+      <p x-show="item.hint" x-cloak class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="hint"><span class="font-semibold">@T["Session.Player.Hint"]:</span> <span x-text="item.hint"></span></p>
+      <div x-show="item.feedback" x-cloak class="space-y-2 rounded-lg border border-slate-200 p-3 text-sm" data-testid="feedback">
+        <p class="font-semibold" :class="item.feedback?.isCorrect ? 'text-green-800' : 'text-red-800'">
+          <span x-show="item.feedback?.isCorrect">@T["Session.Player.Correct"]</span><span x-show="!item.feedback?.isCorrect">@T["Session.Player.Incorrect"]</span>
+        </p>
+        <p class="whitespace-pre-line text-slate-700" x-text="item.feedback?.explanation"></p>
+        <p x-show="item.feedback?.keyFact" class="text-slate-700"><span class="font-semibold">@T["Session.Player.KeyFact"]:</span> <span x-text="item.feedback?.keyFact"></span></p>
+      </div>
     </article>
 
     <div class="grid grid-cols-3 gap-2">
