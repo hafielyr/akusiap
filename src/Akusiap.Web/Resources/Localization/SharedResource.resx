@@ -566,4 +566,14 @@
   <data name="Checkout.ChannelRequired" xml:space="preserve"><value>Pilih metode pembayaran.</value></data>
   <data name="Payment.PendingExists" xml:space="preserve"><value>Item ini sudah punya pembayaran yang menunggu.</value></data>
   <data name="Payment.GatewayFailed" xml:space="preserve"><value>Pembayaran belum bisa dibuat. Coba lagi sebentar lagi.</value></data>
+  <data name="Admin.Limits.Title" xml:space="preserve"><value>Batas pemakaian paket</value></data>
+  <data name="Admin.Limits.Link" xml:space="preserve"><value>Atur batas soal, ujian dan impor per paket</value></data>
+  <data name="Admin.Limits.Lead" xml:space="preserve"><value>Batas soal dan ujian milik pengguna serta baris impor per paket. Untuk paket berbayar ini batas wajar pemakaian. Kosong berarti belum diatur, dan fitur itu tertutup sampai diatur.</value></data>
+  <data name="Admin.Limits.Questions" xml:space="preserve"><value>Maks. soal sendiri</value></data>
+  <data name="Admin.Limits.Exams" xml:space="preserve"><value>Maks. ujian sendiri</value></data>
+  <data name="Admin.Limits.ImportRows" xml:space="preserve"><value>Maks. baris impor</value></data>
+  <data name="Admin.Limits.NotSet" xml:space="preserve"><value>Belum diatur</value></data>
+  <data name="Admin.Limits.Save" xml:space="preserve"><value>Simpan batas</value></data>
+  <data name="Admin.Limits.Saved" xml:space="preserve"><value>Batas paket disimpan.</value></data>
+  <data name="Admin.Limits.Invalid" xml:space="preserve"><value>{0} harus angka bulat 0 sampai {1}, atau kosong.</value></data>
 </root>

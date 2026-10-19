@@ -1,0 +1,44 @@
+@page "/admin/paket/batas"
+@model Akusiap.Web.Areas.Admin.Pages.Plans.LimitsModel
+@* Plan caps (OWN-01): one small form per plan; empty means "not configured" (blocked). *@
+@{
+  ViewData["Title"] = T["Admin.Limits.Title"].Value;
+  var fields = new (string Name, string Label, Func<Akusiap.Application.Plans.SavePlanLimitsRequest, string?> Typed, Func<Akusiap.Application.Plans.PlanLimitsRow, int?> Saved)[]
+  {
+    ("maxOwnQuestions", "Admin.Limits.Questions", r => r.MaxOwnQuestions, p => p.MaxOwnQuestions),
+    ("maxOwnExams", "Admin.Limits.Exams", r => r.MaxOwnExams, p => p.MaxOwnExams),
+    ("maxImportRows", "Admin.Limits.ImportRows", r => r.MaxImportRows, p => p.MaxImportRows),
+  };
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="@IndexModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Admin.Plans.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Limits.Title"]</h1>
+  <p class="text-slate-600">@T["Admin.Limits.Lead"]</p>
+
+  @foreach (var plan in Model.Plans)
+  {
+    <form method="post" class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="limits-form" data-plan="@plan.Code" novalidate>
+      <input type="hidden" name="planId" value="@plan.PlanId" />
+      <h2 class="text-lg font-semibold">@plan.Name</h2>
+      <div class="grid gap-3 sm:grid-cols-3">
+        @foreach (var field in fields)
+        {
+          var id = $"{field.Name}-{plan.PlanId}";
+          var key = $"p{plan.PlanId}.{char.ToUpperInvariant(field.Name[0])}{field.Name[1..]}";
+          var error = ViewContext.ViewData.ModelState[key]?.Errors.FirstOrDefault()?.ErrorMessage;
+          <div class="space-y-1">
+            <label for="@id" class="label">@T[field.Label]</label>
+            <input id="@id" name="@field.Name" value="@Model.Value(plan, field.Typed, field.Saved(plan))" inputmode="numeric" autocomplete="off"
+                   placeholder="@T["Admin.Limits.NotSet"]" class="input" aria-invalid="@(error is null ? null : "true")" />
+            @if (error is not null)
+            {
+              <span class="field-error" data-testid="limit-error">@error</span>
+            }
+          </div>
+        }
+      </div>
+      <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Limits.Save"]</button>
+    </form>
+  }
+</section>

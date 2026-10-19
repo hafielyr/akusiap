@@ -7,18 +7,18 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [OWN-01] Plan limits admin · M5 · deps: PAY-02
 - [USR-02] Create user · M4 · deps: USR-01, AC-02
 - [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 - [SES-04] Autosave and resume · M1 · deps: SES-03
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
 - [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03
 - [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
+- [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02
 
 ## In Progress
 
 ## Review
-- [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02 · (claude-opus-5.5, 2026-10-19)
+- [OWN-01] Plan limits admin · M5 · deps: PAY-02 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -60,6 +60,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-02] Session setup page · M1 · deps: SES-01
 - [SES-03] Quiz player · M1 · deps: SES-01
 - [CAT-03] Pricing comparison · M3 · deps: PAY-02
+- [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
 
 ## Backlog
 
@@ -90,7 +91,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 **Release 1 exit check**: In the DOKU sandbox, a guest completes trial → register → QRIS payment → full exam → review → flashcards. The receipt email arrives. A refund within 7 days is auto-approved and access ends.
 
 ### M5 Own content (Release 2)
-- [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02
 - [OWN-03] Own question editor · M5 · deps: OWN-02, ADM-T2
 - [OWN-04] Own exam · M5 · deps: OWN-03
 - [OWN-05] Allowance widget · M5 · deps: OWN-02

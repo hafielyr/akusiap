@@ -566,4 +566,14 @@
   <data name="Checkout.ChannelRequired" xml:space="preserve"><value>Choose a payment method.</value></data>
   <data name="Payment.PendingExists" xml:space="preserve"><value>This item already has a payment waiting.</value></data>
   <data name="Payment.GatewayFailed" xml:space="preserve"><value>The payment couldn't be created. Please try again shortly.</value></data>
+  <data name="Admin.Limits.Title" xml:space="preserve"><value>Plan limits</value></data>
+  <data name="Admin.Limits.Link" xml:space="preserve"><value>Set question, exam and import limits per plan</value></data>
+  <data name="Admin.Limits.Lead" xml:space="preserve"><value>Own-question, own-exam and import-row limits per plan. For paid plans these are fair-use caps. Empty means not set, and the feature stays closed until it is set.</value></data>
+  <data name="Admin.Limits.Questions" xml:space="preserve"><value>Max. own questions</value></data>
+  <data name="Admin.Limits.Exams" xml:space="preserve"><value>Max. own exams</value></data>
+  <data name="Admin.Limits.ImportRows" xml:space="preserve"><value>Max. import rows</value></data>
+  <data name="Admin.Limits.NotSet" xml:space="preserve"><value>Not set</value></data>
+  <data name="Admin.Limits.Save" xml:space="preserve"><value>Save limits</value></data>
+  <data name="Admin.Limits.Saved" xml:space="preserve"><value>Plan limits saved.</value></data>
+  <data name="Admin.Limits.Invalid" xml:space="preserve"><value>{0} must be a whole number from 0 to {1}, or empty.</value></data>
 </root>
