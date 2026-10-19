@@ -4,6 +4,7 @@ using Akusiap.Domain.Moderation;
 using Akusiap.Domain.Notifications;
 using Akusiap.Domain.Sessions;
 using Akusiap.Domain.Users;
+using Akusiap.TestSupport.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Akusiap.IntegrationTests.Persistence;
@@ -58,11 +59,11 @@ public sealed class SessionsMigrationTests : IAsyncLifetime
         "review_logs.interval_before_days 8,2", "review_logs.interval_after_days 8,2",
     ];
 
-    private TemporaryDatabase _database = null!;
+    private TestDatabase _database = null!;
 
     public async Task InitializeAsync()
     {
-        _database = await TemporaryDatabase.CreateMigratedAsync();
+        _database = await TestDatabase.CreateMigratedAsync();
     }
 
     public async Task DisposeAsync() => await _database.DisposeAsync();

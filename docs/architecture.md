@@ -32,7 +32,8 @@ src/
 tests/
   Akusiap.UnitTests/         domain and application tests (no DB)
   Akusiap.IntegrationTests/  per-run test database + WebApplicationFactory
-  Akusiap.E2E/               Playwright, mobile viewport
+  Akusiap.E2E/               Playwright, mobile viewport (360×640)
+  Akusiap.TestSupport/       shared test code: TestDatabase, PostgresFixture, AppFactory, TestClock, FakeEmailSender, TestData (D-29)
 ```
 
 Rules:

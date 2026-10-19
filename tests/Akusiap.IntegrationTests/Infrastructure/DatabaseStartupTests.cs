@@ -1,16 +1,18 @@
 using System.Net;
 using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
+using Akusiap.TestSupport.Database;
+using Akusiap.TestSupport.Web;
 
 namespace Akusiap.IntegrationTests.Infrastructure;
 
-public sealed class DatabaseStartupTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+[Collection(UsesDatabase.Name)]
+public sealed class DatabaseStartupTests(PostgresFixture database)
 {
-    // Uses ConnectionStrings:Default from user-secrets (dev) or env vars (CI); see D-15.
     [Fact]
     public async Task Health_reports_database_healthy_when_connection_string_is_set()
     {
-        using var client = factory.CreateClient();
+        await using var app = new AppFactory(database);
+        using var client = app.CreateClient();
 
         using var response = await client.GetAsync(new Uri("/health", UriKind.Relative));
         var body = await response.Content.ReadAsStringAsync();
@@ -22,12 +24,11 @@ public sealed class DatabaseStartupTests(WebApplicationFactory<Program> factory)
     }
 
     [Fact]
-    public void Startup_fails_with_a_message_naming_the_missing_setting()
+    public async Task Startup_fails_with_a_message_naming_the_missing_setting()
     {
-        using var withoutDatabase = factory.WithWebHostBuilder(builder =>
-            builder.UseSetting("ConnectionStrings:Default", string.Empty));
+        await using var app = new AppFactory(connectionString: string.Empty);
 
-        var error = Assert.Throws<InvalidOperationException>(() => withoutDatabase.CreateClient());
+        var error = Assert.Throws<InvalidOperationException>(() => app.CreateClient());
 
         Assert.Contains("ConnectionStrings:Default", error.Message, StringComparison.Ordinal);
         Assert.Contains("dotnet user-secrets set", error.Message, StringComparison.Ordinal);
