@@ -265,4 +265,23 @@
   <data name="Admin.ShowAnswers.Never" xml:space="preserve"><value>Tidak ditampilkan</value></data>
   <data name="Validation.Range" xml:space="preserve"><value>{0} harus {1} sampai {2}.</value></data>
   <data name="Validation.WholeNumber" xml:space="preserve"><value>{0} harus berupa angka bulat.</value></data>
+  <data name="Admin.Publish.Title" xml:space="preserve"><value>Penerbitan</value></data>
+  <data name="Admin.Publish.Publish" xml:space="preserve"><value>Terbitkan ujian</value></data>
+  <data name="Admin.Publish.Unpublish" xml:space="preserve"><value>Batalkan penerbitan</value></data>
+  <data name="Admin.Publish.UnpublishConfirm" xml:space="preserve"><value>Ya, batalkan penerbitan</value></data>
+  <data name="Admin.Publish.UnpublishWarning" xml:space="preserve"><value>Ujian akan hilang dari katalog dan pembeli tidak bisa memakainya sampai ujian diterbitkan lagi.</value></data>
+  <data name="Admin.Publish.IsPublished" xml:space="preserve"><value>Ujian ini terbit dan tampil di katalog.</value></data>
+  <data name="Admin.Publish.Ready" xml:space="preserve"><value>Ujian siap diterbitkan.</value></data>
+  <data name="Admin.Publish.NotReady" xml:space="preserve"><value>Sebelum terbit, lengkapi dulu:</value></data>
+  <data name="Admin.Publish.Refused" xml:space="preserve"><value>Ujian belum bisa diterbitkan:</value></data>
+  <data name="Admin.Publish.Done" xml:space="preserve"><value>Ujian diterbitkan dan tampil di katalog.</value></data>
+  <data name="Admin.Publish.UnpublishDone" xml:space="preserve"><value>Penerbitan dibatalkan. Ujian tidak lagi tampil di katalog.</value></data>
+  <data name="Admin.Publish.NoActiveQuestions" xml:space="preserve"><value>Tambahkan minimal 1 soal aktif.</value></data>
+  <data name="Admin.Publish.PriceMissing" xml:space="preserve"><value>Isi harga ujian berbayar.</value></data>
+  <data name="Admin.Publish.AccessDaysMissing" xml:space="preserve"><value>Isi masa akses ujian berbayar.</value></data>
+  <data name="Admin.Publish.TrialRange" xml:space="preserve"><value>Ujian berbayar dengan {0} soal aktif perlu {1}–{2} soal coba aktif; sekarang {3}.</value></data>
+  <data name="Admin.Publish.TrialAll" xml:space="preserve"><value>Ujian berbayar dengan {0} soal aktif (kurang dari 30) perlu semua soalnya jadi soal coba; sekarang {1}.</value></data>
+  <data name="Admin.Publish.TakenDown" xml:space="preserve"><value>Ujian yang diturunkan tidak bisa diterbitkan.</value></data>
+  <data name="Admin.Publish.AlreadyPublished" xml:space="preserve"><value>Ujian ini sudah terbit.</value></data>
+  <data name="Admin.Publish.NotPublished" xml:space="preserve"><value>Ujian ini belum terbit.</value></data>
 </root>

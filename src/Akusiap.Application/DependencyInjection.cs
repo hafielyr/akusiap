@@ -30,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<GetExamQuestions>();
         services.AddScoped<SearchQuestionsForExam>();
         services.AddScoped<ChangeExamQuestions>();
+        services.AddScoped<PublishExam>();
         services.AddScoped<ListRulePresetOptions>();
         services.AddScoped<ListRulePresets>();
         services.AddScoped<GetRulePreset>();

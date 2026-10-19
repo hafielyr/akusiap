@@ -265,4 +265,23 @@
   <data name="Admin.ShowAnswers.Never" xml:space="preserve"><value>Never</value></data>
   <data name="Validation.Range" xml:space="preserve"><value>{0} must be {1} to {2}.</value></data>
   <data name="Validation.WholeNumber" xml:space="preserve"><value>{0} must be a whole number.</value></data>
+  <data name="Admin.Publish.Title" xml:space="preserve"><value>Publishing</value></data>
+  <data name="Admin.Publish.Publish" xml:space="preserve"><value>Publish exam</value></data>
+  <data name="Admin.Publish.Unpublish" xml:space="preserve"><value>Unpublish</value></data>
+  <data name="Admin.Publish.UnpublishConfirm" xml:space="preserve"><value>Yes, unpublish</value></data>
+  <data name="Admin.Publish.UnpublishWarning" xml:space="preserve"><value>The exam leaves the catalog and buyers cannot use it until it is published again.</value></data>
+  <data name="Admin.Publish.IsPublished" xml:space="preserve"><value>This exam is published and shown in the catalog.</value></data>
+  <data name="Admin.Publish.Ready" xml:space="preserve"><value>The exam is ready to publish.</value></data>
+  <data name="Admin.Publish.NotReady" xml:space="preserve"><value>Before publishing, complete:</value></data>
+  <data name="Admin.Publish.Refused" xml:space="preserve"><value>The exam cannot be published yet:</value></data>
+  <data name="Admin.Publish.Done" xml:space="preserve"><value>Exam published and shown in the catalog.</value></data>
+  <data name="Admin.Publish.UnpublishDone" xml:space="preserve"><value>Unpublished. The exam is no longer shown in the catalog.</value></data>
+  <data name="Admin.Publish.NoActiveQuestions" xml:space="preserve"><value>Add at least 1 active question.</value></data>
+  <data name="Admin.Publish.PriceMissing" xml:space="preserve"><value>Set a price for this paid exam.</value></data>
+  <data name="Admin.Publish.AccessDaysMissing" xml:space="preserve"><value>Set an access period for this paid exam.</value></data>
+  <data name="Admin.Publish.TrialRange" xml:space="preserve"><value>A paid exam with {0} active questions needs {1}–{2} active trial questions; it has {3}.</value></data>
+  <data name="Admin.Publish.TrialAll" xml:space="preserve"><value>A paid exam with {0} active questions (fewer than 30) needs all of them as trial questions; it has {1}.</value></data>
+  <data name="Admin.Publish.TakenDown" xml:space="preserve"><value>A taken-down exam cannot be published.</value></data>
+  <data name="Admin.Publish.AlreadyPublished" xml:space="preserve"><value>This exam is already published.</value></data>
+  <data name="Admin.Publish.NotPublished" xml:space="preserve"><value>This exam is not published.</value></data>
 </root>
