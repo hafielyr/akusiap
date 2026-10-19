@@ -9,4 +9,7 @@ public static class SessionRoutes
 
     /// <summary>The result page of a finished attempt (SES-07).</summary>
     public static string Result(long attemptId) => $"{Player(attemptId)}/hasil";
+
+    /// <summary>The answer review of a finished attempt (SES-08); <paramref name="show"/> is <c>salah</c> or <c>ditandai</c>.</summary>
+    public static string Review(long attemptId, string? show = null) => show is null ? $"{Player(attemptId)}/pembahasan" : $"{Player(attemptId)}/pembahasan?tampil={show}";
 }

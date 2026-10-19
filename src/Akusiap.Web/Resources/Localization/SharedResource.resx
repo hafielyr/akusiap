@@ -711,4 +711,16 @@
   <data name="Session.Result.Month" xml:space="preserve"><value>bulan</value></data>
   <data name="Session.Result.ByTopic" xml:space="preserve"><value>Per topik</value></data>
   <data name="Session.Result.CorrectShort" xml:space="preserve"><value>Benar</value></data>
+  <data name="Session.Review.Title" xml:space="preserve"><value>Pembahasan</value></data>
+  <data name="Session.Review.All" xml:space="preserve"><value>Semua</value></data>
+  <data name="Session.Review.Wrong" xml:space="preserve"><value>Salah ({0})</value></data>
+  <data name="Session.Review.Flagged" xml:space="preserve"><value>Ditandai ({0})</value></data>
+  <data name="Session.Review.Filter" xml:space="preserve"><value>Saring pembahasan</value></data>
+  <data name="Session.Review.Empty" xml:space="preserve"><value>Tidak ada soal di sini.</value></data>
+  <data name="Session.Review.Hidden" xml:space="preserve"><value>Pembahasan tidak ditampilkan untuk ujian ini.</value></data>
+  <data name="Session.Review.RightShort" xml:space="preserve"><value>Benar</value></data>
+  <data name="Session.Review.WrongShort" xml:space="preserve"><value>Salah</value></data>
+  <data name="Session.Review.YourAnswer" xml:space="preserve"><value>Jawaban Anda</value></data>
+  <data name="Session.Review.CorrectAnswer" xml:space="preserve"><value>Jawaban benar</value></data>
+  <data name="Session.Result.SeeReview" xml:space="preserve"><value>Lihat pembahasan</value></data>
 </root>
