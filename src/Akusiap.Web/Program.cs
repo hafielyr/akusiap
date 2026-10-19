@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddScoped<IdentityErrorDescriber, LocalizedIdentityErrorDescriber>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<Akusiap.Application.Abstractions.ICurrentUser, HttpCurrentUser>();
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();
 builder.Services.ConfigureApplicationCookie(options =>
 {
