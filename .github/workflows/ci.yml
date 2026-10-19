@@ -70,12 +70,12 @@ jobs:
 
       - name: Check the compiled CSS is up to date
         run: |
-          tools/tailwind.sh
+          bash tools/tailwind.sh
           git diff --exit-code -- src/Akusiap.Web/wwwroot/css/app.css \
             || { echo "::error::wwwroot/css/app.css is stale. Run tools/tailwind.sh and commit the result."; exit 1; }
 
       - name: Install Playwright browsers
-        run: tools/playwright-install.sh --with-deps
+        run: bash tools/playwright-install.sh --with-deps
 
       - name: Test (unit, integration, E2E)
         run: dotnet test --no-build --logger "trx" --results-directory TestResults
