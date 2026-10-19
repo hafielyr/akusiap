@@ -7,7 +7,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [ADM-T3] Exam editor · M1 · deps: ADM-T2
+- [ADM-T4] Exam question picker and trial set · M1 · deps: ADM-T3
 - [ADM-T5] Rule presets · M1 · deps: ADM-T1
 - [ENT-02] Entitlement query and guard · M1 · deps: ENT-01, AC-01
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
@@ -23,7 +23,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [ADM-T2] Question editor · M1 · deps: ADM-T1 · (claude-opus-5.5, 2026-10-19)
+- [ADM-T3] Exam editor · M1 · deps: ADM-T2 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -41,11 +41,11 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [F-08] CI pipeline · M1 · deps: F-05
 - [AC-06] Authorization policies · M1 · deps: AC-01
 - [ADM-T1] Admin shell, subjects and topics · M1 · deps: AC-06, F-03
+- [ADM-T2] Question editor · M1 · deps: ADM-T1
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [ADM-T4] Exam question picker and trial set · M1 · deps: ADM-T3
 - [ADM-T6] Publish and unpublish · M1 · deps: ADM-T4
 - [CAT-01] Exam catalog · M1 · deps: ADM-T6, F-06
 - [CAT-02] Exam detail with access CTA · M1 · deps: CAT-01, ENT-02

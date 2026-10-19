@@ -1,0 +1,38 @@
+@page "/admin/ujian/{id:long}"
+@model Akusiap.Web.Areas.Admin.Pages.Exams.EditModel
+@using Akusiap.Domain.Content
+@{
+  ViewData["Title"] = T["Admin.Exams.EditTitle"].Value;
+  var exam = Model.Exam;
+  var canDelete = exam.Status != ExamStatus.Published && exam.AttemptCount == 0 && exam.PurchaseCount == 0;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="/admin/ujian" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @T["Admin.Exams.Title"]</a>
+  <div class="flex flex-wrap items-center gap-3">
+    <h1 class="text-2xl font-bold leading-tight">@exam.Title</h1>
+    <partial name="_ExamStatusBadgePartial" model="exam.Status" />
+  </div>
+  <p class="text-sm text-slate-500" data-testid="exam-usage">
+    @T["Admin.Exams.QuestionCounts", exam.QuestionCount, exam.TrialCount] · @T["Admin.Exams.Usage", exam.AttemptCount, exam.PurchaseCount]
+  </p>
+  <p class="rounded-lg bg-slate-100 px-3 py-2 text-sm text-slate-600">@T["Admin.Exams.QuestionsComingSoon"]</p>
+  <partial name="_ExamFormPartial" model="Model.Form" />
+</section>
+
+<section class="max-w-2xl space-y-2 border-t border-slate-200 pt-4">
+  @if (canDelete)
+  {
+    <form method="post" asp-page-handler="Delete" x-data="{ sure: false }">
+      <button type="button" x-show="!sure" x-on:click="sure = true" class="btn btn-secondary text-red-700">@T["Admin.Exams.Delete"]</button>
+      <span x-show="sure" x-cloak class="flex flex-wrap items-center gap-2">
+        <button type="submit" class="btn bg-red-600 text-white hover:bg-red-700">@T["Admin.ConfirmDelete"]</button>
+        <button type="button" x-on:click="sure = false" class="btn btn-secondary">@T["Admin.Cancel"]</button>
+      </span>
+    </form>
+  }
+  else
+  {
+    <p class="text-sm text-slate-500" data-testid="delete-blocked">@T["Admin.Exams.DeleteBlocked"]</p>
+  }
+</section>

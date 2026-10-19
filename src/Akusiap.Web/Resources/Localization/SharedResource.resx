@@ -56,7 +56,7 @@
   <data name="Status.Other.Body" xml:space="preserve"><value>Silakan coba lagi. Jika masalah berlanjut, hubungi kami lewat WhatsApp.</value></data>
   <data name="Status.Home" xml:space="preserve"><value>Kembali ke beranda</value></data>
   <data name="Admin.Title" xml:space="preserve"><value>Dasbor admin</value></data>
-  <data name="Admin.ComingSoon" xml:space="preserve"><value>Ujian, pengguna dan pembayaran menyusul di sini.</value></data>
+  <data name="Admin.ComingSoon" xml:space="preserve"><value>Pengguna dan pembayaran menyusul di sini.</value></data>
   <data name="Learn.Title" xml:space="preserve"><value>Ruang belajar</value></data>
   <data name="Learn.ComingSoon" xml:space="preserve"><value>Riwayat latihan dan akses ujian Anda akan tampil di sini.</value></data>
   <data name="Nav.Admin" xml:space="preserve"><value>Admin</value></data>
@@ -163,4 +163,46 @@
   <data name="Admin.Difficulty.3" xml:space="preserve"><value>3 · Sedang</value></data>
   <data name="Admin.Difficulty.4" xml:space="preserve"><value>4 · Sulit</value></data>
   <data name="Admin.Difficulty.5" xml:space="preserve"><value>5 · Sangat sulit</value></data>
+  <data name="Admin.Nav.Exams" xml:space="preserve"><value>Ujian</value></data>
+  <data name="Admin.Exams.Title" xml:space="preserve"><value>Ujian</value></data>
+  <data name="Admin.Exams.Lead" xml:space="preserve"><value>Ujian buatan admin yang dijual atau dibuka gratis di katalog.</value></data>
+  <data name="Admin.Exams.Add" xml:space="preserve"><value>Tambah ujian</value></data>
+  <data name="Admin.Exams.Empty" xml:space="preserve"><value>Belum ada ujian. Tambahkan yang pertama.</value></data>
+  <data name="Admin.Exams.NewTitle" xml:space="preserve"><value>Ujian baru</value></data>
+  <data name="Admin.Exams.EditTitle" xml:space="preserve"><value>Ubah ujian</value></data>
+  <data name="Admin.Exams.StartsAsDraft" xml:space="preserve"><value>Ujian baru disimpan sebagai draf dan belum tampil di katalog.</value></data>
+  <data name="Admin.Exams.Created" xml:space="preserve"><value>Ujian dibuat sebagai draf.</value></data>
+  <data name="Admin.Exams.Access" xml:space="preserve"><value>Harga dan akses</value></data>
+  <data name="Admin.Exams.FreeHelp" xml:space="preserve"><value>Ujian gratis terbuka untuk semua pengguna terdaftar. Harga dan masa akses tidak dipakai.</value></data>
+  <data name="Admin.Exams.AllowanceHelp" xml:space="preserve"><value>Jumlah soal sendiri yang boleh ditulis pembeli ujian ini.</value></data>
+  <data name="Admin.Exams.DefaultPreset" xml:space="preserve"><value>bawaan</value></data>
+  <data name="Admin.Exams.FreeLabel" xml:space="preserve"><value>Gratis</value></data>
+  <data name="Admin.Exams.AccessDaysShort" xml:space="preserve"><value>· {0} hari akses</value></data>
+  <data name="Admin.Exams.QuestionCounts" xml:space="preserve"><value>{0} soal, {1} soal coba</value></data>
+  <data name="Admin.Exams.Usage" xml:space="preserve"><value>{0} latihan, {1} pembelian</value></data>
+  <data name="Admin.Exams.QuestionsComingSoon" xml:space="preserve"><value>Memilih soal untuk ujian ini dan menandai soal coba akan tersedia di halaman ini.</value></data>
+  <data name="Admin.Exams.Delete" xml:space="preserve"><value>Hapus ujian</value></data>
+  <data name="Admin.Exams.DeleteBlocked" xml:space="preserve"><value>Ujian yang sudah terbit, dicoba atau dibeli tidak bisa dihapus. Batalkan penerbitannya saja.</value></data>
+  <data name="Admin.Exams.DeletePublished" xml:space="preserve"><value>Ujian yang sedang terbit tidak bisa dihapus. Batalkan penerbitannya dulu.</value></data>
+  <data name="Admin.Exams.InUse" xml:space="preserve"><value>Ujian ini sudah dipakai ({0} latihan, {1} pembelian), jadi tidak bisa dihapus.</value></data>
+  <data name="Admin.Exams.PriceRequired" xml:space="preserve"><value>Ujian berbayar harus punya harga lebih dari Rp0.</value></data>
+  <data name="Admin.Exams.PriceTooHigh" xml:space="preserve"><value>Harga maksimal Rp100.000.000.</value></data>
+  <data name="Admin.Exams.PriceInvalid" xml:space="preserve"><value>Tulis harga dalam rupiah tanpa desimal, misalnya 49000 atau Rp49.000.</value></data>
+  <data name="Admin.Exams.AccessDaysRequired" xml:space="preserve"><value>Ujian berbayar harus punya masa akses lebih dari 0 hari.</value></data>
+  <data name="Admin.Exams.AccessDaysTooHigh" xml:space="preserve"><value>Masa akses maksimal 3650 hari.</value></data>
+  <data name="Admin.Exams.AllowanceRange" xml:space="preserve"><value>Jatah soal sendiri harus 0 sampai {0}.</value></data>
+  <data name="Admin.Exams.RulePresetRequired" xml:space="preserve"><value>Pilih aturan ujian yang ada.</value></data>
+  <data name="Admin.Exams.SubjectMissing" xml:space="preserve"><value>Pilih subjek yang ada.</value></data>
+  <data name="Admin.Exam.Title" xml:space="preserve"><value>Judul ujian</value></data>
+  <data name="Admin.Exam.Description" xml:space="preserve"><value>Deskripsi (opsional)</value></data>
+  <data name="Admin.Exam.Subject" xml:space="preserve"><value>Subjek (opsional)</value></data>
+  <data name="Admin.Exam.RulePreset" xml:space="preserve"><value>Aturan bawaan</value></data>
+  <data name="Admin.Exam.IsFree" xml:space="preserve"><value>Gratis untuk pengguna terdaftar</value></data>
+  <data name="Admin.Exam.Price" xml:space="preserve"><value>Harga (Rp)</value></data>
+  <data name="Admin.Exam.AccessDays" xml:space="preserve"><value>Masa akses (hari)</value></data>
+  <data name="Admin.Exam.Allowance" xml:space="preserve"><value>Jatah soal sendiri untuk pembeli</value></data>
+  <data name="Admin.ExamStatus.Draft" xml:space="preserve"><value>Draf</value></data>
+  <data name="Admin.ExamStatus.Published" xml:space="preserve"><value>Terbit</value></data>
+  <data name="Admin.ExamStatus.Unpublished" xml:space="preserve"><value>Tidak terbit</value></data>
+  <data name="Admin.ExamStatus.TakenDown" xml:space="preserve"><value>Diturunkan</value></data>
 </root>
