@@ -44,6 +44,14 @@
     <p class="text-sm text-slate-600">@T["ExamPage.QuestionSummary", exam.ActiveQuestionCount]</p>
   </header>
 
+  @if (Model.OpenAttemptId is { } openAttempt)
+  {
+    <div class="space-y-2 rounded-xl border border-brand-200 bg-brand-50 p-4" data-testid="resume-banner">
+      <p class="text-sm text-brand-800">@T["ExamPage.Resume"]</p>
+      <a href="@Akusiap.Web.Pages.Sessions.SessionRoutes.Player(openAttempt)" class="btn btn-primary w-full" data-testid="resume">@T["ExamPage.ResumeAction"]</a>
+    </div>
+  }
+
   @if (exam.Ctas.Count > 0)
   {
     <nav aria-label="@T["ExamPage.Actions"]" class="space-y-3" data-testid="exam-ctas">
