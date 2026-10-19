@@ -19,6 +19,10 @@ public sealed class LoginModel(UserManager<User> users, SignInManager<User> sign
     [BindProperty(SupportsGet = true)]
     public string? ReturnUrl { get; set; }
 
+    /// <summary>Set after a password reset (AC-02) to show "password changed".</summary>
+    [BindProperty(SupportsGet = true, Name = "reset")]
+    public bool PasswordWasReset { get; set; }
+
     public IActionResult OnGet() =>
         User.Identity?.IsAuthenticated == true ? LocalRedirect(SafeReturnUrl) : Page();
 

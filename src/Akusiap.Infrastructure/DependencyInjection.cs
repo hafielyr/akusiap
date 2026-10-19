@@ -51,13 +51,20 @@ public static class DependencyInjection
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
         if (environment.IsDevelopment())
         {
-            // Production SMTP sender comes with AC-02.
             services.AddSingleton<IEmailSender>(sp =>
             {
                 var options = sp.GetRequiredService<IOptions<EmailOptions>>();
                 var directory = Path.GetFullPath(Path.Combine(environment.ContentRootPath, options.Value.PickupDirectory));
                 return new FileEmailSender(options, directory);
             });
+        }
+        else if (configuration.GetSection(EmailOptions.SectionName).Get<EmailOptions>()?.Smtp.IsConfigured == true)
+        {
+            services.AddSingleton<IEmailSender, SmtpEmailSender>();
+        }
+        else
+        {
+            services.AddSingleton<IEmailSender, UnconfiguredEmailSender>();
         }
 
         return services;

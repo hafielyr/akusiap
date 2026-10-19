@@ -38,6 +38,8 @@ public sealed class AppFactory(string connectionString) : WebApplicationFactory<
         // Never pick up a developer's admin from user-secrets; tests that need one set it explicitly.
         builder.UseSetting("Seed:AdminEmail", string.Empty);
         builder.UseSetting("Seed:AdminPassword", string.Empty);
+        // Email links use the test server address unless a test sets Site:BaseUrl.
+        builder.UseSetting("Site:BaseUrl", string.Empty);
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IClock>();
