@@ -7,8 +7,10 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [ENT-02] Entitlement query and guard · M1 · deps: ENT-01, AC-01
 - [CAT-01] Exam catalog · M1 · deps: ADM-T6, F-06
+- [ENT-03] Admin grants, extends and ends access · M1 · deps: ENT-02, AC-06
+- [SES-01] Start attempt service · M1 · deps: ENT-02, F-04
+- [ENT-04] My access page · M1 · deps: ENT-02
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
 - [AC-04] Profile, password and role · M1 · deps: AC-01
 - [AC-05] Legal pages · M1 · deps: F-06, AC-01
@@ -22,7 +24,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [ADM-T6] Publish and unpublish · M1 · deps: ADM-T4 · (claude-opus-5.5, 2026-10-19)
+- [ENT-02] Entitlement query and guard · M1 · deps: ENT-01, AC-01 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -44,13 +46,12 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [ADM-T3] Exam editor · M1 · deps: ADM-T2
 - [ADM-T4] Exam question picker and trial set · M1 · deps: ADM-T3
 - [ADM-T5] Rule presets · M1 · deps: ADM-T1
+- [ADM-T6] Publish and unpublish · M1 · deps: ADM-T4
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
 - [CAT-02] Exam detail with access CTA · M1 · deps: CAT-01, ENT-02
-- [ENT-03] Admin grants, extends and ends access · M1 · deps: ENT-02, AC-06
-- [SES-01] Start attempt service · M1 · deps: ENT-02, F-04
 - [SES-02] Session setup page · M1 · deps: SES-01
 - [SES-03] Quiz player · M1 · deps: SES-01
 - [SES-04] Autosave and resume · M1 · deps: SES-03
@@ -58,7 +59,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04
 - [SES-07] Result page and trial CTA · M1 · deps: SES-06
 - [SES-08] Answer review · M1 · deps: SES-06
-- [ENT-04] My access page · M1 · deps: ENT-02
 
 **M1 exit check**: An admin creates and publishes a paid exam and a free exam. A guest finds the paid exam in the catalog, takes the 30-question trial with explanations and sees the buy CTA. A registered user takes the free exam. The admin grants the paid exam to that user, who then takes the full exam in Simulation mode; it auto-submits at the time limit.
 
