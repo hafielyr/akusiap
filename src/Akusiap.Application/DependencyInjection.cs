@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<GetSessionSetup>();
         services.AddScoped<GetPlayer>();
         services.AddScoped<CreatePayment>();
+        services.AddScoped<Checkout>();
         services.AddScoped<ListPlanPricing>();
         services.AddScoped<SavePlanPrices>();
         services.AddScoped<ListUsers>();

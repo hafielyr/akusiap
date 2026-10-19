@@ -107,6 +107,9 @@ Email__Smtp__Host=smtp-relay.brevo.com        # or email-smtp.<region>.amazonaws
 Email__Smtp__Port=587
 Email__Smtp__UserName=…
 Email__Smtp__Password=…
+# Payment channels shown at checkout (PAY-03); omit to use the defaults (all enabled, no minimum):
+# Payments__Channels__0__Code=QRIS  Payments__Channels__0__Method=QRIS  Payments__Channels__0__Label=QRIS  Payments__Channels__0__MinAmountIdr=0
+# Payments__Channels__1__Code=VA-BCA  …__Method=VirtualAccount  …__Channel=BCA  …__Label=BCA Virtual Account  …__Enabled=true
 Authentication__Google__ClientId=…            # optional (AC-03); the Google button shows only when both are set
 Authentication__Google__ClientSecret=…
 # Added by later cards:

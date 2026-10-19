@@ -1,4 +1,5 @@
 using Akusiap.Application.Abstractions;
+using Akusiap.Application.Payments;
 using Akusiap.Application.Questions.Import;
 using Akusiap.Domain.Users;
 using Akusiap.Infrastructure.Email;
@@ -52,6 +53,7 @@ public static class DependencyInjection
         services.AddHostedService<DatabaseInitializer>();
 
         services.Configure<ImportOptions>(configuration.GetSection(ImportOptions.SectionName));
+        services.Configure<PaymentChannelOptions>(configuration.GetSection(PaymentChannelOptions.SectionName));
         services.AddSingleton<IQuestionFileReader, QuestionFileReader>();
         services.AddSingleton<IQuestionTemplate, QuestionTemplate>();
 
