@@ -13,7 +13,7 @@ public sealed class ExamBuilder
     private int? _accessDays;
     private int _questionCount;
     private int _trialCount;
-    private User? _owner;
+    private Guid? _ownerId;
     private OwnerKind _ownerKind = OwnerKind.App;
     private RulePreset? _rulePreset;
 
@@ -58,7 +58,10 @@ public sealed class ExamBuilder
         return this;
     }
 
-    /// <summary>A teacher's or learner's own exam. Own exams are never sold, so this also makes it free.</summary>
+    /// <summary>
+    /// A teacher's or learner's own exam (and its questions), linked by id: save <paramref name="owner"/> first. Own exams are
+    /// never sold, so this also makes it free.
+    /// </summary>
     public ExamBuilder OwnedBy(User owner, OwnerKind kind = OwnerKind.Learner)
     {
         ArgumentNullException.ThrowIfNull(owner);
@@ -67,7 +70,7 @@ public sealed class ExamBuilder
             throw new ArgumentException("App exams have no owner.", nameof(kind));
         }
 
-        _owner = owner;
+        _ownerId = owner.Id;
         _ownerKind = kind;
         return Free();
     }
@@ -84,7 +87,7 @@ public sealed class ExamBuilder
         var topic = new Topic { Subject = subject, Name = "Topik " + TestData.Unique() };
         var exam = new Exam
         {
-            OwnerUser = _owner,
+            OwnerUserId = _ownerId,
             OwnerKind = _ownerKind,
             Subject = subject,
             RulePreset = _rulePreset ?? new RulePreset { Name = "Aturan " + TestData.Unique() },
@@ -100,7 +103,7 @@ public sealed class ExamBuilder
         {
             exam.Questions.Add(new ExamQuestion
             {
-                Question = NewQuestion(topic, _owner, i),
+                Question = NewQuestion(topic, _ownerId, i),
                 SortOrder = i,
                 IsTrial = i <= _trialCount,
             });
@@ -111,11 +114,11 @@ public sealed class ExamBuilder
 
     public static implicit operator Exam(ExamBuilder builder) => (builder ?? throw new ArgumentNullException(nameof(builder))).Build();
 
-    private static Question NewQuestion(Topic topic, User? owner, int number)
+    private static Question NewQuestion(Topic topic, Guid? ownerId, int number)
     {
         var question = new Question
         {
-            OwnerUser = owner,
+            OwnerUserId = ownerId,
             Topic = topic,
             QuestionType = QuestionType.SingleChoice,
             Text = $"Soal nomor {number}?",
