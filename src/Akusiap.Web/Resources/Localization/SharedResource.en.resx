@@ -383,4 +383,32 @@
   <data name="Learn.Access.Exam" xml:space="preserve"><value>Exam</value></data>
   <data name="Learn.Access.Plan" xml:space="preserve"><value>Plan</value></data>
   <data name="Learn.Access.Link" xml:space="preserve"><value>See your exam access and subscriptions</value></data>
+  <data name="Email.Greeting" xml:space="preserve"><value>Hi {0},</value></data>
+  <data name="Email.LinkFallback" xml:space="preserve"><value>If the button doesn't work, copy this link into your browser:</value></data>
+  <data name="Email.Confirm.Subject" xml:space="preserve"><value>Confirm your Akusiap email</value></data>
+  <data name="Email.Confirm.Intro" xml:space="preserve"><value>Thanks for signing up to Akusiap. Confirm your email address with the button below.</value></data>
+  <data name="Email.Confirm.Action" xml:space="preserve"><value>Confirm email</value></data>
+  <data name="Email.Confirm.Note" xml:space="preserve"><value>If you didn't sign up, you can ignore this email.</value></data>
+  <data name="Email.Reset.Subject" xml:space="preserve"><value>Reset your Akusiap password</value></data>
+  <data name="Email.Reset.Intro" xml:space="preserve"><value>We received a request to reset your account password.</value></data>
+  <data name="Email.Reset.Action" xml:space="preserve"><value>Reset password</value></data>
+  <data name="Email.Reset.Note" xml:space="preserve"><value>This link works for 24 hours. If you didn't ask for it, ignore this email; your password stays the same.</value></data>
+  <data name="Account.Confirm.Title" xml:space="preserve"><value>Confirm email</value></data>
+  <data name="Account.Confirm.Done" xml:space="preserve"><value>Your email is confirmed. Thank you!</value></data>
+  <data name="Account.Confirm.Failed" xml:space="preserve"><value>The confirmation link is invalid or has expired. Sign in and send the confirmation email again.</value></data>
+  <data name="Account.Confirm.Continue" xml:space="preserve"><value>Go to the catalog</value></data>
+  <data name="Account.Confirm.Pending" xml:space="preserve"><value>Your email isn't confirmed yet. You can still practise, but you need to confirm it before paying.</value></data>
+  <data name="Account.Confirm.Resend" xml:space="preserve"><value>Send the confirmation email again</value></data>
+  <data name="Account.Confirm.Resent" xml:space="preserve"><value>Confirmation email sent. Check your inbox.</value></data>
+  <data name="Account.Confirm.SendFailed" xml:space="preserve"><value>The email couldn't be sent. Please try again later.</value></data>
+  <data name="Account.Forgot.Link" xml:space="preserve"><value>Forgot your password?</value></data>
+  <data name="Account.Forgot.Title" xml:space="preserve"><value>Forgot password</value></data>
+  <data name="Account.Forgot.Lead" xml:space="preserve"><value>Enter your account email. We'll send you a link to reset your password.</value></data>
+  <data name="Account.Forgot.Submit" xml:space="preserve"><value>Send link</value></data>
+  <data name="Account.Forgot.Sent" xml:space="preserve"><value>If that email is registered, we've sent a link to reset the password. Check your inbox.</value></data>
+  <data name="Account.Reset.Title" xml:space="preserve"><value>Reset password</value></data>
+  <data name="Account.Reset.NewPassword" xml:space="preserve"><value>New password</value></data>
+  <data name="Account.Reset.Submit" xml:space="preserve"><value>Save password</value></data>
+  <data name="Account.Reset.Invalid" xml:space="preserve"><value>This link no longer works. Ask for a new one.</value></data>
+  <data name="Account.Reset.Done" xml:space="preserve"><value>Your password has been changed. Please sign in.</value></data>
 </root>

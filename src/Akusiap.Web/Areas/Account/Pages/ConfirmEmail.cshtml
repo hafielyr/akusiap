@@ -1,0 +1,19 @@
+@page "/akun/konfirmasi"
+@model ConfirmEmailModel
+@{
+  ViewData["Title"] = T["Account.Confirm.Title"].Value;
+}
+
+<section class="mx-auto max-w-md space-y-6">
+  <h1 class="text-2xl font-bold leading-tight">@T["Account.Confirm.Title"]</h1>
+  @if (Model.Confirmed)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-green-800" data-testid="confirm-done">@T["Account.Confirm.Done"]</p>
+    <a href="@AccountRoutes.AfterSignIn" class="btn btn-primary w-full">@T["Account.Confirm.Continue"]</a>
+  }
+  else
+  {
+    <p role="alert" class="rounded-lg bg-red-50 px-3 py-2 text-red-800" data-testid="confirm-failed">@T["Account.Confirm.Failed"]</p>
+    <a href="@AccountRoutes.SignIn" class="btn btn-secondary w-full">@T["Nav.SignIn"]</a>
+  }
+</section>

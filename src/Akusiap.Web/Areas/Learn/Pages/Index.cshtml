@@ -1,4 +1,5 @@
 @page "/learn"
+@model Akusiap.Web.Areas.Learn.Pages.IndexModel
 @* Learn area entry (SignedIn, AC-06). Later cards add /learn/pembayaran and session history. *@
 @{
   ViewData["Title"] = T["Learn.Title"].Value;
@@ -6,6 +7,22 @@
 
 <section class="space-y-4 py-6">
   <h1 class="text-2xl font-bold leading-tight">@T["Learn.Title"]</h1>
+
+  @if (Model.ResendMessage is { } message)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="resend-message">@T[message]</p>
+  }
+
+  @if (!Model.EmailConfirmed)
+  {
+    <div class="space-y-3 rounded-xl border border-amber-200 bg-amber-50 p-4" data-testid="confirm-pending">
+      <p class="text-sm text-amber-900">@T["Account.Confirm.Pending"]</p>
+      <form method="post" asp-page-handler="ResendConfirmation">
+        <button type="submit" class="btn btn-secondary w-full sm:w-auto">@T["Account.Confirm.Resend"]</button>
+      </form>
+    </div>
+  }
+
   <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
     <li>
       <a href="/learn/akses" class="flex min-h-11 flex-col gap-1 px-4 py-3 hover:bg-slate-50" data-testid="learn-access-link">

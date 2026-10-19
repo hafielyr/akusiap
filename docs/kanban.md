@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [AC-02] Email confirmation and password reset · M1 · deps: AC-01
 - [AC-04] Profile, password and role · M1 · deps: AC-01
 - [AC-05] Legal pages · M1 · deps: F-06, AC-01
 - [AC-03] Google sign-in · M1 · deps: AC-01
@@ -22,7 +21,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [ENT-04] My access page · M1 · deps: ENT-02 · (claude-opus-5.5, 2026-10-19)
+- [AC-02] Email confirmation and password reset · M1 · deps: AC-01 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -50,6 +49,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [CAT-02] Exam detail with access CTA · M1 · deps: CAT-01, ENT-02
 - [ENT-03] Admin grants, extends and ends access · M1 · deps: ENT-02, AC-06
 - [SES-01] Start attempt service · M1 · deps: ENT-02, F-04
+- [ENT-04] My access page · M1 · deps: ENT-02
 
 ## Backlog
 

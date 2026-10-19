@@ -9,8 +9,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Akusiap.Web.Areas.Account.Pages;
 
-/// <summary>Email registration (A-01). New users get the Learner role, are signed in and land on the catalog (or the local ReturnUrl).</summary>
-public sealed class RegisterModel(UserManager<User> users, SignInManager<User> signIn, IClock clock) : PageModel
+/// <summary>
+/// Email registration (A-01). New users get the Learner role and a confirmation email (AC-02), are signed in and land on
+/// the catalog (or the local ReturnUrl).
+/// </summary>
+public sealed class RegisterModel(UserManager<User> users, SignInManager<User> signIn, IClock clock, AccountEmails emails) : PageModel
 {
     [BindProperty]
     public RegisterInput Input { get; set; } = new();
@@ -55,7 +58,8 @@ public sealed class RegisterModel(UserManager<User> users, SignInManager<User> s
                 $"Could not give the new user the {RoleNames.Learner} role: {string.Join("; ", role.Errors.Select(e => e.Description))}");
         }
 
-        cancellationToken.ThrowIfCancellationRequested();
+        // A failed send is logged; the user can ask for the email again from /learn.
+        await emails.SendConfirmationAsync(user, cancellationToken);
         await signIn.SignInAsync(user, isPersistent: true);
         return LocalRedirect(SafeReturnUrl);
     }

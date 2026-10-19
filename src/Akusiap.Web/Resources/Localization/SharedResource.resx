@@ -383,4 +383,32 @@
   <data name="Learn.Access.Exam" xml:space="preserve"><value>Ujian</value></data>
   <data name="Learn.Access.Plan" xml:space="preserve"><value>Paket</value></data>
   <data name="Learn.Access.Link" xml:space="preserve"><value>Lihat akses ujian dan langganan Anda</value></data>
+  <data name="Email.Greeting" xml:space="preserve"><value>Halo {0},</value></data>
+  <data name="Email.LinkFallback" xml:space="preserve"><value>Jika tombol tidak berfungsi, salin tautan ini ke browser:</value></data>
+  <data name="Email.Confirm.Subject" xml:space="preserve"><value>Konfirmasi email Akusiap Anda</value></data>
+  <data name="Email.Confirm.Intro" xml:space="preserve"><value>Terima kasih sudah mendaftar di Akusiap. Konfirmasi alamat email Anda dengan tombol di bawah.</value></data>
+  <data name="Email.Confirm.Action" xml:space="preserve"><value>Konfirmasi email</value></data>
+  <data name="Email.Confirm.Note" xml:space="preserve"><value>Jika Anda tidak mendaftar, abaikan email ini.</value></data>
+  <data name="Email.Reset.Subject" xml:space="preserve"><value>Atur ulang kata sandi Akusiap</value></data>
+  <data name="Email.Reset.Intro" xml:space="preserve"><value>Kami menerima permintaan untuk mengatur ulang kata sandi akun Anda.</value></data>
+  <data name="Email.Reset.Action" xml:space="preserve"><value>Atur ulang kata sandi</value></data>
+  <data name="Email.Reset.Note" xml:space="preserve"><value>Tautan ini berlaku 24 jam. Jika Anda tidak memintanya, abaikan email ini; kata sandi Anda tidak berubah.</value></data>
+  <data name="Account.Confirm.Title" xml:space="preserve"><value>Konfirmasi email</value></data>
+  <data name="Account.Confirm.Done" xml:space="preserve"><value>Email Anda sudah dikonfirmasi. Terima kasih!</value></data>
+  <data name="Account.Confirm.Failed" xml:space="preserve"><value>Tautan konfirmasi tidak valid atau sudah kedaluwarsa. Masuk lalu kirim ulang email konfirmasi.</value></data>
+  <data name="Account.Confirm.Continue" xml:space="preserve"><value>Lanjut ke katalog</value></data>
+  <data name="Account.Confirm.Pending" xml:space="preserve"><value>Email Anda belum dikonfirmasi. Anda tetap bisa berlatih, tetapi perlu konfirmasi sebelum membayar.</value></data>
+  <data name="Account.Confirm.Resend" xml:space="preserve"><value>Kirim ulang email konfirmasi</value></data>
+  <data name="Account.Confirm.Resent" xml:space="preserve"><value>Email konfirmasi sudah dikirim. Periksa kotak masuk Anda.</value></data>
+  <data name="Account.Confirm.SendFailed" xml:space="preserve"><value>Email belum bisa dikirim. Coba lagi nanti.</value></data>
+  <data name="Account.Forgot.Link" xml:space="preserve"><value>Lupa kata sandi?</value></data>
+  <data name="Account.Forgot.Title" xml:space="preserve"><value>Lupa kata sandi</value></data>
+  <data name="Account.Forgot.Lead" xml:space="preserve"><value>Masukkan email akun Anda. Kami akan mengirim tautan untuk mengatur ulang kata sandi.</value></data>
+  <data name="Account.Forgot.Submit" xml:space="preserve"><value>Kirim tautan</value></data>
+  <data name="Account.Forgot.Sent" xml:space="preserve"><value>Jika email itu terdaftar, tautan untuk mengatur ulang kata sandi sudah dikirim. Periksa kotak masuk Anda.</value></data>
+  <data name="Account.Reset.Title" xml:space="preserve"><value>Atur ulang kata sandi</value></data>
+  <data name="Account.Reset.NewPassword" xml:space="preserve"><value>Kata sandi baru</value></data>
+  <data name="Account.Reset.Submit" xml:space="preserve"><value>Simpan kata sandi</value></data>
+  <data name="Account.Reset.Invalid" xml:space="preserve"><value>Tautan sudah tidak berlaku. Minta tautan baru.</value></data>
+  <data name="Account.Reset.Done" xml:space="preserve"><value>Kata sandi sudah diubah. Silakan masuk.</value></data>
 </root>

@@ -6,6 +6,10 @@
 
 <section class="mx-auto max-w-md space-y-6">
   <h1 class="text-2xl font-bold leading-tight">@T["Account.SignIn.Heading"]</h1>
+  @if (Model.PasswordWasReset)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-green-800" data-testid="reset-done">@T["Account.Reset.Done"]</p>
+  }
 
   <form method="post" class="space-y-4" novalidate>
     <input type="hidden" asp-for="ReturnUrl" />
@@ -28,6 +32,7 @@
         </button>
       </div>
       <span asp-validation-for="Input.Password" class="field-error"></span>
+      <a href="@AccountRoutes.ForgotPassword" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700" data-testid="forgot-link">@T["Account.Forgot.Link"]</a>
     </div>
 
     <label class="flex min-h-11 items-center gap-3 text-slate-700">

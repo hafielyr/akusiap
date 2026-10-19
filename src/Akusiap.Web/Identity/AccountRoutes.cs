@@ -6,6 +6,9 @@ public static class AccountRoutes
     public const string Register = "/akun/daftar";
     public const string SignIn = "/akun/masuk";
     public const string SignOut = "/akun/keluar";
+    public const string ConfirmEmail = "/akun/konfirmasi";
+    public const string ForgotPassword = "/akun/lupa-sandi";
+    public const string ResetPassword = "/akun/atur-ulang-sandi";
 
     /// <summary>Where a new or returning user lands: the exam catalog.</summary>
     public const string AfterSignIn = "/ujian";

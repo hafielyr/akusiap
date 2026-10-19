@@ -101,16 +101,20 @@ Database__MigrateOnStartup=false
 Seed__AdminEmail=…
 Seed__AdminPassword=…
 Support__WhatsAppNumber=62…
+Site__BaseUrl=https://<your domain>          # links in account emails (AC-02, required)
+Email__From=Akusiap <no-reply@<your domain>>
+Email__Smtp__Host=smtp-relay.brevo.com        # or email-smtp.<region>.amazonaws.com for SES
+Email__Smtp__Port=587
+Email__Smtp__UserName=…
+Email__Smtp__Password=…
 # Added by later cards:
 # Authentication__Google__ClientId / Authentication__Google__ClientSecret   (AC-03)
-# Email__From and the SMTP settings                                         (AC-02)
 # Doku__ClientId / Doku__SecretKey                                          (PAY-04)
 ```
 
 **App changes OPS-02 must make so this works:**
 - store data-protection keys in `/keys`, otherwise every deploy signs everyone out;
 - honour forwarded headers from Caddy (scheme and client IP);
-- configure the production email sender (AC-02);
 - protect the Hangfire dashboard;
 - add structured logging.
 
@@ -127,7 +131,8 @@ Support__WhatsAppNumber=62…
    | `PROD_CONNECTION_STRING` | Neon production connection string (used by the migrations bundle and written to `.env`) |
    | `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD` | First admin account |
    | `SUPPORT_WHATSAPP_NUMBER` | Support number, `62…` |
-   | Later: `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`, SMTP settings, `DOKU_CLIENT_ID`/`DOKU_SECRET_KEY` | Added with AC-03, AC-02 and PAY-04 |
+   | `SITE_BASE_URL`, `EMAIL_FROM`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD` | Account emails (AC-02). Without `SMTP_HOST` the app runs but drops emails with a warning |
+   | Later: `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`, `DOKU_CLIENT_ID`/`DOKU_SECRET_KEY` | Added with AC-03 and PAY-04 |
 3. Protect `main` so that only PRs that passed CI can be merged (see `docs/ci.md`).
 
 ## 6. Deploying (after OPS-02)
