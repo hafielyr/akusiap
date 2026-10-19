@@ -1,5 +1,6 @@
 using Akusiap.TestSupport.Database;
 using Akusiap.TestSupport.Web;
+using System.Runtime.CompilerServices;
 using Microsoft.Playwright;
 
 namespace Akusiap.E2E;
@@ -51,11 +52,14 @@ public sealed class MobileSite : IAsyncLifetime, IAsyncDisposable
 
     ValueTask IAsyncDisposable.DisposeAsync() => new(DisposeAsync());
 
-    /// <summary>A fresh phone-sized browser context and page; dispose the context when done.</summary>
-    public async Task<IBrowserContext> NewPhoneAsync()
+    /// <summary>Environment variable that turns on trace recording (see <see cref="Phone"/>).</summary>
+    public const string TracesDirVariable = "PLAYWRIGHT_TRACES_DIR";
+
+    /// <summary>A fresh phone-sized browser context; dispose it when done.</summary>
+    public async Task<Phone> NewPhoneAsync([CallerMemberName] string testName = "")
     {
         var browser = _browser ?? throw new InvalidOperationException("The site is not started.");
-        return await browser.NewContextAsync(new BrowserNewContextOptions
+        var context = await browser.NewContextAsync(new BrowserNewContextOptions
         {
             BaseURL = BaseAddress.ToString(),
             ViewportSize = new ViewportSize { Width = Width, Height = Height },
@@ -66,6 +70,17 @@ public sealed class MobileSite : IAsyncLifetime, IAsyncDisposable
             Locale = "id-ID",
             TimezoneId = "Asia/Jakarta",
         });
+
+        var tracesDir = Environment.GetEnvironmentVariable(TracesDirVariable);
+        if (string.IsNullOrWhiteSpace(tracesDir))
+        {
+            return new Phone(context, tracePath: null);
+        }
+
+        Directory.CreateDirectory(tracesDir);
+        await context.Tracing.StartAsync(new TracingStartOptions { Title = testName, Screenshots = true, Snapshots = true, Sources = true });
+        var stamp = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff", System.Globalization.CultureInfo.InvariantCulture);
+        return new Phone(context, Path.Combine(tracesDir, $"{testName}-{stamp}.zip"));
     }
 }
 

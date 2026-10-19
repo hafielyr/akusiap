@@ -1,5 +1,7 @@
 # Akusiap: Quiz Practice App
 
+[![CI](https://github.com/hafielyr/akusiap/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hafielyr/akusiap/actions/workflows/ci.yml)
+
 Exam practice web app for Indonesian learners. Requirements: `Quiz Practice App — User Stories.docx` and `schema.sql` (database schema; `ERD.jpg` is an older diagram). Technical design: `docs/architecture.md`. Work tracking: `docs/kanban.md`. Agents: read `AGENTS.md` first.
 
 ## Prerequisites
@@ -61,6 +63,12 @@ powershell -ExecutionPolicy Bypass -File tools/playwright-install.ps1   # Window
 dotnet build -warnaserror
 dotnet test
 ```
+
+CI runs the same commands on every pull request and on `main`, against a throwaway PostgreSQL 17 container: see [`docs/ci.md`](docs/ci.md).
+
+## Deployment
+
+Production runs on a Hetzner VPS in Singapore behind Cloudflare, with Neon PostgreSQL (D-16). The one-time setup, deploys and rollback are in [`docs/deployment.md`](docs/deployment.md); the automation arrives with OPS-02.
 
 ## Front-end libraries
 
