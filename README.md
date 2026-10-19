@@ -16,6 +16,15 @@ dotnet user-secrets set "ConnectionStrings:Default" "Host=...;Database=neondb;Us
 dotnet run --project src/Akusiap.Web --launch-profile http   # http://localhost:5240
 ```
 
+In Development the app applies pending migrations at startup and seeds roles, plans, the default rule preset and sample content (a paid exam with 40 questions, 30 of them trial, and a free exam). To also get an admin account, store its credentials once:
+
+```
+dotnet user-secrets set "Seed:AdminEmail" "admin@example.com" --project src/Akusiap.Web
+dotnet user-secrets set "Seed:AdminPassword" "<8+ chars with upper, lower, digit and symbol>" --project src/Akusiap.Web
+```
+
+`schema.sql` is the design reference. Never run it against the app database: EF migrations build the database, and a database created from `schema.sql` cannot be migrated (D-30).
+
 Outside development, set the environment variable `ConnectionStrings__Default` instead. Without the setting the app stops at startup with a message naming it. Integration tests will use a separate `ConnectionStrings:Test` from F-05 on.
 
 `/health` returns `{"status":"Healthy","checks":{"database":"Healthy"}}` when the app is up and the database answers (503 otherwise).
