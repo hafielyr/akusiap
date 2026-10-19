@@ -43,6 +43,7 @@ public static class DependencyInjection
         services.AddScoped<OwnExams.OwnExams>();
         services.AddScoped<Moderation.QuestionReports>();
         services.AddScoped<Memorization.Flashcards>();
+        services.AddScoped<OwnExams.MixedPractice>();
         services.AddScoped<ExpireAttempts>();
         services.AddScoped<FindOpenAttempt>();
         services.AddScoped<CreatePayment>();

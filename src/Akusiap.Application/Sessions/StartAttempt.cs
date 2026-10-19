@@ -5,6 +5,7 @@ using Akusiap.Application.Access;
 using Akusiap.Application.Catalog;
 using Akusiap.Application.Common;
 using Akusiap.Domain.Access;
+using Akusiap.Domain.Content;
 using Akusiap.Domain.Sessions;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,6 +40,7 @@ public sealed class StartAttempt(
     public const string GuestNameRequired = "Session.GuestNameRequired";
     public const string MaxAttemptsReached = "Session.MaxAttemptsReached";
     public const string NothingWrong = "Session.Retake.NothingWrong";
+    public const string MixEmpty = "Mix.Empty";
 
     public static JsonSerializerOptions Json { get; } = new(JsonSerializerDefaults.Web) { Converters = { new JsonStringEnumConverter() } };
 
@@ -210,10 +212,66 @@ public sealed class StartAttempt(
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         return Result.Ok(new StartedAttempt(attempt.Id, AttemptSource.WrongOnly, selected.Count));
     }
+    /// <summary>
+    /// Starts a private mixed set (OWN-06, D-84) from questions the caller already checked: Practice, untimed, hints on,
+    /// shuffled, answers shown after each check. Source CustomMix and no exam, so it can never be shared.
+    /// </summary>
+    public async Task<Result<StartedAttempt>> StartCustomMixAsync(IReadOnlyList<long> questionIds, int questionCount, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(questionIds);
+        var userId = currentUser.UserId ?? throw new InvalidOperationException("Mixed practice needs a signed-in user.");
+        var candidates = await CandidatesForAsync(questionIds, cancellationToken).ConfigureAwait(false);
+        if (candidates.Count == 0)
+        {
+            return Result.Fail<StartedAttempt>(new Problem(MixEmpty));
+        }
+
+        var preset = new RulePreset { Name = "Latihan campuran", HintsEnabled = true, ShuffleQuestions = true, ShuffleOptions = true, ShowAnswers = ShowAnswers.AfterEach };
+        var built = SessionRulesBuilder.Build(preset, AttemptMode.Practice, new RuleOverrides(QuestionCount: Math.Min(questionCount, candidates.Count), Untimed: true), candidates.Count);
+        if (!built.Succeeded)
+        {
+            return Result.Fail<StartedAttempt>(built.Problems);
+        }
+
+        var rules = built.Value!;
+        var selected = QuestionSelection.Select(candidates, [], rules.QuestionCount, rules.ShuffleQuestions, rules.ShuffleOptions, random.Random);
+        var now = clock.UtcNow;
+        var attempt = new Attempt
+        {
+            UserId = userId,
+            ExamId = null,
+            Source = AttemptSource.CustomMix,
+            Mode = rules.Mode,
+            RulesSnapshot = JsonSerializer.Serialize(rules, Json),
+            StartedAt = now,
+            LastSavedAt = now,
+            TotalCount = selected.Count,
+        };
+        foreach (var item in selected)
+        {
+            attempt.Items.Add(new AttemptItem
+            {
+                QuestionId = item.QuestionId,
+                Position = item.Position,
+                OptionOrder = JsonSerializer.Serialize(item.OptionOrder, Json),
+            });
+        }
+
+        db.Attempts.Add(attempt);
+        await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return Result.Ok(new StartedAttempt(attempt.Id, AttemptSource.CustomMix, selected.Count));
+    }
+
     /// <summary>The questions the decision allows, in exam order, with topic, type and option ids.</summary>
     private async Task<IReadOnlyList<CandidateQuestion>> CandidatesAsync(long examId, QuestionScope scope, CancellationToken cancellationToken)
     {
         var ids = await questionScope.GetQuestionIdsAsync(examId, scope, cancellationToken).ConfigureAwait(false);
+        return await CandidatesForAsync(ids, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>The given questions, in the given order, with topic, type and option ids (missing ones are skipped).</summary>
+    private async Task<IReadOnlyList<CandidateQuestion>> CandidatesForAsync(IReadOnlyList<long> ids, CancellationToken cancellationToken)
+    {
         var rows = await db.Questions
             .Where(q => ids.Contains(q.Id))
             .Select(q => new
@@ -226,6 +284,6 @@ public sealed class StartAttempt(
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
         var byId = rows.ToDictionary(r => r.Id);
-        return [.. ids.Select(id => byId[id]).Select(r => new CandidateQuestion(r.Id, r.TopicId, r.QuestionType, r.Options))];
+        return [.. ids.Where(byId.ContainsKey).Select(id => byId[id]).Select(r => new CandidateQuestion(r.Id, r.TopicId, r.QuestionType, r.Options))];
     }
 }
