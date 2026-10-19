@@ -1,0 +1,65 @@
+@page "/learn/riwayat"
+@model Akusiap.Web.Areas.Learn.Pages.HistoryModel
+@using Akusiap.Domain
+@using Akusiap.Domain.Sessions
+@using Akusiap.Web.Pages.Sessions
+@* Session history (SES-10): newest first; in-progress attempts link back to the player. *@
+@{
+  ViewData["Title"] = T["History.Title"].Value;
+  var history = Model.History;
+}
+
+<section class="space-y-4">
+  <a href="/learn" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Learn.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["History.Title"]</h1>
+
+  @if (history.Items.Count == 0)
+  {
+    <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600" data-testid="history-empty">@T["History.Empty"]</p>
+  }
+  else
+  {
+    <ul class="space-y-3" data-testid="history-list">
+      @foreach (var row in history.Items)
+      {
+        var open = row.Status == AttemptStatus.InProgress;
+        var mode = row.Mode switch
+        {
+          AttemptMode.Simulation => T["Session.Setup.Simulation"].Value,
+          AttemptMode.Flashcard => T["History.Flashcard"].Value,
+          _ => T["Session.Setup.Practice"].Value,
+        };
+        <li class="space-y-2 rounded-xl border border-slate-200 bg-white p-4" data-testid="history-row" data-attempt="@row.AttemptId">
+          <div class="flex items-start justify-between gap-3">
+            <p class="font-semibold">@(row.ExamTitle ?? T["History.Mixed"].Value)</p>
+            @if (!open && row.ScorePercent is { } score)
+            {
+              <p class="shrink-0 text-lg font-bold" data-testid="history-score">@score.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</p>
+            }
+          </div>
+          <p class="text-sm text-slate-600">@JakartaTime.Format(row.StartedAt) · @mode@(open ? null : " · " + T["Session.Result.Correct", row.CorrectCount, row.TotalCount].Value) · @T["History.Minutes", row.TimeSpentSeconds / 60, row.TimeSpentSeconds % 60]</p>
+          <div class="flex flex-wrap gap-2">
+            @if (open)
+            {
+              <a href="@SessionRoutes.Player(row.AttemptId)" class="btn btn-primary w-full sm:w-auto" data-testid="history-continue">@T["ExamPage.ResumeAction"]</a>
+            }
+            else
+            {
+              <a href="@SessionRoutes.Result(row.AttemptId)" class="btn btn-secondary flex-1 sm:flex-none" data-testid="history-result">@T["History.Result"]</a>
+              <a href="@SessionRoutes.Review(row.AttemptId)" class="btn btn-secondary flex-1 sm:flex-none" data-testid="history-review">@T["History.Review"]</a>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+
+    @if (history.PageCount > 1)
+    {
+      <nav class="flex items-center justify-between gap-2" aria-label="@T["History.Title"]">
+        @if (history.Page > 1) { <a href="@HistoryModel.LinkTo(history.Page - 1)" class="btn btn-secondary">@T["Catalog.Previous"]</a> } else { <span></span> }
+        <span class="text-sm text-slate-600">@T["Catalog.PageOf", history.Page, history.PageCount]</span>
+        @if (history.Page < history.PageCount) { <a href="@HistoryModel.LinkTo(history.Page + 1)" class="btn btn-secondary" data-testid="history-next">@T["Catalog.Next"]</a> } else { <span></span> }
+      </nav>
+    }
+  }
+</section>

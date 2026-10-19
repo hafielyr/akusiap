@@ -57,7 +57,6 @@
   <data name="Admin.Title" xml:space="preserve"><value>Dasbor admin</value></data>
   <data name="Admin.ComingSoon" xml:space="preserve"><value>Pengguna dan pembayaran menyusul di sini.</value></data>
   <data name="Learn.Title" xml:space="preserve"><value>Ruang belajar</value></data>
-  <data name="Learn.ComingSoon" xml:space="preserve"><value>Riwayat latihan dan akses ujian Anda akan tampil di sini.</value></data>
   <data name="Nav.Admin" xml:space="preserve"><value>Admin</value></data>
   <data name="Admin.Nav.Label" xml:space="preserve"><value>Menu admin</value></data>
   <data name="Admin.Nav.Dashboard" xml:space="preserve"><value>Dasbor</value></data>
@@ -723,4 +722,12 @@
   <data name="Session.Review.YourAnswer" xml:space="preserve"><value>Jawaban Anda</value></data>
   <data name="Session.Review.CorrectAnswer" xml:space="preserve"><value>Jawaban benar</value></data>
   <data name="Session.Result.SeeReview" xml:space="preserve"><value>Lihat pembahasan</value></data>
+  <data name="History.Title" xml:space="preserve"><value>Riwayat latihan</value></data>
+  <data name="History.Link" xml:space="preserve"><value>Sesi yang sudah dan sedang dikerjakan</value></data>
+  <data name="History.Empty" xml:space="preserve"><value>Belum ada sesi. Mulai dari katalog ujian.</value></data>
+  <data name="History.Mixed" xml:space="preserve"><value>Latihan campuran</value></data>
+  <data name="History.Flashcard" xml:space="preserve"><value>Kartu hafalan</value></data>
+  <data name="History.Minutes" xml:space="preserve"><value>{0} mnt {1} dtk</value></data>
+  <data name="History.Result" xml:space="preserve"><value>Hasil</value></data>
+  <data name="History.Review" xml:space="preserve"><value>Pembahasan</value></data>
 </root>
