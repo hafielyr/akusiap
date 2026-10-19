@@ -8,6 +8,7 @@
 <section class="max-w-2xl space-y-4">
   <h1 class="text-2xl font-bold leading-tight">@T["Admin.Plans.Title"]</h1>
   <p class="text-slate-600">@T["Admin.Plans.Lead"]</p>
+  <a href="@LimitsModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700" data-testid="limits-link">@T["Admin.Limits.Link"]</a>
 
   @foreach (var plan in Model.Plans)
   {

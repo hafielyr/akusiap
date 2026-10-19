@@ -34,6 +34,8 @@ public static class DependencyInjection
         services.AddScoped<Checkout>();
         services.AddScoped<ListPlanPricing>();
         services.AddScoped<SavePlanPrices>();
+        services.AddScoped<ListPlanLimits>();
+        services.AddScoped<SavePlanLimits>();
         services.AddScoped<ListUsers>();
         services.AddScoped<GetUserDetail>();
         services.AddScoped<ApplyGatewayNotification>();
