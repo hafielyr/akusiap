@@ -588,4 +588,9 @@
   <data name="Email.Invite.Intro" xml:space="preserve"><value>An Akusiap admin created an account for you. Set a password to sign in.</value></data>
   <data name="Email.Invite.Action" xml:space="preserve"><value>Set password</value></data>
   <data name="Email.Invite.Note" xml:space="preserve"><value>This link works for 24 hours. If it expires, ask for a new one on the Forgot password page.</value></data>
+  <data name="Admin.Users.Deactivate" xml:space="preserve"><value>Deactivate account</value></data>
+  <data name="Admin.Users.Reactivate" xml:space="preserve"><value>Reactivate</value></data>
+  <data name="Admin.Users.Deactivated" xml:space="preserve"><value>Account deactivated. The user is signed out everywhere.</value></data>
+  <data name="Admin.Users.Reactivated" xml:space="preserve"><value>Account reactivated.</value></data>
+  <data name="Admin.Users.CannotDeactivateSelf" xml:space="preserve"><value>You can't deactivate your own account.</value></data>
 </root>

@@ -588,4 +588,9 @@
   <data name="Email.Invite.Intro" xml:space="preserve"><value>Admin Akusiap membuatkan akun untuk Anda. Buat kata sandi untuk mulai masuk.</value></data>
   <data name="Email.Invite.Action" xml:space="preserve"><value>Buat kata sandi</value></data>
   <data name="Email.Invite.Note" xml:space="preserve"><value>Tautan ini berlaku 24 jam. Jika kedaluwarsa, minta tautan baru lewat halaman Lupa kata sandi.</value></data>
+  <data name="Admin.Users.Deactivate" xml:space="preserve"><value>Nonaktifkan akun</value></data>
+  <data name="Admin.Users.Reactivate" xml:space="preserve"><value>Aktifkan kembali</value></data>
+  <data name="Admin.Users.Deactivated" xml:space="preserve"><value>Akun dinonaktifkan. Pengguna langsung keluar dari semua perangkat.</value></data>
+  <data name="Admin.Users.Reactivated" xml:space="preserve"><value>Akun diaktifkan kembali.</value></data>
+  <data name="Admin.Users.CannotDeactivateSelf" xml:space="preserve"><value>Anda tidak bisa menonaktifkan akun Anda sendiri.</value></data>
 </root>
