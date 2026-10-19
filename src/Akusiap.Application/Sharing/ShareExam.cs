@@ -13,8 +13,8 @@ public sealed class FeatureOptions
 {
     public const string SectionName = "Features";
 
-    /// <summary>Shared exam links (SHR-01..05). Off until SHR-05 turns it on.</summary>
-    public bool Sharing { get; set; }
+    /// <summary>Shared exam links (SHR-01..05). On by default since SHR-05 (`appsettings.json`); set false to hide sharing.</summary>
+    public bool Sharing { get; set; } = true;
 }
 
 /// <summary>Share tokens: 16 random bytes as 22 URL-safe characters (SHR-01).</summary>

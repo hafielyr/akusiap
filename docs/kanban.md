@@ -7,18 +7,18 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04
 
 ## In Progress
 
 ## Review
-- [SHR-04] Shared result and register invitation · M6 · deps: SHR-03 · (claude-opus-5.5, 2026-10-20)
+- [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04 · (claude-opus-5.5, 2026-10-20)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
 - [AC-05] Legal pages · M1 · deps: F-06, AC-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: the Terms of Service and Privacy Policy text (Indonesian and English), the business name and contact to show in them, and confirmation that the "proposed" refund policy in the stories doc is final. The stories doc has no Terms or Privacy text, and legal text must not be guessed.
 - [PAY-04] DOKU client · M3 · deps: PAY-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: DOKU sandbox credentials (`Doku:ClientId`, `Doku:SecretKey`, set with user-secrets) and the DOKU product to use (Checkout or Direct API). The AC needs real sandbox charges and recorded notification fixtures, which can't be made without the account.
 - [PAY-09] Refund requests · M3 · deps: PAY-06 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: confirmation that the "proposed" refund policy in the stories doc is final (windows, the 20% usage rule, one first-payment refund per account, the review rules), ideally as part of the AC-05 legal text. Payment rules must not be guessed. PAY-04 (DOKU refunds) is also still blocked.
+- [OPS-02] Production deployment · M4 · deps: F-08, PAY-04 · (claude-opus-5.5, 2026-10-20) · Needs PAY-04 first (blocked on DOKU sandbox credentials), plus from the owner: a Hetzner VPS (or similar) and domain, GitHub secrets for GHCR/SSH deploy, and production values for Neon, SMTP, Site:BaseUrl and optional Google OAuth.
 
 ## Done
 - [F-01] Solution skeleton · M1 · deps: none
@@ -86,6 +86,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SHR-02] Report shared exam and admin takedown · M6 · deps: SHR-01, SES-11
 - [SRS-03] Daily due list · M7 · deps: SRS-02
 - [SHR-03] Guest takes a shared exam · M6 · deps: SHR-02, SES-03
+- [SHR-04] Shared result and register invitation · M6 · deps: SHR-03
 
 ## Backlog
 
@@ -98,7 +99,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ### M3 Payments (Release 1)
 
 ### M4 Admin ops and launch (Release 1)
-- [OPS-02] Production deployment · M4 · deps: F-08, PAY-04
 
 **Release 1 exit check**: In the DOKU sandbox, a guest completes trial → register → QRIS payment → full exam → review → flashcards. The receipt email arrives. A refund within 7 days is auto-approved and access ends.
 

@@ -74,7 +74,8 @@ public sealed class SharedExamTakedownTests(PostgresFixture database)
         }
 
         var (examId, token) = await SeedSharedExamAsync(owner);
-        using var flagOff = app.CreateClient();
+        await using var flagOffSite = app.WithWebHostBuilder(b => b.UseSetting("Features:Sharing", "false"));
+        using var flagOff = flagOffSite.CreateClient();
         using var off = await flagOff.GetAsync(new Uri($"/s/{token}", UriKind.Relative));
         await using var site = app.WithWebHostBuilder(b => b.UseSetting("Features:Sharing", "true"));
         using var flagOn = site.CreateClient();
