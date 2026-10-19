@@ -362,4 +362,14 @@
   <data name="Access.EndedOn" xml:space="preserve"><value>Berakhir {0}</value></data>
   <data name="Access.DaysLeft" xml:space="preserve"><value>{0} hari lagi</value></data>
   <data name="Access.LastDay" xml:space="preserve"><value>Hari terakhir</value></data>
+  <data name="Session.NoAccess" xml:space="preserve"><value>Anda belum punya akses ke ujian ini.</value></data>
+  <data name="Session.GuestNameRequired" xml:space="preserve"><value>Isi nama Anda dulu.</value></data>
+  <data name="Session.MaxAttemptsReached" xml:space="preserve"><value>Batas {0} kali simulasi untuk ujian ini sudah tercapai.</value></data>
+  <data name="Session.Rules.ModeNotSupported" xml:space="preserve"><value>Mode ini belum tersedia.</value></data>
+  <data name="Session.Rules.Locked" xml:space="preserve"><value>Aturan simulasi tidak bisa diubah.</value></data>
+  <data name="Session.Rules.CountRange" xml:space="preserve"><value>Jumlah soal harus 1 sampai {0}.</value></data>
+  <data name="Session.Rules.TimeTooShort" xml:space="preserve"><value>Batas waktu minimal {0} menit.</value></data>
+  <data name="Session.Rules.TimeRange" xml:space="preserve"><value>Batas waktu harus 1 sampai {0} menit.</value></data>
+  <data name="Session.Rules.HintsOff" xml:space="preserve"><value>Petunjuk dimatikan untuk ujian ini.</value></data>
+  <data name="Session.Rules.NoQuestions" xml:space="preserve"><value>Tidak ada soal untuk topik yang dipilih.</value></data>
 </root>

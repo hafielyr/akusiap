@@ -1,8 +1,10 @@
+using Akusiap.Application.Abstractions;
 using Akusiap.Application.Access;
 using Akusiap.Application.Catalog;
 using Akusiap.Application.Exams;
 using Akusiap.Application.Questions;
 using Akusiap.Application.RulePresets;
+using Akusiap.Application.Sessions;
 using Akusiap.Application.Subjects;
 using Akusiap.Application.Topics;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,8 @@ public static class DependencyInjection
         services.AddScoped<ExamQuestionScope>();
         services.AddScoped<GetUserAccess>();
         services.AddScoped<ManageAccess>();
+        services.AddSingleton<IRandomSource, SystemRandomSource>();
+        services.AddScoped<StartAttempt>();
         services.AddScoped<ListCatalog>();
         services.AddScoped<GetCatalogExam>();
         services.AddScoped<ListSubjects>();

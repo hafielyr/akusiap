@@ -362,4 +362,14 @@
   <data name="Access.EndedOn" xml:space="preserve"><value>Ended {0}</value></data>
   <data name="Access.DaysLeft" xml:space="preserve"><value>{0} days left</value></data>
   <data name="Access.LastDay" xml:space="preserve"><value>Last day</value></data>
+  <data name="Session.NoAccess" xml:space="preserve"><value>You don't have access to this exam yet.</value></data>
+  <data name="Session.GuestNameRequired" xml:space="preserve"><value>Enter your name first.</value></data>
+  <data name="Session.MaxAttemptsReached" xml:space="preserve"><value>You have used all {0} simulation attempts for this exam.</value></data>
+  <data name="Session.Rules.ModeNotSupported" xml:space="preserve"><value>This mode isn't available yet.</value></data>
+  <data name="Session.Rules.Locked" xml:space="preserve"><value>Simulation rules can't be changed.</value></data>
+  <data name="Session.Rules.CountRange" xml:space="preserve"><value>The number of questions must be 1 to {0}.</value></data>
+  <data name="Session.Rules.TimeTooShort" xml:space="preserve"><value>The time limit must be at least {0} minutes.</value></data>
+  <data name="Session.Rules.TimeRange" xml:space="preserve"><value>The time limit must be 1 to {0} minutes.</value></data>
+  <data name="Session.Rules.HintsOff" xml:space="preserve"><value>Hints are turned off for this exam.</value></data>
+  <data name="Session.Rules.NoQuestions" xml:space="preserve"><value>There are no questions in the chosen topics.</value></data>
 </root>

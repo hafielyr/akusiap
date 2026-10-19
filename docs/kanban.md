@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SES-01] Start attempt service · M1 · deps: ENT-02, F-04
 - [ENT-04] My access page · M1 · deps: ENT-02
 - [AC-02] Email confirmation and password reset · M1 · deps: AC-01
 - [AC-04] Profile, password and role · M1 · deps: AC-01
@@ -18,11 +17,13 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-01] Payment schema and gateway abstraction · M3 · deps: F-03
 - [PAY-02] Plans and prices admin · M3 · deps: ADM-T1, F-07
 - [USR-01] User search · M4 · deps: AC-06
+- [SES-02] Session setup page · M1 · deps: SES-01
+- [SES-03] Quiz player · M1 · deps: SES-01
 
 ## In Progress
 
 ## Review
-- [ENT-03] Admin grants, extends and ends access · M1 · deps: ENT-02, AC-06 · (claude-opus-5.5, 2026-10-19)
+- [SES-01] Start attempt service · M1 · deps: ENT-02, F-04 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -48,12 +49,11 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [ENT-02] Entitlement query and guard · M1 · deps: ENT-01, AC-01
 - [CAT-01] Exam catalog · M1 · deps: ADM-T6, F-06
 - [CAT-02] Exam detail with access CTA · M1 · deps: CAT-01, ENT-02
+- [ENT-03] Admin grants, extends and ends access · M1 · deps: ENT-02, AC-06
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [SES-02] Session setup page · M1 · deps: SES-01
-- [SES-03] Quiz player · M1 · deps: SES-01
 - [SES-04] Autosave and resume · M1 · deps: SES-03
 - [SES-06] Submit, scoring and timeout · M1 · deps: SES-04
 - [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04

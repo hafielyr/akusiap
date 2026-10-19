@@ -1,0 +1,148 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Akusiap.Application.Abstractions;
+using Akusiap.Application.Access;
+using Akusiap.Application.Catalog;
+using Akusiap.Application.Common;
+using Akusiap.Domain.Access;
+using Akusiap.Domain.Sessions;
+using Microsoft.EntityFrameworkCore;
+
+namespace Akusiap.Application.Sessions;
+
+/// <param name="GuestToken">The guest's cookie token (required when nobody is signed in).</param>
+/// <param name="GuestName">Shared-exam takers who are not signed in.</param>
+public sealed record StartAttemptRequest(
+    long ExamId,
+    AttemptMode Mode,
+    RuleOverrides? Overrides = null,
+    string? ShareToken = null,
+    Guid? GuestToken = null,
+    string? GuestName = null);
+
+public sealed record StartedAttempt(long AttemptId, AttemptSource Source, int QuestionCount);
+
+/// <summary>
+/// Starts an attempt (SES-01, stories S-01, S-03, S-08, G-02): checks the entitlement, builds the rules (D-12, D-45),
+/// picks questions from <see cref="ExamQuestionScope"/> (trial questions only for a trial), shuffles questions and options
+/// as the rules say, and stores the attempt with its items and rules snapshot.
+/// </summary>
+public sealed class StartAttempt(
+    IAppDbContext db,
+    IEntitlementService entitlements,
+    ExamQuestionScope questionScope,
+    ICurrentUser currentUser,
+    IClock clock,
+    IRandomSource random)
+{
+    public const string NoAccess = "Session.NoAccess";
+    public const string GuestNameRequired = "Session.GuestNameRequired";
+    public const string MaxAttemptsReached = "Session.MaxAttemptsReached";
+
+    public static JsonSerializerOptions Json { get; } = new(JsonSerializerDefaults.Web) { Converters = { new JsonStringEnumConverter() } };
+
+    public async Task<Result<StartedAttempt>> HandleAsync(StartAttemptRequest request, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        var userId = currentUser.UserId;
+        if (userId is null && request.GuestToken is null)
+        {
+            throw new InvalidOperationException("Guests need a guest token to start an attempt.");
+        }
+
+        var access = await entitlements.GetAsync(request.ExamId, request.ShareToken, cancellationToken).ConfigureAwait(false);
+        if (access is null || !ExamCtas.IsVisible(access.Decision))
+        {
+            return Result.Fail<StartedAttempt>(Problem.NotFound);
+        }
+
+        var decision = access.Decision;
+        if (!decision.CanStart)
+        {
+            return Result.Fail<StartedAttempt>(new Problem(NoAccess));
+        }
+
+        var guestName = request.GuestName?.Trim();
+        if (userId is null && decision.RequiresGuestName && string.IsNullOrEmpty(guestName))
+        {
+            return Result.Fail<StartedAttempt>(new Problem(GuestNameRequired, nameof(StartAttemptRequest.GuestName)));
+        }
+
+        var presetId = await db.Exams.Where(e => e.Id == request.ExamId).Select(e => e.RulePresetId).SingleAsync(cancellationToken).ConfigureAwait(false);
+        var preset = await db.RulePresets.AsNoTracking().SingleAsync(p => p.Id == presetId, cancellationToken).ConfigureAwait(false);
+        var candidates = await CandidatesAsync(request.ExamId, decision.Scope, cancellationToken).ConfigureAwait(false);
+        var overrides = request.Overrides ?? RuleOverrides.None;
+        var topics = overrides.TopicIds ?? [];
+        var built = SessionRulesBuilder.Build(preset, request.Mode, overrides, QuestionSelection.CountAvailable(candidates, [.. topics]));
+        if (!built.Succeeded)
+        {
+            return Result.Fail<StartedAttempt>(built.Problems);
+        }
+
+        var rules = built.Value!;
+        if (rules.Mode == AttemptMode.Simulation && rules.MaxAttempts is { } max)
+        {
+            var used = await db.Attempts
+                .CountAsync(
+                    a => a.ExamId == request.ExamId && a.Mode == AttemptMode.Simulation
+                        && (userId != null ? a.UserId == userId : a.UserId == null && a.GuestToken == request.GuestToken),
+                    cancellationToken)
+                .ConfigureAwait(false);
+            if (used >= max)
+            {
+                return Result.Fail<StartedAttempt>(new Problem(MaxAttemptsReached, null, max));
+            }
+        }
+
+        var selected = QuestionSelection.Select(candidates, [.. rules.TopicIds], rules.QuestionCount, rules.ShuffleQuestions, rules.ShuffleOptions, random.Random);
+        var source = decision.Scope == QuestionScope.TrialOnly ? AttemptSource.Trial
+            : decision.Level == AccessLevel.Shared ? AttemptSource.Shared
+            : AttemptSource.Exam;
+        var now = clock.UtcNow;
+        var attempt = new Attempt
+        {
+            UserId = userId,
+            GuestToken = userId is null ? request.GuestToken : null,
+            GuestName = userId is null && source == AttemptSource.Shared ? guestName : null,
+            ExamId = request.ExamId,
+            Source = source,
+            Mode = rules.Mode,
+            RulesSnapshot = JsonSerializer.Serialize(rules, Json),
+            StartedAt = now,
+            LastSavedAt = now,
+            TotalCount = selected.Count,
+        };
+        foreach (var item in selected)
+        {
+            attempt.Items.Add(new AttemptItem
+            {
+                QuestionId = item.QuestionId,
+                Position = item.Position,
+                OptionOrder = JsonSerializer.Serialize(item.OptionOrder, Json),
+            });
+        }
+
+        db.Attempts.Add(attempt);
+        await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return Result.Ok(new StartedAttempt(attempt.Id, source, selected.Count));
+    }
+
+    /// <summary>The questions the decision allows, in exam order, with topic, type and option ids.</summary>
+    private async Task<IReadOnlyList<CandidateQuestion>> CandidatesAsync(long examId, QuestionScope scope, CancellationToken cancellationToken)
+    {
+        var ids = await questionScope.GetQuestionIdsAsync(examId, scope, cancellationToken).ConfigureAwait(false);
+        var rows = await db.Questions
+            .Where(q => ids.Contains(q.Id))
+            .Select(q => new
+            {
+                q.Id,
+                q.TopicId,
+                q.QuestionType,
+                Options = q.Options.OrderBy(o => o.SortOrder).ThenBy(o => o.Id).Select(o => o.Id).ToList(),
+            })
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+        var byId = rows.ToDictionary(r => r.Id);
+        return [.. ids.Select(id => byId[id]).Select(r => new CandidateQuestion(r.Id, r.TopicId, r.QuestionType, r.Options))];
+    }
+}
