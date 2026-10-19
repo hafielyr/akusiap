@@ -593,4 +593,8 @@
   <data name="Admin.Users.Deactivated" xml:space="preserve"><value>Akun dinonaktifkan. Pengguna langsung keluar dari semua perangkat.</value></data>
   <data name="Admin.Users.Reactivated" xml:space="preserve"><value>Akun diaktifkan kembali.</value></data>
   <data name="Admin.Users.CannotDeactivateSelf" xml:space="preserve"><value>Anda tidak bisa menonaktifkan akun Anda sendiri.</value></data>
+  <data name="Session.Player.TimeUp" xml:space="preserve"><value>Sesi ini sudah berakhir. Jawaban tidak bisa diubah lagi.</value></data>
+  <data name="Session.Player.SaveFailed" xml:space="preserve"><value>Jawaban belum tersimpan. Periksa koneksi Anda; perubahan berikutnya akan dicoba lagi.</value></data>
+  <data name="ExamPage.Resume" xml:space="preserve"><value>Anda punya sesi yang belum selesai untuk ujian ini.</value></data>
+  <data name="ExamPage.ResumeAction" xml:space="preserve"><value>Lanjutkan sesi</value></data>
 </root>

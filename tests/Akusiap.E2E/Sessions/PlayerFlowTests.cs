@@ -61,5 +61,19 @@ public sealed class PlayerFlowTests(MobileSite site)
         await Assertions.Expect(cells.Nth(1)).ToHaveAttributeAsync("aria-current", "step");
         var overflow = await page.EvaluateAsync<int>("() => document.documentElement.scrollWidth - window.innerWidth");
         Assert.True(overflow <= 0, $"The page scrolls sideways by {overflow}px at {MobileSite.Width}px");
+
+        // SES-04: closing and reopening the session restores answers, flags and the position.
+        await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        var url = page.Url;
+        await page.GotoAsync("about:blank");
+        await page.GotoAsync(url);
+        await Assertions.Expect(page.GetByTestId("position")).ToHaveTextAsync("2");
+        for (var i = 0; i < 5; i++)
+        {
+            await Assertions.Expect(cells.Nth(i)).ToHaveAttributeAsync("data-answered", answered[i]);
+            await Assertions.Expect(cells.Nth(i)).ToHaveAttributeAsync("data-flagged", flagged[i]);
+        }
+
+        await Assertions.Expect(page.GetByTestId("remaining")).ToHaveTextAsync("2");
     }
 }

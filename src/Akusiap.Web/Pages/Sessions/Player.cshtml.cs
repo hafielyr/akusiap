@@ -10,7 +10,7 @@ namespace Akusiap.Web.Pages.Sessions;
 /// <c>/sesi/{id}</c> (SES-03): one question per screen, run by the Alpine component in <c>quiz-player.js</c>. The owner
 /// (or the guest token) is checked on every request; anyone else gets 404.
 /// </summary>
-public sealed class PlayerModel(GetPlayer getPlayer) : PageModel
+public sealed class PlayerModel(GetPlayer getPlayer, Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery) : PageModel
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
@@ -33,6 +33,9 @@ public sealed class PlayerModel(GetPlayer getPlayer) : PageModel
     public string StateJson() => JsonSerializer.Serialize(
         new
         {
+            attemptId = View.AttemptId,
+            saveUrl = $"{SessionRoutes.Player(View.AttemptId)}/jawab",
+            token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken,
             secondsLeft = View.SecondsLeft,
             items = View.Items.Select(i => new
             {

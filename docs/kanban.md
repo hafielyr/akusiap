@@ -7,16 +7,17 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [SES-04] Autosave and resume · M1 · deps: SES-03
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
 - [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03
 - [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
 - [OWN-02] AllowancePolicy · M5 · deps: OWN-01, ENT-02
+- [SES-06] Submit, scoring and timeout · M1 · deps: SES-04
+- [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04
 
 ## In Progress
 
 ## Review
-- [USR-03] Deactivate and reactivate · M4 · deps: USR-01 · (claude-opus-5.5, 2026-10-19)
+- [SES-04] Autosave and resume · M1 · deps: SES-03 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -61,12 +62,11 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
 - [OWN-01] Plan limits admin · M5 · deps: PAY-02
 - [USR-02] Create user · M4 · deps: USR-01, AC-02
+- [USR-03] Deactivate and reactivate · M4 · deps: USR-01
 
 ## Backlog
 
 ### M1 Access to owner content (Release 1, priority)
-- [SES-06] Submit, scoring and timeout · M1 · deps: SES-04
-- [SES-05] Practice-mode feedback and hints · M1 · deps: SES-04
 - [SES-07] Result page and trial CTA · M1 · deps: SES-06
 - [SES-08] Answer review · M1 · deps: SES-06
 

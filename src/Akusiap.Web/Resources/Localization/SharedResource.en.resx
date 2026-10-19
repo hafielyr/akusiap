@@ -593,4 +593,8 @@
   <data name="Admin.Users.Deactivated" xml:space="preserve"><value>Account deactivated. The user is signed out everywhere.</value></data>
   <data name="Admin.Users.Reactivated" xml:space="preserve"><value>Account reactivated.</value></data>
   <data name="Admin.Users.CannotDeactivateSelf" xml:space="preserve"><value>You can't deactivate your own account.</value></data>
+  <data name="Session.Player.TimeUp" xml:space="preserve"><value>This session has ended. Answers can't be changed any more.</value></data>
+  <data name="Session.Player.SaveFailed" xml:space="preserve"><value>Your answer isn't saved yet. Check your connection; the next change will try again.</value></data>
+  <data name="ExamPage.Resume" xml:space="preserve"><value>You have an unfinished session for this exam.</value></data>
+  <data name="ExamPage.ResumeAction" xml:space="preserve"><value>Continue session</value></data>
 </root>

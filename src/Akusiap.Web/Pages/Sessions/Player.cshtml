@@ -36,6 +36,9 @@ else
       }
     </header>
 
+    <p x-show="ended" x-cloak role="alert" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" data-testid="session-ended-banner">@T["Session.Player.TimeUp"]</p>
+    <p x-show="saveFailed && !ended" x-cloak role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="save-failed">@T["Session.Player.SaveFailed"]</p>
+
     <article class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" aria-live="polite">
       <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
         @T["Session.Player.Question"] <span x-text="index + 1" data-testid="position"></span> / @view.Items.Count
@@ -49,7 +52,7 @@ else
           <label class="flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border px-3 py-2"
                  :class="isSelected(option.id) ? 'border-brand-600 bg-brand-50' : 'border-slate-200'">
             <input class="mt-1 size-5 shrink-0 accent-brand-600" :type="isSingle(item) ? 'radio' : 'checkbox'"
-                   :name="'q' + item.position" :value="option.id" :checked="isSelected(option.id)" @@change="choose(option.id)"
+                   :name="'q' + item.position" :value="option.id" :checked="isSelected(option.id)" :disabled="ended" @@change="choose(option.id)"
                    data-testid="option" />
             <span class="whitespace-pre-line" x-text="option.text"></span>
           </label>
@@ -59,7 +62,7 @@ else
 
     <div class="grid grid-cols-3 gap-2">
       <button type="button" class="btn btn-secondary" @@click="prev()" :disabled="isFirst" data-testid="prev">@T["Session.Player.Previous"]</button>
-      <button type="button" class="btn btn-secondary" @@click="toggleFlag()" :aria-pressed="item.flagged.toString()"
+      <button type="button" class="btn btn-secondary" @@click="toggleFlag()" :disabled="ended" :aria-pressed="item.flagged.toString()"
               :class="item.flagged && 'border-amber-500 bg-amber-50 text-amber-900'" data-testid="flag">@T["Session.Player.Flag"]</button>
       <button type="button" class="btn btn-primary" @@click="next()" :disabled="isLast" data-testid="next">@T["Session.Player.Next"]</button>
     </div>

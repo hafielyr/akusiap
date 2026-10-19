@@ -51,7 +51,7 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
             })
             .SingleOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
-        if (attempt is null || !IsOwner(attempt.UserId, attempt.GuestToken, guestToken))
+        if (attempt is null || !AttemptAccess.IsOwner(currentUser, attempt.UserId, attempt.GuestToken, guestToken))
         {
             return null;
         }
@@ -93,11 +93,6 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
             secondsLeft,
             [.. items.Select(i => new PlayerItem(i.Position, i.QuestionId, i.QuestionType, i.Text, Ordered(i.Options, i.OptionOrder), i.Selected, i.IsFlagged))]);
     }
-
-    private bool IsOwner(Guid? attemptUserId, Guid? attemptGuestToken, Guid? guestToken) =>
-        attemptUserId is { } owner
-            ? currentUser.UserId == owner
-            : attemptGuestToken is not null && attemptGuestToken == guestToken;
 
     /// <summary>Options in the stored order; any option missing from it (added later) goes last.</summary>
     private static List<PlayerOption> Ordered(List<PlayerOption> options, string? optionOrder)
