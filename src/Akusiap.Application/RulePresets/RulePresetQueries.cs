@@ -22,9 +22,10 @@ public sealed record RulePresetDetail(
 public sealed class ListRulePresets(IAppDbContext db)
 {
     public async Task<IReadOnlyList<RulePresetDetail>> HandleAsync(CancellationToken cancellationToken) =>
-        await RulePresetQueries.Details(db, db.RulePresets.Where(r => r.OwnerUserId == null))
-            .OrderByDescending(r => r.IsDefault)
-            .ThenBy(r => r.Name)
+        // Sort before projecting: EF cannot translate ordering on a record built through its constructor.
+        await RulePresetQueries.Details(
+                db,
+                db.RulePresets.Where(r => r.OwnerUserId == null).OrderByDescending(r => r.IsDefault).ThenBy(r => r.Name))
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
 }
