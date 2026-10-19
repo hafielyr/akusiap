@@ -576,4 +576,16 @@
   <data name="Admin.Limits.Save" xml:space="preserve"><value>Save limits</value></data>
   <data name="Admin.Limits.Saved" xml:space="preserve"><value>Plan limits saved.</value></data>
   <data name="Admin.Limits.Invalid" xml:space="preserve"><value>{0} must be a whole number from 0 to {1}, or empty.</value></data>
+  <data name="Admin.Users.Create" xml:space="preserve"><value>Add user</value></data>
+  <data name="Admin.Users.CreateLead" xml:space="preserve"><value>The account is created without a password. The user gets an email to set their own password.</value></data>
+  <data name="Admin.Users.CreateSubmit" xml:space="preserve"><value>Create account and send email</value></data>
+  <data name="Admin.Users.RoleRequired" xml:space="preserve"><value>Choose at least one role.</value></data>
+  <data name="Admin.Users.Created" xml:space="preserve"><value>Account created. The set-password email has been sent.</value></data>
+  <data name="Admin.Users.CreatedNoEmail" xml:space="preserve"><value>Account created, but the email couldn't be sent. Send it again from this page.</value></data>
+  <data name="Admin.Users.SendInvite" xml:space="preserve"><value>Send set-password link</value></data>
+  <data name="Admin.Users.InviteSent" xml:space="preserve"><value>The set-password link has been sent.</value></data>
+  <data name="Email.Invite.Subject" xml:space="preserve"><value>Your Akusiap account is ready</value></data>
+  <data name="Email.Invite.Intro" xml:space="preserve"><value>An Akusiap admin created an account for you. Set a password to sign in.</value></data>
+  <data name="Email.Invite.Action" xml:space="preserve"><value>Set password</value></data>
+  <data name="Email.Invite.Note" xml:space="preserve"><value>This link works for 24 hours. If it expires, ask for a new one on the Forgot password page.</value></data>
 </root>
