@@ -1,3 +1,4 @@
+using Akusiap.Application;
 using Akusiap.Infrastructure;
 using Akusiap.Web.Health;
 using Akusiap.Web.Identity;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddScoped<IdentityErrorDescriber, LocalizedIdentityErrorDescriber>();
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();

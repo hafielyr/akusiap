@@ -56,7 +56,44 @@
   <data name="Status.Other.Body" xml:space="preserve"><value>Silakan coba lagi. Jika masalah berlanjut, hubungi kami lewat WhatsApp.</value></data>
   <data name="Status.Home" xml:space="preserve"><value>Kembali ke beranda</value></data>
   <data name="Admin.Title" xml:space="preserve"><value>Dasbor admin</value></data>
-  <data name="Admin.ComingSoon" xml:space="preserve"><value>Pengelolaan soal, ujian, pengguna dan pembayaran akan tersedia di sini.</value></data>
+  <data name="Admin.ComingSoon" xml:space="preserve"><value>Soal, ujian, pengguna dan pembayaran menyusul di sini.</value></data>
   <data name="Learn.Title" xml:space="preserve"><value>Ruang belajar</value></data>
   <data name="Learn.ComingSoon" xml:space="preserve"><value>Riwayat latihan dan akses ujian Anda akan tampil di sini.</value></data>
+  <data name="Nav.Admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Admin.Nav.Label" xml:space="preserve"><value>Menu admin</value></data>
+  <data name="Admin.Nav.Dashboard" xml:space="preserve"><value>Dasbor</value></data>
+  <data name="Admin.Nav.Subjects" xml:space="preserve"><value>Subjek &amp; topik</value></data>
+  <data name="Admin.Dashboard.Lead" xml:space="preserve"><value>Kelola konten aplikasi.</value></data>
+  <data name="Admin.Save" xml:space="preserve"><value>Simpan</value></data>
+  <data name="Admin.Saved" xml:space="preserve"><value>Perubahan disimpan.</value></data>
+  <data name="Admin.Deleted" xml:space="preserve"><value>Data dihapus.</value></data>
+  <data name="Admin.ConfirmDelete" xml:space="preserve"><value>Ya, hapus</value></data>
+  <data name="Admin.Cancel" xml:space="preserve"><value>Batal</value></data>
+  <data name="Admin.Subjects.Title" xml:space="preserve"><value>Subjek</value></data>
+  <data name="Admin.Subjects.Lead" xml:space="preserve"><value>Subjek mengelompokkan topik dan ujian, misalnya Seleksi CPNS atau UTBK.</value></data>
+  <data name="Admin.Subjects.Add" xml:space="preserve"><value>Tambah subjek</value></data>
+  <data name="Admin.Subjects.Empty" xml:space="preserve"><value>Belum ada subjek. Tambahkan yang pertama.</value></data>
+  <data name="Admin.Subjects.TopicCount" xml:space="preserve"><value>{0} topik</value></data>
+  <data name="Admin.Subjects.ExamCount" xml:space="preserve"><value>{0} ujian</value></data>
+  <data name="Admin.Subjects.NewTitle" xml:space="preserve"><value>Subjek baru</value></data>
+  <data name="Admin.Subjects.EditTitle" xml:space="preserve"><value>Ubah subjek</value></data>
+  <data name="Admin.Subjects.NameTaken" xml:space="preserve"><value>Subjek dengan nama ini sudah ada.</value></data>
+  <data name="Admin.Subjects.InUse" xml:space="preserve"><value>Subjek ini masih punya {0} topik dan {1} ujian, jadi tidak bisa dihapus.</value></data>
+  <data name="Admin.Subjects.DeleteBlocked" xml:space="preserve"><value>Subjek hanya bisa dihapus jika tidak punya topik dan ujian.</value></data>
+  <data name="Admin.Subjects.Delete" xml:space="preserve"><value>Hapus subjek</value></data>
+  <data name="Admin.Subject.Name" xml:space="preserve"><value>Nama subjek</value></data>
+  <data name="Admin.Subject.Description" xml:space="preserve"><value>Deskripsi (opsional)</value></data>
+  <data name="Admin.Topics.Title" xml:space="preserve"><value>Topik</value></data>
+  <data name="Admin.Topics.Add" xml:space="preserve"><value>Tambah topik</value></data>
+  <data name="Admin.Topics.Added" xml:space="preserve"><value>Topik ditambahkan.</value></data>
+  <data name="Admin.Topics.Empty" xml:space="preserve"><value>Belum ada topik di subjek ini.</value></data>
+  <data name="Admin.Topics.QuestionCount" xml:space="preserve"><value>{0} soal</value></data>
+  <data name="Admin.Topics.EditTitle" xml:space="preserve"><value>Ubah topik</value></data>
+  <data name="Admin.Topics.NameTaken" xml:space="preserve"><value>Topik dengan nama ini sudah ada di subjek tersebut.</value></data>
+  <data name="Admin.Topics.SubjectMissing" xml:space="preserve"><value>Pilih subjek yang ada.</value></data>
+  <data name="Admin.Topics.InUse" xml:space="preserve"><value>Topik ini dipakai oleh {0} soal, jadi tidak bisa dihapus. Pindahkan soalnya ke topik lain terlebih dahulu.</value></data>
+  <data name="Admin.Topics.Delete" xml:space="preserve"><value>Hapus topik</value></data>
+  <data name="Admin.Topic.Name" xml:space="preserve"><value>Nama topik</value></data>
+  <data name="Admin.Topic.Description" xml:space="preserve"><value>Deskripsi (opsional)</value></data>
+  <data name="Admin.Topic.Subject" xml:space="preserve"><value>Subjek</value></data>
 </root>

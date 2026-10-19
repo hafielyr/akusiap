@@ -1,0 +1,70 @@
+@page "/admin/topik/{id:long}"
+@model Akusiap.Web.Areas.Admin.Pages.Topics.EditModel
+@{
+  ViewData["Title"] = T["Admin.Topics.EditTitle"].Value;
+  string? ErrorFor(string key) => ViewContext.ViewData.ModelState[key]?.Errors.FirstOrDefault()?.ErrorMessage;
+  var nameError = ErrorFor("Input.Name");
+  var subjectError = ErrorFor("Input.SubjectId");
+  var descriptionError = ErrorFor("Input.Description");
+}
+
+<section class="max-w-xl space-y-4">
+  <a href="/admin/subjek/@Model.Topic.SubjectId" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @Model.Topic.SubjectName</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Topics.EditTitle"]</h1>
+  <p class="text-sm text-slate-500">@T["Admin.Topics.QuestionCount", Model.Topic.QuestionCount]</p>
+
+  <form method="post" class="space-y-4" novalidate>
+    <div asp-validation-summary="ModelOnly" class="field-error" role="alert" data-testid="page-error"></div>
+
+    <div class="space-y-1">
+      <label for="Input_SubjectId" class="label">@T["Admin.Topic.Subject"]</label>
+      <select id="Input_SubjectId" name="Input.SubjectId" class="input" aria-invalid="@(subjectError is null ? null : "true")">
+        @foreach (var option in Model.SubjectOptions)
+        {
+          <option value="@option.Id" selected="@(option.Id == Model.Input.SubjectId)">@option.Name</option>
+        }
+      </select>
+      @if (subjectError is not null)
+      {
+        <span class="field-error">@subjectError</span>
+      }
+    </div>
+
+    <div class="space-y-1">
+      <label for="Input_Name" class="label">@T["Admin.Topic.Name"]</label>
+      <input id="Input_Name" name="Input.Name" value="@Model.Input.Name" maxlength="200" class="input" aria-invalid="@(nameError is null ? null : "true")" />
+      @if (nameError is not null)
+      {
+        <span class="field-error" data-testid="error-name">@nameError</span>
+      }
+    </div>
+
+    <div class="space-y-1">
+      <label for="Input_Description" class="label">@T["Admin.Topic.Description"]</label>
+      <textarea id="Input_Description" name="Input.Description" rows="3" maxlength="1000" class="input">@Model.Input.Description</textarea>
+      @if (descriptionError is not null)
+      {
+        <span class="field-error">@descriptionError</span>
+      }
+    </div>
+
+    <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Save"]</button>
+  </form>
+</section>
+
+<section class="max-w-xl space-y-2 border-t border-slate-200 pt-4">
+  @if (Model.Topic.QuestionCount > 0)
+  {
+    <p class="text-sm text-slate-500">@T["Admin.Topics.InUse", Model.Topic.QuestionCount]</p>
+  }
+  else
+  {
+    <form method="post" asp-page-handler="Delete" x-data="{ sure: false }">
+      <button type="button" x-show="!sure" x-on:click="sure = true" class="btn btn-secondary text-red-700">@T["Admin.Topics.Delete"]</button>
+      <span x-show="sure" x-cloak class="flex flex-wrap items-center gap-2">
+        <button type="submit" class="btn bg-red-600 text-white hover:bg-red-700">@T["Admin.ConfirmDelete"]</button>
+        <button type="button" x-on:click="sure = false" class="btn btn-secondary">@T["Admin.Cancel"]</button>
+      </span>
+    </form>
+  }
+</section>

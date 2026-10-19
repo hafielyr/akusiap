@@ -1,0 +1,29 @@
+@model Akusiap.Web.Areas.Admin.Pages.Subjects.SubjectInput
+@* Field names are prefixed "Input." to bind to the page's Input property; errors come from the use case (SubjectRules). *@
+@{
+  var nameError = ViewContext.ViewData.ModelState["Input.Name"]?.Errors.FirstOrDefault()?.ErrorMessage;
+  var descriptionError = ViewContext.ViewData.ModelState["Input.Description"]?.Errors.FirstOrDefault()?.ErrorMessage;
+}
+<form method="post" class="space-y-4" novalidate>
+  <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+
+  <div class="space-y-1">
+    <label for="Input_Name" class="label">@T["Admin.Subject.Name"]</label>
+    <input id="Input_Name" name="Input.Name" value="@Model.Name" maxlength="200" class="input" aria-invalid="@(nameError is null ? null : "true")" />
+    @if (nameError is not null)
+    {
+      <span class="field-error" data-testid="error-name">@nameError</span>
+    }
+  </div>
+
+  <div class="space-y-1">
+    <label for="Input_Description" class="label">@T["Admin.Subject.Description"]</label>
+    <textarea id="Input_Description" name="Input.Description" rows="3" maxlength="1000" class="input" aria-invalid="@(descriptionError is null ? null : "true")">@Model.Description</textarea>
+    @if (descriptionError is not null)
+    {
+      <span class="field-error">@descriptionError</span>
+    }
+  </div>
+
+  <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Save"]</button>
+</form>
