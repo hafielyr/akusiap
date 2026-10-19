@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [CAT-02] Exam detail with access CTA · M1 · deps: CAT-01, ENT-02
 - [ENT-03] Admin grants, extends and ends access · M1 · deps: ENT-02, AC-06
 - [SES-01] Start attempt service · M1 · deps: ENT-02, F-04
 - [ENT-04] My access page · M1 · deps: ENT-02
@@ -24,7 +23,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [CAT-01] Exam catalog · M1 · deps: ADM-T6, F-06 · (claude-opus-5.5, 2026-10-19)
+- [CAT-02] Exam detail with access CTA · M1 · deps: CAT-01, ENT-02 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -48,6 +47,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [ADM-T5] Rule presets · M1 · deps: ADM-T1
 - [ADM-T6] Publish and unpublish · M1 · deps: ADM-T4
 - [ENT-02] Entitlement query and guard · M1 · deps: ENT-01, AC-01
+- [CAT-01] Exam catalog · M1 · deps: ADM-T6, F-06
 
 ## Backlog
 

@@ -9,14 +9,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Akusiap.Web.Areas.Account.Pages;
 
-/// <summary>Email registration (A-01). New users get the Learner role, are signed in and land on the catalog.</summary>
+/// <summary>Email registration (A-01). New users get the Learner role, are signed in and land on the catalog (or the local ReturnUrl).</summary>
 public sealed class RegisterModel(UserManager<User> users, SignInManager<User> signIn, IClock clock) : PageModel
 {
     [BindProperty]
     public RegisterInput Input { get; set; } = new();
 
+    /// <summary>Where to go after registering, such as the exam page that asked (CAT-02). Local URLs only.</summary>
+    [BindProperty(SupportsGet = true)]
+    public string? ReturnUrl { get; set; }
+
     public IActionResult OnGet() =>
-        User.Identity?.IsAuthenticated == true ? LocalRedirect(AccountRoutes.AfterSignIn) : Page();
+        User.Identity?.IsAuthenticated == true ? LocalRedirect(SafeReturnUrl) : Page();
 
     public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
     {
@@ -53,8 +57,10 @@ public sealed class RegisterModel(UserManager<User> users, SignInManager<User> s
 
         cancellationToken.ThrowIfCancellationRequested();
         await signIn.SignInAsync(user, isPersistent: true);
-        return LocalRedirect(AccountRoutes.AfterSignIn);
+        return LocalRedirect(SafeReturnUrl);
     }
+
+    private string SafeReturnUrl => Url.IsLocalUrl(ReturnUrl) ? ReturnUrl! : AccountRoutes.AfterSignIn;
 
     private void AddErrors(IdentityResult result)
     {

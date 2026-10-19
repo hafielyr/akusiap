@@ -40,6 +40,6 @@
 
   <p class="text-center text-sm text-slate-600">
     @T["Account.SignIn.NoAccount"]
-    <a href="@AccountRoutes.Register" class="inline-flex min-h-11 items-center font-semibold text-brand-700">@T["Nav.Register"]</a>
+    <a href="@AccountRoutes.WithReturnUrl(AccountRoutes.Register, Model.ReturnUrl)" class="inline-flex min-h-11 items-center font-semibold text-brand-700">@T["Nav.Register"]</a>
   </p>
 </section>

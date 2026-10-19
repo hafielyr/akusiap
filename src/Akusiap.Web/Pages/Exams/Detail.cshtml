@@ -1,0 +1,102 @@
+@page "/ujian/{id:long}"
+@model Akusiap.Web.Pages.Exams.DetailModel
+@using Akusiap.Application.Catalog
+@using Akusiap.Domain.Content
+@using Akusiap.Web.Identity
+@* An exam's page (CAT-02): price, buttons for the viewer's access decision, description and topics. *@
+@{
+  var exam = Model.Exam;
+  ViewData["Title"] = exam.Title;
+  var registerUrl = AccountRoutes.WithReturnUrl(AccountRoutes.Register, ExamRoutes.Detail(exam.Id));
+  var signInUrl = AccountRoutes.WithReturnUrl(AccountRoutes.SignIn, ExamRoutes.Detail(exam.Id));
+}
+
+<article class="space-y-6">
+  <a href="@ExamRoutes.Catalog" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["ExamPage.Back"]</a>
+
+  @if (exam.Status != ExamStatus.Published)
+  {
+    <p role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="preview-notice">@T["ExamPage.Draft"]</p>
+  }
+
+  <header class="space-y-2">
+    @if (exam.SubjectName is not null)
+    {
+      <p class="text-xs font-medium uppercase tracking-wide text-slate-500">@exam.SubjectName</p>
+    }
+    <h1 class="text-2xl font-bold leading-tight">@exam.Title</h1>
+    <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-slate-700" data-testid="exam-price">
+      @if (exam.IsFree)
+      {
+        <span class="rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-700">@T["Catalog.Free"]</span>
+        <span>@T["Catalog.FreeForMembers"]</span>
+      }
+      else
+      {
+        <span class="font-semibold"><idr value="@(exam.PriceIdr ?? 0)" /></span>
+        <span>· @T["Catalog.AccessDays", exam.AccessDays ?? 0]</span>
+        @if (exam.HasFullAccess)
+        {
+          <span class="rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-800" data-testid="badge">@T["Catalog.YourAccess"]</span>
+        }
+      }
+    </p>
+    <p class="text-sm text-slate-600">@T["ExamPage.QuestionSummary", exam.ActiveQuestionCount]</p>
+  </header>
+
+  @if (exam.Ctas.Count > 0)
+  {
+    <nav aria-label="@T["ExamPage.Actions"]" class="space-y-3" data-testid="exam-ctas">
+      @foreach (var cta in exam.Ctas)
+      {
+        var primary = cta == exam.Ctas[0];
+        var css = primary ? "btn btn-primary w-full" : "btn btn-secondary w-full";
+        switch (cta)
+        {
+          case ExamCta.StartPractice:
+            <a href="@ExamRoutes.Start(exam.Id)" class="@css" data-testid="cta-start">@T["ExamPage.Start"]</a>
+            break;
+          case ExamCta.StartTrial:
+            <a href="@ExamRoutes.Start(exam.Id)" class="@css" data-testid="cta-trial">@T["ExamPage.Trial", exam.TrialQuestionCount]</a>
+            <p class="text-center text-sm text-slate-500">@T["ExamPage.TrialHint"]</p>
+            break;
+          case ExamCta.Buy:
+            <a href="@ExamRoutes.Checkout(exam.Id)" class="@css" data-testid="cta-buy">@T["ExamPage.Buy"] · <idr value="@(exam.PriceIdr ?? 0)" /></a>
+            break;
+          case ExamCta.Subscribe:
+            <a href="@ExamRoutes.Plans" class="@css" data-testid="cta-subscribe">@T["ExamPage.Subscribe"]</a>
+            <p class="text-center text-sm text-slate-500">@T["ExamPage.SubscribeHint"]</p>
+            break;
+          case ExamCta.RegisterToUnlock:
+            <a href="@registerUrl" class="@css" data-testid="cta-register">@T["ExamPage.Register"]</a>
+            <p class="text-center text-sm text-slate-600">
+              @T["Account.Register.HaveAccount"]
+              <a href="@signInUrl" class="inline-flex min-h-11 items-center font-semibold text-brand-700">@T["Nav.SignIn"]</a>
+            </p>
+            break;
+        }
+      }
+    </nav>
+  }
+
+  @if (!string.IsNullOrWhiteSpace(exam.Description))
+  {
+    <p class="whitespace-pre-line text-slate-700" data-testid="exam-description">@exam.Description.Trim()</p>
+  }
+
+  @if (exam.Topics.Count > 0)
+  {
+    <section class="space-y-2">
+      <h2 class="text-lg font-semibold">@T["ExamPage.Topics"]</h2>
+      <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white" data-testid="exam-topics">
+        @foreach (var topic in exam.Topics)
+        {
+          <li class="flex items-center justify-between gap-3 px-4 py-3">
+            <span>@topic.Name</span>
+            <span class="shrink-0 text-sm text-slate-500">@T["Catalog.QuestionCount", topic.QuestionCount]</span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</article>

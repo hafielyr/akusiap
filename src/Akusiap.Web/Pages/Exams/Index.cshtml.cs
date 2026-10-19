@@ -58,6 +58,6 @@ public sealed class IndexModel(ListCatalog listCatalog) : PageModel
             query.Add("hal", page.ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
 
-        return "/ujian" + query.ToQueryString();
+        return ExamRoutes.Catalog + query.ToQueryString();
     }
 }
