@@ -760,4 +760,27 @@
   <data name="Own.Exams.TakenDown" xml:space="preserve"><value>Ujian ini diturunkan oleh admin. Anda masih bisa melihatnya, tetapi tidak bisa memulai latihan.</value></data>
   <data name="Session.Retake.Action" xml:space="preserve"><value>Ulangi yang salah ({0})</value></data>
   <data name="Session.Retake.NothingWrong" xml:space="preserve"><value>Semua jawaban benar, tidak ada yang perlu diulang.</value></data>
+  <data name="Report.Title" xml:space="preserve"><value>Laporkan soal</value></data>
+  <data name="Report.Back" xml:space="preserve"><value>Kembali</value></data>
+  <data name="Report.Reason" xml:space="preserve"><value>Apa masalahnya?</value></data>
+  <data name="Report.Reason.WrongAnswer" xml:space="preserve"><value>Kunci jawaban salah</value></data>
+  <data name="Report.Reason.Unclear" xml:space="preserve"><value>Soal tidak jelas</value></data>
+  <data name="Report.Reason.Typo" xml:space="preserve"><value>Salah ketik</value></data>
+  <data name="Report.Reason.Other" xml:space="preserve"><value>Lainnya</value></data>
+  <data name="Report.Details" xml:space="preserve"><value>Keterangan (opsional)</value></data>
+  <data name="Report.DetailsHint" xml:space="preserve"><value>Contoh: jawaban yang benar seharusnya B karena …</value></data>
+  <data name="Report.Send" xml:space="preserve"><value>Kirim laporan</value></data>
+  <data name="Report.Thanks" xml:space="preserve"><value>Terima kasih. Laporan Anda sudah kami terima dan akan diperiksa admin.</value></data>
+  <data name="Report.ReasonRequired" xml:space="preserve"><value>Pilih masalahnya.</value></data>
+  <data name="Report.Link" xml:space="preserve"><value>Laporkan soal</value></data>
+  <data name="Admin.Nav.Reports" xml:space="preserve"><value>Laporan</value></data>
+  <data name="Admin.Reports.Title" xml:space="preserve"><value>Laporan soal</value></data>
+  <data name="Admin.Reports.Lead" xml:space="preserve"><value>Soal yang dilaporkan pengguna, terbaru di atas.</value></data>
+  <data name="Admin.Reports.Empty" xml:space="preserve"><value>Tidak ada laporan terbuka.</value></data>
+  <data name="Admin.Reports.Guest" xml:space="preserve"><value>tamu</value></data>
+  <data name="Admin.Reports.OpenEditor" xml:space="preserve"><value>Buka editor</value></data>
+  <data name="Admin.Reports.Fixed" xml:space="preserve"><value>Sudah diperbaiki</value></data>
+  <data name="Admin.Reports.Rejected" xml:space="preserve"><value>Tolak</value></data>
+  <data name="Admin.Reports.MarkedFixed" xml:space="preserve"><value>Laporan ditandai sudah diperbaiki.</value></data>
+  <data name="Admin.Reports.MarkedRejected" xml:space="preserve"><value>Laporan ditolak.</value></data>
 </root>
