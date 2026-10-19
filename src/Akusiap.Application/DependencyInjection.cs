@@ -45,6 +45,7 @@ public static class DependencyInjection
         services.AddScoped<Memorization.Flashcards>();
         services.AddScoped<OwnExams.MixedPractice>();
         services.AddScoped<Sharing.ShareExam>();
+        services.AddScoped<Moderation.ExamReports>();
         services.AddScoped<ExpireAttempts>();
         services.AddScoped<FindOpenAttempt>();
         services.AddScoped<CreatePayment>();
