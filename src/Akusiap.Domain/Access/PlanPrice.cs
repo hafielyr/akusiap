@@ -4,13 +4,13 @@ public class PlanPrice
 {
     public static IReadOnlyList<int> AllowedDurationMonths { get; } = [1, 3, 6, 12];
 
-    public int PlanPriceId { get; set; }
+    public long Id { get; set; }
 
-    public int PlanId { get; set; }
+    public long PlanId { get; set; }
 
     public Plan? Plan { get; set; }
 
-    /// <summary>1, 3, 6 or 12.</summary>
+    /// <summary>1, 3, 6 or 12; one price per duration per plan.</summary>
     public int DurationMonths { get; set; }
 
     /// <summary>Rupiah, no decimals, tax-inclusive.</summary>

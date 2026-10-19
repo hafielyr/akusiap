@@ -8,12 +8,14 @@ public enum PlanCode
     Combined,
 }
 
+/// <summary>Abandoned: the checkout was never paid. Refunded: money returned, access ended.</summary>
 public enum SubscriptionStatus
 {
-    PendingPayment,
+    AwaitingPayment,
     Active,
     Expired,
-    Canceled,
+    Abandoned,
+    Refunded,
 }
 
 public enum RenewalMode
@@ -22,10 +24,12 @@ public enum RenewalMode
     AutoDebit,
 }
 
+/// <summary>Same lifecycle as <see cref="SubscriptionStatus"/>.</summary>
 public enum ExamPurchaseStatus
 {
-    PendingPayment,
+    AwaitingPayment,
     Active,
     Expired,
+    Abandoned,
     Refunded,
 }

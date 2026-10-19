@@ -17,15 +17,15 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [F-01] Solution skeleton · M1 · deps: none · (claude-opus-5.5, 2026-10-14)
-- [F-06] Localization and Rupiah · M1 · deps: F-01 · (claude-opus-5.5, 2026-10-14)
-- [F-02] Database and dev infrastructure · M1 · deps: F-01 · (claude-opus-5.5, 2026-10-18)
-- [F-03] Content and access schema · M1 · deps: F-02 · (claude-opus-5.5, 2026-10-19)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
 
 ## Done
+- [F-01] Solution skeleton · M1 · deps: none
+- [F-06] Localization and Rupiah · M1 · deps: F-01
+- [F-02] Database and dev infrastructure · M1 · deps: F-01
+- [F-03] Content and access schema · M1 · deps: F-02
 
 ## Backlog
 
@@ -73,7 +73,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-03] Checkout · M3 · deps: PAY-01, PAY-02, CAT-02, AC-02
 - [PAY-06] Webhook processing and fulfillment · M3 · deps: PAY-01, PAY-03
 - [PAY-05] Payment instructions and pending payments · M3 · deps: PAY-03, PAY-01
-- [PAY-04] Midtrans client · M3 · deps: PAY-01
+- [PAY-04] DOKU client · M3 · deps: PAY-01
 - [PAY-07] Receipt email · M3 · deps: PAY-06, AC-02
 - [PAY-08] Expiry jobs and reminders · M3 · deps: PAY-06, PAY-07
 - [PAY-09] Refund requests · M3 · deps: PAY-06
@@ -86,7 +86,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [OPS-01] Performance budget · M4 · deps: SES-03, CAT-01
 - [OPS-02] Production deployment · M4 · deps: F-08, PAY-04
 
-**Release 1 exit check**: In the Midtrans sandbox, a guest completes trial → register → QRIS payment → full exam → review → flashcards. The receipt email arrives. A refund within 7 days is auto-approved and access ends.
+**Release 1 exit check**: In the DOKU sandbox, a guest completes trial → register → QRIS payment → full exam → review → flashcards. The receipt email arrives. A refund within 7 days is auto-approved and access ends.
 
 ### M5 Own content (Release 2)
 - [OWN-01] Plan limits admin · M5 · deps: PAY-02

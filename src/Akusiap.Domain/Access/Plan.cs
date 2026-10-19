@@ -2,7 +2,7 @@ namespace Akusiap.Domain.Access;
 
 public class Plan
 {
-    public int PlanId { get; set; }
+    public long Id { get; set; }
 
     public PlanCode Code { get; set; }
 
@@ -14,13 +14,15 @@ public class Plan
 
     public bool IncludesClasses { get; set; }
 
+    // Caps: null means "not configured yet", which the app must treat as blocked, never as unlimited.
+
     /// <summary>50 for Free; a fair-use cap for paid plans.</summary>
-    public int MaxOwnQuestions { get; set; }
+    public int? MaxOwnQuestions { get; set; }
 
     /// <summary>1 for Free.</summary>
-    public int MaxOwnExams { get; set; }
+    public int? MaxOwnExams { get; set; }
 
-    public int MaxImportRows { get; set; }
+    public int? MaxImportRows { get; set; }
 
     public bool IsActive { get; set; } = true;
 

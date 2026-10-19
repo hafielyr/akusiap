@@ -5,17 +5,17 @@ namespace Akusiap.Domain.Content;
 public class Question
 {
     public const int KeyFactMaxLength = 200;
-    public const int MinDifficulty = 1;
-    public const int MaxDifficulty = 5;
+    public const short MinDifficulty = 1;
+    public const short MaxDifficulty = 5;
 
-    public int QuestionId { get; set; }
+    public long Id { get; set; }
 
     /// <summary>Null for app (owner-created) questions.</summary>
     public Guid? OwnerUserId { get; set; }
 
     public User? OwnerUser { get; set; }
 
-    public int TopicId { get; set; }
+    public long TopicId { get; set; }
 
     public Topic? Topic { get; set; }
 
@@ -25,16 +25,16 @@ public class Question
 
     public string Explanation { get; set; } = string.Empty;
 
-    /// <summary>One line to memorize (max 200 characters).</summary>
-    public string KeyFact { get; set; } = string.Empty;
+    /// <summary>One line to memorize (the editor limits it to 200 characters).</summary>
+    public string? KeyFact { get; set; }
 
     public string? Hint { get; set; }
 
     /// <summary>1 (easy) to 5 (hard).</summary>
-    public int Difficulty { get; set; } = MinDifficulty;
+    public short? Difficulty { get; set; }
 
     /// <summary>Syllabus reference.</summary>
-    public string SourceNote { get; set; } = string.Empty;
+    public string? SourceNote { get; set; }
 
     /// <summary>Links variants of the same fact.</summary>
     public Guid? VariantGroupId { get; set; }

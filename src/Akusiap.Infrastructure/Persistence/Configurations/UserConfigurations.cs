@@ -15,13 +15,9 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
                 "ck_users_preferred_language", $"preferred_language IN ('{Languages.Indonesian}', '{Languages.English}')");
             t.HasCheckConstraint("ck_users_deactivated_at", "is_active OR deactivated_at IS NOT NULL");
         });
-        builder.Property(u => u.Id).HasColumnName("user_id");
-        builder.Property(u => u.Email).IsRequired();
-        builder.HasIndex(u => u.Email).IsUnique();
-        // Identity's lookup index on the normalized (upper-case) email, made unique so case variants can't register twice.
-        builder.HasIndex(u => u.NormalizedEmail).HasDatabaseName("email_index").IsUnique();
-        builder.Property(u => u.DisplayName).HasMaxLength(100);
-        builder.Property(u => u.PreferredLanguage).HasMaxLength(10);
+        builder.Property(u => u.Email).IsRequired().HasColumnType("text");
+        // Case-insensitive uniqueness is the ux_users_email index on lower(email), created in the migration
+        // because EF can't model expression indexes.
     }
 }
 
@@ -30,8 +26,7 @@ public sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
     public void Configure(EntityTypeBuilder<Role> builder)
     {
         builder.ToTable("roles");
-        builder.Property(r => r.Id).HasColumnName("role_id");
-        builder.Property(r => r.Name).IsRequired();
+        builder.Property(r => r.Name).IsRequired().HasColumnType("text");
         builder.HasIndex(r => r.Name).IsUnique();
     }
 }
@@ -40,11 +35,13 @@ public sealed class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
 {
     public void Configure(EntityTypeBuilder<AuditLog> builder)
     {
-        builder.Property(a => a.Action).HasMaxLength(100);
-        builder.Property(a => a.EntityName).HasMaxLength(100);
-        builder.Property(a => a.EntityId).HasMaxLength(100);
-        builder.Property(a => a.ChangesJson).HasColumnType("jsonb");
-        builder.HasOne(a => a.ActorUser).WithMany().HasForeignKey(a => a.ActorUserId).OnDelete(DeleteBehavior.Restrict);
-        builder.HasIndex(a => new { a.EntityName, a.EntityId });
+        builder.Property(a => a.Changes).HasColumnType("jsonb");
+        builder.HasOne(a => a.ActorUser).WithMany().HasForeignKey(a => a.ActorUserId).OnDelete(DeleteBehavior.NoAction);
+        builder.HasIndex(a => new { a.EntityName, a.EntityId, a.CreatedAt }, "ix_audit_logs_entity")
+            .HasDatabaseName("ix_audit_logs_entity")
+            .IsDescending(false, false, true);
+        builder.HasIndex(a => new { a.ActorUserId, a.CreatedAt }, "ix_audit_logs_actor")
+            .HasDatabaseName("ix_audit_logs_actor")
+            .IsDescending(false, true);
     }
 }
