@@ -1,0 +1,23 @@
+@model Akusiap.Domain.Access.Allowance
+@* Allowance widget (OWN-05): "23/50 soal · 1/1 ujian" with bars and an upgrade link; numbers come from AllowancePolicy. *@
+@{
+  int Percent(int used, int? max) => max is > 0 ? Math.Min(100, used * 100 / max.Value) : 100;
+}
+<div class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="allowance-bar">
+  @if (Model.IsUnlimited)
+  {
+    <p class="text-sm text-slate-700" data-testid="allowance-unlimited">@T["Own.Allowance.Unlimited"]</p>
+  }
+  else
+  {
+    <div class="space-y-1">
+      <p class="flex justify-between text-sm"><span>@T["Own.Allowance.Questions"]</span><span class="font-semibold" data-testid="allowance-questions">@Model.UsedQuestions/@Model.MaxQuestions</span></p>
+      <div class="h-2 rounded-full bg-slate-100"><div class="h-2 rounded-full @(Model.CanCreateQuestion ? "bg-brand-600" : "bg-amber-500")" style="width: @Percent(Model.UsedQuestions, Model.MaxQuestions)%"></div></div>
+    </div>
+    <div class="space-y-1">
+      <p class="flex justify-between text-sm"><span>@T["Own.Allowance.Exams"]</span><span class="font-semibold" data-testid="allowance-exams">@Model.UsedExams/@Model.MaxExams</span></p>
+      <div class="h-2 rounded-full bg-slate-100"><div class="h-2 rounded-full @(Model.CanCreateExam ? "bg-brand-600" : "bg-amber-500")" style="width: @Percent(Model.UsedExams, Model.MaxExams)%"></div></div>
+    </div>
+    <a href="/harga" class="inline-flex min-h-11 items-center text-sm font-semibold text-brand-700" data-testid="allowance-upgrade">@T["Own.Allowance.Upgrade"]</a>
+  }
+</div>

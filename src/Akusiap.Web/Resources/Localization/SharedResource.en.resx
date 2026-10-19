@@ -695,4 +695,9 @@
   <data name="Own.Questions.ReadOnly" xml:space="preserve"><value>Your questions are now view and practise only, because they exceed your plan's allowance. Subscribe to edit or add questions.</value></data>
   <data name="Own.Questions.InUse" xml:space="preserve"><value>This question is used in a session or exam, so it can't be deleted. Set its status to Retired instead.</value></data>
   <data name="Own.Upgrade" xml:space="preserve"><value>See subscription plans</value></data>
+  <data name="Own.Allowance.Title" xml:space="preserve"><value>Your own content</value></data>
+  <data name="Own.Allowance.Questions" xml:space="preserve"><value>Own questions</value></data>
+  <data name="Own.Allowance.Exams" xml:space="preserve"><value>Own exams</value></data>
+  <data name="Own.Allowance.Unlimited" xml:space="preserve"><value>Unlimited.</value></data>
+  <data name="Own.Allowance.Upgrade" xml:space="preserve"><value>Need more? See subscription plans</value></data>
 </root>

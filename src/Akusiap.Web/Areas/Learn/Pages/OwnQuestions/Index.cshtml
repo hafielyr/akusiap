@@ -18,6 +18,7 @@
   {
     <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash]</p>
   }
+  <partial name="_AllowanceBarPartial" model="allowance" />
   <partial name="_AllowanceNoticePartial" model="allowance" />
 
   @if (Model.Questions.Count == 0)
