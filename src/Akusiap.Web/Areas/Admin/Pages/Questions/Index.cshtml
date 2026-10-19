@@ -1,0 +1,127 @@
+@page "/admin/soal"
+@model Akusiap.Web.Areas.Admin.Pages.Questions.IndexModel
+@using Akusiap.Domain.Content
+@{
+  ViewData["Title"] = T["Admin.Questions.Title"].Value;
+  var results = Model.Results;
+}
+
+<section class="space-y-4">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <h1 class="text-2xl font-bold leading-tight">@T["Admin.Questions.Title"]</h1>
+    <a href="/admin/soal/baru" class="btn btn-primary">@T["Admin.Questions.Add"]</a>
+  </div>
+
+  <form method="get" action="/admin/soal" class="grid gap-3 rounded-xl border border-slate-200 bg-white p-4 sm:grid-cols-2" data-testid="question-filters">
+    <div class="space-y-1 sm:col-span-2">
+      <label for="q" class="label">@T["Admin.Questions.Search"]</label>
+      <input id="q" name="q" type="search" value="@Model.Search" class="input" />
+    </div>
+    <div class="space-y-1">
+      <label for="subjek" class="label">@T["Admin.Topic.Subject"]</label>
+      <select id="subjek" name="subjek" class="input">
+        <option value="">@T["Admin.Questions.All"]</option>
+        @foreach (var subject in Model.Subjects)
+        {
+          <option value="@subject.Id" selected="@(subject.Id == Model.SubjectId)">@subject.Name</option>
+        }
+      </select>
+    </div>
+    <div class="space-y-1">
+      <label for="topik" class="label">@T["Admin.Question.Topic"]</label>
+      <select id="topik" name="topik" class="input">
+        <option value="">@T["Admin.Questions.All"]</option>
+        @foreach (var group in Model.Topics.GroupBy(t => t.SubjectName))
+        {
+          <optgroup label="@group.Key">
+            @foreach (var topic in group)
+            {
+              <option value="@topic.Id" selected="@(topic.Id == Model.TopicId)">@topic.Name</option>
+            }
+          </optgroup>
+        }
+      </select>
+    </div>
+    <div class="space-y-1">
+      <label for="status" class="label">@T["Admin.Question.Status"]</label>
+      <select id="status" name="status" class="input">
+        <option value="">@T["Admin.Questions.All"]</option>
+        @foreach (var status in Enum.GetValues<QuestionStatus>())
+        {
+          <option value="@status" selected="@(status == Model.Status)">@T[$"Admin.QuestionStatus.{status}"]</option>
+        }
+      </select>
+    </div>
+    <div class="space-y-1">
+      <label for="jenis" class="label">@T["Admin.Question.Type"]</label>
+      <select id="jenis" name="jenis" class="input">
+        <option value="">@T["Admin.Questions.All"]</option>
+        @foreach (var type in Enum.GetValues<QuestionType>())
+        {
+          <option value="@type" selected="@(type == Model.Type)">@T[$"Admin.QuestionType.{type}"]</option>
+        }
+      </select>
+    </div>
+    <div class="flex flex-wrap items-center gap-3 sm:col-span-2">
+      <button type="submit" class="btn btn-secondary">@T["Admin.Questions.Apply"]</button>
+      @if (Model.IsFiltered)
+      {
+        <a href="/admin/soal" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">@T["Admin.Questions.Reset"]</a>
+      }
+    </div>
+  </form>
+
+  <p class="text-sm text-slate-500" data-testid="question-total">@T["Admin.Questions.Total", results.Total]</p>
+
+  @if (results.Rows.Count == 0)
+  {
+    <p class="rounded-xl border border-dashed border-slate-300 p-4 text-slate-600">
+      @(Model.IsFiltered ? T["Admin.Questions.NoMatch"] : T["Admin.Questions.Empty"])
+    </p>
+  }
+  else
+  {
+    <ul class="space-y-2" data-testid="question-list">
+      @foreach (var row in results.Rows)
+      {
+        <li>
+          <a href="/admin/soal/@row.Id" class="block space-y-2 rounded-xl border border-slate-200 bg-white p-4 hover:border-brand-600">
+            <span class="line-clamp-2 block font-medium">@row.Text</span>
+            <span class="block text-sm text-slate-500">@row.SubjectName › @row.TopicName</span>
+            <span class="flex flex-wrap gap-2 text-xs font-medium">
+              <span class="rounded-full bg-slate-100 px-2 py-1 text-slate-700">@T[$"Admin.QuestionType.{row.Type}"]</span>
+              <span class="rounded-full px-2 py-1 @(row.Status switch { QuestionStatus.Active => "bg-green-50 text-green-800", QuestionStatus.Retired => "bg-slate-100 text-slate-500", _ => "bg-amber-50 text-amber-800" })">@T[$"Admin.QuestionStatus.{row.Status}"]</span>
+              @if (row.Difficulty is { } difficulty)
+              {
+                <span class="rounded-full bg-slate-100 px-2 py-1 text-slate-700">@T["Admin.Questions.DifficultyBadge", difficulty]</span>
+              }
+            </span>
+          </a>
+        </li>
+      }
+    </ul>
+
+    @if (results.PageCount > 1)
+    {
+      <nav aria-label="@T["Admin.Questions.Pages"]" class="flex items-center justify-between gap-3" data-testid="pager">
+        @if (results.Page > 1)
+        {
+          <a href="@Model.PageUrl(results.Page - 1)" class="btn btn-secondary">@T["Admin.Questions.Previous"]</a>
+        }
+        else
+        {
+          <span></span>
+        }
+        <span class="text-sm text-slate-600">@T["Admin.Questions.PageOf", results.Page, results.PageCount]</span>
+        @if (results.Page < results.PageCount)
+        {
+          <a href="@Model.PageUrl(results.Page + 1)" class="btn btn-secondary">@T["Admin.Questions.Next"]</a>
+        }
+        else
+        {
+          <span></span>
+        }
+      </nav>
+    }
+  }
+</section>

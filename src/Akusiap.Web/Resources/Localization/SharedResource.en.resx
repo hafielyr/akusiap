@@ -56,7 +56,7 @@
   <data name="Status.Other.Body" xml:space="preserve"><value>Please try again. If the problem continues, contact us on WhatsApp.</value></data>
   <data name="Status.Home" xml:space="preserve"><value>Back to home</value></data>
   <data name="Admin.Title" xml:space="preserve"><value>Admin dashboard</value></data>
-  <data name="Admin.ComingSoon" xml:space="preserve"><value>Questions, exams, users and payments are coming here.</value></data>
+  <data name="Admin.ComingSoon" xml:space="preserve"><value>Exams, users and payments are coming here.</value></data>
   <data name="Learn.Title" xml:space="preserve"><value>My learning</value></data>
   <data name="Learn.ComingSoon" xml:space="preserve"><value>Your practice history and exam access will appear here.</value></data>
   <data name="Nav.Admin" xml:space="preserve"><value>Admin</value></data>
@@ -96,4 +96,71 @@
   <data name="Admin.Topic.Name" xml:space="preserve"><value>Topic name</value></data>
   <data name="Admin.Topic.Description" xml:space="preserve"><value>Description (optional)</value></data>
   <data name="Admin.Topic.Subject" xml:space="preserve"><value>Subject</value></data>
+  <data name="Admin.Nav.Questions" xml:space="preserve"><value>Questions</value></data>
+  <data name="Admin.Questions.Title" xml:space="preserve"><value>Question bank</value></data>
+  <data name="Admin.Questions.Lead" xml:space="preserve"><value>Write, edit and retire questions with their options, explanation and key fact.</value></data>
+  <data name="Admin.Questions.Add" xml:space="preserve"><value>Add question</value></data>
+  <data name="Admin.Questions.NewTitle" xml:space="preserve"><value>New question</value></data>
+  <data name="Admin.Questions.EditTitle" xml:space="preserve"><value>Edit question</value></data>
+  <data name="Admin.Questions.Search" xml:space="preserve"><value>Search question text</value></data>
+  <data name="Admin.Questions.All" xml:space="preserve"><value>All</value></data>
+  <data name="Admin.Questions.Apply" xml:space="preserve"><value>Apply</value></data>
+  <data name="Admin.Questions.Reset" xml:space="preserve"><value>Clear filters</value></data>
+  <data name="Admin.Questions.Total" xml:space="preserve"><value>{0} questions</value></data>
+  <data name="Admin.Questions.Empty" xml:space="preserve"><value>No questions yet. Add the first one.</value></data>
+  <data name="Admin.Questions.NoMatch" xml:space="preserve"><value>No questions match the filters.</value></data>
+  <data name="Admin.Questions.Pages" xml:space="preserve"><value>Pages</value></data>
+  <data name="Admin.Questions.Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Admin.Questions.Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Admin.Questions.PageOf" xml:space="preserve"><value>Page {0} of {1}</value></data>
+  <data name="Admin.Questions.DifficultyBadge" xml:space="preserve"><value>Difficulty {0}</value></data>
+  <data name="Admin.Questions.UsedInExams" xml:space="preserve"><value>Used in {0} exams.</value></data>
+  <data name="Admin.Questions.ChooseTopic" xml:space="preserve"><value>Choose a topic</value></data>
+  <data name="Admin.Questions.OptionsHelp" xml:space="preserve"><value>Mark the correct answer. The order here is the display order.</value></data>
+  <data name="Admin.Questions.TrueFalseHelp" xml:space="preserve"><value>True/false questions use two fixed options. Mark the correct one.</value></data>
+  <data name="Admin.Questions.AddOption" xml:space="preserve"><value>Add option</value></data>
+  <data name="Admin.Questions.MoveUp" xml:space="preserve"><value>Move up</value></data>
+  <data name="Admin.Questions.MoveDown" xml:space="preserve"><value>Move down</value></data>
+  <data name="Admin.Questions.RemoveOption" xml:space="preserve"><value>Remove option</value></data>
+  <data name="Admin.Questions.KeyFactHelp" xml:space="preserve"><value>One sentence to remember, not the answer letter.</value></data>
+  <data name="Admin.Questions.SourceNoteHelp" xml:space="preserve"><value>The syllabus or blueprint reference this question is written from.</value></data>
+  <data name="Admin.Questions.StatusHelp" xml:space="preserve"><value>Draft is not used yet. Active can be used in exams. Retired questions don't appear in new practice but stay in practice history.</value></data>
+  <data name="Admin.Questions.TopicRequired" xml:space="preserve"><value>Choose an existing topic.</value></data>
+  <data name="Admin.Questions.TypeRequired" xml:space="preserve"><value>Choose a question type.</value></data>
+  <data name="Admin.Questions.StatusRequired" xml:space="preserve"><value>Choose a status.</value></data>
+  <data name="Admin.Questions.DifficultyRange" xml:space="preserve"><value>Difficulty must be 1 to 5.</value></data>
+  <data name="Admin.Questions.OptionCount" xml:space="preserve"><value>A {0} question needs {1} to {2} options.</value></data>
+  <data name="Admin.Questions.ExactlyOneCorrect" xml:space="preserve"><value>A {0} question needs exactly 1 correct answer.</value></data>
+  <data name="Admin.Questions.AtLeastOneCorrect" xml:space="preserve"><value>Mark at least 1 correct answer.</value></data>
+  <data name="Admin.Questions.TrueFalseOptions" xml:space="preserve"><value>A true/false question needs exactly two options: Benar, then Salah.</value></data>
+  <data name="Admin.Questions.OptionTextRequired" xml:space="preserve"><value>Option {0} needs text.</value></data>
+  <data name="Admin.Questions.OptionTooLong" xml:space="preserve"><value>Option {0} can be at most {1} characters.</value></data>
+  <data name="Admin.Questions.OptionDuplicate" xml:space="preserve"><value>Option {0} is the same as another option.</value></data>
+  <data name="Admin.Questions.OptionInUse" xml:space="preserve"><value>Option "{0}" has been used in practice answers, so it can't be removed. Retire this question and create a new one.</value></data>
+  <data name="Admin.Question.Topic" xml:space="preserve"><value>Topic</value></data>
+  <data name="Admin.Question.Type" xml:space="preserve"><value>Question type</value></data>
+  <data name="Admin.Question.Text" xml:space="preserve"><value>Question text</value></data>
+  <data name="Admin.Question.Options" xml:space="preserve"><value>Answer options</value></data>
+  <data name="Admin.Question.OptionText" xml:space="preserve"><value>Option text</value></data>
+  <data name="Admin.Question.Correct" xml:space="preserve"><value>Correct answer</value></data>
+  <data name="Admin.Question.Explanation" xml:space="preserve"><value>Explanation</value></data>
+  <data name="Admin.Question.KeyFact" xml:space="preserve"><value>Key fact (optional)</value></data>
+  <data name="Admin.Question.Hint" xml:space="preserve"><value>Hint (optional)</value></data>
+  <data name="Admin.Question.Difficulty" xml:space="preserve"><value>Difficulty</value></data>
+  <data name="Admin.Question.Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Admin.Question.SourceNote" xml:space="preserve"><value>Syllabus reference (optional)</value></data>
+  <data name="Admin.QuestionType.SingleChoice" xml:space="preserve"><value>Single choice</value></data>
+  <data name="Admin.QuestionTypeName.SingleChoice" xml:space="preserve"><value>single choice</value></data>
+  <data name="Admin.QuestionType.MultiSelect" xml:space="preserve"><value>Multiple answer</value></data>
+  <data name="Admin.QuestionTypeName.MultiSelect" xml:space="preserve"><value>multiple answer</value></data>
+  <data name="Admin.QuestionType.TrueFalse" xml:space="preserve"><value>True/false</value></data>
+  <data name="Admin.QuestionTypeName.TrueFalse" xml:space="preserve"><value>true/false</value></data>
+  <data name="Admin.QuestionStatus.Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Admin.QuestionStatus.Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Admin.QuestionStatus.Retired" xml:space="preserve"><value>Retired</value></data>
+  <data name="Admin.Difficulty.1" xml:space="preserve"><value>1 · Very easy</value></data>
+  <data name="Admin.Difficulty.2" xml:space="preserve"><value>2 · Easy</value></data>
+  <data name="Admin.Difficulty.3" xml:space="preserve"><value>3 · Medium</value></data>
+  <data name="Admin.Difficulty.4" xml:space="preserve"><value>4 · Hard</value></data>
+  <data name="Admin.Difficulty.5" xml:space="preserve"><value>5 · Very hard</value></data>
 </root>

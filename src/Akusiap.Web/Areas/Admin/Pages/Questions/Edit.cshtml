@@ -1,0 +1,12 @@
+@page "/admin/soal/{id:long}"
+@model Akusiap.Web.Areas.Admin.Pages.Questions.EditModel
+@{
+  ViewData["Title"] = T["Admin.Questions.EditTitle"].Value;
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="/admin/soal" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @T["Admin.Questions.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Questions.EditTitle"] <span class="text-slate-400">#@Model.Question.Id</span></h1>
+  <p class="text-sm text-slate-500" data-testid="question-usage">@T["Admin.Questions.UsedInExams", Model.Question.ExamCount]</p>
+  <partial name="_QuestionFormPartial" model="new Akusiap.Web.Areas.Admin.Pages.Questions.QuestionFormView(Model.Input, Model.Topics, IsNew: false)" />
+</section>

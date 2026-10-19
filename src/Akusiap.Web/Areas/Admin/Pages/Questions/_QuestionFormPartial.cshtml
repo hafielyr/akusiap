@@ -1,0 +1,151 @@
+@model Akusiap.Web.Areas.Admin.Pages.Questions.QuestionFormView
+@using Akusiap.Domain.Content
+@* The question editor form. Fields post as Input.*; the answer options are managed by Alpine (wwwroot/js/question-form.js)
+   and post as Input.Options[i].Id/Text/IsCorrect in display order. *@
+@{
+  var input = Model.Input;
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[$"Input.{field}"]?.Errors.FirstOrDefault()?.ErrorMessage;
+  var optionErrors = modelState["Input.Options"]?.Errors.Select(e => e.ErrorMessage).ToList() ?? [];
+}
+<script src="~/js/question-form.js" asp-append-version="true"></script>
+
+<form method="post" class="space-y-5" novalidate
+      x-data="questionForm(JSON.parse($el.dataset.initial))" data-initial="@Model.InitialStateJson">
+  <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="space-y-1">
+      <label for="Input_TopicId" class="label">@T["Admin.Question.Topic"]</label>
+      <select id="Input_TopicId" name="Input.TopicId" class="input" aria-invalid="@(ErrorFor("TopicId") is null ? null : "true")">
+        <option value="0">@T["Admin.Questions.ChooseTopic"]</option>
+        @foreach (var group in Model.Topics.GroupBy(t => t.SubjectName))
+        {
+          <optgroup label="@group.Key">
+            @foreach (var topic in group)
+            {
+              <option value="@topic.Id" selected="@(topic.Id == input.TopicId)">@topic.Name</option>
+            }
+          </optgroup>
+        }
+      </select>
+      @if (ErrorFor("TopicId") is { } topicError) { <span class="field-error">@topicError</span> }
+    </div>
+
+    <div class="space-y-1">
+      <label for="Input_QuestionType" class="label">@T["Admin.Question.Type"]</label>
+      <select id="Input_QuestionType" name="Input.QuestionType" class="input" x-on:change="setType($event.target.value)">
+        @foreach (var type in Enum.GetValues<QuestionType>())
+        {
+          <option value="@type" selected="@(type == input.QuestionType)">@T[$"Admin.QuestionType.{type}"]</option>
+        }
+      </select>
+      @if (ErrorFor("QuestionType") is { } typeError) { <span class="field-error">@typeError</span> }
+    </div>
+  </div>
+
+  <div class="space-y-1">
+    <label for="Input_Text" class="label">@T["Admin.Question.Text"]</label>
+    <textarea id="Input_Text" name="Input.Text" rows="4" class="input" aria-invalid="@(ErrorFor("Text") is null ? null : "true")">@input.Text</textarea>
+    @if (ErrorFor("Text") is { } textError) { <span class="field-error" data-testid="error-text">@textError</span> }
+  </div>
+
+  <fieldset class="space-y-3" data-testid="options">
+    <legend class="label">@T["Admin.Question.Options"]</legend>
+    <p class="text-sm text-slate-500" x-show="!isTrueFalse">@T["Admin.Questions.OptionsHelp"]</p>
+    <p class="text-sm text-slate-500" x-show="isTrueFalse" x-cloak>@T["Admin.Questions.TrueFalseHelp"]</p>
+    @if (optionErrors.Count > 0)
+    {
+      <ul class="space-y-1 rounded-lg bg-red-50 p-3" role="alert" data-testid="option-errors">
+        @foreach (var error in optionErrors) { <li class="text-sm text-red-700">@error</li> }
+      </ul>
+    }
+
+    <ol class="space-y-2">
+      <template x-for="(option, i) in options" :key="option.key">
+        <li class="space-y-2 rounded-xl border border-slate-200 bg-white p-3" data-testid="option-row">
+          <input type="hidden" x-bind:name="`Input.Options[${i}].Id`" x-bind:value="option.id ?? ''" />
+          <div class="flex items-center gap-2">
+            <span class="w-6 shrink-0 text-center font-semibold text-slate-500" x-text="letter(i)"></span>
+            <input type="text" class="input" maxlength="1000" data-label="@T["Admin.Question.OptionText"]"
+                   x-bind:name="`Input.Options[${i}].Text`" x-model="option.text" x-bind:readonly="isTrueFalse"
+                   x-bind:aria-label="$el.dataset.label + ' ' + letter(i)" />
+          </div>
+          <div class="flex flex-wrap items-center gap-1 pl-8">
+            <label class="mr-auto flex min-h-11 items-center gap-2 text-sm text-slate-700">
+              <input type="checkbox" value="true" class="size-5 accent-brand-600"
+                     x-bind:name="`Input.Options[${i}].IsCorrect`" x-bind:checked="option.isCorrect"
+                     x-on:change="markCorrect(i, $event.target.checked)" />
+              <span>@T["Admin.Question.Correct"]</span>
+            </label>
+            <template x-if="!isTrueFalse">
+              <span class="flex items-center gap-1">
+                <button type="button" class="btn btn-secondary px-3" x-on:click="move(i, -1)" x-bind:disabled="i === 0" aria-label="@T["Admin.Questions.MoveUp"]">↑</button>
+                <button type="button" class="btn btn-secondary px-3" x-on:click="move(i, 1)" x-bind:disabled="i === options.length - 1" aria-label="@T["Admin.Questions.MoveDown"]">↓</button>
+                <button type="button" class="btn btn-secondary px-3 text-red-700" x-on:click="remove(i)" aria-label="@T["Admin.Questions.RemoveOption"]">✕</button>
+              </span>
+            </template>
+          </div>
+        </li>
+      </template>
+    </ol>
+    <button type="button" class="btn btn-secondary" x-show="canAdd" x-on:click="add()">@T["Admin.Questions.AddOption"]</button>
+  </fieldset>
+
+  <div class="space-y-1">
+    <label for="Input_Explanation" class="label">@T["Admin.Question.Explanation"]</label>
+    <textarea id="Input_Explanation" name="Input.Explanation" rows="4" class="input" aria-invalid="@(ErrorFor("Explanation") is null ? null : "true")">@input.Explanation</textarea>
+    @if (ErrorFor("Explanation") is { } explanationError) { <span class="field-error">@explanationError</span> }
+  </div>
+
+  <div class="space-y-1" x-data="{ keyFact: $el.querySelector('input').value }">
+    <label for="Input_KeyFact" class="label">@T["Admin.Question.KeyFact"]</label>
+    <input id="Input_KeyFact" name="Input.KeyFact" value="@input.KeyFact" maxlength="200" class="input" x-model="keyFact" />
+    <p class="flex justify-between gap-3 text-sm text-slate-500">
+      <span>@T["Admin.Questions.KeyFactHelp"]</span>
+      <span x-text="`${keyFact.length}/200`"></span>
+    </p>
+    @if (ErrorFor("KeyFact") is { } keyFactError) { <span class="field-error">@keyFactError</span> }
+  </div>
+
+  <div class="space-y-1">
+    <label for="Input_Hint" class="label">@T["Admin.Question.Hint"]</label>
+    <input id="Input_Hint" name="Input.Hint" value="@input.Hint" maxlength="1000" class="input" />
+    @if (ErrorFor("Hint") is { } hintError) { <span class="field-error">@hintError</span> }
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="space-y-1">
+      <label for="Input_Difficulty" class="label">@T["Admin.Question.Difficulty"]</label>
+      <select id="Input_Difficulty" name="Input.Difficulty" class="input">
+        <option value="">—</option>
+        @for (short level = Question.MinDifficulty; level <= Question.MaxDifficulty; level++)
+        {
+          <option value="@level" selected="@(level == input.Difficulty)">@T[$"Admin.Difficulty.{level}"]</option>
+        }
+      </select>
+      @if (ErrorFor("Difficulty") is { } difficultyError) { <span class="field-error">@difficultyError</span> }
+    </div>
+
+    <div class="space-y-1">
+      <label for="Input_Status" class="label">@T["Admin.Question.Status"]</label>
+      <select id="Input_Status" name="Input.Status" class="input">
+        @foreach (var status in Enum.GetValues<QuestionStatus>())
+        {
+          <option value="@status" selected="@(status == input.Status)">@T[$"Admin.QuestionStatus.{status}"]</option>
+        }
+      </select>
+      @if (ErrorFor("Status") is { } statusError) { <span class="field-error">@statusError</span> }
+    </div>
+  </div>
+  <p class="text-sm text-slate-500">@T["Admin.Questions.StatusHelp"]</p>
+
+  <div class="space-y-1">
+    <label for="Input_SourceNote" class="label">@T["Admin.Question.SourceNote"]</label>
+    <input id="Input_SourceNote" name="Input.SourceNote" value="@input.SourceNote" maxlength="500" class="input" />
+    <p class="text-sm text-slate-500">@T["Admin.Questions.SourceNoteHelp"]</p>
+    @if (ErrorFor("SourceNote") is { } sourceError) { <span class="field-error">@sourceError</span> }
+  </div>
+
+  <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Save"]</button>
+</form>
