@@ -849,4 +849,7 @@
   <data name="Shared.Name" xml:space="preserve"><value>Your name</value></data>
   <data name="Shared.NameNotice" xml:space="preserve"><value>Your name and score will be visible to the exam's creator.</value></data>
   <data name="Shared.Start" xml:space="preserve"><value>Start the exam</value></data>
+  <data name="Shared.Invite.Title" xml:space="preserve"><value>Keep this result and keep practising</value></data>
+  <data name="Shared.Invite.Lead" xml:space="preserve"><value>Register for free in this browser and this result goes into your history. You can also make your own questions and exams.</value></data>
+  <data name="Shared.Invite.Register" xml:space="preserve"><value>Register for free</value></data>
 </root>

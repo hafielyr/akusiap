@@ -64,6 +64,11 @@
     </section>
   }
 
+  @if (r.Source == AttemptSource.Shared)
+  {
+    <partial name="_RegisterInvitePartial" model="r.AttemptId" />
+  }
+
   <a href="@SessionRoutes.Review(r.AttemptId)" class="btn btn-primary w-full" data-testid="see-review">@T["Session.Result.SeeReview"]</a>
   <partial name="_RetakeWrongPartial" model="(r.AttemptId, r.ExamId is null ? 0 : r.TotalCount - r.CorrectCount)" />
 

@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Akusiap.Application.Abstractions;
+using Akusiap.Application.Sessions;
 using Akusiap.Domain.Users;
 using Akusiap.Web.Identity;
+using Akusiap.Web.Sessions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,7 +15,7 @@ namespace Akusiap.Web.Areas.Account.Pages;
 /// Email registration (A-01). New users get the Learner role and a confirmation email (AC-02), are signed in and land on
 /// the catalog (or the local ReturnUrl).
 /// </summary>
-public sealed class RegisterModel(UserManager<User> users, SignInManager<User> signIn, IClock clock, AccountEmails emails) : PageModel
+public sealed class RegisterModel(UserManager<User> users, SignInManager<User> signIn, IClock clock, AccountEmails emails, ClaimGuestAttempts claimGuestAttempts) : PageModel
 {
     [BindProperty]
     public RegisterInput Input { get; set; } = new();
@@ -56,6 +58,12 @@ public sealed class RegisterModel(UserManager<User> users, SignInManager<User> s
         {
             throw new InvalidOperationException(
                 $"Could not give the new user the {RoleNames.Learner} role: {string.Join("; ", role.Errors.Select(e => e.Description))}");
+        }
+
+        // Guest attempts from this browser (shared exams, trials) move into the new account (SHR-04).
+        if (GuestTokenCookie.Read(Request) is { } guestToken)
+        {
+            await claimGuestAttempts.HandleAsync(user.Id, guestToken, cancellationToken);
         }
 
         // A failed send is logged; the user can ask for the email again from /learn.
