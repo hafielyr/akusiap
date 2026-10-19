@@ -75,9 +75,9 @@ Rules:
 
 ## Entitlement rules (priority: access to owner-created exams)
 
-`EntitlementPolicy.Evaluate(ViewerContext viewer, ExamAccessFacts exam, DateTime now) → AccessDecision { Level, Reason, QuestionScope }`
+`EntitlementPolicy.Evaluate(ViewerContext viewer, ExamAccessFacts exam, string? shareToken, DateTime now) → AccessDecision { Level, Reason, Scope, RequiresGuestName, CanStart }` (`src/Akusiap.Domain/Access/EntitlementPolicy.cs`, D-32)
 
-`Level`: `None`, `Trial`, `Full`, `Owner`, `Admin`, `Shared`. `QuestionScope`: `TrialOnly` or `All`.
+`Level`: `None`, `Trial`, `Full`, `Owner`, `Admin`, `Shared`. `Scope`: `TrialOnly` or `All` (`None` when Level is None). `Reason` (`AccessReason`) tells pages which message or call to action to show.
 
 Evaluate in this order; the first match wins:
 
