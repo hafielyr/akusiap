@@ -85,6 +85,7 @@ Evaluate in this order; the first match wins:
 2. The viewer owns the exam (`Exam.OwnerUserId == viewer.UserId`) → `Owner`, all questions, at any status except TakenDown (TakenDown: view only, cannot start).
 3. `Exam.Status == TakenDown` → `None` ("taken down").
 4. A share token is supplied, `Exam.IsShared`, the token matches `ShareToken` and `OwnerKind == Learner` → `Shared`, all questions. Guests must enter a name.
+   4b. The viewer is a current member (not removed) of a class with an assignment of this exam that is open now (`opens_at ≤ now < closes_at`) → `Full`, all questions, reason `ClassAssignment` (GAM-01, D-96). It comes before rule 5 so a teacher's own exam opens for the class.
 5. `Exam.Status != Published`, or the exam is a learner's (`OwnerKind == Learner`, where Published only means "ready to share", D-79) → `None` (not in catalog).
 6. `Exam.IsFree`: registered → `Full`; guest → `None` with reason `RegisterToUnlock`.
 7. The viewer has an `ExamPurchase` for this exam with `Status == Active && AccessExpiresAt > now` → `Full`.
@@ -92,7 +93,7 @@ Evaluate in this order; the first match wins:
 9. A paid app exam with trial questions → `Trial`, `TrialOnly` (guests and registered users, no attempt limit).
 10. Otherwise → `None`.
 
-Deactivated users (`IsActive == false`) cannot sign in, so they never reach evaluation. Teacher class assignments (Release 3) will add a rule between 7 and 8.
+Deactivated users (`IsActive == false`) cannot sign in, so they never reach evaluation. Teacher class assignments are rule 4b (GAM-01).
 
 ## Assumptions (change via `docs/decisions.md`)
 

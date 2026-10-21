@@ -898,4 +898,135 @@
   <data name="Home.Step.Practise.Text" xml:space="preserve"><value>Ulangi kartu yang jatuh tempo setiap hari di halaman Hari ini.</value></data>
   <data name="Home.Cta.Title" xml:space="preserve"><value>Siap mulai latihan?</value></data>
   <data name="Home.Cta.Lead" xml:space="preserve"><value>Coba soalnya sekarang, gratis dan tanpa perlu daftar.</value></data>
+  <data name="Leaderboard.Title" xml:space="preserve"><value>Papan peringkat</value></data>
+  <data name="Leaderboard.Lead" xml:space="preserve"><value>Peringkat dihitung dari simulasi pertama setiap peserta: nilai tertinggi menang, jika sama yang lebih cepat menang.</value></data>
+  <data name="Leaderboard.Empty" xml:space="preserve"><value>Belum ada peserta. Kerjakan simulasi untuk masuk peringkat.</value></data>
+  <data name="Leaderboard.Name" xml:space="preserve"><value>Nama</value></data>
+  <data name="Leaderboard.Score" xml:space="preserve"><value>Nilai</value></data>
+  <data name="Leaderboard.Time" xml:space="preserve"><value>Waktu</value></data>
+  <data name="Leaderboard.Rule" xml:space="preserve"><value>{0} peserta · hanya simulasi pertama yang dihitung</value></data>
+  <data name="Leaderboard.YourRank" xml:space="preserve"><value>Peringkat Anda</value></data>
+  <data name="Leaderboard.YouRank" xml:space="preserve"><value>Peringkat #{0} dari {1} peserta</value></data>
+  <data name="Leaderboard.See" xml:space="preserve"><value>Lihat papan peringkat</value></data>
+  <data name="Leaderboard.LinkHint" xml:space="preserve"><value>Bandingkan nilai dan waktu Anda dengan peserta lain</value></data>
+  <data name="Leaderboard.TakeSimulation" xml:space="preserve"><value>Kerjakan simulasi</value></data>
+  <data name="Class.Title" xml:space="preserve"><value>Kelas</value></data>
+  <data name="Class.Link" xml:space="preserve"><value>Kelas dari guru Anda, atau kelas yang Anda ajar</value></data>
+  <data name="Class.Lead" xml:space="preserve"><value>Gabung ke kelas dengan kode dari guru, atau buat kelas untuk murid Anda.</value></data>
+  <data name="Class.Empty" xml:space="preserve"><value>Anda belum punya kelas.</value></data>
+  <data name="Class.YouTeach" xml:space="preserve"><value>Anda mengajar</value></data>
+  <data name="Class.YouJoined" xml:space="preserve"><value>Anda murid</value></data>
+  <data name="Class.TeacherIs" xml:space="preserve"><value>Guru: {0}</value></data>
+  <data name="Class.MemberCount" xml:space="preserve"><value>{0} murid</value></data>
+  <data name="Class.OpenAssignments" xml:space="preserve"><value>{0} tugas terbuka</value></data>
+  <data name="Class.Join" xml:space="preserve"><value>Gabung ke kelas</value></data>
+  <data name="Class.JoinHint" xml:space="preserve"><value>Masukkan kode dari guru Anda</value></data>
+  <data name="Class.JoinLead" xml:space="preserve"><value>Ketik kode kelas 8 karakter dari guru Anda.</value></data>
+  <data name="Class.Code" xml:space="preserve"><value>Kode kelas</value></data>
+  <data name="Class.JoinAction" xml:space="preserve"><value>Gabung</value></data>
+  <data name="Class.NewName" xml:space="preserve"><value>Buat kelas baru</value></data>
+  <data name="Class.Name" xml:space="preserve"><value>Nama kelas</value></data>
+  <data name="Class.NamePlaceholder" xml:space="preserve"><value>Contoh: Bimbel SKD Batch 3</value></data>
+  <data name="Class.Create" xml:space="preserve"><value>Buat kelas</value></data>
+  <data name="Class.TeacherHint" xml:space="preserve"><value>Untuk membuat kelas, aktifkan "Saya juga mengajar" di</value></data>
+  <data name="Class.Created" xml:space="preserve"><value>Kelas dibuat. Bagikan kode atau tautan ke murid Anda.</value></data>
+  <data name="Class.Joined" xml:space="preserve"><value>Anda sudah bergabung ke kelas.</value></data>
+  <data name="Class.Assigned" xml:space="preserve"><value>Ujian ditugaskan ke kelas.</value></data>
+  <data name="Class.StudentRemoved" xml:space="preserve"><value>Murid dikeluarkan dari kelas.</value></data>
+  <data name="Class.TeachersOnly" xml:space="preserve"><value>Hanya guru yang bisa membuat kelas.</value></data>
+  <data name="Class.CodeUnknown" xml:space="preserve"><value>Kode kelas tidak ditemukan. Periksa lagi kodenya.</value></data>
+  <data name="Class.Removed" xml:space="preserve"><value>Anda sudah dikeluarkan dari kelas ini. Hubungi guru Anda.</value></data>
+  <data name="Class.OwnClass" xml:space="preserve"><value>Ini kelas Anda sendiri.</value></data>
+  <data name="Class.ExamRequired" xml:space="preserve"><value>Pilih salah satu ujian Anda.</value></data>
+  <data name="Class.WindowInvalid" xml:space="preserve"><value>Waktu tutup harus setelah waktu buka dan belum lewat.</value></data>
+  <data name="Class.AssignmentClosed" xml:space="preserve"><value>Tugas ini belum dibuka atau sudah ditutup.</value></data>
+  <data name="Class.Invite" xml:space="preserve"><value>Undang murid</value></data>
+  <data name="Class.InviteHint" xml:space="preserve"><value>Murid masuk ke akun mereka lalu memakai kode atau tautan ini.</value></data>
+  <data name="Class.InviteLink" xml:space="preserve"><value>Tautan undangan</value></data>
+  <data name="Class.Assignments" xml:space="preserve"><value>Tugas</value></data>
+  <data name="Class.NoAssignments" xml:space="preserve"><value>Belum ada tugas.</value></data>
+  <data name="Class.State.Upcoming" xml:space="preserve"><value>Belum dibuka</value></data>
+  <data name="Class.State.Open" xml:space="preserve"><value>Terbuka</value></data>
+  <data name="Class.State.Closed" xml:space="preserve"><value>Ditutup</value></data>
+  <data name="Class.TimeLimit" xml:space="preserve"><value>Waktu {0} menit</value></data>
+  <data name="Class.NoTimeLimit" xml:space="preserve"><value>Tanpa batas waktu</value></data>
+  <data name="Class.AttemptsUsed" xml:space="preserve"><value>Percobaan {0} dari {1}</value></data>
+  <data name="Class.Start" xml:space="preserve"><value>Kerjakan</value></data>
+  <data name="Class.Results" xml:space="preserve"><value>Hasil murid</value></data>
+  <data name="Class.Assign" xml:space="preserve"><value>Tugaskan ujian</value></data>
+  <data name="Class.NoOwnExams" xml:space="preserve"><value>Anda belum punya ujian sendiri.</value></data>
+  <data name="Class.Exam" xml:space="preserve"><value>Ujian</value></data>
+  <data name="Class.OpensAt" xml:space="preserve"><value>Dibuka (WIB)</value></data>
+  <data name="Class.ClosesAt" xml:space="preserve"><value>Ditutup (WIB)</value></data>
+  <data name="Class.AssignHint" xml:space="preserve"><value>Aturan ujian disalin saat ini dan dikunci untuk kelas. Murid mengerjakan sebagai simulasi.</value></data>
+  <data name="Class.AssignAction" xml:space="preserve"><value>Tugaskan</value></data>
+  <data name="Class.Students" xml:space="preserve"><value>Murid ({0})</value></data>
+  <data name="Class.NoStudents" xml:space="preserve"><value>Belum ada murid. Bagikan kode kelas.</value></data>
+  <data name="Class.JoinedOn" xml:space="preserve"><value>bergabung {0}</value></data>
+  <data name="Class.Remove" xml:space="preserve"><value>Keluarkan</value></data>
+  <data name="Class.BackToClass" xml:space="preserve"><value>Kembali ke kelas</value></data>
+  <data name="Class.FirstScore" xml:space="preserve"><value>Nilai pertama</value></data>
+  <data name="Class.BestScore" xml:space="preserve"><value>Nilai terbaik</value></data>
+  <data name="Class.AttemptsCol" xml:space="preserve"><value>Percobaan</value></data>
+  <data name="Participants.Title" xml:space="preserve"><value>Peserta</value></data>
+  <data name="Participants.Lead" xml:space="preserve"><value>Semua yang menyelesaikan ujian ini, nilai terbaik di atas. Tamu dari tautan bagikan tampil dengan nama yang mereka isi.</value></data>
+  <data name="Participants.Empty" xml:space="preserve"><value>Belum ada yang menyelesaikan ujian ini.</value></data>
+  <data name="Participants.When" xml:space="preserve"><value>Selesai</value></data>
+  <data name="Journey.Title" xml:space="preserve"><value>Perjalanan belajar</value></data>
+  <data name="Journey.Link" xml:space="preserve"><value>Level, streak, dan lencana Anda</value></data>
+  <data name="Journey.Level" xml:space="preserve"><value>Level {0}</value></data>
+  <data name="Journey.StreakDays" xml:space="preserve"><value>hari beruntun</value></data>
+  <data name="Journey.Xp" xml:space="preserve"><value>Poin pengalaman</value></data>
+  <data name="Journey.XpProgress" xml:space="preserve"><value>{0} XP · {1}/{2} menuju level {3}</value></data>
+  <data name="Journey.XpShort" xml:space="preserve"><value>{0} XP</value></data>
+  <data name="Journey.StreakShort" xml:space="preserve"><value>{0} hari</value></data>
+  <data name="Journey.StreakDone" xml:space="preserve"><value>Hebat, hari ini sudah belajar</value></data>
+  <data name="Journey.StreakKeep" xml:space="preserve"><value>Belajar hari ini agar streak tidak putus</value></data>
+  <data name="Journey.Longest" xml:space="preserve"><value>terpanjang {0} hari</value></data>
+  <data name="Journey.Stat.Exams" xml:space="preserve"><value>sesi selesai</value></data>
+  <data name="Journey.Stat.Answered" xml:space="preserve"><value>soal dikerjakan</value></data>
+  <data name="Journey.Stat.Accuracy" xml:space="preserve"><value>jawaban benar</value></data>
+  <data name="Journey.Stat.Cards" xml:space="preserve"><value>kartu diulang</value></data>
+  <data name="Journey.RankBadges" xml:space="preserve"><value>Lencana peringkat</value></data>
+  <data name="Journey.Badges" xml:space="preserve"><value>Lencana ({0}/{1})</value></data>
+  <data name="Journey.XpRule" xml:space="preserve"><value>XP: 10 per jawaban benar, 20 per sesi selesai, 2 per kartu diulang, 50 per lencana. Streak dihitung per hari WIB.</value></data>
+  <data name="Journey.Rank.1" xml:space="preserve"><value>Pemula</value></data>
+  <data name="Journey.Rank.2" xml:space="preserve"><value>Penjelajah</value></data>
+  <data name="Journey.Rank.3" xml:space="preserve"><value>Pelajar Tekun</value></data>
+  <data name="Journey.Rank.4" xml:space="preserve"><value>Pejuang</value></data>
+  <data name="Journey.Rank.5" xml:space="preserve"><value>Tangguh</value></data>
+  <data name="Journey.Rank.6" xml:space="preserve"><value>Mahir</value></data>
+  <data name="Journey.Rank.7" xml:space="preserve"><value>Ahli</value></data>
+  <data name="Journey.Rank.8" xml:space="preserve"><value>Master</value></data>
+  <data name="Journey.Rank.9" xml:space="preserve"><value>Juara</value></data>
+  <data name="Journey.Rank.10" xml:space="preserve"><value>Legenda</value></data>
+  <data name="Badge.Rank1" xml:space="preserve"><value>Juara 1</value></data>
+  <data name="Badge.Top3" xml:space="preserve"><value>3 besar</value></data>
+  <data name="Badge.Top10" xml:space="preserve"><value>10 besar</value></data>
+  <data name="Badge.FirstSteps" xml:space="preserve"><value>Langkah pertama</value></data>
+  <data name="Badge.FirstSteps.How" xml:space="preserve"><value>Selesaikan sesi pertama Anda</value></data>
+  <data name="Badge.Questions100" xml:space="preserve"><value>100 soal</value></data>
+  <data name="Badge.Questions100.How" xml:space="preserve"><value>Jawab 100 soal</value></data>
+  <data name="Badge.Questions500" xml:space="preserve"><value>500 soal</value></data>
+  <data name="Badge.Questions500.How" xml:space="preserve"><value>Jawab 500 soal</value></data>
+  <data name="Badge.Questions1000" xml:space="preserve"><value>1.000 soal</value></data>
+  <data name="Badge.Questions1000.How" xml:space="preserve"><value>Jawab 1.000 soal</value></data>
+  <data name="Badge.Sharpshooter" xml:space="preserve"><value>Penembak jitu</value></data>
+  <data name="Badge.Sharpshooter.How" xml:space="preserve"><value>Raih nilai 90% atau lebih</value></data>
+  <data name="Badge.PassedSimulation" xml:space="preserve"><value>Lulus simulasi</value></data>
+  <data name="Badge.PassedSimulation.How" xml:space="preserve"><value>Lulus nilai batas di simulasi</value></data>
+  <data name="Badge.Streak3" xml:space="preserve"><value>Streak 3 hari</value></data>
+  <data name="Badge.Streak3.How" xml:space="preserve"><value>Belajar 3 hari berturut-turut</value></data>
+  <data name="Badge.Streak7" xml:space="preserve"><value>Streak 7 hari</value></data>
+  <data name="Badge.Streak7.How" xml:space="preserve"><value>Belajar 7 hari berturut-turut</value></data>
+  <data name="Badge.Streak30" xml:space="preserve"><value>Streak 30 hari</value></data>
+  <data name="Badge.Streak30.How" xml:space="preserve"><value>Belajar 30 hari berturut-turut</value></data>
+  <data name="Badge.Flashcards50" xml:space="preserve"><value>Penghafal</value></data>
+  <data name="Badge.Flashcards50.How" xml:space="preserve"><value>Ulangi 50 kartu hafalan</value></data>
+  <data name="Badge.Flashcards250" xml:space="preserve"><value>Ingatan baja</value></data>
+  <data name="Badge.Flashcards250.How" xml:space="preserve"><value>Ulangi 250 kartu hafalan</value></data>
+  <data name="Badge.ClassJoined" xml:space="preserve"><value>Anggota kelas</value></data>
+  <data name="Badge.ClassJoined.How" xml:space="preserve"><value>Gabung ke kelas seorang guru</value></data>
+  <data name="Profile.HideOnLeaderboard" xml:space="preserve"><value>Sembunyikan nama saya di papan peringkat</value></data>
+  <data name="Profile.HideOnLeaderboardHint" xml:space="preserve"><value>Orang lain melihat Anda sebagai "Peserta #XXXX". Guru di kelas Anda tetap melihat nama Anda.</value></data>
 </root>

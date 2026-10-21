@@ -25,7 +25,7 @@
     <p role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="flash">@T[flash]</p>
   }
 
-  <article class="space-y-2 rounded-xl border border-slate-200 bg-white p-4 text-center" data-testid="result-score">
+  <article class="card space-y-2 p-4 text-center" data-testid="result-score">
     <p class="text-4xl font-bold">@r.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</p>
     <p class="text-slate-700">@T["Session.Result.Correct", r.CorrectCount, r.TotalCount]</p>
     @if (r.Passed is { } passed)
@@ -34,6 +34,17 @@
     }
     <p class="text-sm text-slate-600">@T["Session.Result.Time", minutes, seconds]@(r.Status == AttemptStatus.Expired ? " · " + T["Session.Result.Expired"].Value : null)</p>
   </article>
+
+  @if (Model.Standing is { } standing)
+  {
+    var boardUrl = standing.ClassroomId is { } classId && standing.ClassAssignmentId is { } assignmentId
+      ? Akusiap.Web.Areas.Learn.Pages.Classes.ClassRoutes.Assignment(classId, assignmentId)
+      : $"/ujian/{standing.ExamId}/peringkat";
+    <a href="@boardUrl" class="card card-link flex items-center gap-4 p-4" data-testid="result-rank">
+      <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full border-4 border-accent-400 text-lg font-extrabold text-brand-800">#@standing.Rank</span>
+      <span class="space-y-0.5"><span class="block font-bold">@T["Leaderboard.YouRank", standing.Rank, standing.Total]</span><span class="block text-sm text-brand-700">@T["Leaderboard.See"]</span></span>
+    </a>
+  }
 
   @if (r.Offer is { } offer)
   {

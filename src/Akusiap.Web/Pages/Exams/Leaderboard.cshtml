@@ -1,0 +1,24 @@
+@page "/ujian/{id:long}/peringkat"
+@model Akusiap.Web.Pages.Exams.LeaderboardModel
+@* Public leaderboard (GAM-01): each person's first finished Simulation, by score then time. *@
+@{
+  var board = Model.Board;
+  ViewData["Title"] = $"{T["Leaderboard.Title"].Value} · {board.Title}";
+}
+
+<section class="space-y-5">
+  <a href="@ExamRoutes.Detail(board.ExamId)" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @board.Title</a>
+  <div class="bg-panel flex flex-wrap items-center justify-between gap-3 rounded-2xl p-5 text-white shadow-sm">
+    <div class="space-y-1">
+      <p class="text-sm text-brand-100">@board.Title</p>
+      <h1 class="text-2xl font-extrabold leading-tight">@T["Leaderboard.Title"]</h1>
+    </div>
+    @if (board.Viewer is { } me)
+    {
+      <p class="rounded-xl border-4 border-accent-400 px-4 py-2 text-center" data-testid="my-rank"><span class="block text-xs text-brand-100">@T["Leaderboard.YourRank"]</span><span class="text-2xl font-extrabold">#@me.Rank</span></p>
+    }
+  </div>
+  <p class="text-sm text-slate-600">@T["Leaderboard.Lead"]</p>
+  <partial name="_LeaderboardPartial" model="board" />
+  <a href="@ExamRoutes.Start(board.ExamId)" class="btn btn-primary w-full sm:w-auto">@T["Leaderboard.TakeSimulation"]</a>
+</section>

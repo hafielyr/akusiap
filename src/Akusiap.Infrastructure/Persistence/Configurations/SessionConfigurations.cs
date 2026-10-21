@@ -34,7 +34,8 @@ public sealed class AttemptConfiguration : IEntityTypeConfiguration<Attempt>
         builder.HasIndex(a => new { a.UserId, a.StartedAt }, "ix_attempts_user")
             .HasDatabaseName("ix_attempts_user")
             .IsDescending(false, true);
-        // The foreign key to class_assignments is added with that table (D-27).
+        // The foreign key to class_assignments came with that table (GAM-01, D-27).
+        builder.HasOne(a => a.ClassAssignment).WithMany().HasForeignKey(a => a.ClassAssignmentId).OnDelete(DeleteBehavior.NoAction);
         builder.HasIndex(a => a.ClassAssignmentId);
         builder.HasIndex(a => a.GuestToken, "ix_attempts_guest_token")
             .HasDatabaseName("ix_attempts_guest_token")

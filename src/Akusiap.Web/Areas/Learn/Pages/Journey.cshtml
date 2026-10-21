@@ -1,0 +1,86 @@
+@page "/learn/perjalanan"
+@model Akusiap.Web.Areas.Learn.Pages.JourneyModel
+@using Akusiap.Domain
+@using Akusiap.Domain.Gamification
+@* Learning journey (GAM-01): level with XP progress, streak, totals and the badge collection (earned and still locked). *@
+@{
+  ViewData["Title"] = T["Journey.Title"].Value;
+  var j = Model.Journey;
+  var milestones = Enum.GetValues<BadgeCode>().Where(c => !Journey.IsRankBadge(c)).ToList();
+  var earnedMilestones = j.Badges.Where(b => b.ExamId is null).Select(b => b.Code).ToHashSet();
+  var rankBadges = j.Badges.Where(b => b.ExamId is not null).ToList();
+  var accuracy = j.Stats.AnsweredQuestions == 0 ? 0 : (int)Math.Round(100.0 * j.Stats.CorrectAnswers / j.Stats.AnsweredQuestions);
+}
+
+<section class="space-y-5">
+  <a href="/learn" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Learn.Title"]</a>
+
+  <div class="bg-hero space-y-4 rounded-2xl p-5 text-white shadow-sm" data-testid="journey-level">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <span class="inline-flex size-20 shrink-0 items-center justify-center rounded-full border-4 border-accent-400 text-2xl font-extrabold" data-testid="level">@j.Level.Level</span>
+        <span class="space-y-0.5">
+          <span class="block text-sm text-brand-100">@T["Journey.Level", j.Level.Level]</span>
+          <span class="block text-xl font-extrabold">@T[$"Journey.Rank.{Math.Min(j.Level.Level, 10)}"]</span>
+        </span>
+      </div>
+      <div class="on-dark rounded-xl px-4 py-2 text-center" data-testid="streak">
+        <span class="block text-2xl font-extrabold">🔥 @j.Streak.Current</span>
+        <span class="block text-xs text-brand-100">@T["Journey.StreakDays"]</span>
+      </div>
+    </div>
+    <div class="space-y-1">
+      <div class="on-dark h-3 overflow-hidden rounded-full" role="progressbar" aria-valuemin="0" aria-valuemax="@j.Level.XpForNextLevel" aria-valuenow="@j.Level.XpIntoLevel" aria-label="@T["Journey.Xp"]">
+        <div class="h-full rounded-full bg-accent-400" style="width: @(j.Level.Percent)%"></div>
+      </div>
+      <p class="text-sm text-brand-100" data-testid="xp">@T["Journey.XpProgress", j.Level.Xp, j.Level.XpIntoLevel, j.Level.XpForNextLevel, j.Level.Level + 1]</p>
+    </div>
+    <p class="text-sm text-brand-100">@(j.Streak.ActiveToday ? T["Journey.StreakDone"] : T["Journey.StreakKeep"]) · @T["Journey.Longest", j.Streak.Longest]</p>
+  </div>
+
+  <ul class="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="journey-stats">
+    @foreach (var (label, value) in new (string, string)[]
+    {
+      ("Journey.Stat.Exams", j.Stats.FinishedAttempts.ToString(System.Globalization.CultureInfo.CurrentCulture)),
+      ("Journey.Stat.Answered", j.Stats.AnsweredQuestions.ToString(System.Globalization.CultureInfo.CurrentCulture)),
+      ("Journey.Stat.Accuracy", accuracy + "%"),
+      ("Journey.Stat.Cards", j.Stats.FlashcardReviews.ToString(System.Globalization.CultureInfo.CurrentCulture)),
+    })
+    {
+      <li class="card p-4"><span class="block text-2xl font-extrabold text-brand-700">@value</span><span class="block text-sm text-slate-600">@T[label]</span></li>
+    }
+  </ul>
+
+  @if (rankBadges.Count > 0)
+  {
+    <section class="space-y-3" aria-labelledby="rank-badges">
+      <h2 id="rank-badges" class="section-title">@T["Journey.RankBadges"]</h2>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        @foreach (var b in rankBadges)
+        {
+          <li class="card flex items-center gap-3 p-4" data-testid="rank-badge" data-code="@b.Code">
+            <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full @(b.Code == BadgeCode.Rank1 ? "bg-accent-400" : "bg-brand-100") text-xl">🏆</span>
+            <span class="min-w-0 space-y-0.5"><span class="block font-bold">@T[$"Badge.{b.Code}"]</span><span class="block truncate text-sm text-slate-600">@b.ExamTitle · @JakartaTime.FormatDate(b.AwardedAt)</span></span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  <section class="space-y-3" aria-labelledby="milestones">
+    <h2 id="milestones" class="section-title">@T["Journey.Badges", earnedMilestones.Count, milestones.Count]</h2>
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      @foreach (var code in milestones)
+      {
+        var earned = earnedMilestones.Contains(code);
+        <li class="card space-y-2 p-4 @(earned ? null : "opacity-60")" data-testid="milestone" data-code="@code" data-earned="@(earned ? "true" : "false")">
+          <span class="inline-flex size-11 items-center justify-center rounded-full text-xl @(earned ? "bg-accent-100" : "bg-slate-100")">@(earned ? "🏅" : "🔒")</span>
+          <span class="block font-bold leading-snug">@T[$"Badge.{code}"]</span>
+          <span class="block text-sm text-slate-600">@T[$"Badge.{code}.How"]</span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <p class="text-xs text-slate-500">@T["Journey.XpRule"]</p>
+</section>

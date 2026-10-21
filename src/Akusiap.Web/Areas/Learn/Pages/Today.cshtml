@@ -12,6 +12,14 @@
     <p class="text-slate-600">@T["Today.Lead"]</p>
   </div>
 
+  <a href="/learn/perjalanan" class="card card-link flex flex-wrap items-center justify-between gap-3 p-4" data-testid="journey-strip">
+    <span class="flex items-center gap-3">
+      <span class="inline-flex size-11 items-center justify-center rounded-full bg-brand-600 font-extrabold text-white" data-testid="today-level">@Model.Level.Level</span>
+      <span class="space-y-0.5"><span class="block font-bold">@T["Journey.Level", Model.Level.Level]</span><span class="block text-sm text-slate-600">@T["Journey.XpShort", Model.Level.Xp]</span></span>
+    </span>
+    <span class="badge-soon text-sm" data-testid="today-streak">🔥 @T["Journey.StreakShort", Model.Streak.Current]</span>
+  </a>
+
   <article class="flex flex-wrap items-center gap-4 rounded-2xl bg-panel p-5 text-white shadow-sm" data-testid="today-total">
     <span class="inline-flex size-20 shrink-0 items-center justify-center rounded-full border-4 border-accent-400">
       <span class="text-3xl font-extrabold" data-testid="today-total-count">@Model.All.DueCount</span>

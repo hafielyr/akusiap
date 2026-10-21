@@ -13,7 +13,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [BRD-01] Rebrand to LatihanSoal and blue redesign · M8 · deps: SHR-05 · (claude-opus-5.5, 2026-10-21)
+- [GAM-01] Leaderboards, teacher classes and learning journey · M8 · deps: SES-07, OWN-04, MEM-03 · (claude-opus-5.5, 2026-10-22)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -90,6 +90,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SHR-03] Guest takes a shared exam · M6 · deps: SHR-02, SES-03
 - [SHR-04] Shared result and register invitation · M6 · deps: SHR-03
 - [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04
+- [BRD-01] Rebrand to LatihanSoal and blue redesign · M8 · deps: SHR-05
 
 ## Backlog
 
@@ -114,5 +115,5 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 **Release 2 exit check**: A free learner writes 50 questions, builds 1 exam and shares it. A guest takes it by entering a name, sees the explanations and is invited to register. The admin takes the exam down and the link stops working. The daily due list shows wrong answers scheduled by SM-2.
 
 ### M8 Exam positioning (Release 2+)
-- [DRL-02] Badges and weekly leaderboard · M8 · deps: DRL-01
+- [DRL-02] Weekly leaderboard reset and seasonal badges (per-exam boards and badges shipped in GAM-01) · M8 · deps: DRL-01
 - [TRY-02] Subtest scoring (TWK/TIU/TKP) · M8 · deps: TRY-01

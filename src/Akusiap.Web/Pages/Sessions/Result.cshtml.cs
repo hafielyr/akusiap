@@ -9,9 +9,12 @@ namespace Akusiap.Web.Pages.Sessions;
 /// <c>/sesi/{id}/hasil</c> (SES-07): score, pass/fail, time and a per-topic table. Trial results offer to buy the exam or
 /// subscribe (guests go through sign-in first). An attempt still in progress goes back to the player; anyone else's is 404.
 /// </summary>
-public sealed class ResultModel(GetResult getResult, SubmitAttempt submitAttempt) : PageModel
+public sealed class ResultModel(GetResult getResult, SubmitAttempt submitAttempt, Application.Gamification.Leaderboards leaderboards) : PageModel
 {
     public AttemptResult Result { get; private set; } = null!;
+
+    /// <summary>Where this attempt ranks when it is the one that counts on a leaderboard (GAM-01).</summary>
+    public Application.Gamification.AttemptStanding? Standing { get; private set; }
 
     public async Task<IActionResult> OnGetAsync(long id, CancellationToken cancellationToken)
     {
@@ -26,6 +29,7 @@ public sealed class ResultModel(GetResult getResult, SubmitAttempt submitAttempt
         }
 
         Result = result;
+        Standing = await leaderboards.StandingAsync(id, cancellationToken);
         return Page();
     }
 }

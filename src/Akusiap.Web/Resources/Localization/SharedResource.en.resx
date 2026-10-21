@@ -898,4 +898,135 @@
   <data name="Home.Step.Practise.Text" xml:space="preserve"><value>Review the cards that are due every day on the Today page.</value></data>
   <data name="Home.Cta.Title" xml:space="preserve"><value>Ready to start practising?</value></data>
   <data name="Home.Cta.Lead" xml:space="preserve"><value>Try the questions now, free and without signing up.</value></data>
+  <data name="Leaderboard.Title" xml:space="preserve"><value>Leaderboard</value></data>
+  <data name="Leaderboard.Lead" xml:space="preserve"><value>Ranks use each person's first simulation: the highest score wins, and on a tie the faster time wins.</value></data>
+  <data name="Leaderboard.Empty" xml:space="preserve"><value>No one is ranked yet. Finish a simulation to get on the board.</value></data>
+  <data name="Leaderboard.Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Leaderboard.Score" xml:space="preserve"><value>Score</value></data>
+  <data name="Leaderboard.Time" xml:space="preserve"><value>Time</value></data>
+  <data name="Leaderboard.Rule" xml:space="preserve"><value>{0} people · only the first simulation counts</value></data>
+  <data name="Leaderboard.YourRank" xml:space="preserve"><value>Your rank</value></data>
+  <data name="Leaderboard.YouRank" xml:space="preserve"><value>Rank #{0} of {1}</value></data>
+  <data name="Leaderboard.See" xml:space="preserve"><value>See the leaderboard</value></data>
+  <data name="Leaderboard.LinkHint" xml:space="preserve"><value>Compare your score and time with others</value></data>
+  <data name="Leaderboard.TakeSimulation" xml:space="preserve"><value>Take a simulation</value></data>
+  <data name="Class.Title" xml:space="preserve"><value>Classes</value></data>
+  <data name="Class.Link" xml:space="preserve"><value>Classes from your teacher, or the ones you teach</value></data>
+  <data name="Class.Lead" xml:space="preserve"><value>Join a class with your teacher's code, or create one for your students.</value></data>
+  <data name="Class.Empty" xml:space="preserve"><value>You have no classes yet.</value></data>
+  <data name="Class.YouTeach" xml:space="preserve"><value>You teach</value></data>
+  <data name="Class.YouJoined" xml:space="preserve"><value>You're a student</value></data>
+  <data name="Class.TeacherIs" xml:space="preserve"><value>Teacher: {0}</value></data>
+  <data name="Class.MemberCount" xml:space="preserve"><value>{0} students</value></data>
+  <data name="Class.OpenAssignments" xml:space="preserve"><value>{0} open assignments</value></data>
+  <data name="Class.Join" xml:space="preserve"><value>Join a class</value></data>
+  <data name="Class.JoinHint" xml:space="preserve"><value>Enter the code from your teacher</value></data>
+  <data name="Class.JoinLead" xml:space="preserve"><value>Type the 8-character class code from your teacher.</value></data>
+  <data name="Class.Code" xml:space="preserve"><value>Class code</value></data>
+  <data name="Class.JoinAction" xml:space="preserve"><value>Join</value></data>
+  <data name="Class.NewName" xml:space="preserve"><value>Create a class</value></data>
+  <data name="Class.Name" xml:space="preserve"><value>Class name</value></data>
+  <data name="Class.NamePlaceholder" xml:space="preserve"><value>For example: SKD prep batch 3</value></data>
+  <data name="Class.Create" xml:space="preserve"><value>Create class</value></data>
+  <data name="Class.TeacherHint" xml:space="preserve"><value>To create classes, turn on "I also teach" on your</value></data>
+  <data name="Class.Created" xml:space="preserve"><value>Class created. Share the code or link with your students.</value></data>
+  <data name="Class.Joined" xml:space="preserve"><value>You joined the class.</value></data>
+  <data name="Class.Assigned" xml:space="preserve"><value>Exam assigned to the class.</value></data>
+  <data name="Class.StudentRemoved" xml:space="preserve"><value>Student removed from the class.</value></data>
+  <data name="Class.TeachersOnly" xml:space="preserve"><value>Only teachers can create classes.</value></data>
+  <data name="Class.CodeUnknown" xml:space="preserve"><value>We couldn't find that class code. Check it and try again.</value></data>
+  <data name="Class.Removed" xml:space="preserve"><value>You were removed from this class. Contact your teacher.</value></data>
+  <data name="Class.OwnClass" xml:space="preserve"><value>This is your own class.</value></data>
+  <data name="Class.ExamRequired" xml:space="preserve"><value>Choose one of your exams.</value></data>
+  <data name="Class.WindowInvalid" xml:space="preserve"><value>The closing time must be after the opening time and still ahead.</value></data>
+  <data name="Class.AssignmentClosed" xml:space="preserve"><value>This assignment isn't open.</value></data>
+  <data name="Class.Invite" xml:space="preserve"><value>Invite students</value></data>
+  <data name="Class.InviteHint" xml:space="preserve"><value>Students sign in, then use this code or link.</value></data>
+  <data name="Class.InviteLink" xml:space="preserve"><value>Invite link</value></data>
+  <data name="Class.Assignments" xml:space="preserve"><value>Assignments</value></data>
+  <data name="Class.NoAssignments" xml:space="preserve"><value>No assignments yet.</value></data>
+  <data name="Class.State.Upcoming" xml:space="preserve"><value>Not open yet</value></data>
+  <data name="Class.State.Open" xml:space="preserve"><value>Open</value></data>
+  <data name="Class.State.Closed" xml:space="preserve"><value>Closed</value></data>
+  <data name="Class.TimeLimit" xml:space="preserve"><value>{0} minutes</value></data>
+  <data name="Class.NoTimeLimit" xml:space="preserve"><value>No time limit</value></data>
+  <data name="Class.AttemptsUsed" xml:space="preserve"><value>Attempt {0} of {1}</value></data>
+  <data name="Class.Start" xml:space="preserve"><value>Start</value></data>
+  <data name="Class.Results" xml:space="preserve"><value>Student results</value></data>
+  <data name="Class.Assign" xml:space="preserve"><value>Assign an exam</value></data>
+  <data name="Class.NoOwnExams" xml:space="preserve"><value>You have no exams of your own yet.</value></data>
+  <data name="Class.Exam" xml:space="preserve"><value>Exam</value></data>
+  <data name="Class.OpensAt" xml:space="preserve"><value>Opens (WIB)</value></data>
+  <data name="Class.ClosesAt" xml:space="preserve"><value>Closes (WIB)</value></data>
+  <data name="Class.AssignHint" xml:space="preserve"><value>The exam's rules are copied now and locked for the class. Students take it as a simulation.</value></data>
+  <data name="Class.AssignAction" xml:space="preserve"><value>Assign</value></data>
+  <data name="Class.Students" xml:space="preserve"><value>Students ({0})</value></data>
+  <data name="Class.NoStudents" xml:space="preserve"><value>No students yet. Share the class code.</value></data>
+  <data name="Class.JoinedOn" xml:space="preserve"><value>joined {0}</value></data>
+  <data name="Class.Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Class.BackToClass" xml:space="preserve"><value>Back to the class</value></data>
+  <data name="Class.FirstScore" xml:space="preserve"><value>First score</value></data>
+  <data name="Class.BestScore" xml:space="preserve"><value>Best score</value></data>
+  <data name="Class.AttemptsCol" xml:space="preserve"><value>Attempts</value></data>
+  <data name="Participants.Title" xml:space="preserve"><value>Participants</value></data>
+  <data name="Participants.Lead" xml:space="preserve"><value>Everyone who finished this exam, best first. Guests from share links show with the name they entered.</value></data>
+  <data name="Participants.Empty" xml:space="preserve"><value>No one has finished this exam yet.</value></data>
+  <data name="Participants.When" xml:space="preserve"><value>Finished</value></data>
+  <data name="Journey.Title" xml:space="preserve"><value>Learning journey</value></data>
+  <data name="Journey.Link" xml:space="preserve"><value>Your level, streak and badges</value></data>
+  <data name="Journey.Level" xml:space="preserve"><value>Level {0}</value></data>
+  <data name="Journey.StreakDays" xml:space="preserve"><value>day streak</value></data>
+  <data name="Journey.Xp" xml:space="preserve"><value>Experience points</value></data>
+  <data name="Journey.XpProgress" xml:space="preserve"><value>{0} XP · {1}/{2} to level {3}</value></data>
+  <data name="Journey.XpShort" xml:space="preserve"><value>{0} XP</value></data>
+  <data name="Journey.StreakShort" xml:space="preserve"><value>{0} days</value></data>
+  <data name="Journey.StreakDone" xml:space="preserve"><value>Nice, you studied today</value></data>
+  <data name="Journey.StreakKeep" xml:space="preserve"><value>Study today to keep your streak</value></data>
+  <data name="Journey.Longest" xml:space="preserve"><value>longest {0} days</value></data>
+  <data name="Journey.Stat.Exams" xml:space="preserve"><value>sessions finished</value></data>
+  <data name="Journey.Stat.Answered" xml:space="preserve"><value>questions done</value></data>
+  <data name="Journey.Stat.Accuracy" xml:space="preserve"><value>correct answers</value></data>
+  <data name="Journey.Stat.Cards" xml:space="preserve"><value>cards reviewed</value></data>
+  <data name="Journey.RankBadges" xml:space="preserve"><value>Rank badges</value></data>
+  <data name="Journey.Badges" xml:space="preserve"><value>Badges ({0}/{1})</value></data>
+  <data name="Journey.XpRule" xml:space="preserve"><value>XP: 10 per correct answer, 20 per finished session, 2 per card reviewed, 50 per badge. Streaks count Jakarta days.</value></data>
+  <data name="Journey.Rank.1" xml:space="preserve"><value>Beginner</value></data>
+  <data name="Journey.Rank.2" xml:space="preserve"><value>Explorer</value></data>
+  <data name="Journey.Rank.3" xml:space="preserve"><value>Steady learner</value></data>
+  <data name="Journey.Rank.4" xml:space="preserve"><value>Fighter</value></data>
+  <data name="Journey.Rank.5" xml:space="preserve"><value>Resilient</value></data>
+  <data name="Journey.Rank.6" xml:space="preserve"><value>Skilled</value></data>
+  <data name="Journey.Rank.7" xml:space="preserve"><value>Expert</value></data>
+  <data name="Journey.Rank.8" xml:space="preserve"><value>Master</value></data>
+  <data name="Journey.Rank.9" xml:space="preserve"><value>Champion</value></data>
+  <data name="Journey.Rank.10" xml:space="preserve"><value>Legend</value></data>
+  <data name="Badge.Rank1" xml:space="preserve"><value>First place</value></data>
+  <data name="Badge.Top3" xml:space="preserve"><value>Top 3</value></data>
+  <data name="Badge.Top10" xml:space="preserve"><value>Top 10</value></data>
+  <data name="Badge.FirstSteps" xml:space="preserve"><value>First steps</value></data>
+  <data name="Badge.FirstSteps.How" xml:space="preserve"><value>Finish your first session</value></data>
+  <data name="Badge.Questions100" xml:space="preserve"><value>100 questions</value></data>
+  <data name="Badge.Questions100.How" xml:space="preserve"><value>Answer 100 questions</value></data>
+  <data name="Badge.Questions500" xml:space="preserve"><value>500 questions</value></data>
+  <data name="Badge.Questions500.How" xml:space="preserve"><value>Answer 500 questions</value></data>
+  <data name="Badge.Questions1000" xml:space="preserve"><value>1,000 questions</value></data>
+  <data name="Badge.Questions1000.How" xml:space="preserve"><value>Answer 1,000 questions</value></data>
+  <data name="Badge.Sharpshooter" xml:space="preserve"><value>Sharpshooter</value></data>
+  <data name="Badge.Sharpshooter.How" xml:space="preserve"><value>Score 90% or more</value></data>
+  <data name="Badge.PassedSimulation" xml:space="preserve"><value>Passed a simulation</value></data>
+  <data name="Badge.PassedSimulation.How" xml:space="preserve"><value>Reach the pass mark in a simulation</value></data>
+  <data name="Badge.Streak3" xml:space="preserve"><value>3-day streak</value></data>
+  <data name="Badge.Streak3.How" xml:space="preserve"><value>Study 3 days in a row</value></data>
+  <data name="Badge.Streak7" xml:space="preserve"><value>7-day streak</value></data>
+  <data name="Badge.Streak7.How" xml:space="preserve"><value>Study 7 days in a row</value></data>
+  <data name="Badge.Streak30" xml:space="preserve"><value>30-day streak</value></data>
+  <data name="Badge.Streak30.How" xml:space="preserve"><value>Study 30 days in a row</value></data>
+  <data name="Badge.Flashcards50" xml:space="preserve"><value>Memorizer</value></data>
+  <data name="Badge.Flashcards50.How" xml:space="preserve"><value>Review 50 flashcards</value></data>
+  <data name="Badge.Flashcards250" xml:space="preserve"><value>Iron memory</value></data>
+  <data name="Badge.Flashcards250.How" xml:space="preserve"><value>Review 250 flashcards</value></data>
+  <data name="Badge.ClassJoined" xml:space="preserve"><value>Class member</value></data>
+  <data name="Badge.ClassJoined.How" xml:space="preserve"><value>Join a teacher's class</value></data>
+  <data name="Profile.HideOnLeaderboard" xml:space="preserve"><value>Hide my name on leaderboards</value></data>
+  <data name="Profile.HideOnLeaderboardHint" xml:space="preserve"><value>Others see you as "Peserta #XXXX". Teachers of your classes still see your name.</value></data>
 </root>

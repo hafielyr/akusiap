@@ -8,7 +8,10 @@
   <a href="@IndexModel.Route" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Own.Exams.Title"]</a>
   <div class="flex flex-wrap items-center justify-between gap-3">
     <h1 class="text-2xl font-bold leading-tight">@T["Own.Exams.Edit"]</h1>
-    <a href="@Akusiap.Web.Pages.Exams.ExamRoutes.Start(Model.Id)" class="btn btn-primary" data-testid="practise-own-exam">@T["Own.Exams.Practise"]</a>
+    <span class="flex flex-wrap gap-2">
+      <a href="@IndexModel.Route/@Model.Id/peserta" class="btn btn-secondary" data-testid="own-exam-participants">@T["Participants.Title"]</a>
+      <a href="@Akusiap.Web.Pages.Exams.ExamRoutes.Start(Model.Id)" class="btn btn-primary" data-testid="practise-own-exam">@T["Own.Exams.Practise"]</a>
+    </span>
   </div>
   @if (TempData["Flash"] is string flash)
   {

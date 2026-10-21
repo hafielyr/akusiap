@@ -119,6 +119,32 @@ public sealed class EntitlementPolicyTests
         Assert.Equal(AccessLevel.None, Evaluate(ViewerContext.Guest, teacherExam, Token).Level);
     }
 
+    // ---------- Rule 4b: class assignment (GAM-01) ----------
+
+    [Fact]
+    public void Rule4b_a_class_member_gets_full_access_while_the_assignment_is_open()
+    {
+        var exam = OwnExam(TeacherId) with { Id = 14, Status = ExamStatus.Draft };
+        var open = Viewer(LearnerId) with { ClassAssignments = [new ClassAssignmentFact(14, Now.AddHours(-1), Now.AddHours(1))] };
+        var notYet = Viewer(LearnerId) with { ClassAssignments = [new ClassAssignmentFact(14, Now.AddHours(1), Now.AddHours(2))] };
+        var closed = Viewer(LearnerId) with { ClassAssignments = [new ClassAssignmentFact(14, Now.AddHours(-2), Now)] };
+        var otherExam = Viewer(LearnerId) with { ClassAssignments = [new ClassAssignmentFact(99, Now.AddHours(-1), Now.AddHours(1))] };
+
+        Assert.Equal(Decision(AccessLevel.Full, AccessReason.ClassAssignment, QuestionScope.All), Evaluate(open, exam));
+        Assert.Equal(AccessReason.NotPublished, Evaluate(notYet, exam).Reason);
+        Assert.Equal(AccessReason.NotPublished, Evaluate(closed, exam).Reason);
+        Assert.Equal(AccessReason.NotPublished, Evaluate(otherExam, exam).Reason);
+    }
+
+    [Fact]
+    public void Rule4b_a_taken_down_exam_stays_closed_to_class_members()
+    {
+        var exam = OwnExam(TeacherId) with { Id = 14, Status = ExamStatus.TakenDown };
+        var member = Viewer(LearnerId) with { ClassAssignments = [new ClassAssignmentFact(14, Now.AddHours(-1), Now.AddHours(1))] };
+
+        Assert.Equal(AccessReason.TakenDown, Evaluate(member, exam).Reason);
+    }
+
     // ---------- Rule 5: not published ----------
 
     [Theory]

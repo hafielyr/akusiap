@@ -6,4 +6,7 @@ public interface ICurrentUser
     Guid? UserId { get; }
 
     bool IsAdmin { get; }
+
+    /// <summary>Teachers (and admins) can run classes (GAM-01).</summary>
+    bool IsTeacher { get; }
 }

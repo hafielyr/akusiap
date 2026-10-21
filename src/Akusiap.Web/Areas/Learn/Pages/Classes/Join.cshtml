@@ -1,0 +1,20 @@
+@page "/learn/kelas/gabung"
+@model Akusiap.Web.Areas.Learn.Pages.Classes.JoinModel
+@* Join a class (T-10): the invite link fills in the code; signed-out visitors sign in first (the Learn area). *@
+@{
+  ViewData["Title"] = T["Class.Join"].Value;
+  var codeError = ViewContext.ViewData.ModelState["Code"]?.Errors.FirstOrDefault()?.ErrorMessage
+    ?? ViewContext.ViewData.ModelState["kode"]?.Errors.FirstOrDefault()?.ErrorMessage;
+}
+
+<section class="card mx-auto max-w-md space-y-4 p-6">
+  <a href="@ClassRoutes.Index" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Class.Title"]</a>
+  <h1 class="text-2xl font-extrabold leading-tight">@T["Class.Join"]</h1>
+  <p class="text-slate-600">@T["Class.JoinLead"]</p>
+  <form method="post" class="space-y-3" novalidate data-testid="join-class-form">
+    <label for="kode" class="label">@T["Class.Code"]</label>
+    <input id="kode" name="kode" value="@Model.Code" maxlength="20" autocomplete="off" autocapitalize="characters" class="input text-center text-xl font-bold uppercase tracking-wide" aria-invalid="@(codeError is null ? null : "true")" />
+    @if (codeError is not null) { <span class="field-error" data-testid="error-code">@codeError</span> }
+    <button type="submit" class="btn btn-primary w-full">@T["Class.JoinAction"]</button>
+  </form>
+</section>

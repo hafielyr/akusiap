@@ -1,0 +1,45 @@
+@page "/learn/ujian-saya/{id:long}/peserta"
+@model Akusiap.Web.Areas.Learn.Pages.OwnExams.ParticipantsModel
+@using Akusiap.Domain
+@* Participants of an own exam (C-09): every finished attempt, signed-in users and named guests from share links. *@
+@{
+  ViewData["Title"] = T["Participants.Title"].Value;
+}
+
+<section class="space-y-5">
+  <a href="@IndexModel.Route/@Model.ExamId" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @Model.Title</a>
+  <div class="space-y-1">
+    <h1 class="text-2xl font-extrabold leading-tight">@T["Participants.Title"]</h1>
+    <p class="text-slate-600">@T["Participants.Lead"]</p>
+  </div>
+  @if (Model.Rows.Count == 0)
+  {
+    <p class="card border-dashed p-6 text-center text-slate-600" data-testid="no-participants">@T["Participants.Empty"]</p>
+  }
+  else
+  {
+    <div class="card overflow-x-auto">
+      <table class="w-full text-sm" data-testid="participants">
+        <thead>
+          <tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500">
+            <th class="px-3 py-2">@T["Leaderboard.Name"]</th>
+            <th class="px-3 py-2 text-right">@T["Leaderboard.Score"]</th>
+            <th class="px-3 py-2 text-right">@T["Leaderboard.Time"]</th>
+            <th class="px-3 py-2">@T["Participants.When"]</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var p in Model.Rows)
+          {
+            <tr class="border-b border-slate-200" data-testid="participant">
+              <td class="px-3 py-2"><span class="font-semibold">@p.Name</span>@(p.IsGuest ? " · " + T["Admin.Reports.Guest"].Value : null)</td>
+              <td class="px-3 py-2 text-right num">@p.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)% <span class="text-xs text-slate-500">(@p.CorrectCount/@p.TotalCount)</span></td>
+              <td class="px-3 py-2 text-right num">@(p.TimeSpentSeconds / 60):@((p.TimeSpentSeconds % 60).ToString("00", System.Globalization.CultureInfo.InvariantCulture))</td>
+              <td class="px-3 py-2 text-slate-600">@JakartaTime.Format(p.SubmittedAt)</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

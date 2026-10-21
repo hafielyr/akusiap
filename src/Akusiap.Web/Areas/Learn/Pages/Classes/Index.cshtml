@@ -1,0 +1,60 @@
+@page "/learn/kelas"
+@model Akusiap.Web.Areas.Learn.Pages.Classes.IndexModel
+@* Classes (GAM-01): the ones you teach and the ones you joined; join with a code; teachers create classes. *@
+@{
+  ViewData["Title"] = T["Class.Title"].Value;
+  var nameError = ViewContext.ViewData.ModelState["Name"]?.Errors.FirstOrDefault()?.ErrorMessage;
+}
+
+<section class="space-y-5">
+  <a href="/learn" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Learn.Title"]</a>
+  <div class="space-y-1">
+    <h1 class="text-2xl font-extrabold leading-tight">@T["Class.Title"]</h1>
+    <p class="text-slate-600">@T["Class.Lead"]</p>
+  </div>
+  @if (TempData["Flash"] is string flash)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash]</p>
+  }
+
+  @if (Model.Classes.Count == 0)
+  {
+    <p class="card border-dashed p-6 text-center text-slate-600" data-testid="no-classes">@T["Class.Empty"]</p>
+  }
+  <ul class="grid gap-3 sm:grid-cols-2" data-testid="classes">
+    @foreach (var c in Model.Classes)
+    {
+      <li>
+        <a href="@ClassRoutes.Detail(c.Id)" class="card card-link flex h-full flex-col gap-2 p-4" data-testid="class-card" data-class="@c.Id">
+          <span class="flex items-start justify-between gap-2">
+            <span class="font-bold text-slate-900">@c.Name</span>
+            <span class="@(c.IsTeacher ? "chip" : "badge-soon")">@(c.IsTeacher ? T["Class.YouTeach"] : T["Class.YouJoined"])</span>
+          </span>
+          <span class="text-sm text-slate-600">@T["Class.TeacherIs", c.TeacherName] · @T["Class.MemberCount", c.MemberCount]</span>
+          <span class="text-sm font-semibold text-brand-700">@T["Class.OpenAssignments", c.OpenAssignments]</span>
+        </a>
+      </li>
+    }
+  </ul>
+
+  <div class="grid gap-3 sm:grid-cols-2">
+    <a href="@ClassRoutes.Join()" class="card card-link flex items-center gap-3 p-4" data-testid="join-class-link">
+      <span class="icon-tile bg-brand-50 text-brand-700"><svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+      <span class="space-y-0.5"><span class="block font-bold">@T["Class.Join"]</span><span class="block text-sm text-slate-600">@T["Class.JoinHint"]</span></span>
+    </a>
+
+    @if (Model.IsTeacher)
+    {
+      <form method="post" asp-page-handler="Create" class="card space-y-3 p-4" novalidate data-testid="create-class-form">
+        <label for="Name" class="label">@T["Class.NewName"]</label>
+        <input id="Name" name="Name" value="@Model.Name" maxlength="200" class="input" placeholder="@T["Class.NamePlaceholder"]" aria-invalid="@(nameError is null ? null : "true")" />
+        @if (nameError is not null) { <span class="field-error">@nameError</span> }
+        <button type="submit" class="btn btn-primary w-full">@T["Class.Create"]</button>
+      </form>
+    }
+    else
+    {
+      <p class="card p-4 text-sm text-slate-600" data-testid="teacher-hint">@T["Class.TeacherHint"] <a href="/learn/profil" class="font-semibold text-brand-700">@T["Profile.Title"]</a></p>
+    }
+  </div>
+</section>

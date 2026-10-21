@@ -38,6 +38,9 @@ public static class DependencyInjection
         services.AddScoped<GetReview>();
         services.AddScoped<ListHistory>();
         services.AddScoped<ClaimGuestAttempts>();
+        services.AddScoped<Gamification.Leaderboards>();
+        services.AddScoped<Gamification.Badges>();
+        services.AddScoped<Classes.Classes>();
         services.AddScoped<ExpireAccess>();
         services.AddScoped<ExpirePendingPayments>();
         services.AddScoped<ListDueReminders>();

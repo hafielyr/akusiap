@@ -47,6 +47,7 @@ public sealed class ProfileModel(UserManager<User> users, SignInManager<User> si
             PhoneNumber = user.PhoneNumber,
             PreferredLanguage = user.PreferredLanguage,
             IsTeacher = await users.IsInRoleAsync(user, RoleNames.Teacher),
+            HideOnLeaderboard = user.HideOnLeaderboard,
         };
         return Page();
     }
@@ -87,6 +88,7 @@ public sealed class ProfileModel(UserManager<User> users, SignInManager<User> si
         user.DisplayName = Input.DisplayName.Trim();
         user.PhoneNumber = phone;
         user.PreferredLanguage = Input.PreferredLanguage;
+        user.HideOnLeaderboard = Input.HideOnLeaderboard;
         Check(await users.UpdateAsync(user));
 
         var isTeacher = await users.IsInRoleAsync(user, RoleNames.Teacher);
@@ -195,6 +197,10 @@ public sealed class ProfileInput
 
     [Display(Name = "Profile.Teacher")]
     public bool IsTeacher { get; set; }
+
+    /// <summary>Show "Peserta #XXXX" instead of the name on public leaderboards (GAM-01).</summary>
+    [Display(Name = "Profile.HideOnLeaderboard")]
+    public bool HideOnLeaderboard { get; set; }
 }
 
 public sealed class PasswordInput

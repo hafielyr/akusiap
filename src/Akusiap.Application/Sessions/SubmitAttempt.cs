@@ -12,7 +12,7 @@ namespace Akusiap.Application.Sessions;
 /// limit) and the final status with SubmittedAt; signed-in users get review cards for wrong answers (MEM-01). Closing an
 /// attempt that is no longer in progress changes nothing.
 /// </summary>
-public sealed class AttemptFinisher(IAppDbContext db)
+public sealed class AttemptFinisher(IAppDbContext db, Gamification.Badges badges)
 {
     public async Task FinishAsync(Attempt attempt, AttemptStatus status, DateTime at, CancellationToken cancellationToken)
     {
@@ -59,6 +59,11 @@ public sealed class AttemptFinisher(IAppDbContext db)
         }
 
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        if (attempt.UserId is { } owner)
+        {
+            // GAM-01: milestone badges, and a rank badge when this is a counted Simulation attempt in the top 10.
+            await badges.AwardAsync(owner, attempt.Id, cancellationToken).ConfigureAwait(false);
+        }
     }
 
     /// <summary>

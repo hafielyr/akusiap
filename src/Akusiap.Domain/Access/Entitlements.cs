@@ -30,6 +30,7 @@ public enum AccessReason
     OwnerTakenDown,
     TakenDown,
     SharedLink,
+    ClassAssignment,
     NotPublished,
     FreeExam,
 
@@ -47,6 +48,9 @@ public sealed record PurchaseFact(long ExamId, ExamPurchaseStatus Status, DateTi
 /// <summary>A subscription of the viewer with its plan's all-exams flag.</summary>
 public sealed record SubscriptionFact(SubscriptionStatus Status, DateTime? CurrentPeriodEnd, bool IncludesAllExams);
 
+/// <summary>An assignment in a class the viewer belongs to (not removed): the exam and its open window (GAM-01).</summary>
+public sealed record ClassAssignmentFact(long ExamId, DateTime OpensAt, DateTime ClosesAt);
+
 /// <summary>Who is asking. Guests have no user id.</summary>
 public sealed record ViewerContext(
     Guid? UserId,
@@ -55,6 +59,9 @@ public sealed record ViewerContext(
     IReadOnlyList<SubscriptionFact> Subscriptions)
 {
     public static ViewerContext Guest { get; } = new(null, false, [], []);
+
+    /// <summary>Assignments in the viewer's classes (GAM-01). Empty for guests and for viewers loaded without them.</summary>
+    public IReadOnlyList<ClassAssignmentFact> ClassAssignments { get; init; } = [];
 
     public bool IsRegistered => UserId is not null;
 }

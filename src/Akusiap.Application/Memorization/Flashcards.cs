@@ -37,7 +37,7 @@ public sealed record FlashcardSummary(long AttemptId, string? Title, int Total, 
 /// Rating a card runs <see cref="Sm2Scheduler"/>, writes a <see cref="ReviewLog"/> and moves to the next card; after the
 /// last card the set is closed and summarised.
 /// </summary>
-public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlements, ExamQuestionScope questionScope, ICurrentUser currentUser, IClock clock)
+public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlements, ExamQuestionScope questionScope, ICurrentUser currentUser, IClock clock, Gamification.Badges badges)
 {
     public const int SetSize = 10;
     public const string Empty = "Flashcards.Empty";
@@ -218,6 +218,7 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
         }
 
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await badges.AwardAsync(userId, attemptId: null, cancellationToken).ConfigureAwait(false);
         return card.DueAt;
     }
 
