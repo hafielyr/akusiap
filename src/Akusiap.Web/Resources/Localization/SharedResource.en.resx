@@ -6,9 +6,9 @@
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="Layout.Help" xml:space="preserve"><value>Help</value></data>
   <data name="Layout.Language" xml:space="preserve"><value>Language</value></data>
-  <data name="Home.Title" xml:space="preserve"><value>Exam practice</value></data>
-  <data name="Home.Heading" xml:space="preserve"><value>Practise exam questions anytime from your phone</value></data>
-  <data name="Home.Lead" xml:space="preserve"><value>Try 30 free questions from any exam, with explanations. Register for free to unlock the free exams.</value></data>
+  <data name="Home.Title" xml:space="preserve"><value>Exam practice for CPNS, BUMN, Kedinasan &amp; UKMPPD</value></data>
+  <data name="Home.Heading" xml:space="preserve"><value>Practice for CPNS, BUMN, Kedinasan &amp; UKMPPD in one app</value></data>
+  <data name="Home.Lead" xml:space="preserve"><value>Work through questions with full explanations, timed simulations and flashcards that bring back what you haven&apos;t mastered yet. Start with 30 free trial questions.</value></data>
   <data name="Home.BrowseCatalog" xml:space="preserve"><value>Browse exam catalog</value></data>
   <data name="Error.Title" xml:space="preserve"><value>Something went wrong</value></data>
   <data name="Error.Heading" xml:space="preserve"><value>Sorry, something went wrong.</value></data>
@@ -29,7 +29,7 @@
   <data name="Account.Register.Submit" xml:space="preserve"><value>Sign up</value></data>
   <data name="Account.Register.HaveAccount" xml:space="preserve"><value>Already have an account?</value></data>
   <data name="Account.SignIn.Title" xml:space="preserve"><value>Sign in</value></data>
-  <data name="Account.SignIn.Heading" xml:space="preserve"><value>Sign in to Akusiap</value></data>
+  <data name="Account.SignIn.Heading" xml:space="preserve"><value>Sign in to LatihanSoal</value></data>
   <data name="Account.SignIn.Submit" xml:space="preserve"><value>Sign in</value></data>
   <data name="Account.SignIn.RememberMe" xml:space="preserve"><value>Remember me</value></data>
   <data name="Account.SignIn.NoAccount" xml:space="preserve"><value>No account yet?</value></data>
@@ -384,11 +384,11 @@
   <data name="Learn.Access.Link" xml:space="preserve"><value>See your exam access and subscriptions</value></data>
   <data name="Email.Greeting" xml:space="preserve"><value>Hi {0},</value></data>
   <data name="Email.LinkFallback" xml:space="preserve"><value>If the button doesn't work, copy this link into your browser:</value></data>
-  <data name="Email.Confirm.Subject" xml:space="preserve"><value>Confirm your Akusiap email</value></data>
-  <data name="Email.Confirm.Intro" xml:space="preserve"><value>Thanks for signing up to Akusiap. Confirm your email address with the button below.</value></data>
+  <data name="Email.Confirm.Subject" xml:space="preserve"><value>Confirm your LatihanSoal email</value></data>
+  <data name="Email.Confirm.Intro" xml:space="preserve"><value>Thanks for signing up to LatihanSoal. Confirm your email address with the button below.</value></data>
   <data name="Email.Confirm.Action" xml:space="preserve"><value>Confirm email</value></data>
   <data name="Email.Confirm.Note" xml:space="preserve"><value>If you didn't sign up, you can ignore this email.</value></data>
-  <data name="Email.Reset.Subject" xml:space="preserve"><value>Reset your Akusiap password</value></data>
+  <data name="Email.Reset.Subject" xml:space="preserve"><value>Reset your LatihanSoal password</value></data>
   <data name="Email.Reset.Intro" xml:space="preserve"><value>We received a request to reset your account password.</value></data>
   <data name="Email.Reset.Action" xml:space="preserve"><value>Reset password</value></data>
   <data name="Email.Reset.Note" xml:space="preserve"><value>This link works for 24 hours. If you didn't ask for it, ignore this email; your password stays the same.</value></data>
@@ -583,8 +583,8 @@
   <data name="Admin.Users.CreatedNoEmail" xml:space="preserve"><value>Account created, but the email couldn't be sent. Send it again from this page.</value></data>
   <data name="Admin.Users.SendInvite" xml:space="preserve"><value>Send set-password link</value></data>
   <data name="Admin.Users.InviteSent" xml:space="preserve"><value>The set-password link has been sent.</value></data>
-  <data name="Email.Invite.Subject" xml:space="preserve"><value>Your Akusiap account is ready</value></data>
-  <data name="Email.Invite.Intro" xml:space="preserve"><value>An Akusiap admin created an account for you. Set a password to sign in.</value></data>
+  <data name="Email.Invite.Subject" xml:space="preserve"><value>Your LatihanSoal account is ready</value></data>
+  <data name="Email.Invite.Intro" xml:space="preserve"><value>A LatihanSoal admin created an account for you. Set a password to sign in.</value></data>
   <data name="Email.Invite.Action" xml:space="preserve"><value>Set password</value></data>
   <data name="Email.Invite.Note" xml:space="preserve"><value>This link works for 24 hours. If it expires, ask for a new one on the Forgot password page.</value></data>
   <data name="Admin.Users.Deactivate" xml:space="preserve"><value>Deactivate account</value></data>
@@ -641,7 +641,7 @@
   <data name="Session.Player.Correct" xml:space="preserve"><value>Correct!</value></data>
   <data name="Session.Player.Incorrect" xml:space="preserve"><value>Not quite. The correct answer is marked green.</value></data>
   <data name="Session.Player.KeyFact" xml:space="preserve"><value>Key fact</value></data>
-  <data name="Receipt.Subject" xml:space="preserve"><value>Akusiap receipt {0}</value></data>
+  <data name="Receipt.Subject" xml:space="preserve"><value>LatihanSoal receipt {0}</value></data>
   <data name="Receipt.Intro" xml:space="preserve"><value>Thank you, we have received your payment.</value></data>
   <data name="Receipt.Order" xml:space="preserve"><value>Order number</value></data>
   <data name="Receipt.Item" xml:space="preserve"><value>Purchase</value></data>
@@ -852,4 +852,50 @@
   <data name="Shared.Invite.Title" xml:space="preserve"><value>Keep this result and keep practising</value></data>
   <data name="Shared.Invite.Lead" xml:space="preserve"><value>Register for free in this browser and this result goes into your history. You can also make your own questions and exams.</value></data>
   <data name="Shared.Invite.Register" xml:space="preserve"><value>Register for free</value></data>
+  <data name="Nav.Catalog" xml:space="preserve"><value>Catalog</value></data>
+  <data name="Nav.Pricing" xml:space="preserve"><value>Pricing</value></data>
+  <data name="Footer.Tagline" xml:space="preserve"><value>Practice questions for CPNS, BUMN, service-school and UKMPPD selection exams. Study anytime from your phone.</value></data>
+  <data name="Footer.Explore" xml:space="preserve"><value>Explore</value></data>
+  <data name="Home.Eyebrow" xml:space="preserve"><value>Your study partner for selection exams</value></data>
+  <data name="Home.TryFree" xml:space="preserve"><value>Try 30 free questions</value></data>
+  <data name="Home.RegisterFree" xml:space="preserve"><value>Sign up free</value></data>
+  <data name="Home.Trust.Trial" xml:space="preserve"><value>30 free trial questions</value></data>
+  <data name="Home.Trust.Explanations" xml:space="preserve"><value>Full explanations</value></data>
+  <data name="Home.Trust.Phone" xml:space="preserve"><value>Made for phones</value></data>
+  <data name="Home.Categories.Title" xml:space="preserve"><value>Choose your exam</value></data>
+  <data name="Home.Categories.Lead" xml:space="preserve"><value>Find practice for the selection you are taking.</value></data>
+  <data name="Home.Category.Cpns" xml:space="preserve"><value>CPNS</value></data>
+  <data name="Home.Category.Cpns.Hint" xml:space="preserve"><value>SKD: TWK, TIU, TKP</value></data>
+  <data name="Home.Category.Bumn" xml:space="preserve"><value>BUMN</value></data>
+  <data name="Home.Category.Bumn.Hint" xml:space="preserve"><value>Joint BUMN recruitment: TKD &amp; Akhlak</value></data>
+  <data name="Home.Category.Kedinasan" xml:space="preserve"><value>Service schools</value></data>
+  <data name="Home.Category.Kedinasan.Hint" xml:space="preserve"><value>STAN, IPDN, STIS and more</value></data>
+  <data name="Home.Category.Kedokteran" xml:space="preserve"><value>Medicine</value></data>
+  <data name="Home.Category.Kedokteran.Hint" xml:space="preserve"><value>UKMPPD preparation</value></data>
+  <data name="Home.Features.Title" xml:space="preserve"><value>What you can use today</value></data>
+  <data name="Home.Feature.Explanations" xml:space="preserve"><value>Full explanations</value></data>
+  <data name="Home.Feature.Explanations.Text" xml:space="preserve"><value>Every question has an explanation and a key fact, trial questions included.</value></data>
+  <data name="Home.Feature.Simulation" xml:space="preserve"><value>Timed simulations</value></data>
+  <data name="Home.Feature.Simulation.Text" xml:space="preserve"><value>Work against a time limit and a pass mark, then see your result per topic.</value></data>
+  <data name="Home.Feature.Flashcards" xml:space="preserve"><value>Smart flashcards</value></data>
+  <data name="Home.Feature.Flashcards.Text" xml:space="preserve"><value>Questions you got wrong come back at the right time with spaced repetition.</value></data>
+  <data name="Home.Feature.Retake" xml:space="preserve"><value>Retake what you missed</value></data>
+  <data name="Home.Feature.Retake.Text" xml:space="preserve"><value>A full history and practice sets made of the questions you still miss.</value></data>
+  <data name="Home.Feature.Own" xml:space="preserve"><value>Write and share questions</value></data>
+  <data name="Home.Feature.Own.Text" xml:space="preserve"><value>Build your own questions and exams, then share them with friends by link.</value></data>
+  <data name="Home.Soon.Title" xml:space="preserve"><value>Coming soon</value></data>
+  <data name="Home.Soon.Badge" xml:space="preserve"><value>Coming soon</value></data>
+  <data name="Home.Soon.Drills" xml:space="preserve"><value>Daily drills with points &amp; streaks</value></data>
+  <data name="Home.Soon.Drills.Text" xml:space="preserve"><value>A daily goal, points for every right answer and a streak that keeps you consistent.</value></data>
+  <data name="Home.Soon.Cat" xml:space="preserve"><value>CAT tryouts like the official system</value></data>
+  <data name="Home.Soon.Cat.Text" xml:space="preserve"><value>A screen and rules that mimic the CAT exam, with scores per subtest.</value></data>
+  <data name="Home.Steps.Title" xml:space="preserve"><value>How to start</value></data>
+  <data name="Home.Step.Try" xml:space="preserve"><value>Try for free</value></data>
+  <data name="Home.Step.Try.Text" xml:space="preserve"><value>Pick an exam and do 30 trial questions without signing up.</value></data>
+  <data name="Home.Step.Register" xml:space="preserve"><value>Sign up</value></data>
+  <data name="Home.Step.Register.Text" xml:space="preserve"><value>Keep your results, unlock free exams and turn on flashcards.</value></data>
+  <data name="Home.Step.Practise" xml:space="preserve"><value>Practise daily</value></data>
+  <data name="Home.Step.Practise.Text" xml:space="preserve"><value>Review the cards that are due every day on the Today page.</value></data>
+  <data name="Home.Cta.Title" xml:space="preserve"><value>Ready to start practising?</value></data>
+  <data name="Home.Cta.Lead" xml:space="preserve"><value>Try the questions now, free and without signing up.</value></data>
 </root>

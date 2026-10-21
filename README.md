@@ -1,4 +1,4 @@
-# Akusiap: Quiz Practice App
+# LatihanSoal: exam practice app (code name Akusiap)
 
 [![CI](https://github.com/hafielyr/akusiap/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hafielyr/akusiap/actions/workflows/ci.yml)
 

@@ -40,7 +40,7 @@ public sealed class ReceiptTests(PostgresFixture database)
         }
 
         var receipt = Assert.Single(app.Email.To(user.Email!), m => m.Subject.Contains(order, StringComparison.Ordinal));
-        Assert.Equal($"Bukti pembayaran Akusiap {order}", receipt.Subject); // Indonesian even for English users
+        Assert.Equal($"Bukti pembayaran LatihanSoal {order}", receipt.Subject); // Indonesian even for English users
         Assert.Contains("Tryout Kwitansi", receipt.TextBody, StringComparison.Ordinal);
         Assert.Contains("Rp49.000", receipt.TextBody, StringComparison.Ordinal);
         Assert.Contains("Virtual account BCA", receipt.TextBody, StringComparison.Ordinal);

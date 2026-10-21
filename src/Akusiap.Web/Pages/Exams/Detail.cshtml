@@ -19,29 +19,29 @@
     <p role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="preview-notice">@T["ExamPage.Draft"]</p>
   }
 
-  <header class="space-y-2">
+  <header class="space-y-3 rounded-2xl bg-panel p-5 text-white shadow-sm">
     @if (exam.SubjectName is not null)
     {
-      <p class="text-xs font-medium uppercase tracking-wide text-slate-500">@exam.SubjectName</p>
+      <p class="inline-flex on-dark rounded-full px-2.5 py-1 text-xs font-semibold">@exam.SubjectName</p>
     }
-    <h1 class="text-2xl font-bold leading-tight">@exam.Title</h1>
-    <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-slate-700" data-testid="exam-price">
+    <h1 class="text-2xl font-extrabold leading-tight">@exam.Title</h1>
+    <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-brand-50" data-testid="exam-price">
       @if (exam.IsFree)
       {
-        <span class="rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-700">@T["Catalog.Free"]</span>
+        <span class="rounded-full bg-accent-400 px-2.5 py-1 text-xs font-bold text-slate-900">@T["Catalog.Free"]</span>
         <span>@T["Catalog.FreeForMembers"]</span>
       }
       else
       {
-        <span class="font-semibold"><idr value="@(exam.PriceIdr ?? 0)" /></span>
+        <span class="text-lg font-extrabold text-white"><idr value="@(exam.PriceIdr ?? 0)" /></span>
         <span>· @T["Catalog.AccessDays", exam.AccessDays ?? 0]</span>
         @if (exam.HasFullAccess)
         {
-          <span class="rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-800" data-testid="badge">@T["Catalog.YourAccess"]</span>
+          <span class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-bold text-green-800" data-testid="badge">@T["Catalog.YourAccess"]</span>
         }
       }
     </p>
-    <p class="text-sm text-slate-600">@T["ExamPage.QuestionSummary", exam.ActiveQuestionCount]</p>
+    <p class="text-sm text-brand-100">@T["ExamPage.QuestionSummary", exam.ActiveQuestionCount]</p>
   </header>
 
   @if (Model.OpenAttemptId is { } openAttempt)

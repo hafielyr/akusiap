@@ -7,6 +7,7 @@
   var view = Model.View;
   var title = string.IsNullOrEmpty(view.Title) ? T["History.Mixed"].Value : view.Title;
   ViewData["Title"] = title;
+  ViewData["Focus"] = true;
 }
 
 @if (view.Status != AttemptStatus.InProgress)

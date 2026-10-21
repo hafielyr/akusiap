@@ -1,13 +1,155 @@
 @page
 @model IndexModel
+@using Akusiap.Web.Identity
+@* Home (BRD-01): blue hero, exam categories, what works today, what is coming, how it works, final call to action.
+   Only "Segera hadir" cards mention features that are not built yet. *@
 @{
   ViewData["Title"] = T["Home.Title"].Value;
+  ViewData["FullWidth"] = true;
+  var categories = new (string Key, string Query, string Tint, string Icon)[]
+  {
+    ("Cpns", "CPNS", "bg-brand-50 text-brand-700", "M4 20h16M5 20V10l7-5 7 5v10M9 20v-5h6v5M9 11h.01M15 11h.01"),
+    ("Bumn", "BUMN", "bg-accent-50 text-accent-700", "M4 8h16v11H4zM9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M4 13h16"),
+    ("Kedinasan", "Kedinasan", "bg-brand-50 text-brand-700", "M12 4l9 4-9 4-9-4 9-4zM6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M21 8v6"),
+    ("Kedokteran", "UKMPPD", "bg-accent-50 text-accent-700", "M7 4v5a4 4 0 0 0 8 0V4M11 13v2a4 4 0 0 0 8 0v-1M19 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"),
+  };
+  var features = new (string Key, string Icon)[]
+  {
+    ("Explanations", "M5 5h10l4 4v10H5zM15 5v4h4M8 13h8M8 16h5"),
+    ("Simulation", "M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"),
+    ("Flashcards", "M4 7h12v12H4zM8 7V4h12v12h-4"),
+    ("Retake", "M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"),
+    ("Own", "M4 20l4-1 10-10-3-3L5 16l-1 4zM14 7l3 3"),
+  };
+  var steps = new[] { "Try", "Register", "Practise" };
 }
 
-<section class="space-y-4 py-6">
-  <h1 class="text-2xl font-bold leading-tight sm:text-3xl">@T["Home.Heading"]</h1>
-  <p class="text-slate-600">@T["Home.Lead"]</p>
-  <div class="flex flex-wrap gap-3">
-    <a href="/ujian" class="btn btn-primary">@T["Home.BrowseCatalog"]</a>
+<section class="bg-hero text-white">
+  <div class="mx-auto grid max-w-5xl items-center gap-8 px-4 py-10 sm:py-14 md:grid-cols-2">
+    <div class="space-y-5">
+      <span class="inline-flex items-center gap-2 on-dark rounded-full px-3 py-1 text-xs font-semibold text-white">
+        <span class="size-2 rounded-full bg-accent-400"></span>@T["Home.Eyebrow"]
+      </span>
+      <h1 class="text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">@T["Home.Heading"]</h1>
+      <p class="max-w-xl text-base text-brand-100 sm:text-lg">@T["Home.Lead"]</p>
+      <div class="flex flex-wrap gap-3">
+        <a href="/ujian" class="btn btn-accent" data-testid="home-try">@T["Home.TryFree"]</a>
+        @if (User.Identity?.IsAuthenticated != true)
+        {
+          <a href="@AccountRoutes.Register" class="btn btn-ghost-light">@T["Home.RegisterFree"]</a>
+        }
+      </div>
+      <ul class="flex flex-wrap gap-2 text-sm">
+        @foreach (var key in new[] { "Home.Trust.Trial", "Home.Trust.Explanations", "Home.Trust.Phone" })
+        {
+          <li class="on-dark inline-flex items-center gap-1 rounded-full px-3 py-1.5">
+            <svg aria-hidden="true" viewBox="0 0 20 20" class="size-4 text-accent-300"><path d="M5 10.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>@T[key]
+          </li>
+        }
+      </ul>
+    </div>
+    <div class="hidden justify-center md:flex" aria-hidden="true">
+      <svg viewBox="0 0 260 300" class="w-full max-w-xs">
+        <circle cx="200" cy="60" r="44" fill="#ffb020" opacity=".9" />
+        <circle cx="40" cy="240" r="30" fill="#86b6ff" opacity=".6" />
+        <rect x="55" y="20" width="150" height="270" rx="26" fill="#0b2f6b" />
+        <rect x="65" y="34" width="130" height="242" rx="18" fill="#ffffff" />
+        <rect x="78" y="50" width="62" height="8" rx="4" fill="#d9e8ff" />
+        <rect x="150" y="48" width="32" height="12" rx="6" fill="#ffedbf" />
+        <rect x="78" y="70" width="104" height="10" rx="5" fill="#1f2937" opacity=".85" />
+        <rect x="78" y="86" width="80" height="10" rx="5" fill="#1f2937" opacity=".85" />
+        <rect x="78" y="110" width="104" height="26" rx="8" fill="#eef5ff" stroke="#b6d3ff" />
+        <rect x="78" y="144" width="104" height="26" rx="8" fill="#1f6feb" />
+        <path d="M88 157l5 5 9-9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        <rect x="108" y="153" width="60" height="8" rx="4" fill="#ffffff" opacity=".85" />
+        <rect x="78" y="178" width="104" height="26" rx="8" fill="#eef5ff" stroke="#b6d3ff" />
+        <rect x="78" y="212" width="104" height="26" rx="8" fill="#eef5ff" stroke="#b6d3ff" />
+        <rect x="78" y="250" width="104" height="14" rx="7" fill="#ffb020" />
+        <circle cx="176" cy="196" r="24" fill="#ffffff" /><path d="M167 197l6 6 12-13" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-5xl space-y-4 px-4 py-10" aria-labelledby="home-categories">
+  <div class="space-y-1">
+    <h2 id="home-categories" class="section-title">@T["Home.Categories.Title"]</h2>
+    <p class="text-slate-600">@T["Home.Categories.Lead"]</p>
+  </div>
+  <ul class="grid grid-cols-2 gap-3 md:grid-cols-4">
+    @foreach (var category in categories)
+    {
+      <li>
+        <a href="/ujian?q=@category.Query" class="card card-link flex h-full flex-col gap-3 p-4" data-testid="home-category">
+          <span class="icon-tile @category.Tint">
+            <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="@category.Icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </span>
+          <span class="font-bold text-slate-900">@T[$"Home.Category.{category.Key}"]</span>
+          <span class="text-sm text-slate-600">@T[$"Home.Category.{category.Key}.Hint"]</span>
+        </a>
+      </li>
+    }
+  </ul>
+</section>
+
+<section class="bg-white py-10" aria-labelledby="home-features">
+  <div class="mx-auto max-w-5xl space-y-4 px-4">
+    <h2 id="home-features" class="section-title">@T["Home.Features.Title"]</h2>
+    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      @foreach (var feature in features)
+      {
+        <li class="card flex gap-3 p-4">
+          <span class="icon-tile bg-brand-50 text-brand-700">
+            <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="@feature.Icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </span>
+          <span class="space-y-1">
+            <span class="block font-bold text-slate-900">@T[$"Home.Feature.{feature.Key}"]</span>
+            <span class="block text-sm text-slate-600">@T[$"Home.Feature.{feature.Key}.Text"]</span>
+          </span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<section class="mx-auto max-w-5xl space-y-4 px-4 py-10" aria-labelledby="home-soon">
+  <h2 id="home-soon" class="section-title">@T["Home.Soon.Title"]</h2>
+  <ul class="grid gap-3 sm:grid-cols-2">
+    @foreach (var key in new[] { "Drills", "Cat" })
+    {
+      <li class="card space-y-2 border-l-4 border-accent-500 p-5" data-testid="home-soon">
+        <span class="badge-soon">@T["Home.Soon.Badge"]</span>
+        <p class="text-lg font-bold text-slate-900">@T[$"Home.Soon.{key}"]</p>
+        <p class="text-sm text-slate-600">@T[$"Home.Soon.{key}.Text"]</p>
+      </li>
+    }
+  </ul>
+</section>
+
+<section class="bg-white py-10" aria-labelledby="home-steps">
+  <div class="mx-auto max-w-5xl space-y-4 px-4">
+    <h2 id="home-steps" class="section-title">@T["Home.Steps.Title"]</h2>
+    <ol class="grid gap-3 sm:grid-cols-3">
+      @for (var i = 0; i < steps.Length; i++)
+      {
+        <li class="card flex items-start gap-3 p-4">
+          <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-600 font-extrabold text-white">@(i + 1)</span>
+          <span class="space-y-1">
+            <span class="block font-bold text-slate-900">@T[$"Home.Step.{steps[i]}"]</span>
+            <span class="block text-sm text-slate-600">@T[$"Home.Step.{steps[i]}.Text"]</span>
+          </span>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="mx-auto max-w-5xl px-4 py-10">
+  <div class="space-y-4 rounded-2xl bg-hero p-6 text-white shadow-lg sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:p-8">
+    <div class="space-y-1">
+      <p class="text-xl font-extrabold sm:text-2xl">@T["Home.Cta.Title"]</p>
+      <p class="text-brand-100">@T["Home.Cta.Lead"]</p>
+    </div>
+    <a href="/ujian" class="btn btn-accent">@T["Home.BrowseCatalog"]</a>
   </div>
 </section>

@@ -2,7 +2,7 @@ using Akusiap.Domain.Payments;
 
 namespace Akusiap.UnitTests.Domain;
 
-/// <summary>PAY-01: readable order numbers, AKS-yyyyMMdd-XXXX with the Jakarta date.</summary>
+/// <summary>PAY-01: readable order numbers, LSI-yyyyMMdd-XXXX with the Jakarta date.</summary>
 public sealed class OrderNumbersTests
 {
     [Fact]
@@ -12,7 +12,7 @@ public sealed class OrderNumbersTests
 
         var number = OrderNumbers.Create(lateEveningUtc, new Random(1));
 
-        Assert.StartsWith("AKS-20261006-", number, StringComparison.Ordinal);
+        Assert.StartsWith("LSI-20261006-", number, StringComparison.Ordinal);
         Assert.Equal(17, number.Length);
         Assert.All(number[13..], c => Assert.Contains(c, OrderNumbers.Alphabet));
         Assert.True(OrderNumbers.IsValid(number));
@@ -30,11 +30,11 @@ public sealed class OrderNumbersTests
     }
 
     [Theory]
-    [InlineData("AKS-20261006-K7QX", true)]
-    [InlineData("AKS-20261006-K7Q0", false)] // 0 is not in the alphabet
-    [InlineData("AKS-20261306-K7QX", false)] // month 13
+    [InlineData("LSI-20261006-K7QX", true)]
+    [InlineData("LSI-20261006-K7Q0", false)] // 0 is not in the alphabet
+    [InlineData("LSI-20261306-K7QX", false)] // month 13
     [InlineData("ABC-20261006-K7QX", false)]
-    [InlineData("AKS-20261006-K7Q", false)]
+    [InlineData("LSI-20261006-K7Q", false)]
     [InlineData(null, false)]
     public void Validity(string? number, bool valid)
     {

@@ -14,7 +14,7 @@ public sealed class RegisterFlowTests(MobileSite site)
         var page = await phone.NewPageAsync();
         await page.GotoAsync("/");
 
-        await page.GetByRole(AriaRole.Link, new() { Name = "Daftar" }).ClickAsync();
+        await page.GetByRole(AriaRole.Link, new() { Name = "Daftar", Exact = true }).ClickAsync();
         await page.GetByLabel("Email").FillAsync($"sari-{TestData.Unique()}@example.com");
         await page.GetByLabel("Nama tampilan").FillAsync("Sari");
         await page.GetByLabel("Kata sandi").FillAsync("teh-manis-2026");

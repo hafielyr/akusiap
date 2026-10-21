@@ -28,7 +28,7 @@ public sealed partial class EmailFlowTests(PostgresFixture database)
 
         Assert.Equal(HttpStatusCode.Redirect, registered.StatusCode);
         var message = Assert.Single(app.Email.To(email));
-        Assert.Equal("Konfirmasi email Akusiap Anda", message.Subject);
+        Assert.Equal("Konfirmasi email LatihanSoal Anda", message.Subject);
         Assert.Contains("Halo Rina,", message.TextBody, StringComparison.Ordinal);
         Assert.False(await ConfirmedAsync(email));
 
@@ -101,7 +101,7 @@ public sealed partial class EmailFlowTests(PostgresFixture database)
         var sentHtml = WebUtility.HtmlDecode(await sent.Content.ReadAsStringAsync());
         sent.Dispose();
         var message = Assert.Single(app.Email.To(user.Email!));
-        Assert.Equal("Atur ulang kata sandi Akusiap", message.Subject);
+        Assert.Equal("Atur ulang kata sandi LatihanSoal", message.Subject);
         Assert.Contains("Jika email itu terdaftar", sentHtml, StringComparison.Ordinal);
 
         var link = LinkIn(message);

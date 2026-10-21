@@ -100,7 +100,7 @@ public sealed partial class TransactionsTests(PostgresFixture database)
         var purchase = new ExamPurchase { UserId = user.Id, ExamId = exam.Id, PricePaidIdr = 49_000 };
         db.ExamPurchases.Add(purchase);
         await db.SaveChangesAsync();
-        var order = $"AKS-{TestData.Unique()}";
+        var order = $"LSI-{TestData.Unique()}";
         db.Payments.Add(new Payment
         {
             OrderNumber = order, InvoiceNumber = order, UserId = user.Id, ExamPurchaseId = purchase.Id, AmountIdr = 49_000,

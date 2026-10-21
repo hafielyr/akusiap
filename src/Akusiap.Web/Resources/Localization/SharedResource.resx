@@ -6,9 +6,9 @@
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="Layout.Help" xml:space="preserve"><value>Bantuan</value></data>
   <data name="Layout.Language" xml:space="preserve"><value>Bahasa</value></data>
-  <data name="Home.Title" xml:space="preserve"><value>Latihan ujian</value></data>
-  <data name="Home.Heading" xml:space="preserve"><value>Latihan soal ujian, kapan saja dari ponsel Anda</value></data>
-  <data name="Home.Lead" xml:space="preserve"><value>Coba 30 soal gratis dari ujian mana pun, lengkap dengan pembahasan. Daftar gratis untuk membuka ujian gratis.</value></data>
+  <data name="Home.Title" xml:space="preserve"><value>Latihan soal CPNS, BUMN, Kedinasan &amp; UKMPPD</value></data>
+  <data name="Home.Heading" xml:space="preserve"><value>Latihan soal CPNS, BUMN, Kedinasan &amp; UKMPPD dalam satu aplikasi</value></data>
+  <data name="Home.Lead" xml:space="preserve"><value>Kerjakan soal dengan pembahasan lengkap, simulasi berwaktu, dan kartu hafalan yang mengingatkan materi yang belum Anda kuasai. Mulai dari 30 soal coba gratis.</value></data>
   <data name="Home.BrowseCatalog" xml:space="preserve"><value>Lihat katalog ujian</value></data>
   <data name="Error.Title" xml:space="preserve"><value>Terjadi kesalahan</value></data>
   <data name="Error.Heading" xml:space="preserve"><value>Maaf, terjadi kesalahan.</value></data>
@@ -29,7 +29,7 @@
   <data name="Account.Register.Submit" xml:space="preserve"><value>Daftar</value></data>
   <data name="Account.Register.HaveAccount" xml:space="preserve"><value>Sudah punya akun?</value></data>
   <data name="Account.SignIn.Title" xml:space="preserve"><value>Masuk</value></data>
-  <data name="Account.SignIn.Heading" xml:space="preserve"><value>Masuk ke Akusiap</value></data>
+  <data name="Account.SignIn.Heading" xml:space="preserve"><value>Masuk ke LatihanSoal</value></data>
   <data name="Account.SignIn.Submit" xml:space="preserve"><value>Masuk</value></data>
   <data name="Account.SignIn.RememberMe" xml:space="preserve"><value>Ingat saya</value></data>
   <data name="Account.SignIn.NoAccount" xml:space="preserve"><value>Belum punya akun?</value></data>
@@ -384,11 +384,11 @@
   <data name="Learn.Access.Link" xml:space="preserve"><value>Lihat akses ujian dan langganan Anda</value></data>
   <data name="Email.Greeting" xml:space="preserve"><value>Halo {0},</value></data>
   <data name="Email.LinkFallback" xml:space="preserve"><value>Jika tombol tidak berfungsi, salin tautan ini ke browser:</value></data>
-  <data name="Email.Confirm.Subject" xml:space="preserve"><value>Konfirmasi email Akusiap Anda</value></data>
-  <data name="Email.Confirm.Intro" xml:space="preserve"><value>Terima kasih sudah mendaftar di Akusiap. Konfirmasi alamat email Anda dengan tombol di bawah.</value></data>
+  <data name="Email.Confirm.Subject" xml:space="preserve"><value>Konfirmasi email LatihanSoal Anda</value></data>
+  <data name="Email.Confirm.Intro" xml:space="preserve"><value>Terima kasih sudah mendaftar di LatihanSoal. Konfirmasi alamat email Anda dengan tombol di bawah.</value></data>
   <data name="Email.Confirm.Action" xml:space="preserve"><value>Konfirmasi email</value></data>
   <data name="Email.Confirm.Note" xml:space="preserve"><value>Jika Anda tidak mendaftar, abaikan email ini.</value></data>
-  <data name="Email.Reset.Subject" xml:space="preserve"><value>Atur ulang kata sandi Akusiap</value></data>
+  <data name="Email.Reset.Subject" xml:space="preserve"><value>Atur ulang kata sandi LatihanSoal</value></data>
   <data name="Email.Reset.Intro" xml:space="preserve"><value>Kami menerima permintaan untuk mengatur ulang kata sandi akun Anda.</value></data>
   <data name="Email.Reset.Action" xml:space="preserve"><value>Atur ulang kata sandi</value></data>
   <data name="Email.Reset.Note" xml:space="preserve"><value>Tautan ini berlaku 24 jam. Jika Anda tidak memintanya, abaikan email ini; kata sandi Anda tidak berubah.</value></data>
@@ -583,8 +583,8 @@
   <data name="Admin.Users.CreatedNoEmail" xml:space="preserve"><value>Akun dibuat, tetapi email belum bisa dikirim. Kirim ulang dari halaman ini.</value></data>
   <data name="Admin.Users.SendInvite" xml:space="preserve"><value>Kirim tautan buat kata sandi</value></data>
   <data name="Admin.Users.InviteSent" xml:space="preserve"><value>Tautan untuk membuat kata sandi sudah dikirim.</value></data>
-  <data name="Email.Invite.Subject" xml:space="preserve"><value>Akun Akusiap Anda sudah dibuat</value></data>
-  <data name="Email.Invite.Intro" xml:space="preserve"><value>Admin Akusiap membuatkan akun untuk Anda. Buat kata sandi untuk mulai masuk.</value></data>
+  <data name="Email.Invite.Subject" xml:space="preserve"><value>Akun LatihanSoal Anda sudah dibuat</value></data>
+  <data name="Email.Invite.Intro" xml:space="preserve"><value>Admin LatihanSoal membuatkan akun untuk Anda. Buat kata sandi untuk mulai masuk.</value></data>
   <data name="Email.Invite.Action" xml:space="preserve"><value>Buat kata sandi</value></data>
   <data name="Email.Invite.Note" xml:space="preserve"><value>Tautan ini berlaku 24 jam. Jika kedaluwarsa, minta tautan baru lewat halaman Lupa kata sandi.</value></data>
   <data name="Admin.Users.Deactivate" xml:space="preserve"><value>Nonaktifkan akun</value></data>
@@ -641,7 +641,7 @@
   <data name="Session.Player.Correct" xml:space="preserve"><value>Benar!</value></data>
   <data name="Session.Player.Incorrect" xml:space="preserve"><value>Belum tepat. Jawaban yang benar ditandai hijau.</value></data>
   <data name="Session.Player.KeyFact" xml:space="preserve"><value>Fakta kunci</value></data>
-  <data name="Receipt.Subject" xml:space="preserve"><value>Bukti pembayaran Akusiap {0}</value></data>
+  <data name="Receipt.Subject" xml:space="preserve"><value>Bukti pembayaran LatihanSoal {0}</value></data>
   <data name="Receipt.Intro" xml:space="preserve"><value>Terima kasih, pembayaran Anda sudah kami terima.</value></data>
   <data name="Receipt.Order" xml:space="preserve"><value>Nomor pesanan</value></data>
   <data name="Receipt.Item" xml:space="preserve"><value>Pembelian</value></data>
@@ -852,4 +852,50 @@
   <data name="Shared.Invite.Title" xml:space="preserve"><value>Simpan hasil ini dan terus berlatih</value></data>
   <data name="Shared.Invite.Lead" xml:space="preserve"><value>Daftar gratis di peramban ini, dan hasil ini masuk ke riwayat Anda. Anda juga bisa membuat soal dan ujian sendiri.</value></data>
   <data name="Shared.Invite.Register" xml:space="preserve"><value>Daftar gratis</value></data>
+  <data name="Nav.Catalog" xml:space="preserve"><value>Katalog</value></data>
+  <data name="Nav.Pricing" xml:space="preserve"><value>Harga</value></data>
+  <data name="Footer.Tagline" xml:space="preserve"><value>Latihan soal untuk seleksi CPNS, BUMN, sekolah kedinasan, dan UKMPPD. Belajar kapan saja dari ponsel.</value></data>
+  <data name="Footer.Explore" xml:space="preserve"><value>Jelajahi</value></data>
+  <data name="Home.Eyebrow" xml:space="preserve"><value>Teman belajar untuk lolos seleksi</value></data>
+  <data name="Home.TryFree" xml:space="preserve"><value>Coba 30 soal gratis</value></data>
+  <data name="Home.RegisterFree" xml:space="preserve"><value>Daftar gratis</value></data>
+  <data name="Home.Trust.Trial" xml:space="preserve"><value>30 soal coba gratis</value></data>
+  <data name="Home.Trust.Explanations" xml:space="preserve"><value>Pembahasan lengkap</value></data>
+  <data name="Home.Trust.Phone" xml:space="preserve"><value>Nyaman di HP</value></data>
+  <data name="Home.Categories.Title" xml:space="preserve"><value>Pilih jenis ujian</value></data>
+  <data name="Home.Categories.Lead" xml:space="preserve"><value>Cari latihan sesuai seleksi yang Anda ikuti.</value></data>
+  <data name="Home.Category.Cpns" xml:space="preserve"><value>CPNS</value></data>
+  <data name="Home.Category.Cpns.Hint" xml:space="preserve"><value>SKD: TWK, TIU, TKP</value></data>
+  <data name="Home.Category.Bumn" xml:space="preserve"><value>BUMN</value></data>
+  <data name="Home.Category.Bumn.Hint" xml:space="preserve"><value>Rekrutmen Bersama BUMN: TKD &amp; Akhlak</value></data>
+  <data name="Home.Category.Kedinasan" xml:space="preserve"><value>Sekolah Kedinasan</value></data>
+  <data name="Home.Category.Kedinasan.Hint" xml:space="preserve"><value>STAN, IPDN, STIS, dan lainnya</value></data>
+  <data name="Home.Category.Kedokteran" xml:space="preserve"><value>Kedokteran</value></data>
+  <data name="Home.Category.Kedokteran.Hint" xml:space="preserve"><value>Persiapan UKMPPD</value></data>
+  <data name="Home.Features.Title" xml:space="preserve"><value>Yang sudah bisa Anda pakai</value></data>
+  <data name="Home.Feature.Explanations" xml:space="preserve"><value>Pembahasan lengkap</value></data>
+  <data name="Home.Feature.Explanations.Text" xml:space="preserve"><value>Setiap soal punya penjelasan dan fakta kunci, juga di soal coba gratis.</value></data>
+  <data name="Home.Feature.Simulation" xml:space="preserve"><value>Simulasi berwaktu</value></data>
+  <data name="Home.Feature.Simulation.Text" xml:space="preserve"><value>Kerjakan dengan batas waktu dan nilai lulus, lalu lihat hasil per topik.</value></data>
+  <data name="Home.Feature.Flashcards" xml:space="preserve"><value>Kartu hafalan pintar</value></data>
+  <data name="Home.Feature.Flashcards.Text" xml:space="preserve"><value>Soal yang salah kembali tepat waktu lewat pengulangan berjarak.</value></data>
+  <data name="Home.Feature.Retake" xml:space="preserve"><value>Ulangi yang salah</value></data>
+  <data name="Home.Feature.Retake.Text" xml:space="preserve"><value>Riwayat lengkap dan latihan ulang khusus soal yang masih salah.</value></data>
+  <data name="Home.Feature.Own" xml:space="preserve"><value>Buat soal &amp; bagikan</value></data>
+  <data name="Home.Feature.Own.Text" xml:space="preserve"><value>Susun soal dan ujian sendiri, lalu bagikan ke teman lewat tautan.</value></data>
+  <data name="Home.Soon.Title" xml:space="preserve"><value>Segera hadir</value></data>
+  <data name="Home.Soon.Badge" xml:space="preserve"><value>Segera hadir</value></data>
+  <data name="Home.Soon.Drills" xml:space="preserve"><value>Latihan harian dengan poin &amp; streak</value></data>
+  <data name="Home.Soon.Drills.Text" xml:space="preserve"><value>Target harian, poin untuk setiap jawaban benar, dan streak yang membuat Anda konsisten.</value></data>
+  <data name="Home.Soon.Cat" xml:space="preserve"><value>Tryout CAT seperti sistem resmi</value></data>
+  <data name="Home.Soon.Cat.Text" xml:space="preserve"><value>Tampilan dan aturan yang meniru ujian CAT, lengkap dengan nilai per subtes.</value></data>
+  <data name="Home.Steps.Title" xml:space="preserve"><value>Cara mulai</value></data>
+  <data name="Home.Step.Try" xml:space="preserve"><value>Coba gratis</value></data>
+  <data name="Home.Step.Try.Text" xml:space="preserve"><value>Pilih ujian dan kerjakan 30 soal coba tanpa perlu daftar.</value></data>
+  <data name="Home.Step.Register" xml:space="preserve"><value>Daftar</value></data>
+  <data name="Home.Step.Register.Text" xml:space="preserve"><value>Simpan hasil, buka ujian gratis, dan aktifkan kartu hafalan.</value></data>
+  <data name="Home.Step.Practise" xml:space="preserve"><value>Latihan rutin</value></data>
+  <data name="Home.Step.Practise.Text" xml:space="preserve"><value>Ulangi kartu yang jatuh tempo setiap hari di halaman Hari ini.</value></data>
+  <data name="Home.Cta.Title" xml:space="preserve"><value>Siap mulai latihan?</value></data>
+  <data name="Home.Cta.Lead" xml:space="preserve"><value>Coba soalnya sekarang, gratis dan tanpa perlu daftar.</value></data>
 </root>

@@ -80,7 +80,7 @@ public sealed class PaymentFlowTests(PostgresFixture database)
         Assert.Equal(PaymentStatus.Pending, (await LoadAsync(payment.Id)).Status);
         var applied = await ApplyAsync(app, good);
         var duplicate = await ApplyAsync(app, good);
-        var unknown = await ApplyAsync(app, FakePaymentGateway.CreateNotification("AKS-19990101-ZZZZ", "PAID", 1));
+        var unknown = await ApplyAsync(app, FakePaymentGateway.CreateNotification("LSI-19990101-ZZZZ", "PAID", 1));
         var unreadable = await ApplyAsync(app, new GatewayNotification(new Dictionary<string, string>(), "not json"));
 
         Assert.Equal(

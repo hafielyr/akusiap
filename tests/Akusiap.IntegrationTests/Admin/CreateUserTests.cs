@@ -33,7 +33,7 @@ public sealed partial class CreateUserTests(PostgresFixture database)
         Assert.Equal(HttpStatusCode.Redirect, created.StatusCode);
         Assert.StartsWith("/admin/pengguna/", created.Headers.Location!.OriginalString, StringComparison.Ordinal);
         var message = Assert.Single(app.Email.To(email));
-        Assert.Equal("Akun Akusiap Anda sudah dibuat", message.Subject);
+        Assert.Equal("Akun LatihanSoal Anda sudah dibuat", message.Subject);
         await using (var scope = app.Services.CreateAsyncScope())
         {
             var users = scope.ServiceProvider.GetRequiredService<UserManager<User>>();

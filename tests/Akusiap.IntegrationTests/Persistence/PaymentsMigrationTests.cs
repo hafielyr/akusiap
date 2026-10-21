@@ -100,7 +100,7 @@ public sealed class PaymentsMigrationTests : IAsyncLifetime
         var insertPayment =
             "INSERT INTO payments (order_number, invoice_number, user_id, exam_purchase_id, amount_idr, discount_idr, tax_idr, gateway, method, " +
             "status, is_late_payment, retry_count, created_at, qr_string) " +
-            $"SELECT 'AKS-20261019-ZZZZ', 'INV-2', user_id, exam_purchase_id, 1, 0, 0, 'DOKU', 'QRIS', 'Pending', false, 0, now(), 'qr' FROM payments WHERE id = {seed.PaymentId}";
+            $"SELECT 'LSI-20261019-ZZZZ', 'INV-2', user_id, exam_purchase_id, 1, 0, 0, 'DOKU', 'QRIS', 'Pending', false, 0, now(), 'qr' FROM payments WHERE id = {seed.PaymentId}";
         (string Sql, string Constraint)[] cases =
         [
             ("UPDATE payments SET subscription_id = NULL, exam_purchase_id = NULL", "ck_payments_one_item"),
@@ -147,8 +147,8 @@ public sealed class PaymentsMigrationTests : IAsyncLifetime
         await db.SaveChangesAsync();
         var payment = new Payment
         {
-            OrderNumber = "AKS-20261019-AAAA",
-            InvoiceNumber = "AKS-20261019-AAAA",
+            OrderNumber = "LSI-20261019-AAAA",
+            InvoiceNumber = "LSI-20261019-AAAA",
             UserId = user.Id,
             ExamPurchaseId = purchase.Id,
             AmountIdr = 49_000,

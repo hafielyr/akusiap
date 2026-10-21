@@ -1,6 +1,6 @@
 # Deployment guide
 
-How Akusiap goes to production (decision D-16, card OPS-02).
+How LatihanSoal (code name Akusiap) goes to production at `https://latihansoal.id` (decision D-16, card OPS-02).
 
 > **Status (2026-10-19).** The one-time setup in sections 2–5 can be done today. The deployment automation (the `Dockerfile`, the deploy workflow, and `deploy/cloud-init.yaml`, `deploy/compose.yaml` and `deploy/Caddyfile`) is built in **OPS-02**, which follows PAY-04. Until then, sections 6–8 describe how deploys will work. The examples below show what OPS-02 will commit; treat them as the reference, not as files you need to write by hand.
 
@@ -22,7 +22,7 @@ Neon PostgreSQL 17, AWS Singapore (paid plan, no scale-to-zero, point-in-time re
 ```
 
 Rules that never change:
-- **Nothing is built on a laptop.** Images are built in GitHub Actions and pulled from GHCR (`ghcr.io/hafielyr/akusiap`).
+- **Nothing is built on a laptop.** Images are built in GitHub Actions and pulled from GHCR (`ghcr.io/hafielyr/akusiap`). The image keeps the repository name; renaming the GitHub repository (and so the image) to `latihansoal` is the owner's call (D-92).
 - **Secrets never enter git.** They live in GitHub secrets and in a root-only `.env` on the server.
 - **The database changes only through EF migrations** (D-30). Never run `schema.sql` against a real database. Production has `Database__MigrateOnStartup=false`; the deploy runs the migrations bundle instead.
 
@@ -34,10 +34,10 @@ Rules that never change:
 5. **SSL/TLS → Edge Certificates**: turn on **Always Use HTTPS**, and set minimum TLS to 1.2.
 
 ## 3. Neon production database (one time)
-1. In the Neon console, create a **separate project** `akusiap-prod` in **AWS Asia Pacific (Singapore)**. Never point production at the development project.
+1. In the Neon console, create a **separate project** `latihansoal-prod` in **AWS Asia Pacific (Singapore)**. Never point production at the development project.
 2. Pick the paid plan (D-16). On the compute, **turn off scale-to-zero**. Set point-in-time restore to at least 7 days.
-3. Create a role for the app (for example `akusiap_app`), owner of database `akusiap`.
-4. Copy the **.NET** connection string (`Host=…;Database=akusiap;Username=akusiap_app;Password=…;SSL Mode=Require`). It goes into GitHub secrets and the server `.env` (sections 4 and 5).
+3. Create a role for the app (for example `latihansoal_app`), owner of database `latihansoal`.
+4. Copy the **.NET** connection string (`Host=…;Database=latihansoal;Username=latihansoal_app;Password=…;SSL Mode=Require`). It goes into GitHub secrets and the server `.env` (sections 4 and 5).
 
 ## 4. Hetzner VPS (one time)
 1. In the Hetzner Cloud Console, create a server:
@@ -49,14 +49,14 @@ Rules that never change:
    - creates user `deploy` with your SSH key and no password, and disables root and password SSH login;
    - turns on `ufw` allowing 22, 80 and 443, and `unattended-upgrades` for security patches;
    - installs Docker Engine and the compose plugin, and adds `deploy` to the `docker` group;
-   - creates `/opt/akusiap` (owner `deploy`) and `/opt/akusiap/keys` for the app's data-protection keys.
-4. Put the Cloudflare origin certificate and key at `/opt/akusiap/certs/origin.pem` and `/opt/akusiap/certs/origin-key.pem` (`chmod 600` on the key).
+   - creates `/opt/latihansoal` (owner `deploy`) and `/opt/latihansoal/keys` for the app's data-protection keys.
+4. Put the Cloudflare origin certificate and key at `/opt/latihansoal/certs/origin.pem` and `/opt/latihansoal/certs/origin-key.pem` (`chmod 600` on the key).
 5. Log the server in to GHCR with a GitHub token that can only read packages (fine-grained token or classic PAT with `read:packages`):
    ```
    echo <token> | docker login ghcr.io -u hafielyr --password-stdin
    ```
 
-### Server files (`/opt/akusiap`, committed by OPS-02 under `deploy/`)
+### Server files (`/opt/latihansoal`, committed by OPS-02 under `deploy/`)
 
 `compose.yaml`
 ```yaml
@@ -96,14 +96,14 @@ example.id, www.example.id {
 APP_TAG=<git sha deployed>
 ASPNETCORE_ENVIRONMENT=Production
 ASPNETCORE_HTTP_PORTS=8080
-ConnectionStrings__Default=Host=…;Database=akusiap;Username=akusiap_app;Password=…;SSL Mode=Require
+ConnectionStrings__Default=Host=…;Database=latihansoal;Username=latihansoal_app;Password=…;SSL Mode=Require
 Database__MigrateOnStartup=false
 Seed__AdminEmail=…
 Seed__AdminPassword=…
 Support__WhatsAppNumber=62…
-Site__BaseUrl=https://<your domain>          # links in account emails (AC-02, required)
+Site__BaseUrl=https://latihansoal.id          # links in account emails (AC-02, required)
 Features__Sharing=true                        # shared exam links (SHR-05); false hides sharing and makes /s/... 404
-Email__From=Akusiap <no-reply@<your domain>>
+Email__From=LatihanSoal <no-reply@latihansoal.id>
 Email__Smtp__Host=smtp-relay.brevo.com        # or email-smtp.<region>.amazonaws.com for SES
 Email__Smtp__Port=587
 Email__Smtp__UserName=…
@@ -162,7 +162,7 @@ Authentication__Google__ClientSecret=…
 ## 7. After a deploy
 - `https://<domain>/health` shows `"database":"Healthy"`.
 - The home page loads in Indonesian on a phone; sign in as the admin.
-- On the server: `docker compose -f /opt/akusiap/compose.yaml ps` shows both containers *Up*, and `docker compose logs --tail 100 app` has no errors.
+- On the server: `docker compose -f /opt/latihansoal/compose.yaml ps` shows both containers *Up*, and `docker compose logs --tail 100 app` has no errors.
 
 ## 8. Rollback
 - **App**: run **Actions → Deploy → Run workflow** with the previous tag (the git sha of the last good deploy, listed under GHCR package versions). By hand on the server: set `APP_TAG=<previous sha>` in `.env`, then `docker compose up -d`.
@@ -172,8 +172,8 @@ Authentication__Google__ClientSecret=…
 
 | Task | How |
 |---|---|
-| View logs | `docker compose -f /opt/akusiap/compose.yaml logs -f app` |
-| Restart the app | `docker compose -f /opt/akusiap/compose.yaml restart app` |
+| View logs | `docker compose -f /opt/latihansoal/compose.yaml logs -f app` |
+| Restart the app | `docker compose -f /opt/latihansoal/compose.yaml restart app` |
 | Free disk space | `docker image prune -f` (old image versions) |
 | OS updates | Automatic (`unattended-upgrades`); reboot during a quiet hour when `/var/run/reboot-required` exists |
 | Database backups | Neon point-in-time restore (paid plan); check the retention window once a quarter |
