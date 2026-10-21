@@ -118,10 +118,10 @@ public sealed partial class AccountEmails(
             <p><a href="{WebUtility.HtmlEncode(link)}" style="display:inline-block;background:#1d5fd1;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none">{WebUtility.HtmlEncode(action)}</a></p>
             <p style="font-size:14px;color:#475569">{WebUtility.HtmlEncode(t["Email.LinkFallback"].Value)}<br><a href="{WebUtility.HtmlEncode(link)}">{WebUtility.HtmlEncode(link)}</a></p>
             <p style="font-size:14px;color:#475569">{WebUtility.HtmlEncode(note)}</p>
-            <p>Akusiap</p>
+            <p>{Brand.Name}</p>
             </body></html>
             """);
-        var text = string.Join("\n\n", greeting, intro, $"{action}: {link}", note, "Akusiap");
+        var text = string.Join("\n\n", greeting, intro, $"{action}: {link}", note, Brand.Name);
         return new EmailMessage(user.Email!, subject, html, text);
     }
 

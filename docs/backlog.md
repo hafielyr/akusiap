@@ -418,3 +418,32 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Stories: M-08 · Depends on: SRS-02
 - Scope: A `/learn/hari-ini` dashboard shows the due count per exam and in total, with "Mulai 10 kartu" per exam and for all. It is the home page for signed-in learners.
 - AC: Counts match the due cards. Exams without access are excluded.
+
+## E13 Exam positioning (M8): LatihanSoal for CPNS, BUMN, Kedinasan and UKMPPD
+
+### BRD-01 Rebrand to LatihanSoal and blue redesign · M
+- Stories: owner request (2026-10-21) · Depends on: SHR-05
+- Scope: Rename everything users and operators see to LatihanSoal (`LatihanSoal.id`): name, logo, page titles, emails, sender, order numbers (`LSI-`), docs. Code namespaces stay `Akusiap.*`. Blue study-app design system (brand scale, yellow accent, cards, chips) and a redesigned layout, home page (exam categories CPNS/BUMN/Kedinasan/Kedokteran, features, "Segera hadir"), catalog, exam page, learn hub, Today and account pages.
+- AC: No user-visible "Akusiap" remains. Every page fits 360 px. The catalog and player stay within the 150 KB first-load budget (OPS-01). The home page only promises built features; drills and CAT tryouts are marked "Segera hadir".
+
+### DRL-01 Daily drill with points and streak · M
+- Stories: owner request (gamified daily drills) · Depends on: SRS-03, SES-06
+- Scope: `/learn/hari-ini` gets "Latihan harian": a 10-question set built from the learner's accessible exams (due review cards first, then new questions), a daily goal (one completed drill), XP per correct answer and a streak counted in Jakarta days. Needs a new table for drill progress (streak, XP, last drill date) in this card's migration; record it as an addition to `schema.sql` (like D-68).
+- AC: The streak grows by one for each Jakarta day with a completed drill and resets after a missed day (test clock). XP equals correct answers. Questions without full access are excluded.
+
+### DRL-02 Badges and weekly leaderboard · M
+- Stories: owner request · Depends on: DRL-01
+- Scope: Milestone badges (streak 7/30, XP levels) on the profile, and a weekly XP leaderboard per exam category.
+- Needs from the owner: whether learners appear by display name on a public leaderboard (privacy), or only see their own rank.
+- AC: Badges are awarded once. The leaderboard resets every Monday 00:00 WIB.
+
+### TRY-01 CAT tryout screen · M
+- Stories: owner request (CAT tryouts that mimic the official system) · Depends on: SES-06, SES-07
+- Scope: A "Tryout CAT" mode for Simulation attempts: a full-screen layout like the official CAT screen with the numbered question grid always visible, a countdown in the header, "Ragu-ragu" marks (flag), no feedback or explanations until the end, a final confirmation, and auto-submit at zero. Exams opt in with a rule preset setting.
+- AC: During a tryout no answer feedback is shown. The grid shows answered, unanswered and ragu-ragu states. Time running out submits the attempt (test clock).
+
+### TRY-02 Subtest scoring (TWK/TIU/TKP) · L
+- Stories: owner request · Depends on: TRY-01
+- Scope: Score tryouts per subtest with a passing grade per subtest (for example SKD: TWK, TIU, TKP) and show the breakdown on the result page.
+- Needs from the owner: the scoring rules and passing grades to use, and approval for the schema change, because TKP gives 1–5 points per option and `schema.sql` only has right/wrong options. Scoring must not be guessed.
+- AC: Each subtest score and pass/fail matches the agreed rules; overall pass needs every subtest to pass.

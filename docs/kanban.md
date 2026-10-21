@@ -7,10 +7,13 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
+- [DRL-01] Daily drill with points and streak · M8 · deps: SRS-03, SES-06
+- [TRY-01] CAT tryout screen · M8 · deps: SES-06, SES-07
 
 ## In Progress
 
 ## Review
+- [BRD-01] Rebrand to LatihanSoal and blue redesign · M8 · deps: SHR-05 · (claude-opus-5.5, 2026-10-21)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -109,3 +112,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ### M7 Spaced repetition (Release 2)
 
 **Release 2 exit check**: A free learner writes 50 questions, builds 1 exam and shares it. A guest takes it by entering a name, sees the explanations and is invited to register. The admin takes the exam down and the link stops working. The daily due list shows wrong answers scheduled by SM-2.
+
+### M8 Exam positioning (Release 2+)
+- [DRL-02] Badges and weekly leaderboard · M8 · deps: DRL-01
+- [TRY-02] Subtest scoring (TWK/TIU/TKP) · M8 · deps: TRY-01

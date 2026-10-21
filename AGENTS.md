@@ -1,4 +1,4 @@
-# Agent guide: Akusiap Quiz Practice App
+# Agent guide: LatihanSoal exam practice app (code name Akusiap)
 
 Read before every task:
 1. `docs/architecture.md`: stack, layout, enums, entitlement rules. Follow it exactly.

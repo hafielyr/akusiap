@@ -130,7 +130,7 @@ public sealed class ExpiryJobsTests(PostgresFixture database)
 
     private static Payment PendingPayment(Guid userId, long purchaseId, DateTime expiresAt)
     {
-        var order = $"AKS-{TestData.Unique()}";
+        var order = $"LSI-{TestData.Unique()}";
         return new Payment
         {
             OrderNumber = order, InvoiceNumber = order, UserId = userId, ExamPurchaseId = purchaseId, AmountIdr = 49_000,

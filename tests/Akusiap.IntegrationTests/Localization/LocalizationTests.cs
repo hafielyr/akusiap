@@ -8,8 +8,8 @@ namespace Akusiap.IntegrationTests.Localization;
 [Collection(UsesDatabase.Name)]
 public sealed class LocalizationTests(PostgresFixture database)
 {
-    private const string IndonesianHeading = "Latihan soal ujian, kapan saja dari ponsel Anda";
-    private const string EnglishHeading = "Practise exam questions anytime from your phone";
+    private const string IndonesianHeading = "Latihan soal CPNS, BUMN, Kedinasan & UKMPPD dalam satu aplikasi";
+    private const string EnglishHeading = "Practice for CPNS, BUMN, Kedinasan & UKMPPD in one app";
 
     [Fact]
     public async Task Default_ui_is_indonesian_even_when_browser_prefers_english()

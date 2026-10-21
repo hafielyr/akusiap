@@ -8,7 +8,7 @@ public class Payment
 {
     public long Id { get; set; }
 
-    /// <summary>Readable reference for support, <c>AKS-yyyyMMdd-XXXX</c> (see <see cref="OrderNumbers"/>).</summary>
+    /// <summary>Readable reference for support, <c>LSI-yyyyMMdd-XXXX</c> (see <see cref="OrderNumbers"/>).</summary>
     public string OrderNumber { get; set; } = string.Empty;
 
     public Guid UserId { get; set; }

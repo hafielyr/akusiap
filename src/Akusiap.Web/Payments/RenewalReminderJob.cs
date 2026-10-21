@@ -113,10 +113,10 @@ public sealed partial class RenewalReminderJob(
                 <p>{WebUtility.HtmlEncode(greeting)}</p>
                 <p>{WebUtility.HtmlEncode(body)}</p>
                 <p><a href="{WebUtility.HtmlEncode(renewUrl)}" style="display:inline-block;background:#1d5fd1;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none">{WebUtility.HtmlEncode(action)}</a></p>
-                <p>Akusiap</p>
+                <p>{Brand.Name}</p>
                 </body></html>
                 """;
-            var text = string.Join("\n", greeting, string.Empty, body, string.Empty, $"{action}: {renewUrl}", string.Empty, "Akusiap");
+            var text = string.Join("\n", greeting, string.Empty, body, string.Empty, $"{action}: {renewUrl}", string.Empty, Brand.Name);
             return new EmailMessage(reminder.Email, subject, html, text);
         }
         finally

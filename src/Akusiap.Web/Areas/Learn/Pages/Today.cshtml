@@ -12,19 +12,23 @@
     <p class="text-slate-600">@T["Today.Lead"]</p>
   </div>
 
-  <article class="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4" data-testid="today-total">
-    <p class="text-4xl font-bold" data-testid="today-total-count">@Model.All.DueCount</p>
-    <p class="text-slate-700">@T["Today.TotalDue"]</p>
+  <article class="flex flex-wrap items-center gap-4 rounded-2xl bg-panel p-5 text-white shadow-sm" data-testid="today-total">
+    <span class="inline-flex size-20 shrink-0 items-center justify-center rounded-full border-4 border-accent-400">
+      <span class="text-3xl font-extrabold" data-testid="today-total-count">@Model.All.DueCount</span>
+    </span>
+    <div class="min-w-0 flex-1 space-y-3">
+    <p class="text-lg font-bold">@T["Today.TotalDue"]</p>
     @if (Model.All.DueCount > 0)
     {
       <form method="post" action="@startUrl" asp-antiforgery="true">
-        <button type="submit" class="btn btn-primary w-full sm:w-auto" data-testid="today-start-all">@T["Flashcards.Start"]</button>
+        <button type="submit" class="btn btn-accent w-full sm:w-auto" data-testid="today-start-all">@T["Flashcards.Start"]</button>
       </form>
     }
     else
     {
-      <p class="text-sm text-slate-600" data-testid="today-none">@T["Today.NoneDue"]</p>
+      <p class="text-sm text-brand-100" data-testid="today-none">@T["Today.NoneDue"]</p>
     }
+    </div>
   </article>
 
   @if (Model.Exams.Count > 0)
@@ -32,7 +36,7 @@
     <ul class="space-y-2" data-testid="today-exams">
       @foreach (var deck in Model.Exams)
       {
-        <li class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="today-exam" data-exam="@deck.ExamId">
+        <li class="card flex flex-wrap items-center justify-between gap-3 p-4" data-testid="today-exam" data-exam="@deck.ExamId">
           <div class="min-w-0">
             <p class="font-semibold">@deck.Title</p>
             <p class="text-sm text-slate-600" data-testid="today-exam-due">@T["Flashcards.Due", deck.DueCount]</p>

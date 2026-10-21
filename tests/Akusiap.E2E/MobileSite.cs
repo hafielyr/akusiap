@@ -104,6 +104,20 @@ public sealed class MobileSite : IAsyncLifetime, IAsyncDisposable
         var stamp = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff", System.Globalization.CultureInfo.InvariantCulture);
         return new Phone(context, Path.Combine(tracesDir, $"{testName}-{stamp}.zip"));
     }
+
+    /// <summary>A fresh desktop-sized (1280×800) browser context, for design screenshots; dispose it when done.</summary>
+    public async Task<Phone> NewDesktopAsync()
+    {
+        var browser = _browser ?? throw new InvalidOperationException("The site is not started.");
+        var context = await browser.NewContextAsync(new BrowserNewContextOptions
+        {
+            BaseURL = BaseAddress.ToString(),
+            ViewportSize = new ViewportSize { Width = 1280, Height = 800 },
+            Locale = "id-ID",
+            TimezoneId = "Asia/Jakarta",
+        });
+        return new Phone(context, tracePath: null);
+    }
 }
 
 [CollectionDefinition(Name)]

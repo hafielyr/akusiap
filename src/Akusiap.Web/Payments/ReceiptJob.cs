@@ -83,10 +83,10 @@ public sealed partial class ReceiptJob(IAppDbContext db, IEmailSender sender, IS
                 <p>{WebUtility.HtmlEncode(intro)}</p>
                 <table style="border-collapse:collapse">{table}</table>
                 <p style="font-size:14px;color:#475569">{WebUtility.HtmlEncode(note)}</p>
-                <p>Akusiap</p>
+                <p>{Brand.Name}</p>
                 </body></html>
                 """;
-            var text = string.Join("\n", [greeting, string.Empty, intro, string.Empty, .. rows.Select(r => $"{r.Label}: {r.Value}"), string.Empty, note, "Akusiap"]);
+            var text = string.Join("\n", [greeting, string.Empty, intro, string.Empty, .. rows.Select(r => $"{r.Label}: {r.Value}"), string.Empty, note, Brand.Name]);
             message = new EmailMessage(payment.Email, subject, html, text);
             values = new { orderNumber = payment.OrderNumber, item, amountIdr = payment.AmountIdr, method, paidAt = payment.PaidAt, accessUntil = ends };
         }

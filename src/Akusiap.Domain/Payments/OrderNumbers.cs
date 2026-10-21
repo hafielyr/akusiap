@@ -3,12 +3,12 @@ using System.Globalization;
 namespace Akusiap.Domain.Payments;
 
 /// <summary>
-/// Readable order numbers such as <c>AKS-20261006-K7QX</c> (PAY-01, D-52): the Jakarta date and four characters from an
+/// Readable order numbers such as <c>LSI-20261006-K7QX</c> (PAY-01, D-52): the Jakarta date and four characters from an
 /// alphabet without look-alikes (no 0/O, 1/I/L, U), about a million per day. The unique index is the final guard.
 /// </summary>
 public static class OrderNumbers
 {
-    public const string Prefix = "AKS";
+    public const string Prefix = "LSI";
     public const string Alphabet = "23456789ABCDEFGHJKMNPQRSTVWXYZ";
     public const int SuffixLength = 4;
 
