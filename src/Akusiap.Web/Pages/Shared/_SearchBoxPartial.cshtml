@@ -1,0 +1,24 @@
+@model (string? Query, bool Live, bool OnBlue)
+@* The big question search (BRD-04): one rounded field with a button, plus popular searches as chips. On /cari it
+   updates the results while typing (htmx); elsewhere it is a plain GET to /cari. *@
+@{
+  var suggestions = T["Search.Suggestions"].Value.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+}
+<form method="get" action="/cari" role="search" class="space-y-3" data-testid="search-form"
+      hx-get="@(Model.Live ? "/cari" : null)" hx-target="@(Model.Live ? "#search-results" : null)" hx-swap="@(Model.Live ? "outerHTML" : null)"
+      hx-push-url="@(Model.Live ? "true" : null)" hx-trigger="@(Model.Live ? "input changed delay:300ms from:#search-q, submit" : null)">
+  <div class="flex items-center gap-1 rounded-full bg-white p-1.5 pl-5 text-left shadow-lg ring-1 ring-slate-200">
+    <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6 shrink-0 text-brand-600"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
+    <label for="search-q" class="sr-only">@T["Search.Label"]</label>
+    <input id="search-q" name="q" type="search" value="@Model.Query" maxlength="100" placeholder="@T["Search.Placeholder"]" autocomplete="off" enterkeyhint="search"
+           class="min-h-12 w-full min-w-0 bg-transparent px-2 text-base text-slate-900 outline-none placeholder:text-slate-400 sm:text-lg" data-testid="search-input" />
+    <button type="submit" class="btn btn-primary shrink-0 px-5" data-testid="search-submit">@T["Search.Submit"]</button>
+  </div>
+  <p class="flex flex-wrap items-center gap-2 text-sm @(Model.OnBlue ? "justify-center text-brand-100" : "text-slate-600")">
+    <span>@T["Search.Popular"]</span>
+    @foreach (var s in suggestions)
+    {
+      <a href="@Akusiap.Web.Pages.Search.IndexModel.For(s)" class="inline-flex min-h-9 items-center rounded-full px-3 font-semibold @(Model.OnBlue ? "on-dark text-white hover:bg-white/20" : "border border-slate-200 bg-white text-slate-700 hover:border-brand-300")" data-testid="search-suggestion">@s</a>
+    }
+  </p>
+</form>

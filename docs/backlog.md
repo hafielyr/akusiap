@@ -441,6 +441,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: New shared components (cards, frames, glow panels, pill buttons and tabs, stat tiles, dials, avatars, entrance motion), a dark theme with a header toggle, and new layouts for home, catalog, exam page, setup, result, leaderboard, /learn, Today, Journey, pricing and account pages (D-102, D-103).
 - AC: Learner pages use the new components. The theme toggle persists across reloads without a flash. Pages fit 360 px in light and dark. The catalog and player stay within the 150 KB first-load budget. Text keeps AA contrast in both themes on the key pages.
 
+### BRD-04 Full-width hero and question search · M
+- Stories: owner request (2026-10-22: a full-image landing page like Pahamify or Brainly, and a search bar that makes finding questions easy) · Depends on: BRD-03
+- Scope: An illustrated full-width hero with the search in the middle; `/cari` searching catalog questions (stem only) and exams, live while typing (D-105, D-106).
+- AC: A question in a published catalog exam is found by words from its text and shows only the stem, never options or explanations. Drafts, learners' own exams and retired questions are never found. Searching from the home page on a phone lands on the results without sideways scroll.
+
 ### DRL-01 Daily drill with points and streak · M
 - Stories: owner request (gamified daily drills) · Depends on: SRS-03, SES-06
 - Scope: `/learn/hari-ini` gets "Latihan harian": a 10-question set built from the learner's accessible exams (due review cards first, then new questions), a daily goal (one completed drill), XP per correct answer and a streak counted in Jakarta days. Needs a new table for drill progress (streak, XP, last drill date) in this card's migration; record it as an addition to `schema.sql` (like D-68).

@@ -1133,4 +1133,27 @@
   <data name="Home.Showcase.Eyebrow" xml:space="preserve"><value>How you practise</value></data>
   <data name="Home.Showcase.Title" xml:space="preserve"><value>Practice that feels like play</value></data>
   <data name="Home.Showcase.Lead" xml:space="preserve"><value>Take simulations like the real CAT, keep your daily streak and watch your name climb the leaderboard.</value></data>
+  <data name="Search.Title" xml:space="preserve"><value>Search questions</value></data>
+  <data name="Search.Eyebrow" xml:space="preserve"><value>Search</value></data>
+  <data name="Search.Lead" xml:space="preserve"><value>Type words from a question, a topic or an exam name. We search every question in the catalog.</value></data>
+  <data name="Search.Label" xml:space="preserve"><value>Search questions or exams</value></data>
+  <data name="Search.Placeholder" xml:space="preserve"><value>Search questions, topics or exams…</value></data>
+  <data name="Search.Submit" xml:space="preserve"><value>Search</value></data>
+  <data name="Search.Popular" xml:space="preserve"><value>Popular:</value></data>
+  <data name="Search.Suggestions" xml:space="preserve"><value>Pancasila;number series;syllogism;UUD 1945;TKP</value></data>
+  <data name="Search.Hint" xml:space="preserve"><value>Start typing to search every question and exam.</value></data>
+  <data name="Search.TooShort" xml:space="preserve"><value>Type at least {0} letters.</value></data>
+  <data name="Search.NoResults" xml:space="preserve"><value>No results for "{0}"</value></data>
+  <data name="Search.NoResultsHint" xml:space="preserve"><value>Try a more general word, or browse the exam catalog.</value></data>
+  <data name="Search.Exams" xml:space="preserve"><value>Exams ({0})</value></data>
+  <data name="Search.AllExams" xml:space="preserve"><value>See all</value></data>
+  <data name="Search.Questions" xml:space="preserve"><value>Questions ({0})</value></data>
+  <data name="Search.Trial" xml:space="preserve"><value>Free trial question</value></data>
+  <data name="Search.More" xml:space="preserve"><value>Showing {0} of {1} questions. Add words to narrow it down.</value></data>
+  <data name="Home.Float.Correct" xml:space="preserve"><value>Correct answer!</value></data>
+  <data name="Home.Float.Progress" xml:space="preserve"><value>Question 66/110 · TIU</value></data>
+  <data name="Home.Float.Streak" xml:space="preserve"><value>7-day streak</value></data>
+  <data name="Home.Float.Rank" xml:space="preserve"><value>Top of the week</value></data>
+  <data name="Nav.Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Catalog.SearchQuestions" xml:space="preserve"><value>Search inside questions</value></data>
 </root>

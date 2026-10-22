@@ -1,0 +1,18 @@
+@page "/cari"
+@model Akusiap.Web.Pages.Search.IndexModel
+@* Search questions and exams (BRD-04). *@
+@{
+  ViewData["Title"] = string.IsNullOrWhiteSpace(Model.Query) ? T["Search.Title"].Value : $"{Model.Query} · {T["Search.Title"].Value}";
+  ViewData["Wide"] = true;
+}
+
+<section class="space-y-6">
+  <div class="glow space-y-4 px-5 py-7 sm:px-8">
+    <span class="eyebrow">@T["Search.Eyebrow"]</span>
+    <h1 class="text-3xl font-extrabold leading-tight tracking-tight">@T["Search.Title"]</h1>
+    <p class="max-w-xl text-slate-600">@T["Search.Lead"]</p>
+    <partial name="_SearchBoxPartial" model="(Model.Query, true, false)" />
+  </div>
+
+  <partial name="_SearchResultsPartial" model="Model" />
+</section>

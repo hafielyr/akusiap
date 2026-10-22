@@ -85,6 +85,7 @@ public sealed class ScreenshotTests(MobileSite site)
             await ShotAsync(page, $"/ujian/{exams[1]}/peringkat", $"{name}-8-leaderboard");
             await ShotAsync(page, $"/learn/kelas/{classId}", $"{name}-9-class-student");
             await ShotAsync(page, "/harga", $"{name}-11-pricing");
+            await ShotAsync(page, "/cari?q=nomor", $"{name}-15-search");
             await ShotAsync(page, $"/sesi/{resultId}/hasil", $"{name}-12-result");
             await ShotAsync(page, $"/ujian/{exams[1]}/mulai", $"{name}-13-setup");
             await page.GetByTestId("start").ClickAsync();
