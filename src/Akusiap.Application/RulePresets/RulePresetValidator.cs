@@ -18,7 +18,8 @@ public sealed record SaveRulePresetRequest(
     int? MaxAttempts,
     int? PassMarkPercent,
     ShowAnswers? ShowAnswers,
-    bool IsDefault);
+    bool IsDefault,
+    bool CatMode = false);
 
 /// <summary>The rules a system preset must meet before it is saved (ADM-T5). Pure; returns every problem at once.</summary>
 public static class RulePresetValidator

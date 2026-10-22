@@ -146,6 +146,22 @@ window.quizPlayer = function (stateElementId) {
       if (event.key === 'ArrowLeft') { this.prev(); event.preventDefault(); }
     },
 
+    // Tryout CAT screen (TRY-01): option letters, counts and the grid's answered / ragu-ragu / empty states.
+    letter(o) { return 'ABCDEFGHIJ'.charAt(o); },
+    get answeredCount() { return this.items.filter((i) => i.selected.length > 0).length; },
+    get flaggedCount() { return this.items.filter((i) => i.flagged).length; },
+    cellState(i) {
+      const item = this.items[i];
+      return item.flagged ? 'ragu' : item.selected.length ? 'answered' : 'empty';
+    },
+    catCellClass(i) {
+      const state = this.cellState(i);
+      return [
+        state === 'ragu' ? 'bg-accent-400 text-slate-900 border-accent-500' : state === 'answered' ? 'bg-green-600 text-white border-green-600' : 'bg-white text-slate-700 border-slate-300',
+        i === this.index ? 'outline-2 outline-offset-2 outline-brand-700' : '',
+      ].join(' ');
+    },
+
     cellClass(i) {
       const item = this.items[i];
       return [

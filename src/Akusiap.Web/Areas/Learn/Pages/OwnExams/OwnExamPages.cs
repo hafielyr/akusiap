@@ -40,6 +40,8 @@ public sealed class OwnExamInput
 
     public ShowAnswers? ShowAnswers { get; set; }
 
+    public bool CatMode { get; set; }
+
     public static OwnExamInput Blank() => new()
     {
         HintsEnabled = true,
@@ -64,6 +66,7 @@ public sealed class OwnExamInput
             ShuffleQuestions = exam.ShuffleQuestions,
             ShuffleOptions = exam.ShuffleOptions,
             ShowAnswers = exam.ShowAnswers,
+            CatMode = exam.CatMode,
         };
     }
 
@@ -82,7 +85,7 @@ public sealed class OwnExamInput
         }.ToRequest(null);
         var request = new SaveOwnExamRequest(
             id, Title, Description, Published, QuestionIds, rules.TimeLimitMinutes, rules.QuestionCount, HintsEnabled,
-            ShuffleQuestions, ShuffleOptions, rules.PassMarkPercent, ShowAnswers);
+            ShuffleQuestions, ShuffleOptions, rules.PassMarkPercent, ShowAnswers, CatMode);
         return (request, problems);
     }
 }

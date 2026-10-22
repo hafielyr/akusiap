@@ -35,4 +35,7 @@ public class RulePreset
 
     /// <summary>Only one system preset can be the default.</summary>
     public bool IsDefault { get; set; }
+
+    /// <summary>Simulations use the full-screen CAT layout (TRY-01). Not in schema.sql (D-98).</summary>
+    public bool CatMode { get; set; }
 }

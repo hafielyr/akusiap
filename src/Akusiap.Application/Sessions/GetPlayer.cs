@@ -36,6 +36,9 @@ public sealed record PlayerView(
     int? SecondsLeft,
     IReadOnlyList<PlayerItem> Items)
 {
+    /// <summary>Show the full-screen CAT layout (TRY-01): a Simulation whose rules ask for it.</summary>
+    public bool Cat { get; init; }
+
     /// <summary>The result once the attempt is closed (SES-06); the full result page is SES-07.</summary>
     public int CorrectCount { get; init; }
 
@@ -137,6 +140,7 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
                 i.CheckedAt is null ? null : new AnswerFeedback(Scoring.IsCorrect(i.QuestionType, i.Correct, i.Selected), i.Correct, i.Explanation, i.KeyFact)))])
         {
             CanCheck = practice.CanCheck,
+            Cat = attempt.Mode == AttemptMode.Simulation && rules.RootElement.TryGetProperty("catMode", out var cat) && cat.ValueKind == JsonValueKind.True,
             CorrectCount = attempt.CorrectCount,
             TotalCount = attempt.TotalCount,
             ScorePercent = attempt.ScorePercent,
