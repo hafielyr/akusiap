@@ -1,9 +1,19 @@
 @page "/ujian/{id:long}/peringkat"
 @model Akusiap.Web.Pages.Exams.LeaderboardModel
-@* Public leaderboard (GAM-01): each person's first finished Simulation, by score then time. *@
+@using Akusiap.Application.Gamification
+@using Akusiap.Domain
+@* Public leaderboard (GAM-01, DRL-02): each person's first finished Simulation, by score then time. Exams that reset
+   weekly show "Minggu ini" and "Sepanjang masa" tabs. The badges line says what the board gives, as set by an admin. *@
 @{
   var board = Model.Board;
+  var settings = board.Settings;
+  var weekly = board.Period == LeaderboardPeriod.ThisWeek;
   ViewData["Title"] = $"{T["Leaderboard.Title"].Value} · {board.Title}";
+  var url = $"/ujian/{board.ExamId}/peringkat";
+  var prizes = new List<string>();
+  if (settings.AwardRank1) { prizes.Add(T["Badge.Rank1"].Value); }
+  if (settings.AwardTop3) { prizes.Add(T["Badge.Top3"].Value); }
+  if (settings.AwardTop10) { prizes.Add(T["Badge.Top10"].Value); }
 }
 
 <section class="space-y-5">
@@ -11,14 +21,40 @@
   <div class="bg-panel flex flex-wrap items-center justify-between gap-3 rounded-2xl p-5 text-white shadow-sm">
     <div class="space-y-1">
       <p class="text-sm text-brand-100">@board.Title</p>
-      <h1 class="text-2xl font-extrabold leading-tight">@T["Leaderboard.Title"]</h1>
+      <h1 class="text-2xl font-extrabold leading-tight">@T[weekly ? "Leaderboard.WeekTitle" : "Leaderboard.Title"]</h1>
+      @if (weekly && board.ResetsAt is { } resetsAt)
+      {
+        <p class="text-sm text-brand-100" data-testid="resets-at">@T["Leaderboard.ResetsAt", JakartaTime.Format(resetsAt)]</p>
+      }
     </div>
     @if (board.Viewer is { } me)
     {
       <p class="rounded-xl border-4 border-accent-400 px-4 py-2 text-center" data-testid="my-rank"><span class="block text-xs text-brand-100">@T["Leaderboard.YourRank"]</span><span class="text-2xl font-extrabold">#@me.Rank</span></p>
     }
   </div>
-  <p class="text-sm text-slate-600">@T["Leaderboard.Lead"]</p>
+
+  @if (settings.WeeklyReset)
+  {
+    <nav aria-label="@T["Leaderboard.Periods"]" class="grid grid-cols-2 gap-2" data-testid="leaderboard-periods">
+      <a href="@url" class="btn @(weekly ? "btn-primary" : "btn-secondary")" aria-current="@(weekly ? "page" : null)" data-testid="period-week">@T["Leaderboard.ThisWeek"]</a>
+      <a href="@url?periode=@LeaderboardModel.AllTimeValue" class="btn @(weekly ? "btn-secondary" : "btn-primary")" aria-current="@(weekly ? null : "page")" data-testid="period-all">@T["Leaderboard.AllTime"]</a>
+    </nav>
+  }
+
+  <p class="text-sm text-slate-600">@T[weekly ? "Leaderboard.WeekLead" : "Leaderboard.Lead"]</p>
+  <p class="text-sm text-slate-600" data-testid="leaderboard-prizes">
+    🏆
+    @if (prizes.Count == 0)
+    {
+      @T["Leaderboard.NoBadges"]
+    }
+    else
+    {
+      @T[settings.WeeklyReset ? "Leaderboard.BadgesWeekly" : "Leaderboard.Badges", string.Join(", ", prizes)]
+      @if (settings.MinScorePercent is { } minScore) { <text> · </text>@T["Leaderboard.MinScore", minScore] }
+      @if (settings.MinParticipants is { } minPeople and > 1) { <text> · </text>@T["Leaderboard.MinParticipants", minPeople] }
+    }
+  </p>
   <partial name="_LeaderboardPartial" model="board" />
   <a href="@ExamRoutes.Start(board.ExamId)" class="btn btn-primary w-full sm:w-auto">@T["Leaderboard.TakeSimulation"]</a>
 </section>

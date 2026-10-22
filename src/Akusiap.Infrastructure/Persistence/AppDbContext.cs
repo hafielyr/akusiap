@@ -73,6 +73,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<Domain.Gamification.UserBadge> UserBadges => Set<Domain.Gamification.UserBadge>();
 
+    public DbSet<Domain.Gamification.LeaderboardSettings> LeaderboardSettings => Set<Domain.Gamification.LeaderboardSettings>();
+
     public Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken) =>
         Database.BeginTransactionAsync(cancellationToken);
 

@@ -41,16 +41,33 @@ public sealed class ClassAssignmentConfiguration : IEntityTypeConfiguration<Clas
     }
 }
 
-/// <summary>Earned badges (GAM-01, D-95): one per code, and per exam for rank badges.</summary>
+/// <summary>Earned badges (GAM-01, D-95): one per code, and per exam for rank badges, and per exam and week for weekly ones (DRL-02).</summary>
 public sealed class UserBadgeConfiguration : IEntityTypeConfiguration<UserBadge>
 {
     public void Configure(EntityTypeBuilder<UserBadge> builder)
     {
         builder.HasOne(b => b.User).WithMany().HasForeignKey(b => b.UserId).OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(b => b.Exam).WithMany().HasForeignKey(b => b.ExamId).OnDelete(DeleteBehavior.NoAction);
-        builder.HasIndex(b => new { b.UserId, b.Code, b.ExamId }, "ux_user_badges_once")
+        builder.HasIndex(b => new { b.UserId, b.Code, b.ExamId, b.WeekStart }, "ux_user_badges_once")
             .HasDatabaseName("ux_user_badges_once")
             .IsUnique()
             .AreNullsDistinct(false);
+    }
+}
+
+/// <summary>Per-exam leaderboard settings (DRL-02, D-99): one row per exam, keyed by the exam.</summary>
+public sealed class LeaderboardSettingsConfiguration : IEntityTypeConfiguration<LeaderboardSettings>
+{
+    public void Configure(EntityTypeBuilder<LeaderboardSettings> builder)
+    {
+        builder.ToTable("leaderboard_settings", t =>
+        {
+            t.HasCheckConstraint("ck_leaderboard_settings_min_score", "min_score_percent IS NULL OR min_score_percent BETWEEN 0 AND 100");
+            t.HasCheckConstraint("ck_leaderboard_settings_min_participants", "min_participants IS NULL OR min_participants >= 1");
+        });
+        builder.HasKey(s => s.ExamId);
+        builder.Property(s => s.ExamId).ValueGeneratedNever();
+        builder.HasOne(s => s.Exam).WithOne().HasForeignKey<LeaderboardSettings>(s => s.ExamId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne<Domain.Users.User>().WithMany().HasForeignKey(s => s.UpdatedByUserId).OnDelete(DeleteBehavior.SetNull);
     }
 }

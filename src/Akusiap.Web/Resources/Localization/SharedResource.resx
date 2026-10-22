@@ -1060,4 +1060,44 @@
   <data name="Home.Feature.Cat.Text" xml:space="preserve"><value>Layar penuh dengan nomor soal, tanda ragu-ragu, dan waktu mundur seperti ujian CAT.</value></data>
   <data name="Home.Soon.Subtest" xml:space="preserve"><value>Nilai per subtes (TWK, TIU, TKP)</value></data>
   <data name="Home.Soon.Subtest.Text" xml:space="preserve"><value>Lihat nilai dan passing grade untuk setiap subtes setelah tryout.</value></data>
+  <data name="Admin.Nav.Leaderboards" xml:space="preserve"><value>Papan peringkat</value></data>
+  <data name="Admin.Leaderboards.Title" xml:space="preserve"><value>Papan peringkat</value></data>
+  <data name="Admin.Leaderboards.Lead" xml:space="preserve"><value>Atur papan peringkat setiap ujian: aktif atau tidak, reset mingguan, dan lencana yang diberikan.</value></data>
+  <data name="Admin.Leaderboards.NoExams" xml:space="preserve"><value>Belum ada ujian katalog.</value></data>
+  <data name="Admin.Leaderboards.On" xml:space="preserve"><value>Aktif</value></data>
+  <data name="Admin.Leaderboards.Off" xml:space="preserve"><value>Nonaktif</value></data>
+  <data name="Admin.Leaderboards.Weekly" xml:space="preserve"><value>Reset mingguan</value></data>
+  <data name="Admin.Leaderboards.Since" xml:space="preserve"><value>Dihitung sejak {0}</value></data>
+  <data name="Admin.Leaderboards.EditTitle" xml:space="preserve"><value>Atur papan peringkat</value></data>
+  <data name="Admin.Leaderboards.Counts" xml:space="preserve"><value>{0} peserta sepanjang masa · {1} peserta minggu ini</value></data>
+  <data name="Admin.Leaderboards.AwardedThrough" xml:space="preserve"><value>Lencana mingguan sudah diberikan sampai minggu yang berakhir {0}.</value></data>
+  <data name="Admin.Leaderboards.View" xml:space="preserve"><value>Lihat papan peringkat</value></data>
+  <data name="Admin.Leaderboards.Board" xml:space="preserve"><value>Papan peringkat</value></data>
+  <data name="Admin.Leaderboards.EnabledLabel" xml:space="preserve"><value>Tampilkan papan peringkat untuk ujian ini</value></data>
+  <data name="Admin.Leaderboards.WeeklyLabel" xml:space="preserve"><value>Reset setiap minggu</value></data>
+  <data name="Admin.Leaderboards.WeeklyHelp" xml:space="preserve"><value>Papan "Minggu ini" mulai lagi setiap Senin 00.00 WIB. Lencana diberikan untuk peringkat akhir setiap minggu dan bisa diraih lagi minggu berikutnya. Papan "Sepanjang masa" tetap ada.</value></data>
+  <data name="Admin.Leaderboards.BadgesLabel" xml:space="preserve"><value>Lencana yang diberikan</value></data>
+  <data name="Admin.Leaderboards.BadgesHelp" xml:space="preserve"><value>Setiap peserta mendapat lencana terbaik yang aktif dan sesuai peringkatnya.</value></data>
+  <data name="Admin.Leaderboards.MinScore" xml:space="preserve"><value>Nilai minimum untuk lencana (%)</value></data>
+  <data name="Admin.Leaderboards.MinScoreHelp" xml:space="preserve"><value>Kosongkan jika tanpa batas.</value></data>
+  <data name="Admin.Leaderboards.MinParticipants" xml:space="preserve"><value>Peserta minimum untuk lencana</value></data>
+  <data name="Admin.Leaderboards.MinParticipantsHelp" xml:space="preserve"><value>Lencana hanya diberikan jika peserta papan (atau minggu itu) sebanyak ini. Kosongkan jika tanpa batas.</value></data>
+  <data name="Admin.Leaderboards.ResetTitle" xml:space="preserve"><value>Reset riwayat</value></data>
+  <data name="Admin.Leaderboards.ResetHelp" xml:space="preserve"><value>Papan peringkat mulai dari nol sejak sekarang. Riwayat dan nilai peserta tetap tersimpan, dan lencana yang sudah diberikan tidak dicabut.</value></data>
+  <data name="Admin.Leaderboards.Reset" xml:space="preserve"><value>Reset riwayat papan</value></data>
+  <data name="Admin.Leaderboards.ResetConfirm" xml:space="preserve"><value>Ya, mulai dari nol</value></data>
+  <data name="Admin.Leaderboards.ResetDone" xml:space="preserve"><value>Papan peringkat sudah direset.</value></data>
+  <data name="Leaderboard.WeekTitle" xml:space="preserve"><value>Peringkat minggu ini</value></data>
+  <data name="Leaderboard.ResetsAt" xml:space="preserve"><value>Direset {0}</value></data>
+  <data name="Leaderboard.Periods" xml:space="preserve"><value>Periode papan peringkat</value></data>
+  <data name="Leaderboard.ThisWeek" xml:space="preserve"><value>Minggu ini</value></data>
+  <data name="Leaderboard.AllTime" xml:space="preserve"><value>Sepanjang masa</value></data>
+  <data name="Leaderboard.WeekLead" xml:space="preserve"><value>Simulasi pertama setiap peserta minggu ini yang dihitung: nilai tertinggi menang, jika sama yang lebih cepat menang.</value></data>
+  <data name="Leaderboard.NoBadges" xml:space="preserve"><value>Tanpa lencana</value></data>
+  <data name="Leaderboard.Badges" xml:space="preserve"><value>Lencana: {0}</value></data>
+  <data name="Leaderboard.BadgesWeekly" xml:space="preserve"><value>Lencana setiap minggu untuk peringkat akhir: {0}</value></data>
+  <data name="Leaderboard.MinScore" xml:space="preserve"><value>nilai min. {0}%</value></data>
+  <data name="Leaderboard.MinParticipants" xml:space="preserve"><value>min. {0} peserta</value></data>
+  <data name="Leaderboard.YouRankWeek" xml:space="preserve"><value>Peringkat #{0} dari {1} peserta minggu ini</value></data>
+  <data name="Journey.Week" xml:space="preserve"><value>Minggu {0}</value></data>
 </root>

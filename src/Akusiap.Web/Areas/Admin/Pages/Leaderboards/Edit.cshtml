@@ -1,0 +1,97 @@
+@page "/admin/papan-peringkat/{examId:long}"
+@model Akusiap.Web.Areas.Admin.Pages.Leaderboards.EditModel
+@using Akusiap.Domain
+@* One exam's leaderboard settings (DRL-02): on/off, weekly reset, which rank badges, minimums, and the history reset. *@
+@{
+  ViewData["Title"] = T["Admin.Leaderboards.EditTitle"].Value;
+  var d = Model.Detail;
+  var input = Model.Input;
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[$"Input.{field}"]?.Errors.FirstOrDefault()?.ErrorMessage;
+  var badges = new (string Field, bool Value, string Label)[]
+  {
+    ("AwardRank1", input.AwardRank1, "Badge.Rank1"),
+    ("AwardTop3", input.AwardTop3, "Badge.Top3"),
+    ("AwardTop10", input.AwardTop10, "Badge.Top10"),
+  };
+  var minimums = new (string Field, string? Value, string Label, string Help)[]
+  {
+    ("MinScorePercent", input.MinScorePercent, "Admin.Leaderboards.MinScore", "Admin.Leaderboards.MinScoreHelp"),
+    ("MinParticipants", input.MinParticipants, "Admin.Leaderboards.MinParticipants", "Admin.Leaderboards.MinParticipantsHelp"),
+  };
+}
+
+<section class="max-w-2xl space-y-4">
+  <a href="/admin/papan-peringkat" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @T["Admin.Leaderboards.Title"]</a>
+  <div class="space-y-1">
+    <h1 class="text-2xl font-bold leading-tight">@d.Title</h1>
+    <p class="text-sm text-slate-500" data-testid="participant-counts">@T["Admin.Leaderboards.Counts", d.AllTimeParticipants, d.ThisWeekParticipants]</p>
+    @if (d.Settings.CountsSince is { } since)
+    {
+      <p class="text-sm text-slate-500" data-testid="counts-since">@T["Admin.Leaderboards.Since", JakartaTime.Format(since)]</p>
+    }
+    @if (d.Settings.WeeklyReset && d.Settings.WeeklyAwardedThrough is { } through)
+    {
+      <p class="text-sm text-slate-500" data-testid="awarded-through">@T["Admin.Leaderboards.AwardedThrough", through.AddDays(6).ToString("d MMM yyyy", System.Globalization.CultureInfo.CurrentCulture)]</p>
+    }
+    @if (d.Status == Akusiap.Domain.Content.ExamStatus.Published && d.Settings.Enabled)
+    {
+      <a href="/ujian/@d.ExamId/peringkat" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">@T["Admin.Leaderboards.View"] →</a>
+    }
+  </div>
+
+  <form method="post" class="space-y-5" novalidate data-testid="leaderboard-form">
+    <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+
+    <fieldset class="space-y-1">
+      <legend class="label">@T["Admin.Leaderboards.Board"]</legend>
+      <label class="flex min-h-11 items-center gap-3 text-slate-800">
+        <input type="checkbox" name="Input.Enabled" value="true" class="size-5 accent-brand-600" checked="@input.Enabled" />
+        <span>@T["Admin.Leaderboards.EnabledLabel"]</span>
+      </label>
+      <label class="flex min-h-11 items-start gap-3 text-slate-800">
+        <input type="checkbox" name="Input.WeeklyReset" value="true" class="mt-3 size-5 accent-brand-600" checked="@input.WeeklyReset" />
+        <span class="py-2"><span class="block">@T["Admin.Leaderboards.WeeklyLabel"]</span><span class="block text-sm text-slate-500">@T["Admin.Leaderboards.WeeklyHelp"]</span></span>
+      </label>
+    </fieldset>
+
+    <fieldset class="space-y-1">
+      <legend class="label">@T["Admin.Leaderboards.BadgesLabel"]</legend>
+      <p class="text-sm text-slate-500">@T["Admin.Leaderboards.BadgesHelp"]</p>
+      @foreach (var badge in badges)
+      {
+        <label class="flex min-h-11 items-center gap-3 text-slate-800">
+          <input type="checkbox" name="Input.@badge.Field" value="true" class="size-5 accent-brand-600" checked="@badge.Value" />
+          <span>🏆 @T[badge.Label]</span>
+        </label>
+      }
+    </fieldset>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      @foreach (var minimum in minimums)
+      {
+        <div class="space-y-1">
+          <label for="Input_@minimum.Field" class="label">@T[minimum.Label]</label>
+          <input id="Input_@minimum.Field" name="Input.@minimum.Field" value="@minimum.Value" inputmode="numeric" class="input"
+                 aria-invalid="@(ErrorFor(minimum.Field) is null ? null : "true")" />
+          <p class="text-sm text-slate-500">@T[minimum.Help]</p>
+          @if (ErrorFor(minimum.Field) is { } error) { <span class="field-error" data-testid="error-@minimum.Field">@error</span> }
+        </div>
+      }
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-testid="save">@T["Admin.Save"]</button>
+  </form>
+</section>
+
+<section class="max-w-2xl space-y-2 border-t border-slate-200 pt-4">
+  <h2 class="font-bold">@T["Admin.Leaderboards.ResetTitle"]</h2>
+  <p class="text-sm text-slate-600">@T["Admin.Leaderboards.ResetHelp"]</p>
+  <form method="post" asp-page-handler="Reset" x-data="{ sure: false }">
+    <button type="button" x-show="!sure" x-on:click="sure = true" class="btn btn-secondary text-red-700" data-testid="reset">@T["Admin.Leaderboards.Reset"]</button>
+    <span x-show="sure" x-cloak class="flex flex-wrap items-center gap-2">
+      <button type="submit" class="btn bg-red-600 text-white hover:bg-red-700" data-testid="reset-confirm">@T["Admin.Leaderboards.ResetConfirm"]</button>
+      <button type="button" x-on:click="sure = false" class="btn btn-secondary">@T["Admin.Cancel"]</button>
+    </span>
+  </form>
+</section>

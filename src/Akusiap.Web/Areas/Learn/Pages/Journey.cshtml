@@ -58,9 +58,9 @@
       <ul class="grid gap-3 sm:grid-cols-2">
         @foreach (var b in rankBadges)
         {
-          <li class="card flex items-center gap-3 p-4" data-testid="rank-badge" data-code="@b.Code">
+          <li class="card flex items-center gap-3 p-4" data-testid="rank-badge" data-code="@b.Code" data-week="@b.WeekStart?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)">
             <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full @(b.Code == BadgeCode.Rank1 ? "bg-accent-400" : "bg-brand-100") text-xl">🏆</span>
-            <span class="min-w-0 space-y-0.5"><span class="block font-bold">@T[$"Badge.{b.Code}"]</span><span class="block truncate text-sm text-slate-600">@b.ExamTitle · @JakartaTime.FormatDate(b.AwardedAt)</span></span>
+            <span class="min-w-0 space-y-0.5"><span class="block font-bold">@T[$"Badge.{b.Code}"]</span><span class="block truncate text-sm text-slate-600">@b.ExamTitle · @(b.WeekStart is { } week ? T["Journey.Week", $"{week.ToString("d MMM", System.Globalization.CultureInfo.CurrentCulture)}–{week.AddDays(6).ToString("d MMM yyyy", System.Globalization.CultureInfo.CurrentCulture)}"].Value : JakartaTime.FormatDate(b.AwardedAt))</span></span>
           </li>
         }
       </ul>

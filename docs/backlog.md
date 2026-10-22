@@ -431,11 +431,10 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: `/learn/hari-ini` gets "Latihan harian": a 10-question set built from the learner's accessible exams (due review cards first, then new questions), a daily goal (one completed drill), XP per correct answer and a streak counted in Jakarta days. Needs a new table for drill progress (streak, XP, last drill date) in this card's migration; record it as an addition to `schema.sql` (like D-68).
 - AC: The streak grows by one for each Jakarta day with a completed drill and resets after a missed day (test clock). XP equals correct answers. Questions without full access are excluded.
 
-### DRL-02 Badges and weekly leaderboard · M
-- Stories: owner request · Depends on: DRL-01
-- Scope: Milestone badges (streak 7/30, XP levels) on the profile, and a weekly XP leaderboard per exam category.
-- Needs from the owner: whether learners appear by display name on a public leaderboard (privacy), or only see their own rank.
-- AC: Badges are awarded once. The leaderboard resets every Monday 00:00 WIB.
+### DRL-02 Leaderboard management: weekly reset and badges per exam · M
+- Stories: owner request (2026-10-22: leaderboards are not reset by default; an admin page to turn on weekly reset per exam and choose its badges) · Depends on: DRL-01
+- Scope: `/admin/papan-peringkat` lists catalog exams; per exam: board on/off, weekly reset (Minggu ini + Sepanjang masa tabs), which rank badges it gives (Juara 1, 3 besar, 10 besar), minimum score and participants for badges, and a history reset. Weekly-reset exams give badges for the final ranks when the week ends (D-99).
+- AC: Badges are awarded once (per exam, or per exam and week for weekly boards). A weekly board resets every Monday 00:00 WIB (test clock). Boards that are off show nowhere and give no rank badges.
 
 ### TRY-01 CAT tryout screen · M
 - Stories: owner request (CAT tryouts that mimic the official system) · Depends on: SES-06, SES-07

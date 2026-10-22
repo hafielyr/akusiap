@@ -1,0 +1,53 @@
+@page "/admin/papan-peringkat"
+@model Akusiap.Web.Areas.Admin.Pages.Leaderboards.IndexModel
+@* Leaderboard management (DRL-02): each catalog exam with its board state, weekly reset and badges. *@
+@{
+  ViewData["Title"] = T["Admin.Leaderboards.Title"].Value;
+}
+
+<section class="space-y-4">
+  <h1 class="text-2xl font-bold leading-tight">@T["Admin.Leaderboards.Title"]</h1>
+  <p class="text-slate-600">@T["Admin.Leaderboards.Lead"]</p>
+
+  @if (Model.Exams.Count == 0)
+  {
+    <p class="card border-dashed p-6 text-center text-slate-600">@T["Admin.Leaderboards.NoExams"]</p>
+  }
+  <ul class="space-y-2" data-testid="leaderboard-exams">
+    @foreach (var row in Model.Exams)
+    {
+      var s = row.Settings;
+      var badges = new List<string>();
+      if (s.AwardRank1) { badges.Add(T["Badge.Rank1"].Value); }
+      if (s.AwardTop3) { badges.Add(T["Badge.Top3"].Value); }
+      if (s.AwardTop10) { badges.Add(T["Badge.Top10"].Value); }
+      <li>
+        <a href="@Akusiap.Web.Areas.Admin.Pages.Leaderboards.EditModel.PageUrl(row.ExamId)" class="block space-y-2 rounded-xl border border-slate-200 bg-white p-4 hover:border-brand-600" data-testid="leaderboard-exam" data-exam="@row.ExamId">
+          <span class="flex flex-wrap items-center justify-between gap-2">
+            <span class="font-semibold">@row.Title</span>
+            <span class="text-xs text-slate-500">@T[$"Admin.ExamStatus.{row.Status}"]</span>
+          </span>
+          <span class="flex flex-wrap gap-1 text-xs">
+            @if (s.Enabled)
+            {
+              <span class="rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-800" data-testid="state-on">@T["Admin.Leaderboards.On"]</span>
+            }
+            else
+            {
+              <span class="rounded-full bg-slate-100 px-2 py-0.5 font-medium text-slate-600" data-testid="state-off">@T["Admin.Leaderboards.Off"]</span>
+            }
+            @if (s.WeeklyReset)
+            {
+              <span class="rounded-full bg-brand-50 px-2 py-0.5 font-medium text-brand-700" data-testid="state-weekly">@T["Admin.Leaderboards.Weekly"]</span>
+            }
+            <span class="rounded-full bg-accent-50 px-2 py-0.5 font-medium text-accent-800">🏆 @(badges.Count == 0 ? T["Leaderboard.NoBadges"].Value : string.Join(", ", badges))</span>
+            @if (s.CountsSince is { } since)
+            {
+              <span class="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600">@T["Admin.Leaderboards.Since", Akusiap.Domain.JakartaTime.FormatDate(since)]</span>
+            }
+          </span>
+        </a>
+      </li>
+    }
+  </ul>
+</section>

@@ -852,6 +852,70 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.ToTable("topics", (string)null);
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Gamification.LeaderboardSettings", b =>
+                {
+                    b.Property<long>("ExamId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("exam_id");
+
+                    b.Property<bool>("AwardRank1")
+                        .HasColumnType("boolean")
+                        .HasColumnName("award_rank1");
+
+                    b.Property<bool>("AwardTop10")
+                        .HasColumnType("boolean")
+                        .HasColumnName("award_top10");
+
+                    b.Property<bool>("AwardTop3")
+                        .HasColumnType("boolean")
+                        .HasColumnName("award_top3");
+
+                    b.Property<DateTime?>("CountsSince")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("counts_since");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("boolean")
+                        .HasColumnName("enabled");
+
+                    b.Property<int?>("MinParticipants")
+                        .HasColumnType("integer")
+                        .HasColumnName("min_participants");
+
+                    b.Property<int?>("MinScorePercent")
+                        .HasColumnType("integer")
+                        .HasColumnName("min_score_percent");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<Guid?>("UpdatedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("updated_by_user_id");
+
+                    b.Property<DateOnly?>("WeeklyAwardedThrough")
+                        .HasColumnType("date")
+                        .HasColumnName("weekly_awarded_through");
+
+                    b.Property<bool>("WeeklyReset")
+                        .HasColumnType("boolean")
+                        .HasColumnName("weekly_reset");
+
+                    b.HasKey("ExamId")
+                        .HasName("pk_leaderboard_settings");
+
+                    b.HasIndex("UpdatedByUserId")
+                        .HasDatabaseName("ix_leaderboard_settings_updated_by_user_id");
+
+                    b.ToTable("leaderboard_settings", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_leaderboard_settings_min_participants", "min_participants IS NULL OR min_participants >= 1");
+
+                            t.HasCheckConstraint("ck_leaderboard_settings_min_score", "min_score_percent IS NULL OR min_score_percent BETWEEN 0 AND 100");
+                        });
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Gamification.UserBadge", b =>
                 {
                     b.Property<long>("Id")
@@ -878,17 +942,21 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
+                    b.Property<DateOnly?>("WeekStart")
+                        .HasColumnType("date")
+                        .HasColumnName("week_start");
+
                     b.HasKey("Id")
                         .HasName("pk_user_badges");
 
                     b.HasIndex("ExamId")
                         .HasDatabaseName("ix_user_badges_exam_id");
 
-                    b.HasIndex(new[] { "UserId", "Code", "ExamId" }, "ux_user_badges_once")
+                    b.HasIndex(new[] { "UserId", "Code", "ExamId", "WeekStart" }, "ux_user_badges_once")
                         .IsUnique()
                         .HasDatabaseName("ux_user_badges_once");
 
-                    NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex(new[] { "UserId", "Code", "ExamId" }, "ux_user_badges_once"), false);
+                    NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex(new[] { "UserId", "Code", "ExamId", "WeekStart" }, "ux_user_badges_once"), false);
 
                     b.ToTable("user_badges", null, t =>
                         {
@@ -2351,6 +2419,24 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_topics_subjects_subject_id");
 
                     b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Gamification.LeaderboardSettings", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
+                        .WithOne()
+                        .HasForeignKey("Akusiap.Domain.Gamification.LeaderboardSettings", "ExamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_leaderboard_settings_exams_exam_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_leaderboard_settings_asp_net_users_updated_by_user_id");
+
+                    b.Navigation("Exam");
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Gamification.UserBadge", b =>
