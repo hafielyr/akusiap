@@ -447,3 +447,19 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: Score tryouts per subtest with a passing grade per subtest (for example SKD: TWK, TIU, TKP) and show the breakdown on the result page.
 - Needs from the owner: the scoring rules and passing grades to use, and approval for the schema change, because TKP gives 1–5 points per option and `schema.sql` only has right/wrong options. Scoring must not be guessed.
 - AC: Each subtest score and pass/fail matches the agreed rules; overall pass needs every subtest to pass.
+
+### GAM-01 Leaderboards, teacher classes and learning journey · L
+- Stories: C-09, T-09 to T-14, M-02 (motivation), owner request (2026-10-22: compete on score and time; help teachers; gamify each learner's journey) · Depends on: SES-07, OWN-04, MEM-03
+- Scope:
+  - Public leaderboards for catalog exams and class leaderboards: first finished Simulation per person, by score then time.
+  - The viewer's rank on the result page, and a name opt-out in the profile.
+  - The owner's participants list for their own exams.
+  - Teacher classes: invite code and link, assign an exam with a window and locked rules, students start it as a Simulation, results per student, remove a student. Entitlement rule 4b gives class members access.
+  - Learning journey: XP, levels, streak, milestone badges and rank badges, on `/learn/perjalanan` and on the Today page.
+- AC:
+  - A retake never changes a person's rank.
+  - Equal scores rank by time.
+  - Opted-out names are masked for others.
+  - A removed student loses access and can't rejoin.
+  - A badge is awarded only once.
+  - The catalog and player stay within the OPS-01 budget.

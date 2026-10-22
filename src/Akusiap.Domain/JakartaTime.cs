@@ -13,6 +13,9 @@ public static class JakartaTime
     /// <summary>The Jakarta wall-clock time for a UTC instant.</summary>
     public static DateTime ToLocal(DateTime utc) => DateTime.SpecifyKind(utc + Offset, DateTimeKind.Unspecified);
 
+    /// <summary>The UTC instant for a Jakarta wall-clock time (for example a datetime-local input).</summary>
+    public static DateTime FromLocal(DateTime local) => DateTime.SpecifyKind(DateTime.SpecifyKind(local, DateTimeKind.Unspecified) - Offset, DateTimeKind.Utc);
+
     /// <summary>Today's date in Jakarta.</summary>
     public static DateOnly Today(DateTime utcNow) => DateOnly.FromDateTime(ToLocal(utcNow));
 

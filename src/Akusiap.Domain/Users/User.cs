@@ -20,4 +20,7 @@ public class User : IdentityUser<Guid>
     public DateTime? DeactivatedAt { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    /// <summary>Show this user as "Peserta #XXXX" on public leaderboards (GAM-01). Not in schema.sql (D-94).</summary>
+    public bool HideOnLeaderboard { get; set; }
 }

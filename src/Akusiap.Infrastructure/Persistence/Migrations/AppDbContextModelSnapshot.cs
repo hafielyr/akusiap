@@ -332,6 +332,120 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.ToTable("audit_logs", (string)null);
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Classes.ClassAssignment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ClassroomId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("classroom_id");
+
+                    b.Property<DateTime>("ClosesAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("closes_at");
+
+                    b.Property<long>("ExamId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("exam_id");
+
+                    b.Property<DateTime>("OpensAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("opens_at");
+
+                    b.Property<long>("RulePresetId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("rule_preset_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_class_assignments");
+
+                    b.HasIndex(new[] { "ClassroomId" }, "ix_class_assignments_classroom")
+                        .HasDatabaseName("ix_class_assignments_classroom");
+
+                    b.HasIndex(new[] { "ExamId" }, "ix_class_assignments_exam")
+                        .HasDatabaseName("ix_class_assignments_exam");
+
+                    b.HasIndex(new[] { "RulePresetId" }, "ix_class_assignments_rule_preset")
+                        .HasDatabaseName("ix_class_assignments_rule_preset");
+
+                    b.ToTable("class_assignments", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_class_assignments_window", "closes_at > opens_at");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Classes.ClassMember", b =>
+                {
+                    b.Property<long>("ClassroomId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("classroom_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("joined_at");
+
+                    b.Property<DateTime?>("RemovedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("removed_at");
+
+                    b.HasKey("ClassroomId", "UserId")
+                        .HasName("pk_class_members");
+
+                    b.HasIndex(new[] { "UserId" }, "ix_class_members_user")
+                        .HasDatabaseName("ix_class_members_user");
+
+                    b.ToTable("class_members", (string)null);
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Classes.Classroom", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("InviteCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("invite_code");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("TeacherUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("teacher_user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_classrooms");
+
+                    b.HasIndex("InviteCode")
+                        .IsUnique()
+                        .HasDatabaseName("ix_classrooms_invite_code");
+
+                    b.HasIndex(new[] { "TeacherUserId" }, "ix_classrooms_teacher")
+                        .HasDatabaseName("ix_classrooms_teacher");
+
+                    b.ToTable("classrooms", (string)null);
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Content.Exam", b =>
                 {
                     b.Property<long>("Id")
@@ -732,6 +846,50 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ix_topics_subject_id_name");
 
                     b.ToTable("topics", (string)null);
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Gamification.UserBadge", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("AwardedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("awarded_at");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("code");
+
+                    b.Property<long?>("ExamId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("exam_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_user_badges");
+
+                    b.HasIndex("ExamId")
+                        .HasDatabaseName("ix_user_badges_exam_id");
+
+                    b.HasIndex(new[] { "UserId", "Code", "ExamId" }, "ux_user_badges_once")
+                        .IsUnique()
+                        .HasDatabaseName("ux_user_badges_once");
+
+                    NpgsqlIndexBuilderExtensions.AreNullsDistinct(b.HasIndex(new[] { "UserId", "Code", "ExamId" }, "ux_user_badges_once"), false);
+
+                    b.ToTable("user_badges", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_user_badges_code", "code IN ('Rank1', 'Top3', 'Top10', 'FirstSteps', 'Questions100', 'Questions500', 'Questions1000', 'Sharpshooter', 'PassedSimulation', 'Streak3', 'Streak7', 'Streak30', 'Flashcards50', 'Flashcards250', 'ClassJoined')");
+                        });
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Memorization.ReviewCard", b =>
@@ -1738,6 +1896,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("email_confirmed");
 
+                    b.Property<bool>("HideOnLeaderboard")
+                        .HasColumnType("boolean")
+                        .HasColumnName("hide_on_leaderboard");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
@@ -2020,6 +2182,69 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Navigation("ActorUser");
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Classes.ClassAssignment", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Classes.Classroom", "Classroom")
+                        .WithMany("Assignments")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_class_assignments_classrooms_classroom_id");
+
+                    b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_class_assignments_exams_exam_id");
+
+                    b.HasOne("Akusiap.Domain.Content.RulePreset", "RulePreset")
+                        .WithMany()
+                        .HasForeignKey("RulePresetId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_class_assignments_rule_presets_rule_preset_id");
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("RulePreset");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Classes.ClassMember", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Classes.Classroom", "Classroom")
+                        .WithMany("Members")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_class_members_classrooms_classroom_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_class_members_users_user_id");
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Classes.Classroom", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Users.User", "TeacherUser")
+                        .WithMany()
+                        .HasForeignKey("TeacherUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_classrooms_users_teacher_user_id");
+
+                    b.Navigation("TeacherUser");
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Content.Exam", b =>
                 {
                     b.HasOne("Akusiap.Domain.Users.User", "OwnerUser")
@@ -2122,6 +2347,26 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_topics_subjects_subject_id");
 
                     b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Gamification.UserBadge", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_user_badges_exams_exam_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_badges_users_user_id");
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Memorization.ReviewCard", b =>
@@ -2293,6 +2538,12 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Akusiap.Domain.Sessions.Attempt", b =>
                 {
+                    b.HasOne("Akusiap.Domain.Classes.ClassAssignment", "ClassAssignment")
+                        .WithMany()
+                        .HasForeignKey("ClassAssignmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_attempts_class_assignments_class_assignment_id");
+
                     b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
                         .WithMany()
                         .HasForeignKey("ExamId")
@@ -2304,6 +2555,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("fk_attempts_users_user_id");
+
+                    b.Navigation("ClassAssignment");
 
                     b.Navigation("Exam");
 
@@ -2412,6 +2665,13 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Akusiap.Domain.Access.Plan", b =>
                 {
                     b.Navigation("Prices");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Classes.Classroom", b =>
+                {
+                    b.Navigation("Assignments");
+
+                    b.Navigation("Members");
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Content.Exam", b =>

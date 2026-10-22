@@ -65,6 +65,14 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<Notification> Notifications => Set<Notification>();
 
+    public DbSet<Domain.Classes.Classroom> Classrooms => Set<Domain.Classes.Classroom>();
+
+    public DbSet<Domain.Classes.ClassMember> ClassMembers => Set<Domain.Classes.ClassMember>();
+
+    public DbSet<Domain.Classes.ClassAssignment> ClassAssignments => Set<Domain.Classes.ClassAssignment>();
+
+    public DbSet<Domain.Gamification.UserBadge> UserBadges => Set<Domain.Gamification.UserBadge>();
+
     public Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken) =>
         Database.BeginTransactionAsync(cancellationToken);
 

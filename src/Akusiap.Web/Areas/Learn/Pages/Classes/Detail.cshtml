@@ -1,0 +1,138 @@
+@page "/learn/kelas/{id:long}"
+@model Akusiap.Web.Areas.Learn.Pages.Classes.DetailModel
+@using Akusiap.Application.Classes
+@using Akusiap.Domain
+@* A class (T-09 to T-13). Students: assignments with their window and a start button. Teacher: invite code and link,
+   students (remove), assign an exam with locked rules, and results per assignment. *@
+@{
+  var c = Model.Class;
+  ViewData["Title"] = c.Name;
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[field]?.Errors.FirstOrDefault()?.ErrorMessage;
+  var joinLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{ClassRoutes.Join(c.InviteCode)}";
+}
+
+<section class="space-y-5">
+  <a href="@ClassRoutes.Index" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Class.Title"]</a>
+  <div class="bg-panel space-y-1 rounded-2xl p-5 text-white shadow-sm">
+    <p class="text-sm text-brand-100">@T["Class.TeacherIs", c.TeacherName]</p>
+    <h1 class="text-2xl font-extrabold leading-tight" data-testid="class-name">@c.Name</h1>
+  </div>
+  @if (TempData["Flash"] is string flash)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash]</p>
+  }
+
+  @if (c.IsTeacher)
+  {
+    <section class="card space-y-3 p-4" x-data="{ copied: false }" data-testid="invite">
+      <h2 class="font-bold">@T["Class.Invite"]</h2>
+      <p class="text-sm text-slate-600">@T["Class.InviteHint"]</p>
+      <p class="text-3xl font-extrabold tracking-wide text-brand-700" data-testid="invite-code">@c.InviteCode</p>
+      <div class="flex gap-2">
+        <input readonly value="@joinLink" class="input min-w-0 flex-1 text-sm" aria-label="@T["Class.InviteLink"]" />
+        <button type="button" class="btn btn-secondary shrink-0" @@click="navigator.clipboard.writeText('@joinLink').then(() => copied = true)">
+          <span x-show="!copied">@T["Share.Copy"]</span><span x-show="copied" x-cloak>@T["Share.Copied"]</span>
+        </button>
+      </div>
+    </section>
+  }
+
+  <section class="space-y-3" aria-labelledby="assignments">
+    <h2 id="assignments" class="section-title">@T["Class.Assignments"]</h2>
+    @if (c.Assignments.Count == 0)
+    {
+      <p class="card border-dashed p-6 text-center text-slate-600" data-testid="no-assignments">@T["Class.NoAssignments"]</p>
+    }
+    <ul class="space-y-3">
+      @foreach (var a in c.Assignments)
+      {
+        <li class="card space-y-3 p-4" data-testid="assignment" data-assignment="@a.Id">
+          <div class="flex flex-wrap items-start justify-between gap-2">
+            <p class="font-bold text-slate-900">@a.ExamTitle</p>
+            <span class="@(a.State == AssignmentState.Open ? "chip" : "badge-soon")" data-testid="assignment-state">@T[$"Class.State.{a.State}"]</span>
+          </div>
+          <p class="text-sm text-slate-600">@JakartaTime.Format(a.OpensAt) – @JakartaTime.Format(a.ClosesAt)</p>
+          <p class="text-sm text-slate-600">
+            @(a.TimeLimitMinutes is { } minutes ? T["Class.TimeLimit", minutes] : T["Class.NoTimeLimit"])
+            @if (a.MaxAttempts is { } max) { <text> · @T["Class.AttemptsUsed", a.MyAttempts, max]</text> }
+          </p>
+          <div class="flex flex-wrap gap-2">
+            @if (!c.IsTeacher && a.State == AssignmentState.Open && (a.MaxAttempts is null || a.MyAttempts < a.MaxAttempts))
+            {
+              <form method="post" asp-page-handler="Start">
+                <input type="hidden" name="assignmentId" value="@a.Id" />
+                <input type="hidden" name="examId" value="@a.ExamId" />
+                <button type="submit" class="btn btn-primary" data-testid="start-assignment">@T["Class.Start"]</button>
+              </form>
+            }
+            <a href="@ClassRoutes.Assignment(c.Id, a.Id)" class="btn btn-secondary" data-testid="assignment-results">@(c.IsTeacher ? T["Class.Results"] : T["Leaderboard.Title"])</a>
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+
+  @if (c.IsTeacher)
+  {
+    <section class="card space-y-3 p-4" aria-labelledby="assign">
+      <h2 id="assign" class="font-bold">@T["Class.Assign"]</h2>
+      @if (Model.Exams.Count == 0)
+      {
+        <p class="text-sm text-slate-600">@T["Class.NoOwnExams"] <a href="/learn/ujian-saya/baru" class="font-semibold text-brand-700">@T["Own.Exams.Add"]</a></p>
+      }
+      else
+      {
+        <form method="post" asp-page-handler="Assign" class="space-y-3" novalidate data-testid="assign-form">
+          <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+          <div class="space-y-1">
+            <label for="Assign_ExamId" class="label">@T["Class.Exam"]</label>
+            <select id="Assign_ExamId" name="Assign.ExamId" class="input">
+              @foreach (var exam in Model.Exams)
+              {
+                <option value="@exam.Id" selected="@(exam.Id == Model.Assign.ExamId)">@exam.Title (@T["Own.Exams.QuestionCount", exam.QuestionCount])</option>
+              }
+            </select>
+            @if (ErrorFor("Assign.ExamId") is { } examError) { <span class="field-error">@examError</span> }
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div class="space-y-1">
+              <label for="Assign_OpensAt" class="label">@T["Class.OpensAt"]</label>
+              <input id="Assign_OpensAt" name="Assign.OpensAt" type="datetime-local" value="@(Model.Assign.OpensAt?.ToString("yyyy-MM-ddTHH:mm", System.Globalization.CultureInfo.InvariantCulture))" class="input" />
+            </div>
+            <div class="space-y-1">
+              <label for="Assign_ClosesAt" class="label">@T["Class.ClosesAt"]</label>
+              <input id="Assign_ClosesAt" name="Assign.ClosesAt" type="datetime-local" value="@(Model.Assign.ClosesAt?.ToString("yyyy-MM-ddTHH:mm", System.Globalization.CultureInfo.InvariantCulture))" class="input" />
+              @if (ErrorFor("Assign.ClosesAt") is { } windowError) { <span class="field-error" data-testid="error-window">@windowError</span> }
+            </div>
+          </div>
+          <p class="text-xs text-slate-500">@T["Class.AssignHint"]</p>
+          <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Class.AssignAction"]</button>
+        </form>
+      }
+    </section>
+
+    <section class="space-y-3" aria-labelledby="students">
+      <h2 id="students" class="section-title">@T["Class.Students", c.Members.Count]</h2>
+      @if (c.Members.Count == 0)
+      {
+        <p class="card border-dashed p-6 text-center text-slate-600">@T["Class.NoStudents"]</p>
+      }
+      <ul class="card divide-y divide-slate-200" data-testid="students">
+        @foreach (var m in c.Members)
+        {
+          <li class="flex flex-wrap items-center justify-between gap-2 px-4 py-3" data-testid="student" data-user="@m.UserId">
+            <span class="min-w-0">
+              <span class="block font-semibold">@m.DisplayName</span>
+              <span class="block truncate text-xs text-slate-500">@m.Email · @T["Class.JoinedOn", JakartaTime.FormatDate(m.JoinedAt)]</span>
+            </span>
+            <form method="post" asp-page-handler="Remove">
+              <input type="hidden" name="studentId" value="@m.UserId" />
+              <button type="submit" class="btn btn-secondary text-sm" data-testid="remove-student">@T["Class.Remove"]</button>
+            </form>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</section>

@@ -53,6 +53,14 @@
       </span>
     </label>
 
+    <label class="flex min-h-11 items-start gap-3 text-slate-700">
+      <input asp-for="Input.HideOnLeaderboard" class="mt-1 size-5 rounded border-slate-300 accent-brand-600" data-testid="hide-on-leaderboard" />
+      <span>
+        <span class="block font-medium">@T["Profile.HideOnLeaderboard"]</span>
+        <span class="block text-sm text-slate-500">@T["Profile.HideOnLeaderboardHint"]</span>
+      </span>
+    </label>
+
     <button type="submit" class="btn btn-primary w-full">@T["Profile.Save"]</button>
   </form>
 

@@ -13,13 +13,15 @@ namespace Akusiap.Application.Sessions;
 
 /// <param name="GuestToken">The guest's cookie token (required when nobody is signed in).</param>
 /// <param name="GuestName">Shared-exam takers who are not signed in.</param>
+/// <param name="ClassAssignmentId">Started from a class assignment (GAM-01): its locked rules, always Simulation.</param>
 public sealed record StartAttemptRequest(
     long ExamId,
     AttemptMode Mode,
     RuleOverrides? Overrides = null,
     string? ShareToken = null,
     Guid? GuestToken = null,
-    string? GuestName = null);
+    string? GuestName = null,
+    long? ClassAssignmentId = null);
 
 public sealed record StartedAttempt(long AttemptId, AttemptSource Source, int QuestionCount);
 
@@ -41,6 +43,7 @@ public sealed class StartAttempt(
     public const string MaxAttemptsReached = "Session.MaxAttemptsReached";
     public const string NothingWrong = "Session.Retake.NothingWrong";
     public const string MixEmpty = "Mix.Empty";
+    public const string ClassClosed = "Class.AssignmentClosed";
 
     public static JsonSerializerOptions Json { get; } = new(JsonSerializerDefaults.Web) { Converters = { new JsonStringEnumConverter() } };
 
@@ -51,6 +54,31 @@ public sealed class StartAttempt(
         if (userId is null && request.GuestToken is null)
         {
             throw new InvalidOperationException("Guests need a guest token to start an attempt.");
+        }
+
+        long? classPresetId = null;
+        if (request.ClassAssignmentId is { } assignmentId)
+        {
+            // A class assignment (GAM-01): the viewer must be a current member and the window open (checked first, so
+            // students get "not open" rather than "not found"); the rules are the assignment's locked copy, Simulation.
+            var assignment = await db.ClassAssignments.AsNoTracking()
+                .Where(a => a.Id == assignmentId && a.ExamId == request.ExamId
+                    && a.Classroom!.Members.Any(m => m.UserId == userId && m.RemovedAt == null))
+                .Select(a => new { a.RulePresetId, a.OpensAt, a.ClosesAt })
+                .SingleOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+            if (assignment is null || userId is null)
+            {
+                return Result.Fail<StartedAttempt>(Problem.NotFound);
+            }
+
+            var now0 = clock.UtcNow;
+            if (now0 < assignment.OpensAt || now0 >= assignment.ClosesAt)
+            {
+                return Result.Fail<StartedAttempt>(new Problem(ClassClosed));
+            }
+
+            classPresetId = assignment.RulePresetId;
         }
 
         var access = await entitlements.GetAsync(request.ExamId, request.ShareToken, cancellationToken).ConfigureAwait(false);
@@ -71,12 +99,15 @@ public sealed class StartAttempt(
             return Result.Fail<StartedAttempt>(new Problem(GuestNameRequired, nameof(StartAttemptRequest.GuestName)));
         }
 
-        var presetId = await db.Exams.Where(e => e.Id == request.ExamId).Select(e => e.RulePresetId).SingleAsync(cancellationToken).ConfigureAwait(false);
+        var mode = classPresetId is null ? request.Mode : AttemptMode.Simulation;
+        var overrides = classPresetId is null ? request.Overrides ?? RuleOverrides.None : RuleOverrides.None;
+        var presetId = classPresetId
+            ?? await db.Exams.Where(e => e.Id == request.ExamId).Select(e => e.RulePresetId).SingleAsync(cancellationToken).ConfigureAwait(false);
+
         var preset = await db.RulePresets.AsNoTracking().SingleAsync(p => p.Id == presetId, cancellationToken).ConfigureAwait(false);
         var candidates = await CandidatesAsync(request.ExamId, decision.Scope, cancellationToken).ConfigureAwait(false);
-        var overrides = request.Overrides ?? RuleOverrides.None;
         var topics = overrides.TopicIds ?? [];
-        var built = SessionRulesBuilder.Build(preset, request.Mode, overrides, QuestionSelection.CountAvailable(candidates, [.. topics]));
+        var built = SessionRulesBuilder.Build(preset, mode, overrides, QuestionSelection.CountAvailable(candidates, [.. topics]));
         if (!built.Succeeded)
         {
             return Result.Fail<StartedAttempt>(built.Problems);
@@ -87,7 +118,7 @@ public sealed class StartAttempt(
         {
             var used = await db.Attempts
                 .CountAsync(
-                    a => a.ExamId == request.ExamId && a.Mode == AttemptMode.Simulation
+                    a => a.ExamId == request.ExamId && a.Mode == AttemptMode.Simulation && a.ClassAssignmentId == request.ClassAssignmentId
                         && (userId != null ? a.UserId == userId : a.UserId == null && a.GuestToken == request.GuestToken),
                     cancellationToken)
                 .ConfigureAwait(false);
@@ -115,6 +146,7 @@ public sealed class StartAttempt(
             GuestName = userId is null && source == AttemptSource.Shared ? guestName : null,
             ExamId = request.ExamId,
             Source = source,
+            ClassAssignmentId = request.ClassAssignmentId,
             Mode = rules.Mode,
             RulesSnapshot = JsonSerializer.Serialize(rules, Json),
             StartedAt = now,

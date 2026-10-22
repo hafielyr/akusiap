@@ -24,8 +24,10 @@ public class Attempt
 
     public Exam? Exam { get; set; }
 
-    /// <summary>Teacher class assignment. The foreign key comes with the class_assignments table (D-27).</summary>
+    /// <summary>The class assignment this attempt was started from (GAM-01); its rules are locked.</summary>
     public long? ClassAssignmentId { get; set; }
+
+    public Classes.ClassAssignment? ClassAssignment { get; set; }
 
     public AttemptSource Source { get; set; }
 

@@ -16,4 +16,6 @@ public sealed class HttpCurrentUser(IHttpContextAccessor accessor) : ICurrentUse
             : null;
 
     public bool IsAdmin => UserId is not null && Principal!.IsInRole(RoleNames.Admin);
+
+    public bool IsTeacher => UserId is not null && (Principal!.IsInRole(RoleNames.Teacher) || Principal.IsInRole(RoleNames.Admin));
 }

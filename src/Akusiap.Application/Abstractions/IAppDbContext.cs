@@ -68,6 +68,14 @@ public interface IAppDbContext
 
     DbSet<Notification> Notifications { get; }
 
+    DbSet<Domain.Classes.Classroom> Classrooms { get; }
+
+    DbSet<Domain.Classes.ClassMember> ClassMembers { get; }
+
+    DbSet<Domain.Classes.ClassAssignment> ClassAssignments { get; }
+
+    DbSet<Domain.Gamification.UserBadge> UserBadges { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     /// <summary>For use cases that need several statements to succeed or fail together.</summary>

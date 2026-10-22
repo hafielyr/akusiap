@@ -43,6 +43,13 @@ public static class EntitlementPolicy
             return All(AccessLevel.Shared, AccessReason.SharedLink) with { RequiresGuestName = !viewer.IsRegistered };
         }
 
+        // 4b. An open assignment in one of the viewer's classes (GAM-01, D-96). After the takedown rule, before the
+        //     catalog rule, so a teacher's own (unpublished, learner-owned) exam opens for the class.
+        if (viewer.ClassAssignments.Any(a => a.ExamId == exam.Id && a.OpensAt <= now && now < a.ClosesAt))
+        {
+            return All(AccessLevel.Full, AccessReason.ClassAssignment);
+        }
+
         // 5. Not in the catalog. A learner's exam never is: Published only means "ready to share" (D-79).
         if (exam.Status != ExamStatus.Published || exam.OwnerKind == OwnerKind.Learner)
         {
