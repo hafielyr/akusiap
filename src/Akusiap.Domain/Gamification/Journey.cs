@@ -21,6 +21,8 @@ public enum BadgeCode
     Flashcards50,
     Flashcards250,
     ClassJoined,
+    DailyGoal7,
+    DailyGoal30,
 }
 
 /// <summary>What the learner has done so far, counted from finished attempts, reviews and classes.</summary>
@@ -32,7 +34,8 @@ public sealed record JourneyStats(
     bool PassedSimulation,
     int FlashcardReviews,
     int LongestStreak,
-    int ClassesJoined);
+    int ClassesJoined,
+    int DailyGoals = 0);
 
 public sealed record LevelProgress(int Level, int Xp, int XpIntoLevel, int XpForNextLevel)
 {
@@ -51,12 +54,13 @@ public static class Journey
     public const int XpPerFinishedAttempt = 20;
     public const int XpPerFlashcardReview = 2;
     public const int XpPerBadge = 50;
+    public const int XpPerDailyGoal = 30;
 
     public static int Xp(JourneyStats stats, int badges)
     {
         ArgumentNullException.ThrowIfNull(stats);
         return (stats.CorrectAnswers * XpPerCorrectAnswer) + (stats.FinishedAttempts * XpPerFinishedAttempt)
-            + (stats.FlashcardReviews * XpPerFlashcardReview) + (badges * XpPerBadge);
+            + (stats.FlashcardReviews * XpPerFlashcardReview) + (badges * XpPerBadge) + (stats.DailyGoals * XpPerDailyGoal);
     }
 
     /// <summary>Total XP needed to reach <paramref name="level"/>: 0, 100, 300, 600, 1000, … (100 more each level).</summary>
@@ -97,6 +101,14 @@ public static class Journey
         return new StreakInfo(current, longest, activeToday);
     }
 
+    /// <summary>The last 7 Jakarta days ending today, each with whether the daily goal was met (DRL-01).</summary>
+    public static IReadOnlyList<(DateOnly Day, bool Done)> Week(IEnumerable<DateOnly> goalDays, DateOnly today)
+    {
+        ArgumentNullException.ThrowIfNull(goalDays);
+        var done = goalDays.ToHashSet();
+        return [.. Enumerable.Range(0, 7).Select(i => today.AddDays(i - 6)).Select(d => (d, done.Contains(d)))];
+    }
+
     /// <summary>The milestone badges these stats have earned.</summary>
     public static IReadOnlyList<BadgeCode> EarnedMilestones(JourneyStats stats)
     {
@@ -122,6 +134,8 @@ public static class Journey
         Add(stats.FlashcardReviews >= 50, BadgeCode.Flashcards50);
         Add(stats.FlashcardReviews >= 250, BadgeCode.Flashcards250);
         Add(stats.ClassesJoined >= 1, BadgeCode.ClassJoined);
+        Add(stats.DailyGoals >= 7, BadgeCode.DailyGoal7);
+        Add(stats.DailyGoals >= 30, BadgeCode.DailyGoal30);
         return earned;
     }
 

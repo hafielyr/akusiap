@@ -1,6 +1,6 @@
 @page "/learn/hari-ini"
 @model Akusiap.Web.Areas.Learn.Pages.TodayModel
-@* Daily due list (SRS-03): total and per-exam due counts, each starting a set of 10 cards. *@
+@* Today (SRS-03, DRL-01): the daily drill with its week strip, the level strip, and the due flashcards. *@
 @{
   ViewData["Title"] = T["Today.Title"].Value;
   const string startUrl = "/learn/kartu?handler=Start";
@@ -11,6 +11,50 @@
     <h1 class="text-2xl font-bold leading-tight">@T["Today.Title"]</h1>
     <p class="text-slate-600">@T["Today.Lead"]</p>
   </div>
+  @if (TempData["Flash"] is string flash)
+  {
+    <p role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="flash">@T[flash]</p>
+  }
+
+  @{
+    var drill = Model.Drill;
+  }
+  <article class="card space-y-4 p-4" data-testid="daily-drill" data-state="@drill.State">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+      <div class="space-y-0.5">
+        <h2 class="text-lg font-extrabold">@T["Drill.Title"]</h2>
+        <p class="text-sm text-slate-600">@T["Drill.Lead", Akusiap.Application.Gamification.DailyDrills.Size]</p>
+      </div>
+      <span class="badge-soon text-sm" data-testid="drill-streak">🔥 @T["Drill.Streak", drill.Streak.Current]</span>
+    </div>
+    <ol class="grid grid-cols-7 gap-1 text-center" aria-label="@T["Drill.Week"]" data-testid="drill-week">
+      @foreach (var (day, done) in drill.Week)
+      {
+        var isToday = day == drill.Week[^1].Day;
+        <li class="space-y-1" data-done="@(done ? "true" : "false")">
+          <span class="block text-xs text-slate-500">@day.ToString("ddd", System.Globalization.CultureInfo.CurrentCulture)</span>
+          <span class="mx-auto inline-flex size-8 items-center justify-center rounded-full text-sm font-bold @(done ? "bg-accent-400 text-slate-900" : isToday ? "border-2 border-brand-600 text-brand-700" : "bg-slate-100 text-slate-400")">@(done ? "✓" : day.Day.ToString(System.Globalization.CultureInfo.CurrentCulture))</span>
+        </li>
+      }
+    </ol>
+    @switch (drill.State)
+    {
+      case Akusiap.Application.Gamification.DrillState.InProgress:
+        <a href="@Akusiap.Web.Pages.Sessions.SessionRoutes.Player(drill.AttemptId!.Value)" class="btn btn-primary w-full" data-testid="drill-continue">@T["Drill.Continue"]</a>
+        break;
+      case Akusiap.Application.Gamification.DrillState.Done:
+        <p class="rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-800" data-testid="drill-done">@T["Drill.Done", (drill.TodayScore ?? 0m).ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)]</p>
+        <form method="post" asp-page-handler="Drill">
+          <button type="submit" class="btn btn-secondary w-full" data-testid="drill-again">@T["Drill.Again"]</button>
+        </form>
+        break;
+      default:
+        <form method="post" asp-page-handler="Drill">
+          <button type="submit" class="btn btn-accent w-full" data-testid="drill-start">@T["Drill.Start"]</button>
+        </form>
+        break;
+    }
+  </article>
 
   <a href="/learn/perjalanan" class="card card-link flex flex-wrap items-center justify-between gap-3 p-4" data-testid="journey-strip">
     <span class="flex items-center gap-3">
