@@ -33,6 +33,9 @@ public sealed class PresetInput
 
     public bool IsDefault { get; set; }
 
+    /// <summary>Simulations use the full-screen Tryout CAT layout (TRY-01).</summary>
+    public bool CatMode { get; set; }
+
     public static PresetInput Blank() => new()
     {
         HintsEnabled = true,
@@ -56,6 +59,7 @@ public sealed class PresetInput
             ShuffleOptions = preset.ShuffleOptions,
             ShowAnswers = preset.ShowAnswers,
             IsDefault = preset.IsDefault,
+            CatMode = preset.CatMode,
         };
     }
 
@@ -74,7 +78,8 @@ public sealed class PresetInput
             Parse(MaxAttempts, RulePresetValidator.MaxAttemptsField, RulePresetValidator.MaxAttemptsLabel, problems),
             Parse(PassMarkPercent, RulePresetValidator.PassMarkField, RulePresetValidator.PassMarkLabel, problems),
             ShowAnswers,
-            IsDefault);
+            IsDefault,
+            CatMode);
         return (request, problems);
     }
 

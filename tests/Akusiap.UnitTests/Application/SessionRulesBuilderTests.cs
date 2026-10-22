@@ -114,4 +114,18 @@ public sealed class SessionRulesBuilderTests
     {
         Assert.Equal([SessionRulesBuilder.ModeNotSupported], SessionRulesBuilder.Build(Preset(), AttemptMode.Flashcard, RuleOverrides.None, 10).Problems.Select(p => p.Code));
     }
+
+    [Fact]
+    public void The_cat_screen_applies_only_to_simulations()
+    {
+        var preset = Preset();
+        preset.CatMode = true;
+
+        var simulation = SessionRulesBuilder.Build(preset, AttemptMode.Simulation, RuleOverrides.None, 50).Value!;
+        var practice = SessionRulesBuilder.Build(preset, AttemptMode.Practice, RuleOverrides.None, 50).Value!;
+
+        Assert.True(simulation.CatMode);
+        Assert.False(practice.CatMode);
+        Assert.False(SessionRulesBuilder.Build(Preset(), AttemptMode.Simulation, RuleOverrides.None, 50).Value!.CatMode);
+    }
 }

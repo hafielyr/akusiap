@@ -19,7 +19,8 @@ public sealed record SessionRules(
     int? MaxAttempts,
     int? PassMarkPercent,
     ShowAnswers ShowAnswers,
-    IReadOnlyList<long> TopicIds);
+    IReadOnlyList<long> TopicIds,
+    bool CatMode = false);
 
 /// <summary>What a learner asked to change in Practice. Null means "use the preset".</summary>
 public sealed record RuleOverrides(
@@ -134,5 +135,5 @@ public static class SessionRulesBuilder
 
     private static SessionRules Rules(
         RulePreset preset, AttemptMode mode, int? timeLimit, int count, bool hints, bool shuffleQuestions, bool shuffleOptions, IReadOnlyList<long> topics) =>
-        new(mode, preset.Id, timeLimit, count, hints, shuffleQuestions, shuffleOptions, preset.MaxAttempts, preset.PassMarkPercent, preset.ShowAnswers, topics);
+        new(mode, preset.Id, timeLimit, count, hints, shuffleQuestions, shuffleOptions, preset.MaxAttempts, preset.PassMarkPercent, preset.ShowAnswers, topics, CatMode: mode == AttemptMode.Simulation && preset.CatMode);
 }

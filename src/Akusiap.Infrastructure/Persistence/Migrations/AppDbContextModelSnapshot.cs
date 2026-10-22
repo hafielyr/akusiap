@@ -717,6 +717,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<bool>("CatMode")
+                        .HasColumnType("boolean")
+                        .HasColumnName("cat_mode");
+
                     b.Property<bool>("HintsEnabled")
                         .HasColumnType("boolean")
                         .HasColumnName("hints_enabled");

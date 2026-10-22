@@ -16,7 +16,8 @@ public sealed record RulePresetDetail(
     int? PassMarkPercent,
     ShowAnswers ShowAnswers,
     bool IsDefault,
-    int ExamCount);
+    int ExamCount,
+    bool CatMode = false);
 
 /// <summary>System presets, default first, with how many exams use each.</summary>
 public sealed class ListRulePresets(IAppDbContext db)
@@ -53,5 +54,6 @@ internal static class RulePresetQueries
             r.PassMarkPercent,
             r.ShowAnswers,
             r.IsDefault,
-            db.Exams.Count(e => e.RulePresetId == r.Id)));
+            db.Exams.Count(e => e.RulePresetId == r.Id),
+            r.CatMode));
 }
