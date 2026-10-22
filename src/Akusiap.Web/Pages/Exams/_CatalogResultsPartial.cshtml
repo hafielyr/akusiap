@@ -45,7 +45,7 @@
                 <span class="block text-sm text-slate-600">@item.DescriptionExcerpt</span>
               }
               <span class="block text-sm text-slate-700">
-                <span class="font-semibold">@T["Catalog.QuestionCount", item.ActiveQuestionCount]</span>@if (item.Topics.Count > 0)
+                @T["Catalog.QuestionCount", item.ActiveQuestionCount]@if (item.Topics.Count > 0)
                 {
                   <text> · @string.Join(", ", item.Topics.Take(MaxTopics))</text>
                   @if (item.Topics.Count > MaxTopics) { <text> @T["Catalog.MoreTopics", item.Topics.Count - MaxTopics]</text> }

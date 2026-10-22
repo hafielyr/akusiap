@@ -7,9 +7,6 @@
 @{
   ViewData["Title"] = T["Home.Title"].Value;
   ViewData["FullWidth"] = true;
-  var heading = T["Home.Heading"].Value;
-  var highlight = T["Home.HeadingHl"].Value;
-  var hlAt = heading.IndexOf(highlight, StringComparison.Ordinal);
   var categories = new (string Key, string Query, string Tint, string Icon)[]
   {
     ("Cpns", "CPNS", "bg-brand-50 text-brand-700", "M4 20h16M5 20V10l7-5 7 5v10M9 20v-5h6v5M9 11h.01M15 11h.01"),
@@ -36,16 +33,7 @@
   <div class="glow rise grid items-center gap-8 px-5 py-9 sm:px-10 sm:py-14 lg:grid-cols-2">
     <div class="space-y-6">
       <span class="eyebrow">@T["Home.Eyebrow"]</span>
-      <h1 class="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-        @if (hlAt >= 0)
-        {
-          @heading[..hlAt]<span class="hl">@highlight</span>@heading[(hlAt + highlight.Length)..]
-        }
-        else
-        {
-          @heading
-        }
-      </h1>
+      <h1 class="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">@T["Home.Heading"]</h1>
       <p class="max-w-xl text-lg text-slate-600">@T["Home.Lead"]</p>
       <div class="flex flex-wrap gap-3">
         <a href="/ujian" class="btn btn-primary" data-testid="home-try">@T["Home.TryFree"] <span class="arrow" aria-hidden="true">@arrow</span></a>

@@ -1104,7 +1104,6 @@
   <data name="Account.Confirm.NotSent" xml:space="preserve"><value>The confirmation email could not be sent because no email server is set up. Please contact the admin.</value></data>
   <data name="Theme.Toggle" xml:space="preserve"><value>Switch light or dark theme</value></data>
   <data name="Nav.Main" xml:space="preserve"><value>Main navigation</value></data>
-  <data name="Home.HeadingHl" xml:space="preserve"><value>CPNS, BUMN, Kedinasan &amp; UKMPPD</value></data>
   <data name="Home.Showcase.Score" xml:space="preserve"><value>Simulation score</value></data>
   <data name="Home.Showcase.Streak" xml:space="preserve"><value>Day streak</value></data>
   <data name="Home.Showcase.Cat" xml:space="preserve"><value>CAT tryout</value></data>

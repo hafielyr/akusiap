@@ -1104,7 +1104,6 @@
   <data name="Account.Confirm.NotSent" xml:space="preserve"><value>Email konfirmasi belum bisa dikirim karena server email belum diatur. Hubungi admin.</value></data>
   <data name="Theme.Toggle" xml:space="preserve"><value>Ganti tema terang atau gelap</value></data>
   <data name="Nav.Main" xml:space="preserve"><value>Navigasi utama</value></data>
-  <data name="Home.HeadingHl" xml:space="preserve"><value>CPNS, BUMN, Kedinasan &amp; UKMPPD</value></data>
   <data name="Home.Showcase.Score" xml:space="preserve"><value>Skor simulasi</value></data>
   <data name="Home.Showcase.Streak" xml:space="preserve"><value>Hari beruntun</value></data>
   <data name="Home.Showcase.Cat" xml:space="preserve"><value>Tryout CAT</value></data>
