@@ -80,6 +80,7 @@ public sealed class SaveRulePreset(IAppDbContext db)
         preset.MaxAttempts = request.MaxAttempts;
         preset.PassMarkPercent = request.PassMarkPercent;
         preset.ShowAnswers = request.ShowAnswers!.Value;
+        preset.CatMode = request.CatMode;
         preset.IsDefault = request.IsDefault;
 
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

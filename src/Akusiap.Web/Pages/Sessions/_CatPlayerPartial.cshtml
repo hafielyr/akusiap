@@ -1,0 +1,100 @@
+@model (Akusiap.Application.Sessions.PlayerView View, string Title)
+@using Akusiap.Infrastructure.Identity
+@* Tryout CAT screen (TRY-01): full screen like the official CAT system. Dark header with the countdown, one question
+   with lettered options, Sebelumnya / Ragu-ragu / Selanjutnya, the numbered grid always in view (answered, ragu-ragu,
+   empty), and a final confirmation with the counts. No feedback, hints or explanations until the end. Same Alpine
+   component and saving as the normal player. *@
+@{
+  var view = Model.View;
+  var participant = User.FindFirst(AppClaimTypes.DisplayName)?.Value ?? T["Cat.Guest"].Value;
+}
+<section class="min-h-dvh bg-slate-100" x-data="quizPlayer('quiz-state')" x-cloak @@keydown.window="onKey($event)" data-testid="player" data-cat="true">
+  <header class="sticky top-0 z-30 bg-brand-900 text-white shadow-sm">
+    <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2">
+      <div class="min-w-0">
+        <p class="text-xs font-bold tracking-wide text-accent-300">@T["Cat.Label"]</p>
+        <p class="truncate font-bold">@Model.Title</p>
+        <p class="truncate text-xs text-brand-100">@T["Cat.Participant", participant]</p>
+      </div>
+      @if (view.SecondsLeft is not null)
+      {
+        <div class="shrink-0 rounded-xl bg-white px-3 py-1 text-center text-brand-900">
+          <span class="block text-xs font-semibold">@T["Cat.TimeLeft"]</span>
+          <span class="block font-mono text-xl font-extrabold" role="timer" aria-live="off" data-testid="timer" x-text="clock"></span>
+        </div>
+      }
+    </div>
+  </header>
+
+  <div class="mx-auto grid max-w-5xl gap-4 px-4 py-4 md:grid-cols-3">
+    <div class="space-y-3 md:col-span-2">
+      <p x-show="ended" x-cloak role="alert" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" data-testid="session-ended-banner">@T["Session.Player.TimeUp"]</p>
+      <p x-show="saveFailed && !ended" x-cloak role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="save-failed">@T["Session.Player.SaveFailed"]</p>
+
+      <article class="card space-y-4 p-4" aria-live="polite">
+        <div class="flex items-center justify-between gap-2 border-b border-slate-200 pb-2">
+          <p class="font-bold text-brand-900">@T["Cat.Number"] <span x-text="index + 1" data-testid="position"></span></p>
+          <span class="badge-soon" x-show="item.flagged" x-cloak data-testid="ragu-badge">@T["Cat.Ragu"]</span>
+        </div>
+        <h1 class="whitespace-pre-line text-lg font-medium leading-snug outline-none" tabindex="-1" x-ref="question" x-text="item.text" data-testid="question"></h1>
+        <p class="text-sm text-slate-600" x-show="item.type === 'MultiSelect'">@T["Session.Player.PickAll"]</p>
+        <fieldset class="space-y-2">
+          <legend class="sr-only">@T["Session.Player.Options"]</legend>
+          <template x-for="(option, o) in item.options" :key="item.position + '-' + option.id">
+            <label class="flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border px-3 py-2" :class="isSelected(option.id) ? 'border-brand-600 bg-brand-50' : 'border-slate-200 bg-white'">
+              <input class="size-5 shrink-0 accent-brand-600" :type="isSingle(item) ? 'radio' : 'checkbox'"
+                     :name="'q' + item.position" :value="option.id" :checked="isSelected(option.id)" :disabled="ended" @@change="choose(option.id)"
+                     data-testid="option" />
+              <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-full border font-bold" :class="isSelected(option.id) ? 'border-brand-600 bg-brand-600 text-white' : 'border-slate-300 text-slate-700'" x-text="letter(o)"></span>
+              <span class="whitespace-pre-line" x-text="option.text"></span>
+            </label>
+          </template>
+        </fieldset>
+      </article>
+
+      <div class="grid grid-cols-3 gap-2">
+        <button type="button" class="btn btn-secondary" @@click="prev()" :disabled="isFirst" data-testid="prev">@T["Cat.Previous"]</button>
+        <button type="button" class="btn" @@click="toggleFlag()" :disabled="ended" :aria-pressed="item.flagged.toString()"
+                :class="item.flagged ? 'bg-accent-400 text-slate-900' : 'border border-accent-500 bg-white text-accent-800'" data-testid="flag">@T["Cat.Ragu"]</button>
+        <button type="button" class="btn btn-primary" @@click="next()" :disabled="isLast" data-testid="next">@T["Cat.Next"]</button>
+      </div>
+    </div>
+
+    <aside class="card space-y-3 p-4" aria-label="@T["Session.Player.Grid"]">
+      <p class="font-bold">@T["Cat.Grid"]</p>
+      <ol class="grid grid-cols-5 gap-2" data-testid="grid">
+        <template x-for="(cell, i) in items" :key="cell.position">
+          <li>
+            <button type="button" class="flex size-11 items-center justify-center rounded-lg border text-sm font-bold"
+                    :class="catCellClass(i)" @@click="go(i)" x-text="i + 1"
+                    :aria-current="i === index ? 'step' : null"
+                    :aria-label="'@T["Cat.Number"] ' + (i + 1)"
+                    :data-state="cellState(i)" :data-answered="String(cell.selected.length > 0)" :data-flagged="String(cell.flagged)" data-testid="grid-cell"></button>
+          </li>
+        </template>
+      </ol>
+      <ul class="space-y-1 text-xs text-slate-600">
+        <li class="flex items-center gap-2"><span class="size-3 rounded-sm bg-green-600"></span>@T["Cat.Answered"] (<span x-text="answeredCount" data-testid="count-answered"></span>)</li>
+        <li class="flex items-center gap-2"><span class="size-3 rounded-sm bg-accent-400"></span>@T["Cat.Ragu"] (<span x-text="flaggedCount" data-testid="count-ragu"></span>)</li>
+        <li class="flex items-center gap-2"><span class="size-3 rounded-sm border border-slate-300 bg-white"></span>@T["Cat.Empty"] (<span x-text="remaining" data-testid="remaining"></span>)</li>
+      </ul>
+      <button type="button" class="btn btn-primary w-full" @@click="confirming = true" data-testid="finish">@T["Cat.Finish"]</button>
+    </aside>
+  </div>
+
+  <div x-show="confirming" x-cloak class="fixed inset-0 z-40 flex items-center justify-center p-4" style="background: rgb(11 47 107 / .6)" role="dialog" aria-modal="true" aria-labelledby="cat-confirm-title" data-testid="confirm-finish">
+    <div class="card w-full max-w-sm space-y-4 p-5">
+      <p id="cat-confirm-title" class="text-lg font-extrabold">@T["Cat.ConfirmTitle"]</p>
+      <ul class="space-y-1 text-sm text-slate-700">
+        <li>@T["Cat.Answered"]: <span class="font-bold" x-text="answeredCount"></span></li>
+        <li>@T["Cat.Ragu"]: <span class="font-bold" x-text="flaggedCount"></span></li>
+        <li>@T["Cat.Empty"]: <span class="font-bold" x-text="remaining"></span></li>
+      </ul>
+      <p class="text-sm text-slate-600">@T["Cat.ConfirmText"]</p>
+      <form method="post" asp-page-handler="Submit" x-ref="submitForm" @@submit.prevent="submit()" class="grid grid-cols-2 gap-2">
+        <button type="button" class="btn btn-secondary" @@click="confirming = false">@T["Session.Player.Back"]</button>
+        <button type="submit" class="btn btn-primary" data-testid="submit">@T["Cat.ConfirmYes"]</button>
+      </form>
+    </div>
+  </div>
+</section>

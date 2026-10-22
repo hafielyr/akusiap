@@ -7,13 +7,13 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [TRY-01] CAT tryout screen · M8 · deps: SES-06, SES-07
 - [DRL-02] Weekly leaderboard reset and seasonal badges (per-exam boards and badges shipped in GAM-01) · M8 · deps: DRL-01
 
 ## In Progress
 
 ## Review
 - [DRL-01] Daily drill with points and streak · M8 · deps: SRS-03, SES-06 · (claude-opus-5.5, 2026-10-22)
+- [TRY-01] CAT tryout screen · M8 · deps: SES-06, SES-07 · (claude-opus-5.5, 2026-10-22)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -21,6 +21,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-04] DOKU client · M3 · deps: PAY-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: DOKU sandbox credentials (`Doku:ClientId`, `Doku:SecretKey`, set with user-secrets) and the DOKU product to use (Checkout or Direct API). The AC needs real sandbox charges and recorded notification fixtures, which can't be made without the account.
 - [PAY-09] Refund requests · M3 · deps: PAY-06 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: confirmation that the "proposed" refund policy in the stories doc is final (windows, the 20% usage rule, one first-payment refund per account, the review rules), ideally as part of the AC-05 legal text. Payment rules must not be guessed. PAY-04 (DOKU refunds) is also still blocked.
 - [OPS-02] Production deployment · M4 · deps: F-08, PAY-04 · (claude-opus-5.5, 2026-10-20) · Needs PAY-04 first (blocked on DOKU sandbox credentials), plus from the owner: a Hetzner VPS (or similar) and domain, GitHub secrets for GHCR/SSH deploy, and production values for Neon, SMTP, Site:BaseUrl and optional Google OAuth.
+- [TRY-02] Subtest scoring (TWK/TIU/TKP) · M8 · deps: TRY-01 · (claude-opus-5.5, 2026-10-22) · Needs from the owner: the subtest scoring rules and passing grades (for example SKD: TWK, TIU, TKP), and approval for the schema change, because TKP gives 1–5 points per option and `schema.sql` only has right/wrong options. Scoring must not be guessed.
 
 ## Done
 - [F-01] Solution skeleton · M1 · deps: none
@@ -116,4 +117,3 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 **Release 2 exit check**: A free learner writes 50 questions, builds 1 exam and shares it. A guest takes it by entering a name, sees the explanations and is invited to register. The admin takes the exam down and the link stops working. The daily due list shows wrong answers scheduled by SM-2.
 
 ### M8 Exam positioning (Release 2+)
-- [TRY-02] Subtest scoring (TWK/TIU/TKP) · M8 · deps: TRY-01

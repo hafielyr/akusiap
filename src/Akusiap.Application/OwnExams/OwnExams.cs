@@ -23,7 +23,8 @@ public sealed record SaveOwnExamRequest(
     bool ShuffleQuestions,
     bool ShuffleOptions,
     int? PassMarkPercent,
-    ShowAnswers? ShowAnswers);
+    ShowAnswers? ShowAnswers,
+    bool CatMode = false);
 
 public sealed record OwnExamDetail(
     long Id,
@@ -37,7 +38,8 @@ public sealed record OwnExamDetail(
     bool ShuffleQuestions,
     bool ShuffleOptions,
     int? PassMarkPercent,
-    ShowAnswers ShowAnswers);
+    ShowAnswers ShowAnswers,
+    bool CatMode = false);
 
 /// <summary>A question the learner can put in an own exam: their own, not retired.</summary>
 public sealed record OwnExamQuestionOption(long Id, string Text, string TopicName);
@@ -84,7 +86,8 @@ public sealed class OwnExams(IAppDbContext db, GetAllowance getAllowance, ICurre
                 e.RulePreset.ShuffleQuestions,
                 e.RulePreset.ShuffleOptions,
                 e.RulePreset.PassMarkPercent,
-                e.RulePreset.ShowAnswers))
+                e.RulePreset.ShowAnswers,
+                e.RulePreset.CatMode))
             .SingleOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
     }
@@ -188,6 +191,7 @@ public sealed class OwnExams(IAppDbContext db, GetAllowance getAllowance, ICurre
         preset.MaxAttempts = null;
         preset.PassMarkPercent = request.PassMarkPercent;
         preset.ShowAnswers = request.ShowAnswers!.Value;
+        preset.CatMode = request.CatMode;
 
         foreach (var stale in exam.Questions.Where(q => !questionIds.Contains(q.QuestionId)).ToList())
         {

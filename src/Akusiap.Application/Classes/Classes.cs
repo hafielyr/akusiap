@@ -204,6 +204,7 @@ public sealed class Classes(IAppDbContext db, ICurrentUser currentUser, IClock c
             MaxAttempts = source.MaxAttempts,
             PassMarkPercent = source.PassMarkPercent,
             ShowAnswers = source.ShowAnswers,
+            CatMode = source.CatMode,
         };
         var assignment = new ClassAssignment { ClassroomId = classId, ExamId = exam.Id, RulePreset = locked, OpensAt = opensAt!.Value, ClosesAt = closesAt!.Value };
         db.ClassAssignments.Add(assignment);

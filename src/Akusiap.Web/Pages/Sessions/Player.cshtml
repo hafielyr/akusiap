@@ -8,6 +8,9 @@
   var title = !string.IsNullOrEmpty(view.Title) ? view.Title : view.Source == AttemptSource.DailyDrill ? T["Drill.Title"].Value : T["History.Mixed"].Value;
   ViewData["Title"] = title;
   ViewData["Focus"] = true;
+  // The player saves with fetch, not htmx; skipping it keeps the first load within the 150 KB budget (OPS-01, D-98).
+  ViewData["NoHtmx"] = true;
+  ViewData["Cat"] = view.Cat && view.Status == AttemptStatus.InProgress;
 }
 
 @if (view.Status != AttemptStatus.InProgress)
@@ -27,6 +30,12 @@ else
   <script type="application/json" id="quiz-state">@Html.Raw(Model.StateJson())</script>
   <noscript><p class="rounded-lg bg-amber-50 px-3 py-2 text-amber-900">@T["Session.Player.NeedsJavaScript"]</p></noscript>
 
+  @if (view.Cat)
+  {
+    <partial name="_CatPlayerPartial" model="(view, title)" />
+  }
+  else
+  {
   <section class="mx-auto max-w-xl space-y-4" x-data="quizPlayer('quiz-state')" x-cloak @@keydown.window="onKey($event)" data-testid="player">
     <header class="flex items-center justify-between gap-3 text-sm">
       <div class="min-w-0">
@@ -112,6 +121,7 @@ else
       </div>
     </div>
   </section>
+  }
 }
 
 @section Scripts {

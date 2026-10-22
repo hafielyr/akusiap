@@ -885,10 +885,6 @@
   <data name="Home.Feature.Own.Text" xml:space="preserve"><value>Susun soal dan ujian sendiri, lalu bagikan ke teman lewat tautan.</value></data>
   <data name="Home.Soon.Title" xml:space="preserve"><value>Segera hadir</value></data>
   <data name="Home.Soon.Badge" xml:space="preserve"><value>Segera hadir</value></data>
-  <data name="Home.Soon.Drills" xml:space="preserve"><value>Latihan harian dengan poin &amp; streak</value></data>
-  <data name="Home.Soon.Drills.Text" xml:space="preserve"><value>Target harian, poin untuk setiap jawaban benar, dan streak yang membuat Anda konsisten.</value></data>
-  <data name="Home.Soon.Cat" xml:space="preserve"><value>Tryout CAT seperti sistem resmi</value></data>
-  <data name="Home.Soon.Cat.Text" xml:space="preserve"><value>Tampilan dan aturan yang meniru ujian CAT, lengkap dengan nilai per subtes.</value></data>
   <data name="Home.Steps.Title" xml:space="preserve"><value>Cara mulai</value></data>
   <data name="Home.Step.Try" xml:space="preserve"><value>Coba gratis</value></data>
   <data name="Home.Step.Try.Text" xml:space="preserve"><value>Pilih ujian dan kerjakan 30 soal coba tanpa perlu daftar.</value></data>
@@ -1044,4 +1040,24 @@
   <data name="Badge.DailyGoal30.How" xml:space="preserve"><value>Selesaikan latihan harian di 30 hari berbeda</value></data>
   <data name="Home.Feature.Drills" xml:space="preserve"><value>Latihan harian &amp; streak</value></data>
   <data name="Home.Feature.Drills.Text" xml:space="preserve"><value>10 soal setiap hari, poin, level, dan lencana yang membuat Anda konsisten.</value></data>
+  <data name="Cat.Label" xml:space="preserve"><value>TRYOUT CAT</value></data>
+  <data name="Cat.Participant" xml:space="preserve"><value>Peserta: {0}</value></data>
+  <data name="Cat.Guest" xml:space="preserve"><value>Tamu</value></data>
+  <data name="Cat.TimeLeft" xml:space="preserve"><value>Sisa waktu</value></data>
+  <data name="Cat.Number" xml:space="preserve"><value>Soal nomor</value></data>
+  <data name="Cat.Ragu" xml:space="preserve"><value>Ragu-ragu</value></data>
+  <data name="Cat.Previous" xml:space="preserve"><value>Sebelumnya</value></data>
+  <data name="Cat.Next" xml:space="preserve"><value>Selanjutnya</value></data>
+  <data name="Cat.Grid" xml:space="preserve"><value>Nomor soal</value></data>
+  <data name="Cat.Answered" xml:space="preserve"><value>Sudah dijawab</value></data>
+  <data name="Cat.Empty" xml:space="preserve"><value>Belum dijawab</value></data>
+  <data name="Cat.Finish" xml:space="preserve"><value>Selesai ujian</value></data>
+  <data name="Cat.ConfirmTitle" xml:space="preserve"><value>Selesaikan ujian?</value></data>
+  <data name="Cat.ConfirmText" xml:space="preserve"><value>Jawaban tidak bisa diubah setelah ujian selesai. Nilai dan pembahasan muncul setelahnya.</value></data>
+  <data name="Cat.ConfirmYes" xml:space="preserve"><value>Ya, selesai</value></data>
+  <data name="Admin.Preset.CatMode" xml:space="preserve"><value>Tampilan Tryout CAT untuk simulasi (layar penuh, tanpa pembahasan sampai selesai)</value></data>
+  <data name="Home.Feature.Cat" xml:space="preserve"><value>Tryout CAT seperti sistem resmi</value></data>
+  <data name="Home.Feature.Cat.Text" xml:space="preserve"><value>Layar penuh dengan nomor soal, tanda ragu-ragu, dan waktu mundur seperti ujian CAT.</value></data>
+  <data name="Home.Soon.Subtest" xml:space="preserve"><value>Nilai per subtes (TWK, TIU, TKP)</value></data>
+  <data name="Home.Soon.Subtest.Text" xml:space="preserve"><value>Lihat nilai dan passing grade untuk setiap subtes setelah tryout.</value></data>
 </root>

@@ -885,10 +885,6 @@
   <data name="Home.Feature.Own.Text" xml:space="preserve"><value>Build your own questions and exams, then share them with friends by link.</value></data>
   <data name="Home.Soon.Title" xml:space="preserve"><value>Coming soon</value></data>
   <data name="Home.Soon.Badge" xml:space="preserve"><value>Coming soon</value></data>
-  <data name="Home.Soon.Drills" xml:space="preserve"><value>Daily drills with points &amp; streaks</value></data>
-  <data name="Home.Soon.Drills.Text" xml:space="preserve"><value>A daily goal, points for every right answer and a streak that keeps you consistent.</value></data>
-  <data name="Home.Soon.Cat" xml:space="preserve"><value>CAT tryouts like the official system</value></data>
-  <data name="Home.Soon.Cat.Text" xml:space="preserve"><value>A screen and rules that mimic the CAT exam, with scores per subtest.</value></data>
   <data name="Home.Steps.Title" xml:space="preserve"><value>How to start</value></data>
   <data name="Home.Step.Try" xml:space="preserve"><value>Try for free</value></data>
   <data name="Home.Step.Try.Text" xml:space="preserve"><value>Pick an exam and do 30 trial questions without signing up.</value></data>
@@ -1044,4 +1040,24 @@
   <data name="Badge.DailyGoal30.How" xml:space="preserve"><value>Finish the daily drill on 30 different days</value></data>
   <data name="Home.Feature.Drills" xml:space="preserve"><value>Daily drills &amp; streaks</value></data>
   <data name="Home.Feature.Drills.Text" xml:space="preserve"><value>10 questions a day, with points, levels and badges that keep you consistent.</value></data>
+  <data name="Cat.Label" xml:space="preserve"><value>CAT TRYOUT</value></data>
+  <data name="Cat.Participant" xml:space="preserve"><value>Participant: {0}</value></data>
+  <data name="Cat.Guest" xml:space="preserve"><value>Guest</value></data>
+  <data name="Cat.TimeLeft" xml:space="preserve"><value>Time left</value></data>
+  <data name="Cat.Number" xml:space="preserve"><value>Question</value></data>
+  <data name="Cat.Ragu" xml:space="preserve"><value>Unsure</value></data>
+  <data name="Cat.Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Cat.Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Cat.Grid" xml:space="preserve"><value>Questions</value></data>
+  <data name="Cat.Answered" xml:space="preserve"><value>Answered</value></data>
+  <data name="Cat.Empty" xml:space="preserve"><value>Not answered</value></data>
+  <data name="Cat.Finish" xml:space="preserve"><value>Finish the exam</value></data>
+  <data name="Cat.ConfirmTitle" xml:space="preserve"><value>Finish the exam?</value></data>
+  <data name="Cat.ConfirmText" xml:space="preserve"><value>You can't change answers after finishing. Your score and the explanations appear afterwards.</value></data>
+  <data name="Cat.ConfirmYes" xml:space="preserve"><value>Yes, finish</value></data>
+  <data name="Admin.Preset.CatMode" xml:space="preserve"><value>Tryout CAT screen for simulations (full screen, no explanations until the end)</value></data>
+  <data name="Home.Feature.Cat" xml:space="preserve"><value>CAT tryouts like the official system</value></data>
+  <data name="Home.Feature.Cat.Text" xml:space="preserve"><value>Full screen with question numbers, doubt marks and a countdown, like the CAT exam.</value></data>
+  <data name="Home.Soon.Subtest" xml:space="preserve"><value>Scores per subtest (TWK, TIU, TKP)</value></data>
+  <data name="Home.Soon.Subtest.Text" xml:space="preserve"><value>See the score and passing grade for each subtest after a tryout.</value></data>
 </root>
