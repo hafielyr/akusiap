@@ -40,7 +40,7 @@
     {
       <p class="text-sm text-slate-600">@T["Own.Exams.NoOwnQuestions"] <a href="/learn/soal-saya/baru" class="font-medium text-brand-700">@T["Own.Questions.Add"]</a></p>
     }
-    <ul class="max-h-96 space-y-1 overflow-y-auto rounded-xl border border-slate-200 bg-white p-2">
+    <ul class="max-h-96 space-y-1 overflow-y-auto card p-2">
       @foreach (var q in Model.Questions)
       {
         <li>
@@ -57,7 +57,7 @@
     @if (ErrorFor("QuestionIds") is { } questionsError) { <span class="field-error" data-testid="error-questions">@questionsError</span> }
   </fieldset>
 
-  <details class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" open="@(limits.Any(l => ErrorFor(l.Field) is not null))">
+  <details class="space-y-4 card p-4" open="@(limits.Any(l => ErrorFor(l.Field) is not null))">
     <summary class="min-h-11 cursor-pointer font-medium">@T["Own.Exams.Rules"]</summary>
     <div class="grid gap-4 sm:grid-cols-2">
       @foreach (var limit in limits)
@@ -94,7 +94,7 @@
     </fieldset>
   </details>
 
-  <div class="space-y-1 rounded-xl border border-slate-200 bg-white p-4">
+  <div class="space-y-1 card p-4">
     <label class="flex min-h-11 items-center gap-3 font-medium text-slate-800">
       <input type="checkbox" name="Input.Published" value="true" class="size-5 accent-brand-600" checked="@input.Published" />
       <span>@T["Own.Exams.Published"]</span>

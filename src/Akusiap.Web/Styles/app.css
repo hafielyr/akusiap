@@ -37,37 +37,94 @@
   --color-accent-800: #8a5400;
 }
 
+/*
+ * BRD-03 (D-102, D-103): surface tokens for the soft light design, and the dark theme. Dark mode remaps the slate scale
+ * (so every text, border and grey fill flips), turns white surfaces dark, and repaints the light tints and dark text
+ * shades of the colour scales. Blue and yellow fills (buttons, the hero, the CAT header) keep their colours. Set by the
+ * inline script in _Layout (saved choice, else the system setting).
+ */
+:root { --canvas: #f6f7fb; --surface: #fff; --line: #e2e8f0b3; --dot: #dfe5ee; --shadow: 0 1px 2px #0f172a0d, 0 6px 16px -8px #0f172a26; --g1: #b9d3ff; --g2: #ffe2a3; --g3: #ffd3df; --ink: var(--color-brand-700); }
+/* Light tints (50-200) and dark text shades (800, 900) are remapped; the 300-700 shades stay because they are also
+   button fills and hovers, so their text uses get class rules instead. Blue panels reset the tints they print on. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #0b0f17; --surface: #121826; --line: #ffffff17; --dot: #1a2233; --shadow: 0 1px 2px #0008, 0 8px 22px -10px #000c; --g1: #1d3b78; --g2: #4a3410; --g3: #4a1c2e; --ink: #8ab8ff;
+  --color-slate-50: #172033; --color-slate-100: #1c2639; --color-slate-200: #283349; --color-slate-300: #354159; --color-slate-400: #64748b;
+  --color-slate-500: #94a3b8; --color-slate-600: #a9b4c6; --color-slate-700: #cbd5e1; --color-slate-800: #e2e8f0; --color-slate-900: #f1f5f9; --color-slate-950: #f8fafc;
+  --color-brand-50: #13254a; --color-brand-100: #1a3366; --color-brand-200: #24457f; --color-brand-800: #a9cbff;
+  --color-accent-50: #2e230b; --color-accent-100: #44330f; --color-accent-800: #ffdf94;
+  --color-green-50: #0d2a1c; --color-green-100: #12391f; --color-green-200: #1e5135; --color-green-800: #86efac; --color-green-900: #bbf7d0;
+  --color-amber-50: #2d230c; --color-amber-200: #5c4513; --color-amber-800: #fcd34d; --color-amber-900: #fde68a;
+  --color-red-50: #2c1215; --color-red-100: #3d171b; --color-red-200: #5f2228; --color-red-800: #fca5a5; --color-red-900: #fecaca;
+  .bg-white { background-color: var(--surface); }
+  .text-brand-700, .text-brand-900 { color: #8ab8ff; }
+  .text-accent-700 { color: #ffd26e; } .text-green-700 { color: #86efac; } .text-red-700 { color: #fca5a5; }
+  .border-brand-300 { border-color: #2b4f91; }
+  .bg-panel, .bg-hero, .bg-brand-900 { --color-brand-100: #d9e8ff; --color-brand-200: #b6d3ff; --color-brand-800: #12428f; }
+  /* Yellow fills keep dark text. */
+  .bg-accent-400, .bg-accent-500, .btn-accent { --color-slate-900: #0f172a; --color-slate-700: #334155; }
+}
+
 @layer components {
   /* Brand gradients as plain CSS: cheaper than the gradient utilities (OPS-01 budget). */
   .bg-hero { background-image: linear-gradient(135deg, var(--color-brand-900), var(--color-brand-500)); }
   .bg-panel { background-image: linear-gradient(135deg, var(--color-brand-800), var(--color-brand-600)); }
+  .canvas { background: var(--canvas) radial-gradient(var(--dot) 1px, transparent 1.5px) 0 0 / 22px 22px; }
   .btn {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-base font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-50;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-base font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:opacity-50;
   }
-  .btn-primary { @apply bg-brand-600 text-white shadow-sm hover:bg-brand-700; }
-  .btn-secondary { @apply border border-slate-200 bg-white text-slate-800 hover:border-brand-300 hover:bg-brand-50; }
+  .btn-primary { @apply bg-brand-600 text-white hover:bg-brand-700; box-shadow: 0 1px 2px #0b2f6b33, inset 0 1px 0 #ffffff33; }
+  .btn-secondary { border: 1px solid var(--line); background: var(--surface); color: var(--color-slate-800); box-shadow: var(--shadow); }
+  .btn-secondary:hover { border-color: var(--color-brand-300); }
+  .btn-dark { background: var(--color-slate-900); color: var(--color-slate-50); }
+  .btn-dark:hover { background: var(--color-slate-800); }
   .btn-accent { background: var(--color-accent-500); color: var(--color-slate-900); box-shadow: 0 1px 3px #0000001a; }
   .btn-accent:hover { background: var(--color-accent-400); }
   .btn-ghost-light { border: 1px solid #ffffff66; background: #ffffff1a; color: #fff; }
   .btn-ghost-light:hover { background: #ffffff33; }
+  .btn .arrow { transition: transform .2s; }
+  .btn:hover .arrow, .card-link:hover .arrow { transform: translateX(3px); }
   .on-dark { background: #ffffff1f; border: 1px solid #ffffff40; }
 
-  /* New BRD-01 components in plain CSS: much smaller compiled output than @apply (OPS-01 budget). */
-  .card { border: 1px solid var(--color-slate-200); border-radius: 1rem; background: #fff; box-shadow: 0 1px 3px #0000001a; }
-  .card-link { transition: box-shadow .15s, border-color .15s; }
-  .card-link:hover { border-color: var(--color-brand-300); box-shadow: 0 6px 16px -4px #0b2f6b26; }
-  .chip, .badge-soon { display: inline-flex; align-items: center; gap: .25rem; border-radius: 9999px; padding: .25rem .625rem; font-size: .75rem; line-height: 1rem; }
-  .chip { background: var(--color-brand-50); color: var(--color-brand-700); font-weight: 600; }
-  .badge-soon { background: var(--color-accent-100); color: var(--color-accent-800); font-weight: 700; }
-  .section-title { font-size: 1.25rem; line-height: 1.75rem; font-weight: 800; letter-spacing: -.025em; color: var(--color-slate-900); }
-  @media (min-width: 40rem) { .section-title { font-size: 1.5rem; line-height: 2rem; } }
-  .icon-tile { display: inline-flex; width: 2.75rem; height: 2.75rem; flex-shrink: 0; align-items: center; justify-content: center; border-radius: .75rem; }
+  /* Surfaces (BRD-01, BRD-03) in plain CSS: much smaller compiled output than @apply (OPS-01 budget). */
+  .card { border: 1px solid var(--line); border-radius: 1.25rem; background: var(--surface); box-shadow: var(--shadow); }
+  .card-link { transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .card-link:hover { transform: translateY(-2px); border-color: var(--color-brand-300); box-shadow: 0 14px 30px -14px #1f6feb59; }
+  /* Double bezel: a soft grey frame around a card. */
+  .frame { border-radius: 1.75rem; padding: .375rem; background: var(--color-slate-100); box-shadow: inset 0 0 0 1px var(--line); }
+  .frame > .card { border-radius: 1.4rem; }
+  .preview { overflow: hidden; border-radius: 1rem; background: var(--color-slate-50); box-shadow: inset 0 0 0 1px var(--line); }
+  .glow { position: relative; overflow: hidden; border-radius: 2rem; box-shadow: inset 0 0 0 1px var(--line); background: radial-gradient(38rem 20rem at 90% -15%, var(--g1), transparent 62%), radial-gradient(30rem 18rem at -10% 115%, var(--g2), transparent 60%), radial-gradient(22rem 14rem at 55% 125%, var(--g3), transparent 60%), var(--surface); }
+  .glass { background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: saturate(1.6) blur(12px); }
+  .eyebrow { display: inline-flex; align-items: center; gap: .4rem; font-size: .6875rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+  .eyebrow::before { content: ""; width: .375rem; height: .375rem; border-radius: 9999px; background: var(--color-accent-500); }
+  .hl { padding: 0 .1em; background: linear-gradient(transparent 58%, var(--color-brand-100) 0); color: var(--ink); box-decoration-break: clone; }
+  .stat { border-radius: 1rem; padding: .875rem 1rem; background: var(--color-slate-50); box-shadow: inset 0 0 0 1px var(--line); }
+  .delta, .chip, .badge-soon { display: inline-flex; align-items: center; gap: .25rem; border-radius: 9999px; padding: .25rem .625rem; font-size: .75rem; line-height: 1rem; font-weight: 700; }
+  .delta { padding: .125rem .5rem; background: var(--color-green-100); color: var(--color-green-800); }
+  .chip { background: var(--color-brand-50); color: var(--ink); }
+  .badge-soon { background: var(--color-accent-100); color: var(--color-accent-800); }
+  .seg { display: inline-flex; max-width: 100%; gap: .25rem; overflow-x: auto; border-radius: 9999px; padding: .25rem; background: var(--color-slate-100); box-shadow: inset 0 0 0 1px var(--line); }
+  .seg > * { display: inline-flex; min-height: 2.5rem; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 9999px; padding: 0 1rem; font-size: .875rem; font-weight: 600; color: var(--color-slate-600); white-space: nowrap; }
+  .seg > [aria-current], .seg > .on { background: var(--surface); color: var(--color-slate-900); box-shadow: var(--shadow); }
+  .avatar { display: inline-flex; width: 2.25rem; height: 2.25rem; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 9999px; font-size: .8125rem; font-weight: 800; }
+  /* Progress ring: set --p (0-100) inline; the inner span holds the label. */
+  .dial { display: grid; flex-shrink: 0; place-items: center; border-radius: 9999px; background: conic-gradient(var(--ring, var(--color-brand-600)) calc(var(--p) * 1%), var(--color-slate-200) 0); }
+  .dial > span { display: grid; width: calc(100% - 14px); height: calc(100% - 14px); place-items: center; border-radius: 9999px; background: var(--surface); }
+  .section-title { font-size: 1.375rem; line-height: 1.2; font-weight: 800; letter-spacing: -.03em; color: var(--color-slate-900); }
+  @media (min-width: 40rem) { .section-title { font-size: 1.75rem; } }
+  .icon-tile { display: inline-flex; width: 2.75rem; height: 2.75rem; flex-shrink: 0; align-items: center; justify-content: center; border-radius: .875rem; }
   .num { font-variant-numeric: tabular-nums; }
+  .rise { animation: rise .5s ease-out both; }
+  .d1 { animation-delay: .07s; } .d2 { animation-delay: .14s; } .d3 { animation-delay: .21s; }
+  @media (prefers-reduced-motion: reduce) { .rise { animation: none; } .card-link:hover, .btn:hover .arrow, .card-link:hover .arrow { transform: none; } }
 
   .label { @apply block text-sm font-semibold text-slate-800; }
   /* 16px text keeps iOS from zooming into the field. */
-  .input { @apply block min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-2 focus:outline-brand-100 aria-invalid:border-red-600; }
+  .input { @apply block min-h-11 w-full rounded-xl border border-slate-300 px-3 py-2 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-2 focus:outline-brand-100 aria-invalid:border-red-600; background: var(--surface); }
   .input-validation-error { @apply border-red-600; }
   .field-error { @apply block text-sm text-red-700; }
   .validation-summary-valid { @apply hidden; }
 }
+
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }

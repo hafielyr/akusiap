@@ -30,7 +30,7 @@
       <ul class="space-y-3" data-testid="active-list">
         @foreach (var item in access.Active)
         {
-          <li class="space-y-2 rounded-xl border border-slate-200 bg-white p-4" data-testid="access-item" data-kind="@item.Kind" data-id="@item.Id">
+          <li class="space-y-2 card p-4" data-testid="access-item" data-kind="@item.Kind" data-id="@item.Id">
             <p class="text-xs font-medium uppercase tracking-wide text-slate-500">@(item.Kind == AccessKind.Purchase ? T["Learn.Access.Exam"] : T["Learn.Access.Plan"])</p>
             @if (item.ExamId is { } examId)
             {

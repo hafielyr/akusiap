@@ -37,6 +37,9 @@ public sealed class AppFactory(string connectionString) : WebApplicationFactory<
         builder.UseSetting("Seed:OnStartup", "false");
         // Never pick up a developer's admin from user-secrets; tests that need one set it explicitly.
         builder.UseSetting("Seed:AdminEmail", string.Empty);
+        // Serve the build's precompressed static files, as production does, instead of the Development handler that
+        // re-sends them uncompressed for live reload; the first-load budget (OPS-01) then measures real transfer (D-104).
+        builder.UseSetting("ReloadStaticAssetsAtRuntime", "false");
         builder.UseSetting("Seed:AdminPassword", string.Empty);
         // Email links use the test server address unless a test sets Site:BaseUrl.
         builder.UseSetting("Site:BaseUrl", string.Empty);

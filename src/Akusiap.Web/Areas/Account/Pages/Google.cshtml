@@ -4,9 +4,11 @@
   ViewData["Title"] = T["Account.Google.Title"].Value;
 }
 
-<section class="card mx-auto max-w-md space-y-6 p-6 sm:p-8">
+<div class="frame rise mx-auto max-w-md sm:mt-6">
+<section class="card space-y-6 p-6 sm:p-8">
   <div class="flex justify-center"><partial name="_LogoPartial" /></div>
   <h1 class="text-2xl font-extrabold leading-tight">@T["Account.Google.Title"]</h1>
   <p role="alert" class="rounded-lg bg-red-50 px-3 py-2 text-red-800" data-testid="google-error">@T[Model.Error ?? "Account.Google.Failed"]</p>
   <a href="@AccountRoutes.SignIn" class="btn btn-secondary w-full">@T["Nav.SignIn"]</a>
 </section>
+</div>

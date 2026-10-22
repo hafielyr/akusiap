@@ -18,7 +18,7 @@
   <section class="mx-auto max-w-md space-y-4" data-testid="session-ended">
     <h1 class="text-2xl font-bold leading-tight">@title</h1>
     <p class="text-slate-600">@T["Session.Player.Ended"]</p>
-    <p class="rounded-xl border border-slate-200 bg-white p-4 text-lg font-semibold" data-testid="score">@T["Session.Player.Score", (view.ScorePercent ?? 0m).ToString("0.##", System.Globalization.CultureInfo.CurrentCulture), view.CorrectCount, view.TotalCount]</p>
+    <p class="card p-4 text-lg font-semibold" data-testid="score">@T["Session.Player.Score", (view.ScorePercent ?? 0m).ToString("0.##", System.Globalization.CultureInfo.CurrentCulture), view.CorrectCount, view.TotalCount]</p>
     @if (view.ExamId is { } examId)
     {
       <a href="@ExamRoutes.Detail(examId)" class="btn btn-secondary w-full">@T["Session.Player.BackToExam"]</a>
@@ -44,14 +44,14 @@ else
       </div>
       @if (view.SecondsLeft is not null)
       {
-        <p class="shrink-0 rounded-lg bg-slate-900 px-3 py-1.5 font-mono text-base text-white" role="timer" aria-live="off" data-testid="timer" x-text="clock"></p>
+        <p class="shrink-0 rounded-lg bg-slate-900 px-3 py-1.5 font-mono text-base text-slate-50" role="timer" aria-live="off" data-testid="timer" x-text="clock"></p>
       }
     </header>
 
     <p x-show="ended" x-cloak role="alert" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" data-testid="session-ended-banner">@T["Session.Player.TimeUp"]</p>
     <p x-show="saveFailed && !ended" x-cloak role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="save-failed">@T["Session.Player.SaveFailed"]</p>
 
-    <article class="space-y-4 rounded-xl border border-slate-200 bg-white p-4" aria-live="polite">
+    <article class="space-y-4 card p-4" aria-live="polite">
       <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
         @T["Session.Player.Question"] <span x-text="index + 1" data-testid="position"></span> / @view.Items.Count
         <span x-show="item.type === 'MultiSelect'">· @T["Session.Player.PickAll"]</span>
@@ -112,7 +112,7 @@ else
 
     <div class="space-y-2">
       <button type="button" class="btn btn-primary w-full" x-show="!confirming" @@click="confirming = true" data-testid="finish">@T["Session.Player.Finish"]</button>
-      <div x-show="confirming" x-cloak class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="confirm-finish">
+      <div x-show="confirming" x-cloak class="space-y-3 card p-4" data-testid="confirm-finish">
         <p class="text-sm text-slate-700"><span x-show="remaining > 0">@T["Session.Player.Unanswered"] <span class="font-semibold" x-text="remaining"></span>.</span> @T["Session.Player.FinishConfirm"]</p>
         <form method="post" asp-page-handler="Submit" x-ref="submitForm" @@submit.prevent="submit()" class="grid grid-cols-2 gap-2">
           <button type="button" class="btn btn-secondary" @@click="confirming = false">@T["Session.Player.Back"]</button>

@@ -1,65 +1,69 @@
 @model Akusiap.Web.Pages.Exams.IndexModel
 @using Akusiap.Application.Catalog
-@* Catalog results: total, cards and paging. Returned alone for htmx requests. *@
+@* Catalog results (CAT-01, BRD-03): total, preview cards in a grid, and paging. Returned alone for htmx requests. *@
 @{
   var results = Model.Results;
   const int MaxTopics = 3;
+  string[] tints = ["bg-brand-50 text-brand-700", "bg-accent-50 text-accent-700", "bg-green-50 text-green-700", "bg-red-50 text-red-700"];
+  string Tint(string? subject) => tints[subject is null ? 0 : subject.Sum(c => c) % tints.Length];
 }
 <div id="catalog-results" class="space-y-3">
-  <p class="text-sm text-slate-500" data-testid="catalog-total">@T["Catalog.Total", results.Total]</p>
+  <p class="text-sm font-semibold text-slate-500" data-testid="catalog-total">@T["Catalog.Total", results.Total]</p>
 
   @if (results.Items.Count == 0)
   {
-    <p class="card border-dashed p-6 text-center text-slate-600" data-testid="catalog-empty">
+    <p class="card border-dashed p-8 text-center text-slate-600" data-testid="catalog-empty">
       @(Model.IsFiltered ? T["Catalog.NoMatch"] : T["Catalog.Empty"])
     </p>
   }
   else
   {
-    <ul class="space-y-3" data-testid="catalog-list">
+    <ul class="grid gap-3 md:grid-cols-2" data-testid="catalog-list">
       @foreach (var item in results.Items)
       {
         <li>
-          <a href="@ExamRoutes.Detail(item.Id)" class="card card-link block space-y-3 p-4" data-testid="catalog-card" data-exam-id="@item.Id">
-            <span class="flex items-start justify-between gap-3">
-              <span class="text-lg font-bold leading-snug text-slate-900">@item.Title</span>
+          <a href="@ExamRoutes.Detail(item.Id)" class="card card-link flex h-full flex-col gap-3 p-2" data-testid="catalog-card" data-exam-id="@item.Id">
+            <span class="preview flex items-center justify-between gap-3 px-4 py-3 @Tint(item.SubjectName)">
+              <span class="truncate text-sm font-bold">@(item.SubjectName ?? T["Catalog.Title"].Value)</span>
               @switch (item.Badge)
               {
                 case CatalogBadge.YourAccess:
-                  <span class="shrink-0 rounded-full bg-green-100 px-2.5 py-1 text-xs font-bold text-green-800" data-testid="badge">@T["Catalog.YourAccess"]</span>
+                  <span class="shrink-0 rounded-full bg-green-600 px-2.5 py-1 text-xs font-bold text-white" data-testid="badge">@T["Catalog.YourAccess"]</span>
                   break;
                 case CatalogBadge.Free:
                   <span class="shrink-0 rounded-full bg-brand-600 px-2.5 py-1 text-xs font-bold text-white" data-testid="badge">@T["Catalog.Free"]</span>
                   break;
                 default:
-                  <span class="shrink-0 rounded-full bg-accent-100 px-2.5 py-1 text-xs font-bold text-accent-800" data-testid="badge"><idr value="@(item.PriceIdr ?? 0)" /></span>
+                  <span class="shrink-0 rounded-full bg-accent-400 px-2.5 py-1 text-xs font-bold text-slate-900" data-testid="badge"><idr value="@(item.PriceIdr ?? 0)" /></span>
                   break;
               }
             </span>
-            @if (item.SubjectName is not null)
-            {
-              <span class="chip">@item.SubjectName</span>
-            }
-            @if (item.DescriptionExcerpt is not null)
-            {
-              <span class="block text-sm text-slate-600">@item.DescriptionExcerpt</span>
-            }
-            <span class="block text-sm text-slate-700">
-              @T["Catalog.QuestionCount", item.ActiveQuestionCount]@if (item.Topics.Count > 0)
+            <span class="flex flex-1 flex-col gap-2 px-3 pb-2">
+              <span class="text-lg font-bold leading-snug text-slate-900">@item.Title</span>
+              @if (item.DescriptionExcerpt is not null)
               {
-                <text> · @string.Join(", ", item.Topics.Take(MaxTopics))</text>
-                @if (item.Topics.Count > MaxTopics) { <text> @T["Catalog.MoreTopics", item.Topics.Count - MaxTopics]</text> }
+                <span class="block text-sm text-slate-600">@item.DescriptionExcerpt</span>
               }
-            </span>
-            <span class="block text-sm text-slate-500">
-              @if (item.IsFree)
-              {
-                @T["Catalog.FreeForMembers"]
-              }
-              else
-              {
-                <idr value="@(item.PriceIdr ?? 0)" /> <text>· @T["Catalog.AccessDays", item.AccessDays ?? 0]</text>
-              }
+              <span class="block text-sm text-slate-700">
+                <span class="font-semibold">@T["Catalog.QuestionCount", item.ActiveQuestionCount]</span>@if (item.Topics.Count > 0)
+                {
+                  <text> · @string.Join(", ", item.Topics.Take(MaxTopics))</text>
+                  @if (item.Topics.Count > MaxTopics) { <text> @T["Catalog.MoreTopics", item.Topics.Count - MaxTopics]</text> }
+                }
+              </span>
+              <span class="mt-auto flex items-center justify-between gap-3 border-t border-slate-200 pt-3 text-sm text-slate-500">
+                <span>
+                  @if (item.IsFree)
+                  {
+                    @T["Catalog.FreeForMembers"]
+                  }
+                  else
+                  {
+                    <idr value="@(item.PriceIdr ?? 0)" /> <text>· @T["Catalog.AccessDays", item.AccessDays ?? 0]</text>
+                  }
+                </span>
+                <span class="arrow inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700" aria-hidden="true">→</span>
+              </span>
             </span>
           </a>
         </li>

@@ -1,57 +1,78 @@
 @model Akusiap.Application.Gamification.LeaderboardView
-@* Leaderboard table (GAM-01): rank, name, score and time; the viewer's own row is highlighted, and shown below the
-   top list when they are further down. *@
+@* Leaderboard (GAM-01, BRD-03): a podium for the top three (decorative, hidden from screen readers), then one row per
+   person with rank, initials, name, score and time. The viewer's own row is highlighted, and shown below the list when
+   they are further down. *@
 @{
   string Time(int seconds) => $"{seconds / 60}:{seconds % 60:00}";
+  string Initial(string name) => string.IsNullOrWhiteSpace(name) ? "?" : name.Trim()[..1].ToUpperInvariant();
+  string[] tints = ["bg-accent-100 text-accent-800", "bg-brand-100 text-brand-800", "bg-green-100 text-green-800", "bg-red-100 text-red-800"];
+  string Tint(string name) => tints[name.Sum(c => c) % tints.Length];
   var viewerInTop = Model.Viewer is not null && Model.Top.Any(l => l.IsViewer);
+  var podium = Model.Top.Take(3).ToList();
 }
 @if (Model.Total == 0)
 {
-  <p class="card border-dashed p-6 text-center text-slate-600" data-testid="leaderboard-empty">@T["Leaderboard.Empty"]</p>
+  <p class="card border-dashed p-8 text-center text-slate-600" data-testid="leaderboard-empty">@T["Leaderboard.Empty"]</p>
 }
 else
 {
-  <div class="card overflow-x-auto">
-    <table class="w-full text-sm" data-testid="leaderboard">
-      <thead>
-        <tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500">
-          <th class="px-3 py-2">#</th>
-          <th class="px-3 py-2">@T["Leaderboard.Name"]</th>
-          <th class="px-3 py-2 text-right">@T["Leaderboard.Score"]</th>
-          <th class="px-3 py-2 text-right">@T["Leaderboard.Time"]</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach (var line in Model.Top)
+  @if (podium.Count >= 2)
+  {
+    <div class="frame grid grid-cols-3 items-end gap-1.5" aria-hidden="true" data-testid="podium">
+      @foreach (var place in new[] { 1, 0, 2 })
+      {
+        if (place >= podium.Count)
         {
-          <tr class="border-b border-slate-200 @(line.IsViewer ? "bg-brand-50 font-semibold" : null)" data-testid="leaderboard-row" data-rank="@line.Rank" data-viewer="@(line.IsViewer ? "true" : "false")">
-            <td class="px-3 py-2">
-              @if (line.Rank <= 3)
-              {
-                <span class="inline-flex size-8 items-center justify-center rounded-full font-bold @(line.Rank == 1 ? "bg-accent-400 text-slate-900" : "bg-brand-100 text-brand-800")">@line.Rank</span>
-              }
-              else
-              {
-                <span class="inline-flex size-8 items-center justify-center">@line.Rank</span>
-              }
-            </td>
-            <td class="px-3 py-2" data-testid="leaderboard-name">@line.Name</td>
-            <td class="px-3 py-2 text-right num">@line.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</td>
-            <td class="px-3 py-2 text-right num">@Time(line.TimeSpentSeconds)</td>
-          </tr>
+          <div></div>
+          continue;
         }
-        @if (Model.Viewer is { } me && !viewerInTop)
-        {
-          <tr><td colspan="4" class="px-3 py-1 text-center text-slate-400">…</td></tr>
-          <tr class="bg-brand-50 font-semibold" data-testid="leaderboard-row" data-rank="@me.Rank" data-viewer="true">
-            <td class="px-3 py-2"><span class="inline-flex size-8 items-center justify-center">@me.Rank</span></td>
-            <td class="px-3 py-2" data-testid="leaderboard-name">@me.Name</td>
-            <td class="px-3 py-2 text-right num">@me.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</td>
-            <td class="px-3 py-2 text-right num">@Time(me.TimeSpentSeconds)</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+
+        var p = podium[place];
+        <div class="card flex flex-col items-center gap-1 px-2 text-center @(place == 0 ? "pt-5 pb-6" : "pt-4 pb-3")">
+          <span class="text-xl">@(p.Rank == 1 ? "🥇" : p.Rank == 2 ? "🥈" : "🥉")</span>
+          <span class="avatar @(place == 0 ? "size-14 text-lg" : "") @Tint(p.Name)">@Initial(p.Name)</span>
+          <span class="w-full truncate text-sm font-bold">@p.Name</span>
+          <span class="num text-lg font-extrabold text-brand-700">@p.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</span>
+          <span class="num text-xs text-slate-500">@Time(p.TimeSpentSeconds)</span>
+        </div>
+      }
+    </div>
+  }
+
+  <ol class="card divide-y divide-slate-200 overflow-hidden" data-testid="leaderboard">
+    <li class="flex items-center gap-2 sm:gap-3 bg-slate-50 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+      <span class="w-7 sm:w-8">#</span><span class="flex-1">@T["Leaderboard.Name"]</span><span class="w-14 text-right sm:w-16">@T["Leaderboard.Score"]</span><span class="w-11 text-right sm:w-12">@T["Leaderboard.Time"]</span>
+    </li>
+    @foreach (var line in Model.Top)
+    {
+      <li class="flex items-center gap-2 sm:gap-3 px-3 py-2.5 sm:px-4 @(line.IsViewer ? "bg-brand-50 font-semibold" : null)" data-testid="leaderboard-row" data-rank="@line.Rank" data-viewer="@(line.IsViewer ? "true" : "false")">
+        <span class="w-7 sm:w-8">
+          @if (line.Rank <= 3)
+          {
+            <span class="inline-flex size-7 items-center justify-center rounded-full text-sm font-bold @(line.Rank == 1 ? "bg-accent-400 text-slate-900" : "bg-brand-100 text-brand-800")">@line.Rank</span>
+          }
+          else
+          {
+            <span class="inline-flex size-7 items-center justify-center text-sm text-slate-500">@line.Rank</span>
+          }
+        </span>
+        <span class="avatar size-8 text-xs @Tint(line.Name)">@Initial(line.Name)</span>
+        <span class="min-w-0 flex-1 truncate" data-testid="leaderboard-name">@line.Name</span>
+        <span class="num w-14 text-right sm:w-16 font-bold">@line.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</span>
+        <span class="num w-11 text-right sm:w-12 text-sm text-slate-500">@Time(line.TimeSpentSeconds)</span>
+      </li>
+    }
+    @if (Model.Viewer is { } me && !viewerInTop)
+    {
+      <li class="px-4 py-1 text-center text-slate-400">…</li>
+      <li class="flex items-center gap-2 sm:gap-3 bg-brand-50 px-3 py-2.5 sm:px-4 font-semibold" data-testid="leaderboard-row" data-rank="@me.Rank" data-viewer="true">
+        <span class="w-7 sm:w-8"><span class="inline-flex size-7 items-center justify-center text-sm">@me.Rank</span></span>
+        <span class="avatar size-8 text-xs @Tint(me.Name)">@Initial(me.Name)</span>
+        <span class="min-w-0 flex-1 truncate" data-testid="leaderboard-name">@me.Name</span>
+        <span class="num w-14 text-right sm:w-16 font-bold">@me.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</span>
+        <span class="num w-11 text-right sm:w-12 text-sm text-slate-500">@Time(me.TimeSpentSeconds)</span>
+      </li>
+    }
+  </ol>
   <p class="text-xs text-slate-500">@T["Leaderboard.Rule", Model.Total]</p>
 }

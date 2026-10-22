@@ -18,26 +18,26 @@
 
 <section class="space-y-5">
   <a href="@ExamRoutes.Detail(board.ExamId)" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @board.Title</a>
-  <div class="bg-panel flex flex-wrap items-center justify-between gap-3 rounded-2xl p-5 text-white shadow-sm">
-    <div class="space-y-1">
-      <p class="text-sm text-brand-100">@board.Title</p>
-      <h1 class="text-2xl font-extrabold leading-tight">@T[weekly ? "Leaderboard.WeekTitle" : "Leaderboard.Title"]</h1>
+  <div class="glow flex flex-wrap items-center justify-between gap-4 px-5 py-6 sm:px-7">
+    <div class="space-y-2">
+      <span class="eyebrow">@board.Title</span>
+      <h1 class="text-3xl font-extrabold leading-tight tracking-tight">@T[weekly ? "Leaderboard.WeekTitle" : "Leaderboard.Title"]</h1>
       @if (weekly && board.ResetsAt is { } resetsAt)
       {
-        <p class="text-sm text-brand-100" data-testid="resets-at">@T["Leaderboard.ResetsAt", JakartaTime.Format(resetsAt)]</p>
+        <p class="text-sm text-slate-600" data-testid="resets-at">⏳ @T["Leaderboard.ResetsAt", JakartaTime.Format(resetsAt)]</p>
       }
     </div>
     @if (board.Viewer is { } me)
     {
-      <p class="rounded-xl border-4 border-accent-400 px-4 py-2 text-center" data-testid="my-rank"><span class="block text-xs text-brand-100">@T["Leaderboard.YourRank"]</span><span class="text-2xl font-extrabold">#@me.Rank</span></p>
+      <p class="card px-5 py-3 text-center" data-testid="my-rank"><span class="block text-xs font-semibold text-slate-500">@T["Leaderboard.YourRank"]</span><span class="num text-3xl font-extrabold text-brand-700">#@me.Rank</span></p>
     }
   </div>
 
   @if (settings.WeeklyReset)
   {
-    <nav aria-label="@T["Leaderboard.Periods"]" class="grid grid-cols-2 gap-2" data-testid="leaderboard-periods">
-      <a href="@url" class="btn @(weekly ? "btn-primary" : "btn-secondary")" aria-current="@(weekly ? "page" : null)" data-testid="period-week">@T["Leaderboard.ThisWeek"]</a>
-      <a href="@url?periode=@LeaderboardModel.AllTimeValue" class="btn @(weekly ? "btn-secondary" : "btn-primary")" aria-current="@(weekly ? null : "page")" data-testid="period-all">@T["Leaderboard.AllTime"]</a>
+    <nav aria-label="@T["Leaderboard.Periods"]" class="seg grid w-full grid-cols-2 sm:w-auto" data-testid="leaderboard-periods">
+      <a href="@url" aria-current="@(weekly ? "page" : null)" data-testid="period-week">@T["Leaderboard.ThisWeek"]</a>
+      <a href="@url?periode=@LeaderboardModel.AllTimeValue" aria-current="@(weekly ? null : "page")" data-testid="period-all">@T["Leaderboard.AllTime"]</a>
     </nav>
   }
 

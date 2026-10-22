@@ -4,7 +4,8 @@
   ViewData["Title"] = T["Account.Confirm.Title"].Value;
 }
 
-<section class="card mx-auto max-w-md space-y-6 p-6 sm:p-8">
+<div class="frame rise mx-auto max-w-md sm:mt-6">
+<section class="card space-y-6 p-6 sm:p-8">
   <div class="flex justify-center"><partial name="_LogoPartial" /></div>
   <h1 class="text-2xl font-extrabold leading-tight">@T["Account.Confirm.Title"]</h1>
   @if (Model.Confirmed)
@@ -18,3 +19,4 @@
     <a href="@AccountRoutes.SignIn" class="btn btn-secondary w-full">@T["Nav.SignIn"]</a>
   }
 </section>
+</div>

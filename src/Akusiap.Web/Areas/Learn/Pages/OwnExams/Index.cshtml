@@ -38,7 +38,7 @@
   <ul class="space-y-2" data-testid="own-exams">
     @foreach (var exam in Model.Exams)
     {
-      <li class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="own-exam" data-exam="@exam.Id">
+      <li class="space-y-3 card p-4" data-testid="own-exam" data-exam="@exam.Id">
         <div class="space-y-1">
           <p class="font-semibold">@exam.Title</p>
           <p class="text-xs text-slate-500">@T["Own.Exams.QuestionCount", exam.QuestionCount] · @T[$"Own.Exams.Status.{exam.Status}"]</p>

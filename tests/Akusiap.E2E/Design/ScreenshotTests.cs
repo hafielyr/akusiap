@@ -7,7 +7,8 @@ using Microsoft.Playwright;
 namespace Akusiap.E2E.Design;
 
 /// <summary>
-/// BRD-01: full-page screenshots of the main screens on a phone and a desktop, for design review. Runs only when
+/// BRD-01, BRD-03: full-page screenshots of the main screens on a phone and a desktop, in the light and dark themes,
+/// for design review. Runs only when
 /// LS_SCREENSHOTS_DIR is set (the PNGs go there); otherwise it does nothing, so CI stays fast.
 /// </summary>
 [Collection(UsesMobileSite.Name)]
@@ -38,7 +39,7 @@ public sealed class ScreenshotTests(MobileSite site)
         // GAM-01 screens: a leaderboard with rivals, the learner's journey, and a teacher's class.
         var teacher = await site.CreateUserAsync(TestData.User().Named("Bu Rina").Build(), "layar-sandi-2026", RoleNames.Learner, RoleNames.Teacher);
         var teacherExam = await site.SaveExamAsync(TestData.Exam().Titled("Latihan TWK Kelas XII").OwnedBy(teacher).WithQuestions(10));
-        long classId = 0;
+        long classId = 0, resultId = 0;
         await site.WithDatabaseAsync(async db =>
         {
             var question = db.ExamQuestions.Where(q => q.ExamId == exams[1]).Select(q => q.QuestionId).First();
@@ -60,11 +61,15 @@ public sealed class ScreenshotTests(MobileSite site)
             db.ClassAssignments.Add(new Akusiap.Domain.Classes.ClassAssignment { Classroom = classroom, ExamId = teacherExam.Id, RulePresetId = teacherExam.RulePresetId, OpensAt = site.Now.AddHours(-1), ClosesAt = site.Now.AddDays(6) });
             await db.SaveChangesAsync();
             classId = classroom.Id;
+            resultId = await db.Attempts.Where(a => a.UserId == learner.Id).OrderByDescending(a => a.SubmittedAt).Select(a => a.Id).FirstAsync();
         });
 
-        foreach (var (name, desktop) in new[] { ("phone", false), ("desktop", true) })
+        foreach (var (size, desktop, theme) in new[] { ("phone", false, "light"), ("desktop", true, "light"), ("phone", false, "dark"), ("desktop", true, "dark") })
         {
+            var name = $"{size}-{theme}";
+            var themeScript = $"try {{ localStorage.setItem('theme', '{theme}') }} catch (e) {{}}";
             await using var device = desktop ? await site.NewDesktopAsync() : await site.NewPhoneAsync();
+            await device.Context.AddInitScriptAsync(themeScript);
             var page = await device.NewPageAsync();
             await ShotAsync(page, "/", $"{name}-1-home");
             await ShotAsync(page, "/ujian", $"{name}-2-catalog");
@@ -79,8 +84,17 @@ public sealed class ScreenshotTests(MobileSite site)
             await ShotAsync(page, "/learn/perjalanan", $"{name}-7-journey");
             await ShotAsync(page, $"/ujian/{exams[1]}/peringkat", $"{name}-8-leaderboard");
             await ShotAsync(page, $"/learn/kelas/{classId}", $"{name}-9-class-student");
+            await ShotAsync(page, "/harga", $"{name}-11-pricing");
+            await ShotAsync(page, $"/sesi/{resultId}/hasil", $"{name}-12-result");
+            await ShotAsync(page, $"/ujian/{exams[1]}/mulai", $"{name}-13-setup");
+            await page.GetByTestId("start").ClickAsync();
+            await page.WaitForURLAsync("**/sesi/*");
+            await page.GetByTestId("option").First.CheckAsync();
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.ScreenshotAsync(new PageScreenshotOptions { Path = Path.Combine(directory, $"{name}-14-player.png"), FullPage = true });
 
             await using var teacherDevice = desktop ? await site.NewDesktopAsync() : await site.NewPhoneAsync();
+            await teacherDevice.Context.AddInitScriptAsync(themeScript);
             var teacherPage = await teacherDevice.NewPageAsync();
             await teacherPage.GotoAsync("/akun/masuk");
             await teacherPage.GetByLabel("Email").FillAsync(teacher.Email!);

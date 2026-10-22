@@ -436,6 +436,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: A new logo whose mark is a column built from exam sheets (practice is the pillar of success): a curling sheet as the capital, stacked lined sheets as the shaft, two slabs as the base. Two-line wordmark LATIHAN / SOAL. Same mark in `favicon.svg` and `favicon.ico`.
 - AC: The header, footer and account pages show the new logo; it fits the 360 px header; the favicon uses the mark.
 
+### BRD-03 Design refresh and dark theme · L
+- Stories: owner request (2026-10-22: "the website design didn't give me enthusiasm"; references ObsidianUI, UI Arc, beUI; light + dark toggle; learner-facing pages) · Depends on: BRD-02
+- Scope: New shared components (cards, frames, glow panels, pill buttons and tabs, stat tiles, dials, avatars, entrance motion), a dark theme with a header toggle, and new layouts for home, catalog, exam page, setup, result, leaderboard, /learn, Today, Journey, pricing and account pages (D-102, D-103).
+- AC: Learner pages use the new components. The theme toggle persists across reloads without a flash. Pages fit 360 px in light and dark. The catalog and player stay within the 150 KB first-load budget. Text keeps AA contrast in both themes on the key pages.
+
 ### DRL-01 Daily drill with points and streak · M
 - Stories: owner request (gamified daily drills) · Depends on: SRS-03, SES-06
 - Scope: `/learn/hari-ini` gets "Latihan harian": a 10-question set built from the learner's accessible exams (due review cards first, then new questions), a daily goal (one completed drill), XP per correct answer and a streak counted in Jakarta days. Needs a new table for drill progress (streak, XP, last drill date) in this card's migration; record it as an addition to `schema.sql` (like D-68).
