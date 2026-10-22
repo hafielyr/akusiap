@@ -82,6 +82,26 @@ public sealed partial class EmailFlowTests(PostgresFixture database)
         Assert.DoesNotContain("data-testid=\"confirm-pending\"", confirmed, StringComparison.Ordinal);
     }
 
+    [Theory]
+    [InlineData(EmailDelivery.File, "Account.Confirm.SavedToFile", ".dev-mail")]
+    [InlineData(EmailDelivery.Dropped, "Account.Confirm.NotSent", "server email belum diatur")]
+    public async Task The_resend_notice_says_where_the_email_went(EmailDelivery delivery, string key, string text)
+    {
+        await using var app = await StartAsync();
+        app.Email.Delivery = delivery;
+        using var client = NewClient(app);
+        using (await client.PostFormAsync("/akun/daftar", RegisterForm(NewEmail())))
+        {
+        }
+
+        using var resent = await client.PostFormAsync("/learn", new Dictionary<string, string>(), "/learn?handler=ResendConfirmation");
+        var after = WebUtility.HtmlDecode(await client.GetStringAsync(new Uri("/learn", UriKind.Relative)));
+
+        Assert.Contains($"data-message=\"{key}\"", after, StringComparison.Ordinal);
+        Assert.Contains(text, after, StringComparison.Ordinal);
+        Assert.DoesNotContain("Periksa kotak masuk Anda", after, StringComparison.Ordinal);
+    }
+
     [Fact]
     public async Task A_reset_link_changes_the_password_confirms_the_email_and_clears_a_lockout()
     {

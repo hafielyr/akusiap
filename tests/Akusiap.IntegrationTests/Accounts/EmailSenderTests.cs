@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Akusiap.IntegrationTests.Accounts;
 
-/// <summary>AC-02: which email sender each environment gets, and the dev sender's <c>.eml</c> files.</summary>
+/// <summary>AC-02, AC-07: which email sender each environment gets, and the dev sender's <c>.eml</c> files.</summary>
 public sealed class EmailSenderTests
 {
     [Fact]
@@ -37,10 +37,11 @@ public sealed class EmailSenderTests
     }
 
     [Theory]
-    [InlineData("Development", null, typeof(FileEmailSender))]
-    [InlineData("Production", "smtp-relay.example.com", typeof(SmtpEmailSender))]
-    [InlineData("Production", null, typeof(UnconfiguredEmailSender))]
-    public void Each_environment_gets_its_sender(string environmentName, string? smtpHost, Type expected)
+    [InlineData("Development", null, typeof(FileEmailSender), EmailDelivery.File)]
+    [InlineData("Development", "smtp-relay.example.com", typeof(SmtpEmailSender), EmailDelivery.Inbox)] // AC-07: real email in dev when SMTP is set
+    [InlineData("Production", "smtp-relay.example.com", typeof(SmtpEmailSender), EmailDelivery.Inbox)]
+    [InlineData("Production", null, typeof(UnconfiguredEmailSender), EmailDelivery.Dropped)]
+    public void Each_environment_gets_its_sender(string environmentName, string? smtpHost, Type expected, EmailDelivery delivery)
     {
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
@@ -55,6 +56,8 @@ public sealed class EmailSenderTests
         services.AddInfrastructure(configuration, environment);
         using var provider = services.BuildServiceProvider();
 
-        Assert.IsType(expected, provider.GetRequiredService<IEmailSender>());
+        var sender = provider.GetRequiredService<IEmailSender>();
+        Assert.IsType(expected, sender);
+        Assert.Equal(delivery, sender.Delivery);
     }
 }

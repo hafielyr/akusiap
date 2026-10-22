@@ -33,7 +33,17 @@ Outside development, set the environment variable `ConnectionStrings__Default` i
 
 `/health` returns `{"status":"Healthy","checks":{"database":"Healthy"}}` when the app is up and the database answers (503 otherwise).
 
-Emails are not sent in development: each one is written as an `.eml` file to `src/Akusiap.Web/.dev-mail/` (git-ignored). Open them with any mail client.
+Emails in development: without SMTP settings, each email is written as an `.eml` file to `src/Akusiap.Web/.dev-mail/` (git-ignored) instead of being sent; open it with any mail client. To receive real emails while running locally, set an SMTP relay in user-secrets (never commit these). For example, Brevo:
+
+```
+dotnet user-secrets set "Email:Smtp:Host" "smtp-relay.brevo.com" --project src/Akusiap.Web
+dotnet user-secrets set "Email:Smtp:UserName" "<SMTP login>" --project src/Akusiap.Web
+dotnet user-secrets set "Email:Smtp:Password" "<SMTP key>" --project src/Akusiap.Web
+dotnet user-secrets set "Email:From" "LatihanSoal <a sender address verified with the relay>" --project src/Akusiap.Web
+```
+
+Port 587 with STARTTLS is the default (`Email:Smtp:Port`, `Email:Smtp:EnableSsl`). A Gmail account with an app password also works (`smtp.gmail.com`). Remove `Email:Smtp:Host` to go back to `.eml` files. Tests always use an in-memory fake sender.
+
 
 EF Core tools are pinned in `dotnet-tools.json`:
 

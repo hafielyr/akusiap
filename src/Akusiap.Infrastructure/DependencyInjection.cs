@@ -65,16 +65,23 @@ public static class DependencyInjection
             // The DOKU gateway comes with PAY-04; Development and tests use the fake one (PAY-01).
             services.AddSingleton<FakePaymentGateway>();
             services.AddSingleton<IPaymentGateway>(sp => sp.GetRequiredService<FakePaymentGateway>());
+        }
+
+        // Email (D-47, AC-07): a configured SMTP host always sends for real, also in Development (set it with
+        // user-secrets). Without one, Development saves .eml files to .dev-mail and other environments drop the
+        // email with a warning.
+        if (configuration.GetSection(EmailOptions.SectionName).Get<EmailOptions>()?.Smtp.IsConfigured == true)
+        {
+            services.AddSingleton<IEmailSender, SmtpEmailSender>();
+        }
+        else if (environment.IsDevelopment())
+        {
             services.AddSingleton<IEmailSender>(sp =>
             {
                 var options = sp.GetRequiredService<IOptions<EmailOptions>>();
                 var directory = Path.GetFullPath(Path.Combine(environment.ContentRootPath, options.Value.PickupDirectory));
                 return new FileEmailSender(options, directory);
             });
-        }
-        else if (configuration.GetSection(EmailOptions.SectionName).Get<EmailOptions>()?.Smtp.IsConfigured == true)
-        {
-            services.AddSingleton<IEmailSender, SmtpEmailSender>();
         }
         else
         {

@@ -9,6 +9,8 @@ namespace Akusiap.Infrastructure.Email;
 /// </summary>
 internal sealed partial class UnconfiguredEmailSender(ILogger<UnconfiguredEmailSender> logger) : IEmailSender
 {
+    public EmailDelivery Delivery => EmailDelivery.Dropped;
+
     public Task SendAsync(EmailMessage message, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(message);

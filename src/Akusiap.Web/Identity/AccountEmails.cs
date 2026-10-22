@@ -27,6 +27,9 @@ public sealed partial class AccountEmails(
     IHttpContextAccessor http,
     ILogger<AccountEmails> logger)
 {
+    /// <summary>Where these emails go (AC-07): an inbox, a <c>.dev-mail</c> file, or nowhere without SMTP.</summary>
+    public EmailDelivery Delivery => sender.Delivery;
+
     public async Task<bool> SendConfirmationAsync(User user, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(user);

@@ -11,9 +11,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## In Progress
 
 ## Review
-- [TRY-01] CAT tryout screen · M8 · deps: SES-06, SES-07 · (claude-opus-5.5, 2026-10-22)
-- [DRL-02] Leaderboard management: weekly reset and badges per exam · M8 · deps: DRL-01 · (claude-opus-5.5, 2026-10-22)
-- [BRD-02] Pillar logo · M8 · deps: BRD-01 · (claude-opus-5.5, 2026-10-22)
+- [AC-07] Real email in development · M1 · deps: AC-02 · (claude-opus-5.5, 2026-10-22)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -94,6 +92,9 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [BRD-01] Rebrand to LatihanSoal and blue redesign · M8 · deps: SHR-05
 - [GAM-01] Leaderboards, teacher classes and learning journey · M8 · deps: SES-07, OWN-04, MEM-03
 - [DRL-01] Daily drill with points and streak · M8 · deps: SRS-03, SES-06
+- [TRY-01] CAT tryout screen · M8 · deps: SES-06, SES-07
+- [DRL-02] Leaderboard management: weekly reset and badges per exam · M8 · deps: DRL-01
+- [BRD-02] Pillar logo · M8 · deps: BRD-01
 
 ## Backlog
 

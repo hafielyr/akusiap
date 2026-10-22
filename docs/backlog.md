@@ -93,6 +93,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: Terms, Refund policy (text from the stories doc) and Privacy pages in `id` and `en`. Registration requires accepting the terms. Links appear in the footer.
 - AC: Registration fails without the checkbox. All three pages render in both languages.
 
+### AC-07 Real email in development · S
+- Stories: owner report (2026-10-22: "I didn't receive email after clicking resend confirmation email") · Depends on: AC-02
+- Scope: When `Email:Smtp:Host` is set (user-secrets), Development sends through SMTP like production; without it, `.eml` files as before. Senders say where emails go (inbox, `.dev-mail` file, dropped), and the `/learn` resend notice tells the truth instead of always "check your inbox". README shows how to set an SMTP relay locally.
+- AC: Development with an SMTP host gets the SMTP sender; without one, the file sender. The resend notice names `.dev-mail` in file mode and says the email wasn't sent when no SMTP is set outside Development.
+
 ### AC-06 Authorization policies · S
 - Depends on: AC-01
 - Scope: Policies `AdminOnly` and `SignedIn`. Areas `/Admin` (AdminOnly) and `/Learn` (SignedIn where needed). 403 and 404 pages in Indonesian.

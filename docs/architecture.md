@@ -12,7 +12,7 @@ Source of truth for requirements: `Quiz Practice App — User Stories.docx` (sto
 | Auth | ASP.NET Core Identity (`User` : `IdentityUser<Guid>`), Google login. Roles: `Learner`, `Teacher`, `Admin` |
 | Jobs | Hangfire with PostgreSQL storage. Dashboard at `/admin/jobs` (Admin only) |
 | Payments | DOKU behind `IPaymentGateway` (D-10); Xendit added later for international payments through the same interface. `FakePaymentGateway` for dev and tests |
-| Email | `IEmailSender` → Brevo or SES in production; `.eml` files in `.dev-mail/` during development (D-15) |
+| Email | `IEmailSender` → Brevo or SES in production; `.eml` files in `.dev-mail/` during development unless an SMTP host is set (D-15, D-101) |
 | i18n | `.resx` localization. `id-ID` is the default culture, `en` is optional. Money is formatted as `Rp49.000` |
 | Import | ClosedXML (xlsx) + CsvHelper |
 | Tests | xUnit, WebApplicationFactory, a per-run test database on the hosted Postgres (CI: service container), Playwright for .NET (360×640 viewport) |
