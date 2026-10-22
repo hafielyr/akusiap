@@ -98,7 +98,9 @@ public sealed class Badges(IAppDbContext db, Leaderboards leaderboards, IClock c
             })
             .SingleOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
-        var attemptTimes = await finished.Select(a => a.SubmittedAt!.Value).ToListAsync(cancellationToken).ConfigureAwait(false);
+        var attemptRows = await finished.Select(a => new { At = a.SubmittedAt!.Value, a.Source }).ToListAsync(cancellationToken).ConfigureAwait(false);
+        var attemptTimes = attemptRows.Select(r => r.At).ToList();
+        var dailyGoals = attemptRows.Where(r => r.Source == AttemptSource.DailyDrill).Select(r => JakartaTime.Today(r.At)).Distinct().Count();
         var reviewTimes = await db.ReviewLogs.AsNoTracking()
             .Where(l => l.ReviewCard!.UserId == userId)
             .Select(l => l.ReviewedAt)
@@ -115,7 +117,8 @@ public sealed class Badges(IAppDbContext db, Leaderboards leaderboards, IClock c
             totals?.Passed ?? false,
             reviewTimes.Count,
             streak.Longest,
-            classes);
+            classes,
+            dailyGoals);
         return (stats, streak);
     }
 }

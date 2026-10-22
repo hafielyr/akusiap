@@ -5,7 +5,7 @@
 @* Quiz player (SES-03). The server renders the shell and the attempt's state as JSON; Alpine runs the screen. *@
 @{
   var view = Model.View;
-  var title = string.IsNullOrEmpty(view.Title) ? T["History.Mixed"].Value : view.Title;
+  var title = !string.IsNullOrEmpty(view.Title) ? view.Title : view.Source == AttemptSource.DailyDrill ? T["Drill.Title"].Value : T["History.Mixed"].Value;
   ViewData["Title"] = title;
   ViewData["Focus"] = true;
 }

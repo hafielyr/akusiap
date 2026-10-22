@@ -99,3 +99,28 @@ public sealed class JourneyTests
     [Fact]
     public void No_rank_badge_outside_the_top_ten() => Assert.Null(Journey.RankBadge(11));
 }
+
+public sealed class DailyDrillJourneyTests
+{
+    private static readonly DateOnly Today = new(2026, 10, 22);
+
+    [Fact]
+    public void Daily_goals_add_xp_and_badges()
+    {
+        var stats = new JourneyStats(7, 70, 50, 70m, false, 0, 7, 0, DailyGoals: 7);
+
+        Assert.Equal((50 * 10) + (7 * 20) + (7 * 30), Journey.Xp(stats, badges: 0));
+        Assert.Contains(BadgeCode.DailyGoal7, Journey.EarnedMilestones(stats));
+        Assert.DoesNotContain(BadgeCode.DailyGoal30, Journey.EarnedMilestones(stats));
+    }
+
+    [Fact]
+    public void The_week_strip_ends_today()
+    {
+        var week = Journey.Week([Today, Today.AddDays(-2), Today.AddDays(-9)], Today);
+
+        Assert.Equal(7, week.Count);
+        Assert.Equal(Today.AddDays(-6), week[0].Day);
+        Assert.Equal([false, false, false, false, true, false, true], week.Select(d => d.Done));
+    }
+}

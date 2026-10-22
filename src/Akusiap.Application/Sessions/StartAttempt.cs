@@ -250,21 +250,32 @@ public sealed class StartAttempt(
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         return Result.Ok(new StartedAttempt(attempt.Id, AttemptSource.WrongOnly, selected.Count));
     }
+
     /// <summary>
     /// Starts a private mixed set (OWN-06, D-84) from questions the caller already checked: Practice, untimed, hints on,
     /// shuffled, answers shown after each check. Source CustomMix and no exam, so it can never be shared.
     /// </summary>
-    public async Task<Result<StartedAttempt>> StartCustomMixAsync(IReadOnlyList<long> questionIds, int questionCount, CancellationToken cancellationToken)
+    public Task<Result<StartedAttempt>> StartCustomMixAsync(IReadOnlyList<long> questionIds, int questionCount, CancellationToken cancellationToken) =>
+        StartPrivateSetAsync(questionIds, questionCount, AttemptSource.CustomMix, shuffleQuestions: true, cancellationToken);
+
+    /// <summary>
+    /// Starts today's daily drill (DRL-01, D-97) from questions the caller already checked and ordered (due review cards
+    /// first): Practice, untimed, hints on, in the given order with shuffled options, answers shown after each check.
+    /// </summary>
+    public Task<Result<StartedAttempt>> StartDailyDrillAsync(IReadOnlyList<long> questionIds, int questionCount, CancellationToken cancellationToken) =>
+        StartPrivateSetAsync(questionIds, questionCount, AttemptSource.DailyDrill, shuffleQuestions: false, cancellationToken);
+
+    private async Task<Result<StartedAttempt>> StartPrivateSetAsync(IReadOnlyList<long> questionIds, int questionCount, AttemptSource source, bool shuffleQuestions, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(questionIds);
-        var userId = currentUser.UserId ?? throw new InvalidOperationException("Mixed practice needs a signed-in user.");
+        var userId = currentUser.UserId ?? throw new InvalidOperationException("Private practice sets need a signed-in user.");
         var candidates = await CandidatesForAsync(questionIds, cancellationToken).ConfigureAwait(false);
         if (candidates.Count == 0)
         {
             return Result.Fail<StartedAttempt>(new Problem(MixEmpty));
         }
 
-        var preset = new RulePreset { Name = "Latihan campuran", HintsEnabled = true, ShuffleQuestions = true, ShuffleOptions = true, ShowAnswers = ShowAnswers.AfterEach };
+        var preset = new RulePreset { Name = source.ToString(), HintsEnabled = true, ShuffleQuestions = shuffleQuestions, ShuffleOptions = true, ShowAnswers = ShowAnswers.AfterEach };
         var built = SessionRulesBuilder.Build(preset, AttemptMode.Practice, new RuleOverrides(QuestionCount: Math.Min(questionCount, candidates.Count), Untimed: true), candidates.Count);
         if (!built.Succeeded)
         {
@@ -278,7 +289,7 @@ public sealed class StartAttempt(
         {
             UserId = userId,
             ExamId = null,
-            Source = AttemptSource.CustomMix,
+            Source = source,
             Mode = rules.Mode,
             RulesSnapshot = JsonSerializer.Serialize(rules, Json),
             StartedAt = now,
@@ -297,7 +308,7 @@ public sealed class StartAttempt(
 
         db.Attempts.Add(attempt);
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        return Result.Ok(new StartedAttempt(attempt.Id, AttemptSource.CustomMix, selected.Count));
+        return Result.Ok(new StartedAttempt(attempt.Id, source, selected.Count));
     }
 
     /// <summary>The questions the decision allows, in exam order, with topic, type and option ids.</summary>

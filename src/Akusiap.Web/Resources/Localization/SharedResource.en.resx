@@ -989,7 +989,7 @@
   <data name="Journey.Stat.Cards" xml:space="preserve"><value>cards reviewed</value></data>
   <data name="Journey.RankBadges" xml:space="preserve"><value>Rank badges</value></data>
   <data name="Journey.Badges" xml:space="preserve"><value>Badges ({0}/{1})</value></data>
-  <data name="Journey.XpRule" xml:space="preserve"><value>XP: 10 per correct answer, 20 per finished session, 2 per card reviewed, 50 per badge. Streaks count Jakarta days.</value></data>
+  <data name="Journey.XpRule" xml:space="preserve"><value>XP: 10 per correct answer, 20 per finished session, 2 per card reviewed, 30 per daily goal, 50 per badge. Streaks count Jakarta days.</value></data>
   <data name="Journey.Rank.1" xml:space="preserve"><value>Beginner</value></data>
   <data name="Journey.Rank.2" xml:space="preserve"><value>Explorer</value></data>
   <data name="Journey.Rank.3" xml:space="preserve"><value>Steady learner</value></data>
@@ -1029,4 +1029,19 @@
   <data name="Badge.ClassJoined.How" xml:space="preserve"><value>Join a teacher's class</value></data>
   <data name="Profile.HideOnLeaderboard" xml:space="preserve"><value>Hide my name on leaderboards</value></data>
   <data name="Profile.HideOnLeaderboardHint" xml:space="preserve"><value>Others see you as "Peserta #XXXX". Teachers of your classes still see your name.</value></data>
+  <data name="Drill.Title" xml:space="preserve"><value>Daily drill</value></data>
+  <data name="Drill.Lead" xml:space="preserve"><value>{0} questions a day: due cards first, then new questions.</value></data>
+  <data name="Drill.Streak" xml:space="preserve"><value>{0} days</value></data>
+  <data name="Drill.Week" xml:space="preserve"><value>The last seven days</value></data>
+  <data name="Drill.Start" xml:space="preserve"><value>Start today's drill</value></data>
+  <data name="Drill.Continue" xml:space="preserve"><value>Continue today's drill</value></data>
+  <data name="Drill.Done" xml:space="preserve"><value>Today's goal done · score {0}%</value></data>
+  <data name="Drill.Again" xml:space="preserve"><value>Practise again</value></data>
+  <data name="Drill.Empty" xml:space="preserve"><value>There are no questions you can use yet. Open a free exam, buy one, or write your own questions first.</value></data>
+  <data name="Badge.DailyGoal7" xml:space="preserve"><value>7 daily goals</value></data>
+  <data name="Badge.DailyGoal7.How" xml:space="preserve"><value>Finish the daily drill on 7 different days</value></data>
+  <data name="Badge.DailyGoal30" xml:space="preserve"><value>30 daily goals</value></data>
+  <data name="Badge.DailyGoal30.How" xml:space="preserve"><value>Finish the daily drill on 30 different days</value></data>
+  <data name="Home.Feature.Drills" xml:space="preserve"><value>Daily drills &amp; streaks</value></data>
+  <data name="Home.Feature.Drills.Text" xml:space="preserve"><value>10 questions a day, with points, levels and badges that keep you consistent.</value></data>
 </root>

@@ -888,7 +888,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                     b.ToTable("user_badges", null, t =>
                         {
-                            t.HasCheckConstraint("ck_user_badges_code", "code IN ('Rank1', 'Top3', 'Top10', 'FirstSteps', 'Questions100', 'Questions500', 'Questions1000', 'Sharpshooter', 'PassedSimulation', 'Streak3', 'Streak7', 'Streak30', 'Flashcards50', 'Flashcards250', 'ClassJoined')");
+                            t.HasCheckConstraint("ck_user_badges_code", "code IN ('Rank1', 'Top3', 'Top10', 'FirstSteps', 'Questions100', 'Questions500', 'Questions1000', 'Sharpshooter', 'PassedSimulation', 'Streak3', 'Streak7', 'Streak30', 'Flashcards50', 'Flashcards250', 'ClassJoined', 'DailyGoal7', 'DailyGoal30')");
                         });
                 });
 
@@ -1714,7 +1714,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                             t.HasCheckConstraint("ck_attempts_score_percent", "score_percent BETWEEN 0 AND 100");
 
-                            t.HasCheckConstraint("ck_attempts_source", "source IN ('Exam', 'Trial', 'Shared', 'WrongOnly', 'Review', 'CustomMix')");
+                            t.HasCheckConstraint("ck_attempts_source", "source IN ('Exam', 'Trial', 'Shared', 'WrongOnly', 'Review', 'CustomMix', 'DailyDrill')");
 
                             t.HasCheckConstraint("ck_attempts_status", "status IN ('InProgress', 'Submitted', 'Expired')");
 

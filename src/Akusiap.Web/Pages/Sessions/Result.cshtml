@@ -16,7 +16,7 @@
 
 <section class="mx-auto max-w-xl space-y-5">
   <div class="space-y-1">
-    <p class="text-sm text-slate-600">@r.Title</p>
+    <p class="text-sm text-slate-600">@(!string.IsNullOrEmpty(r.Title) ? r.Title : r.Source == AttemptSource.DailyDrill ? T["Drill.Title"].Value : T["History.Mixed"].Value)</p>
     <h1 class="text-2xl font-bold leading-tight">@T["Session.Result.Title"]</h1>
   </div>
 

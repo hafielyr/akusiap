@@ -9,6 +9,9 @@ public enum AttemptSource
     WrongOnly,
     Review,
     CustomMix,
+
+    /// <summary>The daily drill (DRL-01): 10 questions from what the learner can use, due review cards first.</summary>
+    DailyDrill,
 }
 
 public enum AttemptMode

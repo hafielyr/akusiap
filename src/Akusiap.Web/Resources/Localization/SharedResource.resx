@@ -989,7 +989,7 @@
   <data name="Journey.Stat.Cards" xml:space="preserve"><value>kartu diulang</value></data>
   <data name="Journey.RankBadges" xml:space="preserve"><value>Lencana peringkat</value></data>
   <data name="Journey.Badges" xml:space="preserve"><value>Lencana ({0}/{1})</value></data>
-  <data name="Journey.XpRule" xml:space="preserve"><value>XP: 10 per jawaban benar, 20 per sesi selesai, 2 per kartu diulang, 50 per lencana. Streak dihitung per hari WIB.</value></data>
+  <data name="Journey.XpRule" xml:space="preserve"><value>XP: 10 per jawaban benar, 20 per sesi selesai, 2 per kartu diulang, 30 per target latihan harian, 50 per lencana. Streak dihitung per hari WIB.</value></data>
   <data name="Journey.Rank.1" xml:space="preserve"><value>Pemula</value></data>
   <data name="Journey.Rank.2" xml:space="preserve"><value>Penjelajah</value></data>
   <data name="Journey.Rank.3" xml:space="preserve"><value>Pelajar Tekun</value></data>
@@ -1029,4 +1029,19 @@
   <data name="Badge.ClassJoined.How" xml:space="preserve"><value>Gabung ke kelas seorang guru</value></data>
   <data name="Profile.HideOnLeaderboard" xml:space="preserve"><value>Sembunyikan nama saya di papan peringkat</value></data>
   <data name="Profile.HideOnLeaderboardHint" xml:space="preserve"><value>Orang lain melihat Anda sebagai "Peserta #XXXX". Guru di kelas Anda tetap melihat nama Anda.</value></data>
+  <data name="Drill.Title" xml:space="preserve"><value>Latihan harian</value></data>
+  <data name="Drill.Lead" xml:space="preserve"><value>{0} soal setiap hari: kartu yang jatuh tempo dulu, lalu soal baru.</value></data>
+  <data name="Drill.Streak" xml:space="preserve"><value>{0} hari</value></data>
+  <data name="Drill.Week" xml:space="preserve"><value>Tujuh hari terakhir</value></data>
+  <data name="Drill.Start" xml:space="preserve"><value>Mulai latihan harian</value></data>
+  <data name="Drill.Continue" xml:space="preserve"><value>Lanjutkan latihan harian</value></data>
+  <data name="Drill.Done" xml:space="preserve"><value>Target hari ini tercapai · nilai {0}%</value></data>
+  <data name="Drill.Again" xml:space="preserve"><value>Latihan lagi</value></data>
+  <data name="Drill.Empty" xml:space="preserve"><value>Belum ada soal yang bisa dipakai. Buka ujian gratis, beli ujian, atau buat soal sendiri dulu.</value></data>
+  <data name="Badge.DailyGoal7" xml:space="preserve"><value>Rajin 7 hari</value></data>
+  <data name="Badge.DailyGoal7.How" xml:space="preserve"><value>Selesaikan latihan harian di 7 hari berbeda</value></data>
+  <data name="Badge.DailyGoal30" xml:space="preserve"><value>Disiplin 30 hari</value></data>
+  <data name="Badge.DailyGoal30.How" xml:space="preserve"><value>Selesaikan latihan harian di 30 hari berbeda</value></data>
+  <data name="Home.Feature.Drills" xml:space="preserve"><value>Latihan harian &amp; streak</value></data>
+  <data name="Home.Feature.Drills.Text" xml:space="preserve"><value>10 soal setiap hari, poin, level, dan lencana yang membuat Anda konsisten.</value></data>
 </root>
