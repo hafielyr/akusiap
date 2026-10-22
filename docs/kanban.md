@@ -13,6 +13,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 ## Review
 - [TRY-01] CAT tryout screen · M8 · deps: SES-06, SES-07 · (claude-opus-5.5, 2026-10-22)
 - [DRL-02] Leaderboard management: weekly reset and badges per exam · M8 · deps: DRL-01 · (claude-opus-5.5, 2026-10-22)
+- [BRD-02] Pillar logo · M8 · deps: BRD-01 · (claude-opus-5.5, 2026-10-22)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

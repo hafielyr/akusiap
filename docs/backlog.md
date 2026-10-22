@@ -426,6 +426,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: Rename everything users and operators see to LatihanSoal (`LatihanSoal.id`): name, logo, page titles, emails, sender, order numbers (`LSI-`), docs. Code namespaces stay `Akusiap.*`. Blue study-app design system (brand scale, yellow accent, cards, chips) and a redesigned layout, home page (exam categories CPNS/BUMN/Kedinasan/Kedokteran, features, "Segera hadir"), catalog, exam page, learn hub, Today and account pages.
 - AC: No user-visible "Akusiap" remains. Every page fits 360 px. The catalog and player stay within the 150 KB first-load budget (OPS-01). The home page only promises built features; drills and CAT tryouts are marked "Segera hadir".
 
+### BRD-02 Pillar logo · S
+- Stories: owner request (2026-10-22, with a sketch: sheets of paper with a curl, LATIHAN over a light blue SOAL) · Depends on: BRD-01
+- Scope: A new logo whose mark is a column built from exam sheets (practice is the pillar of success): a curling sheet as the capital, stacked lined sheets as the shaft, two slabs as the base. Two-line wordmark LATIHAN / SOAL. Same mark in `favicon.svg` and `favicon.ico`.
+- AC: The header, footer and account pages show the new logo; it fits the 360 px header; the favicon uses the mark.
+
 ### DRL-01 Daily drill with points and streak · M
 - Stories: owner request (gamified daily drills) · Depends on: SRS-03, SES-06
 - Scope: `/learn/hari-ini` gets "Latihan harian": a 10-question set built from the learner's accessible exams (due review cards first, then new questions), a daily goal (one completed drill), XP per correct answer and a streak counted in Jakarta days. Needs a new table for drill progress (streak, XP, last drill date) in this card's migration; record it as an addition to `schema.sql` (like D-68).
