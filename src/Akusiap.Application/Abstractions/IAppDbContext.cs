@@ -76,6 +76,8 @@ public interface IAppDbContext
 
     DbSet<Domain.Gamification.UserBadge> UserBadges { get; }
 
+    DbSet<Domain.Gamification.LeaderboardSettings> LeaderboardSettings { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     /// <summary>For use cases that need several statements to succeed or fail together.</summary>

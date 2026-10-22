@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Akusiap.Application.Gamification;
 
-public sealed record EarnedBadge(BadgeCode Code, long? ExamId, string? ExamTitle, DateTime AwardedAt);
+public sealed record EarnedBadge(BadgeCode Code, long? ExamId, string? ExamTitle, DateTime AwardedAt, DateOnly? WeekStart = null);
 
 /// <summary>The learner's journey page (GAM-01): level, streak, counts and badges.</summary>
 public sealed record JourneyView(LevelProgress Level, StreakInfo Streak, JourneyStats Stats, IReadOnlyList<EarnedBadge> Badges);
@@ -15,7 +15,8 @@ public sealed record JourneyView(LevelProgress Level, StreakInfo Streak, Journey
 /// The learning journey and badges (GAM-01, D-95). Stats are counted from finished attempts (not flashcard sets),
 /// flashcard reviews and class memberships; streaks use Jakarta days with any finished attempt or review. Milestone
 /// badges are awarded once when an event could have earned them (an attempt finishing, a flashcard rating, joining a
-/// class); a rank badge is awarded when a counted Simulation attempt finishes in the top 10 of its leaderboard.
+/// class); a rank badge is awarded when a counted Simulation attempt finishes in the top 10 of its leaderboard, as the exam's
+/// leaderboard settings allow (DRL-02; weekly boards give theirs at week end, see <see cref="WeeklyLeaderboardAwards"/>).
 /// </summary>
 public sealed class Badges(IAppDbContext db, Leaderboards leaderboards, IClock clock)
 {
@@ -24,7 +25,7 @@ public sealed class Badges(IAppDbContext db, Leaderboards leaderboards, IClock c
     {
         var now = clock.UtcNow;
         var (stats, _) = await StatsAsync(userId, cancellationToken).ConfigureAwait(false);
-        var owned = await db.UserBadges.Where(b => b.UserId == userId).Select(b => new { b.Code, b.ExamId }).ToListAsync(cancellationToken).ConfigureAwait(false);
+        var owned = await db.UserBadges.Where(b => b.UserId == userId && b.WeekStart == null).Select(b => new { b.Code, b.ExamId }).ToListAsync(cancellationToken).ConfigureAwait(false);
         var added = new List<UserBadge>();
         foreach (var code in Journey.EarnedMilestones(stats).Where(c => !owned.Any(o => o.Code == c && o.ExamId == null)))
         {
@@ -32,7 +33,7 @@ public sealed class Badges(IAppDbContext db, Leaderboards leaderboards, IClock c
         }
 
         if (attemptId is { } id && await leaderboards.StandingAsync(id, cancellationToken).ConfigureAwait(false) is { } standing
-            && Journey.RankBadge(standing.Rank) is { } rankBadge && !owned.Any(o => o.ExamId == standing.ExamId && Journey.IsRankBadge(o.Code)))
+            && standing.Badge is { } rankBadge && !owned.Any(o => o.ExamId == standing.ExamId && Journey.IsRankBadge(o.Code)))
         {
             added.Add(new UserBadge { UserId = userId, Code = rankBadge, ExamId = standing.ExamId, AwardedAt = now });
         }
@@ -67,7 +68,7 @@ public sealed class Badges(IAppDbContext db, Leaderboards leaderboards, IClock c
         var badges = await db.UserBadges.AsNoTracking()
             .Where(b => b.UserId == userId)
             .OrderByDescending(b => b.AwardedAt)
-            .Select(b => new EarnedBadge(b.Code, b.ExamId, b.Exam == null ? null : b.Exam.Title, b.AwardedAt))
+            .Select(b => new EarnedBadge(b.Code, b.ExamId, b.Exam == null ? null : b.Exam.Title, b.AwardedAt, b.WeekStart))
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
         var level = Journey.Level(Journey.Xp(stats, badges.Count));

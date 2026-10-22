@@ -7,13 +7,12 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [DRL-02] Weekly leaderboard reset and seasonal badges (per-exam boards and badges shipped in GAM-01) · M8 · deps: DRL-01
 
 ## In Progress
 
 ## Review
-- [DRL-01] Daily drill with points and streak · M8 · deps: SRS-03, SES-06 · (claude-opus-5.5, 2026-10-22)
 - [TRY-01] CAT tryout screen · M8 · deps: SES-06, SES-07 · (claude-opus-5.5, 2026-10-22)
+- [DRL-02] Leaderboard management: weekly reset and badges per exam · M8 · deps: DRL-01 · (claude-opus-5.5, 2026-10-22)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
@@ -93,6 +92,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [SHR-05] Enable sharing · M6 · deps: SHR-01, SHR-02, SHR-03, SHR-04
 - [BRD-01] Rebrand to LatihanSoal and blue redesign · M8 · deps: SHR-05
 - [GAM-01] Leaderboards, teacher classes and learning journey · M8 · deps: SES-07, OWN-04, MEM-03
+- [DRL-01] Daily drill with points and streak · M8 · deps: SRS-03, SES-06
 
 ## Backlog
 

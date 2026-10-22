@@ -1060,4 +1060,44 @@
   <data name="Home.Feature.Cat.Text" xml:space="preserve"><value>Full screen with question numbers, doubt marks and a countdown, like the CAT exam.</value></data>
   <data name="Home.Soon.Subtest" xml:space="preserve"><value>Scores per subtest (TWK, TIU, TKP)</value></data>
   <data name="Home.Soon.Subtest.Text" xml:space="preserve"><value>See the score and passing grade for each subtest after a tryout.</value></data>
+  <data name="Admin.Nav.Leaderboards" xml:space="preserve"><value>Leaderboards</value></data>
+  <data name="Admin.Leaderboards.Title" xml:space="preserve"><value>Leaderboards</value></data>
+  <data name="Admin.Leaderboards.Lead" xml:space="preserve"><value>Set up each exam's leaderboard: on or off, weekly reset, and the badges it gives.</value></data>
+  <data name="Admin.Leaderboards.NoExams" xml:space="preserve"><value>There are no catalog exams yet.</value></data>
+  <data name="Admin.Leaderboards.On" xml:space="preserve"><value>On</value></data>
+  <data name="Admin.Leaderboards.Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Admin.Leaderboards.Weekly" xml:space="preserve"><value>Weekly reset</value></data>
+  <data name="Admin.Leaderboards.Since" xml:space="preserve"><value>Counted since {0}</value></data>
+  <data name="Admin.Leaderboards.EditTitle" xml:space="preserve"><value>Leaderboard settings</value></data>
+  <data name="Admin.Leaderboards.Counts" xml:space="preserve"><value>{0} people all time · {1} people this week</value></data>
+  <data name="Admin.Leaderboards.AwardedThrough" xml:space="preserve"><value>Weekly badges have been given up to the week ending {0}.</value></data>
+  <data name="Admin.Leaderboards.View" xml:space="preserve"><value>View the leaderboard</value></data>
+  <data name="Admin.Leaderboards.Board" xml:space="preserve"><value>Leaderboard</value></data>
+  <data name="Admin.Leaderboards.EnabledLabel" xml:space="preserve"><value>Show a leaderboard for this exam</value></data>
+  <data name="Admin.Leaderboards.WeeklyLabel" xml:space="preserve"><value>Reset every week</value></data>
+  <data name="Admin.Leaderboards.WeeklyHelp" xml:space="preserve"><value>The "This week" board starts again every Monday 00:00 WIB. Badges go to each week's final ranks and can be won again the next week. The "All time" board stays.</value></data>
+  <data name="Admin.Leaderboards.BadgesLabel" xml:space="preserve"><value>Badges given</value></data>
+  <data name="Admin.Leaderboards.BadgesHelp" xml:space="preserve"><value>Each person gets the best badge that is on and fits their rank.</value></data>
+  <data name="Admin.Leaderboards.MinScore" xml:space="preserve"><value>Minimum score for badges (%)</value></data>
+  <data name="Admin.Leaderboards.MinScoreHelp" xml:space="preserve"><value>Leave blank for no minimum.</value></data>
+  <data name="Admin.Leaderboards.MinParticipants" xml:space="preserve"><value>Minimum participants for badges</value></data>
+  <data name="Admin.Leaderboards.MinParticipantsHelp" xml:space="preserve"><value>Badges are only given when the board (or that week) has this many people. Leave blank for no minimum.</value></data>
+  <data name="Admin.Leaderboards.ResetTitle" xml:space="preserve"><value>Reset history</value></data>
+  <data name="Admin.Leaderboards.ResetHelp" xml:space="preserve"><value>The leaderboard starts from zero as of now. People's history and scores are kept, and badges already given stay.</value></data>
+  <data name="Admin.Leaderboards.Reset" xml:space="preserve"><value>Reset the board's history</value></data>
+  <data name="Admin.Leaderboards.ResetConfirm" xml:space="preserve"><value>Yes, start from zero</value></data>
+  <data name="Admin.Leaderboards.ResetDone" xml:space="preserve"><value>The leaderboard has been reset.</value></data>
+  <data name="Leaderboard.WeekTitle" xml:space="preserve"><value>This week's leaderboard</value></data>
+  <data name="Leaderboard.ResetsAt" xml:space="preserve"><value>Resets {0}</value></data>
+  <data name="Leaderboard.Periods" xml:space="preserve"><value>Leaderboard period</value></data>
+  <data name="Leaderboard.ThisWeek" xml:space="preserve"><value>This week</value></data>
+  <data name="Leaderboard.AllTime" xml:space="preserve"><value>All time</value></data>
+  <data name="Leaderboard.WeekLead" xml:space="preserve"><value>Each person's first simulation this week counts: the highest score wins, and on a tie the faster time wins.</value></data>
+  <data name="Leaderboard.NoBadges" xml:space="preserve"><value>No badges</value></data>
+  <data name="Leaderboard.Badges" xml:space="preserve"><value>Badges: {0}</value></data>
+  <data name="Leaderboard.BadgesWeekly" xml:space="preserve"><value>Badges every week for the final ranks: {0}</value></data>
+  <data name="Leaderboard.MinScore" xml:space="preserve"><value>min. score {0}%</value></data>
+  <data name="Leaderboard.MinParticipants" xml:space="preserve"><value>min. {0} people</value></data>
+  <data name="Leaderboard.YouRankWeek" xml:space="preserve"><value>Rank #{0} of {1} this week</value></data>
+  <data name="Journey.Week" xml:space="preserve"><value>Week of {0}</value></data>
 </root>

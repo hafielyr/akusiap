@@ -42,7 +42,7 @@
       : $"/ujian/{standing.ExamId}/peringkat";
     <a href="@boardUrl" class="card card-link flex items-center gap-4 p-4" data-testid="result-rank">
       <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full border-4 border-accent-400 text-lg font-extrabold text-brand-800">#@standing.Rank</span>
-      <span class="space-y-0.5"><span class="block font-bold">@T["Leaderboard.YouRank", standing.Rank, standing.Total]</span><span class="block text-sm text-brand-700">@T["Leaderboard.See"]</span></span>
+      <span class="space-y-0.5"><span class="block font-bold">@T[standing.Weekly ? "Leaderboard.YouRankWeek" : "Leaderboard.YouRank", standing.Rank, standing.Total]</span><span class="block text-sm text-brand-700">@T["Leaderboard.See"]</span></span>
     </a>
   }
 
