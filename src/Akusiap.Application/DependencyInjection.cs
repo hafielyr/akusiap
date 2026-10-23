@@ -68,6 +68,7 @@ public static class DependencyInjection
         services.AddScoped<GetUserDetail>();
         services.AddScoped<ApplyGatewayNotification>();
         services.AddScoped<ListCatalog>();
+        services.AddScoped<SearchCatalog>();
         services.AddScoped<GetCatalogExam>();
         services.AddScoped<GetPricing>();
         services.AddScoped<ListSubjects>();

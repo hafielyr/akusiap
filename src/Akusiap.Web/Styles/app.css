@@ -115,14 +115,16 @@
   .icon-tile { display: inline-flex; width: 2.75rem; height: 2.75rem; flex-shrink: 0; align-items: center; justify-content: center; border-radius: .875rem; }
   .num { font-variant-numeric: tabular-nums; }
   .rise { animation: rise .5s ease-out both; }
+  .float { animation: float 6s ease-in-out infinite alternate; }
   .d1 { animation-delay: .07s; } .d2 { animation-delay: .14s; } .d3 { animation-delay: .21s; }
   /* ASCII pillars card (D-107): always dark, so it pins the colours it prints with in both themes. */
   .terminal { overflow: hidden; border-radius: 1.25rem; background: #0b1220; color: #e2e8f0; box-shadow: 0 20px 40px -20px #0b2f6b80, inset 0 0 0 1px #ffffff14; --color-brand-200: #b6d3ff; --color-brand-300: #86b6ff; --color-slate-400: #94a3b8; --color-slate-500: #64748b; }
   .ascii, .ascii-labels { font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace; }
   .ascii { margin: 0; font-size: clamp(7px, 2.7vw, 13px); font-weight: 700; line-height: 1.25; white-space: pre; }
+  .colonnade { margin: 0; font-size: clamp(9px, 1.15vw, 15px); line-height: 1.15; }
   .ascii-labels { font-size: clamp(7px, 2.3vw, 11px); font-weight: 700; color: var(--color-slate-400); }
   .cursor { display: inline-block; width: .55em; height: 1.05em; margin-left: 2px; vertical-align: -2px; background: currentColor; animation: blink 1s steps(1) infinite; }
-  @media (prefers-reduced-motion: reduce) { .rise, .cursor { animation: none; } .card-link:hover, .btn:hover .arrow, .card-link:hover .arrow { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .rise, .cursor, .float { animation: none; } .card-link:hover, .btn:hover .arrow, .card-link:hover .arrow { transform: none; } }
 
   .label { @apply block text-sm font-semibold text-slate-800; }
   /* 16px text keeps iOS from zooming into the field. */
@@ -134,3 +136,4 @@
 
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
 @keyframes blink { 50% { opacity: 0; } }
+@keyframes float { to { translate: 0 -10px; } }

@@ -1133,4 +1133,27 @@
   <data name="Home.Showcase.Eyebrow" xml:space="preserve"><value>Cara belajar</value></data>
   <data name="Home.Showcase.Title" xml:space="preserve"><value>Latihan yang terasa seperti main</value></data>
   <data name="Home.Showcase.Lead" xml:space="preserve"><value>Kerjakan simulasi seperti CAT asli, jaga streak harian, dan lihat namamu naik di papan peringkat.</value></data>
+  <data name="Search.Title" xml:space="preserve"><value>Cari soal</value></data>
+  <data name="Search.Eyebrow" xml:space="preserve"><value>Pencarian</value></data>
+  <data name="Search.Lead" xml:space="preserve"><value>Ketik kata kunci dari soal, topik, atau nama ujian. Kami cari di semua soal katalog.</value></data>
+  <data name="Search.Label" xml:space="preserve"><value>Cari soal atau ujian</value></data>
+  <data name="Search.Placeholder" xml:space="preserve"><value>Cari soal, topik, atau ujian…</value></data>
+  <data name="Search.Submit" xml:space="preserve"><value>Cari</value></data>
+  <data name="Search.Popular" xml:space="preserve"><value>Populer:</value></data>
+  <data name="Search.Suggestions" xml:space="preserve"><value>Pancasila;deret angka;silogisme;UUD 1945;TKP</value></data>
+  <data name="Search.Hint" xml:space="preserve"><value>Mulai ketik untuk mencari di semua soal dan ujian.</value></data>
+  <data name="Search.TooShort" xml:space="preserve"><value>Ketik minimal {0} huruf.</value></data>
+  <data name="Search.NoResults" xml:space="preserve"><value>Tidak ada hasil untuk "{0}"</value></data>
+  <data name="Search.NoResultsHint" xml:space="preserve"><value>Coba kata yang lebih umum, atau lihat katalog ujian.</value></data>
+  <data name="Search.Exams" xml:space="preserve"><value>Ujian ({0})</value></data>
+  <data name="Search.AllExams" xml:space="preserve"><value>Lihat semua</value></data>
+  <data name="Search.Questions" xml:space="preserve"><value>Soal ({0})</value></data>
+  <data name="Search.Trial" xml:space="preserve"><value>Soal coba gratis</value></data>
+  <data name="Search.More" xml:space="preserve"><value>Menampilkan {0} dari {1} soal. Perjelas kata kunci untuk hasil yang lebih tepat.</value></data>
+  <data name="Home.Float.Correct" xml:space="preserve"><value>Jawaban benar!</value></data>
+  <data name="Home.Float.Progress" xml:space="preserve"><value>Soal 66/110 · TIU</value></data>
+  <data name="Home.Float.Streak" xml:space="preserve"><value>7 hari beruntun</value></data>
+  <data name="Home.Float.Rank" xml:space="preserve"><value>Juara 1 minggu ini</value></data>
+  <data name="Nav.Search" xml:space="preserve"><value>Cari soal</value></data>
+  <data name="Catalog.SearchQuestions" xml:space="preserve"><value>Cari di dalam soal</value></data>
 </root>

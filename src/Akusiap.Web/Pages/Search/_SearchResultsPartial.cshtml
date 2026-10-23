@@ -1,0 +1,86 @@
+@model Akusiap.Web.Pages.Search.IndexModel
+@using Akusiap.Application.Catalog
+@using Akusiap.Web.Pages.Exams
+@* Search results (BRD-04): matching exams, then matching questions as a short piece of the stem with the match
+   marked. Never options, answers or explanations. Returned alone for htmx requests. *@
+@{
+  var r = Model.Results;
+  var typed = !string.IsNullOrWhiteSpace(Model.Query);
+}
+<div id="search-results" class="space-y-8" data-testid="search-results">
+  @if (r is null)
+  {
+    <p class="card border-dashed p-6 text-center text-slate-600" data-testid="search-hint">@(typed ? T["Search.TooShort", SearchCatalog.MinLength] : T["Search.Hint"])</p>
+  }
+  else if (r.Exams.Count == 0 && r.Questions.Count == 0)
+  {
+    <div class="card space-y-2 border-dashed p-8 text-center" data-testid="search-empty">
+      <p class="text-lg font-bold">@T["Search.NoResults", r.Query]</p>
+      <p class="text-slate-600">@T["Search.NoResultsHint"]</p>
+      <a href="/ujian" class="btn btn-secondary mt-2">@T["Home.BrowseCatalog"]</a>
+    </div>
+  }
+  else
+  {
+    @if (r.Exams.Count > 0)
+    {
+      <section class="space-y-3" aria-labelledby="search-exams">
+        <div class="flex items-baseline justify-between gap-3">
+          <h2 id="search-exams" class="section-title">@T["Search.Exams", r.ExamTotal]</h2>
+          @if (r.ExamTotal > r.Exams.Count)
+          {
+            <a href="/ujian?q=@Uri.EscapeDataString(r.Query)" class="text-sm font-semibold text-brand-700">@T["Search.AllExams"] →</a>
+          }
+        </div>
+        <ul class="grid gap-3 sm:grid-cols-2">
+          @foreach (var exam in r.Exams)
+          {
+            <li>
+              <a href="@ExamRoutes.Detail(exam.Id)" class="card card-link flex h-full items-center gap-3 p-4" data-testid="search-exam" data-exam="@exam.Id">
+                <span class="icon-tile bg-brand-50 text-brand-700"><svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="M5 4h14v16H5zM9 8h6M9 12h6M9 16h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+                <span class="min-w-0 flex-1 space-y-0.5">
+                  <span class="block font-bold leading-snug text-slate-900">@exam.Title</span>
+                  <span class="block text-sm text-slate-600">@T["Catalog.QuestionCount", exam.ActiveQuestionCount]@(exam.SubjectName is null ? "" : " · " + exam.SubjectName)</span>
+                </span>
+                <span class="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold @(exam.IsFree ? "bg-brand-600 text-white" : "bg-accent-400 text-slate-900")">
+                  @if (exam.IsFree) { @T["Catalog.Free"] } else { <idr value="@(exam.PriceIdr ?? 0)" /> }
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+
+    @if (r.Questions.Count > 0)
+    {
+      <section class="space-y-3" aria-labelledby="search-questions">
+        <h2 id="search-questions" class="section-title">@T["Search.Questions", r.QuestionTotal]</h2>
+        <ul class="space-y-3">
+          @foreach (var q in r.Questions)
+          {
+            var s = q.Snippet;
+            <li>
+              <a href="@ExamRoutes.Detail(q.ExamId)" class="card card-link block space-y-3 p-4" data-testid="search-question" data-question="@q.QuestionId">
+                <span class="block leading-relaxed text-slate-800">@s.Text[..s.MatchStart]<mark class="rounded bg-accent-100 px-0.5 font-semibold text-slate-900">@s.Text.Substring(s.MatchStart, s.MatchLength)</mark>@s.Text[(s.MatchStart + s.MatchLength)..]</span>
+                <span class="flex flex-wrap items-center gap-2 text-sm text-slate-600">
+                  <span class="chip">@q.TopicName</span>
+                  <span class="font-semibold text-slate-800">@q.ExamTitle</span>
+                  @if (q.IsTrial)
+                  {
+                    <span class="rounded-full bg-green-100 px-2 py-0.5 text-xs font-bold text-green-800">@T["Search.Trial"]</span>
+                  }
+                  <span class="arrow ml-auto text-slate-400" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+        @if (r.QuestionTotal > r.Questions.Count)
+        {
+          <p class="text-sm text-slate-500" data-testid="search-more">@T["Search.More", r.Questions.Count, r.QuestionTotal]</p>
+        }
+      </section>
+    }
+  }
+</div>

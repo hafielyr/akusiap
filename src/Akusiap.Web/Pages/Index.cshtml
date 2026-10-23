@@ -1,7 +1,8 @@
 @page
 @model IndexModel
 @using Akusiap.Web.Identity
-@* Home (BRD-01, BRD-03): a glowing hero with the ASCII pillars card, a live-looking product showcase, exam categories, a bento of what works
+@* Home (BRD-01, BRD-03, BRD-04): a full-width hero with an ASCII colonnade and the question search, a live-looking product
+   showcase, exam categories, a bento of what works
    today, what is coming, how it works, and a final call to action. Only "Segera hadir" mentions unbuilt features. The
    showcase is illustration built from plain HTML (sample names and numbers), hidden from screen readers. *@
 @{
@@ -30,58 +31,51 @@
 }
 
 @{
-  // Hero art (BRD-03, D-107): the LatihanSoal "temple" in ASCII, five pillars of practice under one roof, drawn in a
-  // terminal-style card. Each line is exactly as wide as the plinth so the columns line up in any monospace font.
-  var pillarArt = new (string Text, string Css)[]
+  // Hero colonnade (BRD-04, D-106, D-107): the ASCII pillars from the logo idea, repeated across the bottom of the
+  // full-width hero. Every row is built from the same 8-character unit so the columns line up in any monospace font.
+  const int pillars = 26;
+  var colonnade = new (string Text, string Css)[]
   {
-    ("                 _.--^--._", "text-accent-300"),
-    ("          _.-''  LATIHAN  ''-._", "text-accent-300"),
-    ("     _.-''         SOAL         ''-._", "text-accent-300"),
-    ("  .-''_______________________________''-.", "text-accent-300"),
-    ("  |_____________________________________|", "text-accent-400"),
-    ("    ___     ___     ___     ___     ___", "text-brand-200"),
-    ("   (___)   (___)   (___)   (___)   (___)", "text-brand-200"),
-    ("    |:|     |:|     |:|     |:|     |:|", "text-brand-300"),
-    ("    |:|     |:|     |:|     |:|     |:|", "text-brand-300"),
-    ("    |:|     |:|     |:|     |:|     |:|", "text-brand-300"),
-    ("    |:|     |:|     |:|     |:|     |:|", "text-brand-300"),
-    ("   _|:|_   _|:|_   _|:|_   _|:|_   _|:|_", "text-brand-200"),
-    ("  [_____] [_____] [_____] [_____] [_____]", "text-slate-400"),
-    (" =========================================", "text-slate-500"),
+    (new string('_', pillars * 8), "text-accent-300"),
+    ("|" + new string('_', pillars * 8 - 2) + "|", "text-accent-300"),
+    (string.Concat(Enumerable.Repeat("  ___   ", pillars)), "text-white"),
+    (string.Concat(Enumerable.Repeat(" (___)  ", pillars)), "text-white"),
+    (string.Concat(Enumerable.Repeat("  |:|   ", pillars)), "text-brand-100"),
+    (string.Concat(Enumerable.Repeat("  |:|   ", pillars)), "text-brand-100"),
+    (string.Concat(Enumerable.Repeat("  |:|   ", pillars)), "text-brand-100"),
+    (string.Concat(Enumerable.Repeat(" _|:|_  ", pillars)), "text-white"),
+    (string.Concat(Enumerable.Repeat("[_____] ", pillars)), "text-white"),
+    (new string('=', pillars * 8), "text-accent-300"),
   };
 }
-<section class="mx-auto max-w-6xl px-4 pt-4 sm:pt-8">
-  <div class="glow rise grid items-center gap-8 px-5 py-9 sm:px-10 sm:py-14 lg:grid-cols-2">
-    <div class="space-y-6">
-      <span class="eyebrow">@T["Home.Eyebrow"]</span>
-      <h1 class="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">@T["Home.Heading"]</h1>
-      <p class="max-w-xl text-lg text-slate-600">@T["Home.Lead"]</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="/ujian" class="btn btn-primary" data-testid="home-try">@T["Home.TryFree"] <span class="arrow" aria-hidden="true">@arrow</span></a>
-        @if (User.Identity?.IsAuthenticated != true)
-        {
-          <a href="@AccountRoutes.Register" class="btn btn-dark">@T["Home.RegisterFree"]</a>
-        }
-      </div>
-    </div>
-
-    <figure class="terminal rise d2" data-testid="home-pillars">
-      <div class="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5" aria-hidden="true">
-        <span class="size-3 rounded-full bg-red-400"></span><span class="size-3 rounded-full bg-accent-400"></span><span class="size-3 rounded-full bg-green-500"></span>
-        <span class="ml-2 font-mono text-xs text-slate-400">@T["Home.Pillars.File"]</span>
-      </div>
-      <div class="mx-auto w-max max-w-full px-4 pt-4">
-      <pre class="ascii" aria-hidden="true">@foreach (var (text, css) in pillarArt)
+<section class="hero relative isolate overflow-hidden bg-hero text-white" aria-labelledby="home-heading" data-testid="home-hero">
+  <div class="absolute inset-x-0 bottom-0 -z-10 flex flex-col items-center overflow-hidden opacity-50" aria-hidden="true" data-testid="home-colonnade">
+    <pre class="ascii colonnade">@foreach (var (text, css) in colonnade)
 {<span class="@css">@text</span>@("\n")}</pre>
-      <ul class="ascii-labels grid grid-cols-5 text-center" aria-hidden="true">
-        @foreach (var key in new[] { "Practice", "Explanations", "Simulation", "Streak", "Rank" })
-        {
-          <li>@T[$"Home.Pillars.{key}"]</li>
-        }
-      </ul>
-      </div>
-      <figcaption class="px-4 pt-3 pb-4 font-mono text-sm text-green-400"><span class="text-slate-500" aria-hidden="true">$ </span>@T["Home.Pillars.Motto"]<span class="cursor" aria-hidden="true"></span></figcaption>
-    </figure>
+  </div>
+
+  <div aria-hidden="true">
+    <p class="card float absolute top-28 left-[4%] hidden -rotate-3 items-center gap-2 px-4 py-3 text-sm font-bold text-slate-900 shadow-lg xl:flex"><span class="inline-flex size-7 items-center justify-center rounded-full bg-green-600 text-white">✓</span>@T["Home.Float.Correct"]<span class="delta">+10 XP</span></p>
+    <p class="card float d2 absolute top-72 left-[7%] hidden rotate-2 flex-col gap-2 px-4 py-3 text-sm font-semibold text-slate-700 shadow-lg xl:flex">@T["Home.Float.Progress"]<span class="h-2 w-40 overflow-hidden rounded-full bg-slate-200"><span class="block h-full w-3/5 rounded-full bg-brand-600"></span></span></p>
+    <p class="card float d1 absolute top-24 right-[5%] hidden rotate-3 items-center gap-2 px-4 py-3 text-sm font-bold text-slate-900 shadow-lg xl:flex">🔥 @T["Home.Float.Streak"]</p>
+    <p class="card float d3 absolute top-64 right-[8%] hidden -rotate-2 items-center gap-2 px-4 py-3 text-sm font-bold text-slate-900 shadow-lg xl:flex">🏆 @T["Home.Float.Rank"]</p>
+  </div>
+
+  <div class="relative mx-auto max-w-3xl space-y-6 px-4 pt-12 pb-40 text-center sm:pt-20 sm:pb-60">
+    <span class="on-dark inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold"><span class="size-2 rounded-full bg-accent-400"></span>@T["Home.Eyebrow"]</span>
+    <h1 id="home-heading" class="text-4xl font-extrabold leading-tight tracking-tight text-balance sm:text-6xl">@T["Home.Heading"]</h1>
+    <p class="mx-auto max-w-2xl text-lg text-brand-100">@T["Home.Lead"]</p>
+    <div class="mx-auto max-w-2xl">
+      <partial name="_SearchBoxPartial" model="((string?)null, false, true)" />
+    </div>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="/ujian" class="btn btn-accent" data-testid="home-try">@T["Home.TryFree"] <span class="arrow" aria-hidden="true">@arrow</span></a>
+      @if (User.Identity?.IsAuthenticated != true)
+      {
+        <a href="@AccountRoutes.Register" class="btn btn-ghost-light">@T["Home.RegisterFree"]</a>
+      }
+    </div>
+    <p class="font-mono text-sm text-accent-300"><span class="text-brand-200" aria-hidden="true">$ </span>@T["Home.Pillars.Motto"]<span class="cursor" aria-hidden="true"></span></p>
   </div>
 </section>
 
