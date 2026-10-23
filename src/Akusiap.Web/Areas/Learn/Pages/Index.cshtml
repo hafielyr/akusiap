@@ -10,7 +10,8 @@
 
   @if (Model.ResendMessage is { } message)
   {
-    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="resend-message">@T[message]</p>
+    var ok = message == "Account.Confirm.Resent";
+    <p role="status" class="rounded-lg px-3 py-2 text-sm @(ok ? "bg-green-50 text-green-800" : "bg-amber-50 text-amber-900")" data-testid="resend-message" data-message="@message">@T[message]</p>
   }
 
   @if (!Model.EmailConfirmed)

@@ -1100,4 +1100,6 @@
   <data name="Leaderboard.MinParticipants" xml:space="preserve"><value>min. {0} peserta</value></data>
   <data name="Leaderboard.YouRankWeek" xml:space="preserve"><value>Peringkat #{0} dari {1} peserta minggu ini</value></data>
   <data name="Journey.Week" xml:space="preserve"><value>Minggu {0}</value></data>
+  <data name="Account.Confirm.SavedToFile" xml:space="preserve"><value>Mode pengembangan: email konfirmasi tidak dikirim, tetapi disimpan sebagai file .eml di folder src/Akusiap.Web/.dev-mail. Atur Email:Smtp agar email benar-benar terkirim.</value></data>
+  <data name="Account.Confirm.NotSent" xml:space="preserve"><value>Email konfirmasi belum bisa dikirim karena server email belum diatur. Hubungi admin.</value></data>
 </root>

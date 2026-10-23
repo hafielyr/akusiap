@@ -1100,4 +1100,6 @@
   <data name="Leaderboard.MinParticipants" xml:space="preserve"><value>min. {0} people</value></data>
   <data name="Leaderboard.YouRankWeek" xml:space="preserve"><value>Rank #{0} of {1} this week</value></data>
   <data name="Journey.Week" xml:space="preserve"><value>Week of {0}</value></data>
+  <data name="Account.Confirm.SavedToFile" xml:space="preserve"><value>Development mode: the confirmation email was not sent but saved as an .eml file in src/Akusiap.Web/.dev-mail. Set Email:Smtp to send real emails.</value></data>
+  <data name="Account.Confirm.NotSent" xml:space="preserve"><value>The confirmation email could not be sent because no email server is set up. Please contact the admin.</value></data>
 </root>

@@ -4,9 +4,11 @@ using Microsoft.Extensions.Options;
 
 namespace Akusiap.Infrastructure.Email;
 
-/// <summary>Development sender: writes each message as an <c>.eml</c> file instead of sending it (D-15).</summary>
+/// <summary>Development sender when no SMTP host is set: writes each message as an <c>.eml</c> file instead of sending it (D-15, AC-07).</summary>
 internal sealed class FileEmailSender(IOptions<EmailOptions> options, string pickupDirectory) : IEmailSender
 {
+    public EmailDelivery Delivery => EmailDelivery.File;
+
     public string PickupDirectory { get; } = pickupDirectory;
 
     public async Task SendAsync(EmailMessage message, CancellationToken cancellationToken)

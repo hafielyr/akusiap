@@ -26,9 +26,13 @@ public sealed class IndexModel(UserManager<User> users, AccountEmails emails) : 
         var user = await users.GetUserAsync(User);
         if (user is { EmailConfirmed: false })
         {
-            ResendMessage = await emails.SendConfirmationAsync(user, cancellationToken)
-                ? "Account.Confirm.Resent"
-                : "Account.Confirm.SendFailed";
+            var sent = await emails.SendConfirmationAsync(user, cancellationToken);
+            ResendMessage = !sent ? "Account.Confirm.SendFailed" : emails.Delivery switch
+            {
+                Application.Abstractions.EmailDelivery.File => "Account.Confirm.SavedToFile",
+                Application.Abstractions.EmailDelivery.Dropped => "Account.Confirm.NotSent",
+                _ => "Account.Confirm.Resent",
+            };
         }
 
         return Redirect("/learn");

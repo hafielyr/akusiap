@@ -8,6 +8,9 @@ public sealed class FakeEmailSender : IEmailSender
 {
     private readonly ConcurrentQueue<EmailMessage> _sent = new();
 
+    /// <summary>Where the app thinks emails go; tests set it to check the messages for each case (AC-07).</summary>
+    public EmailDelivery Delivery { get; set; } = EmailDelivery.Inbox;
+
     public IReadOnlyList<EmailMessage> Sent => [.. _sent];
 
     public Task SendAsync(EmailMessage message, CancellationToken cancellationToken)
