@@ -14,6 +14,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [AC-07] Real email in development · M1 · deps: AC-02 · (claude-opus-5.5, 2026-10-22)
 - [BRD-03] Design refresh and dark theme · M8 · deps: BRD-02 · (claude-opus-5.5, 2026-10-22)
 - [BRD-04] Full-width hero and question search · M8 · deps: BRD-03 · (claude-opus-5.5, 2026-10-22)
+- [BRD-06] Pixel-art landing hero · M8 · deps: BRD-04 · (claude-opus-5.5, 2026-10-22)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

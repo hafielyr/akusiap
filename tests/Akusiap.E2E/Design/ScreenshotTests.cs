@@ -72,6 +72,7 @@ public sealed class ScreenshotTests(MobileSite site)
             await device.Context.AddInitScriptAsync(themeScript);
             var page = await device.NewPageAsync();
             await ShotAsync(page, "/", $"{name}-1-home");
+            await page.ScreenshotAsync(new PageScreenshotOptions { Path = Path.Combine(directory, $"{name}-1-home-hero.png") }); // viewport only: full-page capture drops animated layers
             await ShotAsync(page, "/ujian", $"{name}-2-catalog");
             await ShotAsync(page, $"/ujian/{exams[0]}", $"{name}-3-exam");
             await ShotAsync(page, "/akun/masuk", $"{name}-4-sign-in");
@@ -116,6 +117,7 @@ public sealed class ScreenshotTests(MobileSite site)
         {
             await page.GotoAsync(url);
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            await page.WaitForTimeoutAsync(900); // let entrance animations finish
             await page.ScreenshotAsync(new PageScreenshotOptions { Path = Path.Combine(directory, $"{file}.png"), FullPage = true });
         }
     }

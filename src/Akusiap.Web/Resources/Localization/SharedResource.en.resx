@@ -1156,4 +1156,7 @@
   <data name="Home.Float.Rank" xml:space="preserve"><value>Top of the week</value></data>
   <data name="Nav.Search" xml:space="preserve"><value>Search</value></data>
   <data name="Catalog.SearchQuestions" xml:space="preserve"><value>Search inside questions</value></data>
+  <data name="Home.Art.Pixel" xml:space="preserve"><value>Pixel-art park in Jakarta with Monas and an open exam book</value></data>
+  <data name="Home.Task.Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Home.Task.Running" xml:space="preserve"><value>In progress</value></data>
 </root>
