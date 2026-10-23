@@ -20,6 +20,7 @@ public sealed class HomePageTests(MobileSite site)
             "Latihan soal CPNS, BUMN, Kedinasan & UKMPPD dalam satu aplikasi",
             (await page.Locator("h1").InnerTextAsync()).Trim());
         Assert.True(await page.GetByTestId("whatsapp-support").IsVisibleAsync(), "The WhatsApp support button is visible");
+        Assert.True(await page.GetByTestId("home-pillars").IsVisibleAsync(), "The ASCII pillars card is visible");
         Assert.True(await page.GetByTestId("home-showcase").IsVisibleAsync(), "The product showcase is visible");
         Assert.Equal(8, await page.GetByTestId("home-bento").Locator("> li").CountAsync());
         var overflow = await page.EvaluateAsync<int>("() => document.documentElement.scrollWidth - window.innerWidth");

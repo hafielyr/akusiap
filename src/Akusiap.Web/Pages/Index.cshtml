@@ -1,7 +1,7 @@
 @page
 @model IndexModel
 @using Akusiap.Web.Identity
-@* Home (BRD-01, BRD-03): a glowing hero with a live-looking product showcase, exam categories, a bento of what works
+@* Home (BRD-01, BRD-03): a glowing hero with the ASCII pillars card, a live-looking product showcase, exam categories, a bento of what works
    today, what is coming, how it works, and a final call to action. Only "Segera hadir" mentions unbuilt features. The
    showcase is illustration built from plain HTML (sample names and numbers), hidden from screen readers. *@
 @{
@@ -29,6 +29,27 @@
   const string arrow = "→";
 }
 
+@{
+  // Hero art (BRD-03, D-107): the LatihanSoal "temple" in ASCII, five pillars of practice under one roof, drawn in a
+  // terminal-style card. Each line is exactly as wide as the plinth so the columns line up in any monospace font.
+  var pillarArt = new (string Text, string Css)[]
+  {
+    ("                 _.--^--._", "text-accent-300"),
+    ("          _.-''  LATIHAN  ''-._", "text-accent-300"),
+    ("     _.-''         SOAL         ''-._", "text-accent-300"),
+    ("  .-''_______________________________''-.", "text-accent-300"),
+    ("  |_____________________________________|", "text-accent-400"),
+    ("    ___     ___     ___     ___     ___", "text-brand-200"),
+    ("   (___)   (___)   (___)   (___)   (___)", "text-brand-200"),
+    ("    |:|     |:|     |:|     |:|     |:|", "text-brand-300"),
+    ("    |:|     |:|     |:|     |:|     |:|", "text-brand-300"),
+    ("    |:|     |:|     |:|     |:|     |:|", "text-brand-300"),
+    ("    |:|     |:|     |:|     |:|     |:|", "text-brand-300"),
+    ("   _|:|_   _|:|_   _|:|_   _|:|_   _|:|_", "text-brand-200"),
+    ("  [_____] [_____] [_____] [_____] [_____]", "text-slate-400"),
+    (" =========================================", "text-slate-500"),
+  };
+}
 <section class="mx-auto max-w-6xl px-4 pt-4 sm:pt-8">
   <div class="glow rise grid items-center gap-8 px-5 py-9 sm:px-10 sm:py-14 lg:grid-cols-2">
     <div class="space-y-6">
@@ -42,6 +63,34 @@
           <a href="@AccountRoutes.Register" class="btn btn-dark">@T["Home.RegisterFree"]</a>
         }
       </div>
+    </div>
+
+    <figure class="terminal rise d2" data-testid="home-pillars">
+      <div class="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5" aria-hidden="true">
+        <span class="size-3 rounded-full bg-red-400"></span><span class="size-3 rounded-full bg-accent-400"></span><span class="size-3 rounded-full bg-green-500"></span>
+        <span class="ml-2 font-mono text-xs text-slate-400">@T["Home.Pillars.File"]</span>
+      </div>
+      <div class="mx-auto w-max max-w-full px-4 pt-4">
+      <pre class="ascii" aria-hidden="true">@foreach (var (text, css) in pillarArt)
+{<span class="@css">@text</span>@("\n")}</pre>
+      <ul class="ascii-labels grid grid-cols-5 text-center" aria-hidden="true">
+        @foreach (var key in new[] { "Practice", "Explanations", "Simulation", "Streak", "Rank" })
+        {
+          <li>@T[$"Home.Pillars.{key}"]</li>
+        }
+      </ul>
+      </div>
+      <figcaption class="px-4 pt-3 pb-4 font-mono text-sm text-green-400"><span class="text-slate-500" aria-hidden="true">$ </span>@T["Home.Pillars.Motto"]<span class="cursor" aria-hidden="true"></span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="mx-auto max-w-6xl px-4 pt-12" aria-labelledby="home-showcase-title">
+  <div class="glow rise grid items-center gap-8 px-5 py-9 sm:px-10 sm:py-12 lg:grid-cols-2">
+    <div class="space-y-4">
+      <span class="eyebrow">@T["Home.Showcase.Eyebrow"]</span>
+      <h2 id="home-showcase-title" class="section-title">@T["Home.Showcase.Title"]</h2>
+      <p class="max-w-xl text-slate-600">@T["Home.Showcase.Lead"]</p>
       <ul class="flex flex-wrap gap-2 text-sm text-slate-700">
         @foreach (var key in new[] { "Home.Trust.Trial", "Home.Trust.Explanations", "Home.Trust.Phone" })
         {

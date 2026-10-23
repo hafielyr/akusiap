@@ -1123,4 +1123,14 @@
   <data name="Learn.Group.Account" xml:space="preserve"><value>Akun</value></data>
   <data name="Learn.DrillDone" xml:space="preserve"><value>Target hari ini tercapai</value></data>
   <data name="Pricing.Eyebrow" xml:space="preserve"><value>Harga</value></data>
+  <data name="Home.Pillars.File" xml:space="preserve"><value>pilar-sukses.txt</value></data>
+  <data name="Home.Pillars.Practice" xml:space="preserve"><value>Latihan</value></data>
+  <data name="Home.Pillars.Explanations" xml:space="preserve"><value>Bahas</value></data>
+  <data name="Home.Pillars.Simulation" xml:space="preserve"><value>Simulasi</value></data>
+  <data name="Home.Pillars.Streak" xml:space="preserve"><value>Streak</value></data>
+  <data name="Home.Pillars.Rank" xml:space="preserve"><value>Juara</value></data>
+  <data name="Home.Pillars.Motto" xml:space="preserve"><value>Latihan adalah pilar kesuksesan</value></data>
+  <data name="Home.Showcase.Eyebrow" xml:space="preserve"><value>Cara belajar</value></data>
+  <data name="Home.Showcase.Title" xml:space="preserve"><value>Latihan yang terasa seperti main</value></data>
+  <data name="Home.Showcase.Lead" xml:space="preserve"><value>Kerjakan simulasi seperti CAT asli, jaga streak harian, dan lihat namamu naik di papan peringkat.</value></data>
 </root>

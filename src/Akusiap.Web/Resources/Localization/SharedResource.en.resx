@@ -1123,4 +1123,14 @@
   <data name="Learn.Group.Account" xml:space="preserve"><value>Account</value></data>
   <data name="Learn.DrillDone" xml:space="preserve"><value>Today's goal reached</value></data>
   <data name="Pricing.Eyebrow" xml:space="preserve"><value>Pricing</value></data>
+  <data name="Home.Pillars.File" xml:space="preserve"><value>pillars-of-success.txt</value></data>
+  <data name="Home.Pillars.Practice" xml:space="preserve"><value>Practice</value></data>
+  <data name="Home.Pillars.Explanations" xml:space="preserve"><value>Review</value></data>
+  <data name="Home.Pillars.Simulation" xml:space="preserve"><value>Mock</value></data>
+  <data name="Home.Pillars.Streak" xml:space="preserve"><value>Streak</value></data>
+  <data name="Home.Pillars.Rank" xml:space="preserve"><value>Rank</value></data>
+  <data name="Home.Pillars.Motto" xml:space="preserve"><value>Practice is the pillar of success</value></data>
+  <data name="Home.Showcase.Eyebrow" xml:space="preserve"><value>How you practise</value></data>
+  <data name="Home.Showcase.Title" xml:space="preserve"><value>Practice that feels like play</value></data>
+  <data name="Home.Showcase.Lead" xml:space="preserve"><value>Take simulations like the real CAT, keep your daily streak and watch your name climb the leaderboard.</value></data>
 </root>
