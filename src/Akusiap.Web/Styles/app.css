@@ -43,12 +43,12 @@
  * shades of the colour scales. Blue and yellow fills (buttons, the hero, the CAT header) keep their colours. Set by the
  * inline script in _Layout (saved choice, else the system setting).
  */
-:root { --canvas: #f6f7fb; --surface: #fff; --line: #e2e8f0b3; --dot: #dfe5ee; --shadow: 0 1px 2px #0f172a0d, 0 6px 16px -8px #0f172a26; --g1: #b9d3ff; --g2: #ffe2a3; --g3: #ffd3df; --ink: var(--color-brand-700); }
+:root { --canvas: #f6f7fb; --hero-bg: #eaf1fb; --surface: #fff; --line: #e2e8f0b3; --dot: #dfe5ee; --shadow: 0 1px 2px #0f172a0d, 0 6px 16px -8px #0f172a26; --g1: #b9d3ff; --g2: #ffe2a3; --g3: #ffd3df; --ink: var(--color-brand-700); }
 /* Light tints (50-200) and dark text shades (800, 900) are remapped; the 300-700 shades stay because they are also
    button fills and hovers, so their text uses get class rules instead. Blue panels reset the tints they print on. */
 [data-theme="dark"] {
   color-scheme: dark;
-  --canvas: #0b0f17; --surface: #121826; --line: #ffffff17; --dot: #1a2233; --shadow: 0 1px 2px #0008, 0 8px 22px -10px #000c; --g1: #1d3b78; --g2: #4a3410; --g3: #4a1c2e; --ink: #8ab8ff;
+  --canvas: #0b0f17; --hero-bg: #0e1626; --surface: #121826; --line: #ffffff17; --dot: #1a2233; --shadow: 0 1px 2px #0008, 0 8px 22px -10px #000c; --g1: #1d3b78; --g2: #4a3410; --g3: #4a1c2e; --ink: #8ab8ff;
   --color-slate-50: #172033; --color-slate-100: #1c2639; --color-slate-200: #283349; --color-slate-300: #354159; --color-slate-400: #64748b;
   --color-slate-500: #94a3b8; --color-slate-600: #a9b4c6; --color-slate-700: #cbd5e1; --color-slate-800: #e2e8f0; --color-slate-900: #f1f5f9; --color-slate-950: #f8fafc;
   --color-brand-50: #13254a; --color-brand-100: #1a3366; --color-brand-200: #24457f; --color-brand-800: #a9cbff;
@@ -115,16 +115,17 @@
   .icon-tile { display: inline-flex; width: 2.75rem; height: 2.75rem; flex-shrink: 0; align-items: center; justify-content: center; border-radius: .875rem; }
   .num { font-variant-numeric: tabular-nums; }
   .rise { animation: rise .5s ease-out both; }
-  .float { animation: float 6s ease-in-out infinite alternate; }
   .d1 { animation-delay: .07s; } .d2 { animation-delay: .14s; } .d3 { animation-delay: .21s; }
   /* ASCII pillars card (D-107): always dark, so it pins the colours it prints with in both themes. */
   .terminal { overflow: hidden; border-radius: 1.25rem; background: #0b1220; color: #e2e8f0; box-shadow: 0 20px 40px -20px #0b2f6b80, inset 0 0 0 1px #ffffff14; --color-brand-200: #b6d3ff; --color-brand-300: #86b6ff; --color-slate-400: #94a3b8; --color-slate-500: #64748b; }
   .ascii, .ascii-labels { font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace; }
   .ascii { margin: 0; font-size: clamp(7px, 2.7vw, 13px); font-weight: 700; line-height: 1.25; white-space: pre; }
-  .colonnade { margin: 0; font-size: clamp(9px, 1.15vw, 15px); line-height: 1.15; }
   .ascii-labels { font-size: clamp(7px, 2.3vw, 11px); font-weight: 700; color: var(--color-slate-400); }
+  /* ASCII hero (BRD-05, D-108): a pale blue page band; in dark mode the generated art is inverted (hue kept) so it reads on dark. */
+  .hero-ascii { background: radial-gradient(var(--dot) 1px, transparent 1.5px) 0 0 / 22px 22px, var(--hero-bg); }
+  [data-theme="dark"] .art-ascii { filter: invert(1) hue-rotate(180deg) brightness(1.35); }
   .cursor { display: inline-block; width: .55em; height: 1.05em; margin-left: 2px; vertical-align: -2px; background: currentColor; animation: blink 1s steps(1) infinite; }
-  @media (prefers-reduced-motion: reduce) { .rise, .cursor, .float { animation: none; } .card-link:hover, .btn:hover .arrow, .card-link:hover .arrow { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .rise, .cursor { animation: none; } .card-link:hover, .btn:hover .arrow, .card-link:hover .arrow { transform: none; } }
 
   .label { @apply block text-sm font-semibold text-slate-800; }
   /* 16px text keeps iOS from zooming into the field. */
@@ -136,4 +137,3 @@
 
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
 @keyframes blink { 50% { opacity: 0; } }
-@keyframes float { to { translate: 0 -10px; } }

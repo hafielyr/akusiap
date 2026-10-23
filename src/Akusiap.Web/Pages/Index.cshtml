@@ -1,9 +1,8 @@
 @page
 @model IndexModel
 @using Akusiap.Web.Identity
-@* Home (BRD-01, BRD-03, BRD-04): a full-width hero with an ASCII colonnade and the question search, a live-looking product
-   showcase, exam categories, a bento of what works
-   today, what is coming, how it works, and a final call to action. Only "Segera hadir" mentions unbuilt features. The
+@* Home (BRD-01, BRD-03, BRD-04, BRD-05): a light full-width hero with the question search and a generated ASCII
+   temple, a live-looking product showcase, exam categories, a bento of what works today, what is coming, how it works, and a final call to action. Only "Segera hadir" mentions unbuilt features. The
    showcase is illustration built from plain HTML (sample names and numbers), hidden from screen readers. *@
 @{
   ViewData["Title"] = T["Home.Title"].Value;
@@ -30,52 +29,28 @@
   const string arrow = "→";
 }
 
-@{
-  // Hero colonnade (BRD-04, D-106, D-107): the ASCII pillars from the logo idea, repeated across the bottom of the
-  // full-width hero. Every row is built from the same 8-character unit so the columns line up in any monospace font.
-  const int pillars = 26;
-  var colonnade = new (string Text, string Css)[]
-  {
-    (new string('_', pillars * 8), "text-accent-300"),
-    ("|" + new string('_', pillars * 8 - 2) + "|", "text-accent-300"),
-    (string.Concat(Enumerable.Repeat("  ___   ", pillars)), "text-white"),
-    (string.Concat(Enumerable.Repeat(" (___)  ", pillars)), "text-white"),
-    (string.Concat(Enumerable.Repeat("  |:|   ", pillars)), "text-brand-100"),
-    (string.Concat(Enumerable.Repeat("  |:|   ", pillars)), "text-brand-100"),
-    (string.Concat(Enumerable.Repeat("  |:|   ", pillars)), "text-brand-100"),
-    (string.Concat(Enumerable.Repeat(" _|:|_  ", pillars)), "text-white"),
-    (string.Concat(Enumerable.Repeat("[_____] ", pillars)), "text-white"),
-    (new string('=', pillars * 8), "text-accent-300"),
-  };
-}
-<section class="hero relative isolate overflow-hidden bg-hero text-white" aria-labelledby="home-heading" data-testid="home-hero">
-  <div class="absolute inset-x-0 bottom-0 -z-10 flex flex-col items-center overflow-hidden opacity-50" aria-hidden="true" data-testid="home-colonnade">
-    <pre class="ascii colonnade">@foreach (var (text, css) in colonnade)
-{<span class="@css">@text</span>@("\n")}</pre>
-  </div>
-
-  <div aria-hidden="true">
-    <p class="card float absolute top-28 left-[4%] hidden -rotate-3 items-center gap-2 px-4 py-3 text-sm font-bold text-slate-900 shadow-lg xl:flex"><span class="inline-flex size-7 items-center justify-center rounded-full bg-green-600 text-white">✓</span>@T["Home.Float.Correct"]<span class="delta">+10 XP</span></p>
-    <p class="card float d2 absolute top-72 left-[7%] hidden rotate-2 flex-col gap-2 px-4 py-3 text-sm font-semibold text-slate-700 shadow-lg xl:flex">@T["Home.Float.Progress"]<span class="h-2 w-40 overflow-hidden rounded-full bg-slate-200"><span class="block h-full w-3/5 rounded-full bg-brand-600"></span></span></p>
-    <p class="card float d1 absolute top-24 right-[5%] hidden rotate-3 items-center gap-2 px-4 py-3 text-sm font-bold text-slate-900 shadow-lg xl:flex">🔥 @T["Home.Float.Streak"]</p>
-    <p class="card float d3 absolute top-64 right-[8%] hidden -rotate-2 items-center gap-2 px-4 py-3 text-sm font-bold text-slate-900 shadow-lg xl:flex">🏆 @T["Home.Float.Rank"]</p>
-  </div>
-
-  <div class="relative mx-auto max-w-3xl space-y-6 px-4 pt-12 pb-40 text-center sm:pt-20 sm:pb-60">
-    <span class="on-dark inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold"><span class="size-2 rounded-full bg-accent-400"></span>@T["Home.Eyebrow"]</span>
-    <h1 id="home-heading" class="text-4xl font-extrabold leading-tight tracking-tight text-balance sm:text-6xl">@T["Home.Heading"]</h1>
-    <p class="mx-auto max-w-2xl text-lg text-brand-100">@T["Home.Lead"]</p>
-    <div class="mx-auto max-w-2xl">
-      <partial name="_SearchBoxPartial" model="((string?)null, false, true)" />
+<section class="hero-ascii relative overflow-hidden border-b border-slate-200" aria-labelledby="home-heading" data-testid="home-hero">
+  <div class="mx-auto grid max-w-6xl items-center gap-6 px-4 pt-10 pb-6 sm:pt-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pb-14">
+    <div class="space-y-6">
+      <span class="eyebrow">@T["Home.Eyebrow"]</span>
+      <h1 id="home-heading" class="text-4xl font-extrabold leading-[1.05] tracking-tight text-balance text-brand-900 sm:text-6xl">@T["Home.Heading"]</h1>
+      <p class="max-w-xl text-lg text-slate-600">@T["Home.Lead"]</p>
+      <div class="max-w-xl">
+        <partial name="_SearchBoxPartial" model="((string?)null, false, false)" />
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="/ujian" class="btn btn-primary" data-testid="home-try">@T["Home.TryFree"] <span class="arrow" aria-hidden="true">@arrow</span></a>
+        @if (User.Identity?.IsAuthenticated != true)
+        {
+          <a href="@AccountRoutes.Register" class="btn btn-dark">@T["Home.RegisterFree"]</a>
+        }
+      </div>
     </div>
-    <div class="flex flex-wrap justify-center gap-3">
-      <a href="/ujian" class="btn btn-accent" data-testid="home-try">@T["Home.TryFree"] <span class="arrow" aria-hidden="true">@arrow</span></a>
-      @if (User.Identity?.IsAuthenticated != true)
-      {
-        <a href="@AccountRoutes.Register" class="btn btn-ghost-light">@T["Home.RegisterFree"]</a>
-      }
-    </div>
-    <p class="font-mono text-sm text-accent-300"><span class="text-brand-200" aria-hidden="true">$ </span>@T["Home.Pillars.Motto"]<span class="cursor" aria-hidden="true"></span></p>
+    <figure class="rise d1" data-testid="home-art">
+      @* Generated by tools/art/ascii-hero.cs (BRD-05, D-108): an ASCII temple of five pillars. *@
+      <img src="~/img/hero-ascii.svg" asp-append-version="true" alt="@T["Home.Art.Ascii"]" width="907" height="998" class="art-ascii mx-auto w-full max-w-xl" />
+      <figcaption class="mt-2 text-center font-mono text-xs text-slate-500">$ @T["Home.Pillars.Motto"]<span class="cursor" aria-hidden="true"></span></figcaption>
+    </figure>
   </div>
 </section>
 
