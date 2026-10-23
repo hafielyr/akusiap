@@ -60,10 +60,41 @@ public static class DependencyInjection
         services.AddScoped<Jobs.SweepExpiredAttemptsJob>();
 
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
+        // Payments (PAY-04, D-110): DOKU when its keys are set (sandbox unless Doku:Environment is Production, which a
+        // Development run refuses); otherwise Development and tests use the fake gateway (PAY-01) and other
+        // environments have none (the webhook answers 503 and checkout says payments are unavailable).
+        var dokuSection = configuration.GetSection(DokuOptions.SectionName);
+        var doku = dokuSection.Get<DokuOptions>() ?? new DokuOptions();
+        services.Configure<DokuOptions>(dokuSection);
+        services.PostConfigure<DokuOptions>(o =>
+        {
+            var site = configuration["Site:BaseUrl"];
+            if (string.IsNullOrWhiteSpace(o.ReturnUrl) && !string.IsNullOrWhiteSpace(site))
+            {
+                o.ReturnUrl = site.TrimEnd('/') + "/bayar/{0}";
+            }
+        });
         if (environment.IsDevelopment())
         {
-            // The DOKU gateway comes with PAY-04; Development and tests use the fake one (PAY-01).
             services.AddSingleton<FakePaymentGateway>();
+        }
+
+        if (doku.IsConfigured)
+        {
+            if (doku.IsProduction && environment.IsDevelopment())
+            {
+                throw new InvalidOperationException("Doku:Environment is Production in a Development run. Use DOKU sandbox keys locally.");
+            }
+
+            services.AddHttpClient<DokuGateway>(client =>
+            {
+                client.BaseAddress = new Uri(doku.BaseUrl);
+                client.Timeout = TimeSpan.FromSeconds(30);
+            });
+            services.AddTransient<IPaymentGateway>(sp => sp.GetRequiredService<DokuGateway>());
+        }
+        else if (environment.IsDevelopment())
+        {
             services.AddSingleton<IPaymentGateway>(sp => sp.GetRequiredService<FakePaymentGateway>());
         }
 

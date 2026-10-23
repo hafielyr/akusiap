@@ -1157,4 +1157,6 @@
   <data name="Nav.Search" xml:space="preserve"><value>Search</value></data>
   <data name="Catalog.SearchQuestions" xml:space="preserve"><value>Search inside questions</value></data>
   <data name="Home.Art.Ascii" xml:space="preserve"><value>A temple of five pillars drawn in ASCII art</value></data>
+  <data name="Pay.OpenHosted" xml:space="preserve"><value>Continue to the payment page</value></data>
+  <data name="Pay.HostedHint" xml:space="preserve"><value>You will pay on DOKU's secure page, then come back here.</value></data>
 </root>

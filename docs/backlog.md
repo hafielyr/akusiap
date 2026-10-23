@@ -281,8 +281,15 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### PAY-04 DOKU client · M
 - Stories: ID-10, ID-11, ID-12, P-04 · Depends on: PAY-01
+- Update (2026-10-23, D-110): mixed approach confirmed by the owner. Virtual accounts (BCA, BNI, BRI, Mandiri) on the non-SNAP Direct API; card, e-wallets and QRIS on DOKU Checkout limited to the chosen method; VA 24 h, others 30 min; QRIS must be activated in the DOKU Back Office.
 - Scope: Implement `IPaymentGateway` with DOKU (sandbox in dev; D-10): QRIS, bank transfer VA, e-wallets (deeplink) and credit card, matching `Payment.Method`. Store DOKU's `invoice_number` and `Request-Id` on the payment. Verify the signature of every DOKU HTTP notification as DOKU documents it before trusting it. Credentials (`Doku:ClientId`, `Doku:SecretKey`) from user-secrets/env only. Typed HttpClient with retries. Pick the DOKU product (Checkout or Direct API) in this card and record it as a decision.
 - AC: Against the sandbox (manual, behind an env flag), a QRIS and a VA charge return instructions, and a sample notification passes signature verification. Unit tests use recorded JSON fixtures.
+
+### PAY-11 Manual transfer confirmed on WhatsApp · M
+- Stories: owner request (2026-10-23: "Transfer ke admin via WhatsApp" as a payment method) · Depends on: PAY-04, PAY-10
+- Scope: A checkout method without DOKU: the learner sees the bank account to transfer to and a WhatsApp button with the order number and amount prefilled; the payment stays Pending until an admin confirms the transfer in `/admin/transaksi` (Paid, with who and when) or it expires; confirming fulfils exactly like a DOKU payment.
+- Needs from the owner: the bank, account number and account name to show; the WhatsApp number for confirmations (or the support number); how long the learner has to transfer; whether amounts get a unique code (for example +123) to match transfers; who may confirm (admins only?).
+- AC: An admin confirmation unlocks access once; an unconfirmed manual payment expires on time; the account details come from configuration, not code.
 
 ### PAY-05 Payment instructions and pending payments · M
 - Stories: ID-10, ID-11, ID-12, ID-13 · Depends on: PAY-03, PAY-01

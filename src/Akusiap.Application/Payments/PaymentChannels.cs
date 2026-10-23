@@ -2,7 +2,7 @@ using Akusiap.Domain.Payments;
 
 namespace Akusiap.Application.Payments;
 
-/// <summary>One way to pay at checkout: QRIS, a VA bank or an e-wallet (ID-18).</summary>
+/// <summary>One way to pay at checkout: QRIS, a VA bank, an e-wallet (ID-18) or a card (PAY-04).</summary>
 public sealed class PaymentChannelSetting
 {
     /// <summary>Stable id used in forms, for example <c>QRIS</c>, <c>VA-BCA</c>, <c>EWALLET-OVO</c>.</summary>
@@ -42,6 +42,7 @@ public sealed class PaymentChannelOptions
         new() { Code = "EWALLET-OVO", Method = PaymentMethod.EWallet, Channel = "OVO", Label = "OVO" },
         new() { Code = "EWALLET-DANA", Method = PaymentMethod.EWallet, Channel = "DANA", Label = "DANA" },
         new() { Code = "EWALLET-SHOPEEPAY", Method = PaymentMethod.EWallet, Channel = "SHOPEEPAY", Label = "ShopeePay" },
+        new() { Code = "CARD", Method = PaymentMethod.CreditCard, Label = "Kartu kredit/debit" },
     ];
 
     /// <summary>The channels to offer for <paramref name="amountIdr"/>: enabled, at or above their minimum, QRIS first, then VA, then e-wallets.</summary>

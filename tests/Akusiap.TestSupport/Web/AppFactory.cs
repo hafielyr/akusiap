@@ -37,6 +37,9 @@ public sealed class AppFactory(string connectionString) : WebApplicationFactory<
         builder.UseSetting("Seed:OnStartup", "false");
         // Never pick up a developer's admin from user-secrets; tests that need one set it explicitly.
         builder.UseSetting("Seed:AdminEmail", string.Empty);
+        // Never call DOKU from tests, even when a developer has sandbox keys in user-secrets: use the fake gateway.
+        builder.UseSetting("Doku:ClientId", string.Empty);
+        builder.UseSetting("Doku:SecretKey", string.Empty);
         // Serve the build's precompressed static files, as production does, instead of the Development handler that
         // re-sends them uncompressed for live reload; the first-load budget (OPS-01) then measures real transfer (D-104).
         builder.UseSetting("ReloadStaticAssetsAtRuntime", "false");
@@ -54,6 +57,8 @@ public sealed class AppFactory(string connectionString) : WebApplicationFactory<
             services.AddSingleton<IClock>(Clock);
             services.RemoveAll<IEmailSender>();
             services.AddSingleton<IEmailSender>(Email);
+            services.RemoveAll<IPaymentGateway>();
+            services.AddSingleton<IPaymentGateway>(sp => sp.GetRequiredService<Akusiap.Infrastructure.Payments.FakePaymentGateway>());
         });
     }
 }

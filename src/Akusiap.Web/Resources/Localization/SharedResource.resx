@@ -1157,4 +1157,6 @@
   <data name="Nav.Search" xml:space="preserve"><value>Cari soal</value></data>
   <data name="Catalog.SearchQuestions" xml:space="preserve"><value>Cari di dalam soal</value></data>
   <data name="Home.Art.Ascii" xml:space="preserve"><value>Ilustrasi kuil berpilar lima dalam seni ASCII</value></data>
+  <data name="Pay.OpenHosted" xml:space="preserve"><value>Lanjutkan ke halaman pembayaran</value></data>
+  <data name="Pay.HostedHint" xml:space="preserve"><value>Anda akan membayar di halaman aman DOKU, lalu kembali ke sini.</value></data>
 </root>

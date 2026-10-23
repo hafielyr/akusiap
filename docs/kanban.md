@@ -15,14 +15,15 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [BRD-03] Design refresh and dark theme · M8 · deps: BRD-02 · (claude-opus-5.5, 2026-10-22)
 - [BRD-04] Full-width hero and question search · M8 · deps: BRD-03 · (claude-opus-5.5, 2026-10-22)
 - [BRD-05] ASCII art landing hero · M8 · deps: BRD-04 · (claude-opus-5.5, 2026-10-22)
+- [PAY-04] DOKU client · M3 · deps: PAY-01 · (claude-opus-5.5, 2026-10-23)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
 - [AC-05] Legal pages · M1 · deps: F-06, AC-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: the Terms of Service and Privacy Policy text (Indonesian and English), the business name and contact to show in them, and confirmation that the "proposed" refund policy in the stories doc is final. The stories doc has no Terms or Privacy text, and legal text must not be guessed.
-- [PAY-04] DOKU client · M3 · deps: PAY-01 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: DOKU sandbox credentials (`Doku:ClientId`, `Doku:SecretKey`, set with user-secrets) and the DOKU product to use (Checkout or Direct API). The AC needs real sandbox charges and recorded notification fixtures, which can't be made without the account.
 - [PAY-09] Refund requests · M3 · deps: PAY-06 · (claude-opus-5.5, 2026-10-19) · Needs from the owner: confirmation that the "proposed" refund policy in the stories doc is final (windows, the 20% usage rule, one first-payment refund per account, the review rules), ideally as part of the AC-05 legal text. Payment rules must not be guessed. PAY-04 (DOKU refunds) is also still blocked.
-- [OPS-02] Production deployment · M4 · deps: F-08, PAY-04 · (claude-opus-5.5, 2026-10-20) · Needs PAY-04 first (blocked on DOKU sandbox credentials), plus from the owner: a Hetzner VPS (or similar) and domain, GitHub secrets for GHCR/SSH deploy, and production values for Neon, SMTP, Site:BaseUrl and optional Google OAuth.
+- [OPS-02] Production deployment · M4 · deps: F-08, PAY-04 · (claude-opus-5.5, 2026-10-20) · PAY-04 (DOKU) is in review; needs from the owner: a Hetzner VPS (or similar) and domain, GitHub secrets for GHCR/SSH deploy, and production values for Neon, SMTP, Site:BaseUrl and optional Google OAuth.
 - [TRY-02] Subtest scoring (TWK/TIU/TKP) · M8 · deps: TRY-01 · (claude-opus-5.5, 2026-10-22) · Needs from the owner: the subtest scoring rules and passing grades (for example SKD: TWK, TIU, TKP), and approval for the schema change, because TKP gives 1–5 points per option and `schema.sql` only has right/wrong options. Scoring must not be guessed.
+- [PAY-11] Manual transfer confirmed on WhatsApp · M3 · deps: PAY-04, PAY-10 · (claude-opus-5.5, 2026-10-23) · Needs from the owner: the bank, account number and account name to show, the WhatsApp number for confirmations, the transfer time limit, whether amounts get a unique code, and who may confirm. Payment rules must not be guessed.
 
 ## Done
 - [F-01] Solution skeleton · M1 · deps: none

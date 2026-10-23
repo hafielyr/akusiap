@@ -116,8 +116,12 @@ Email__Smtp__Password=…
 # Payments__Channels__1__Code=VA-BCA  …__Method=VirtualAccount  …__Channel=BCA  …__Label=BCA Virtual Account  …__Enabled=true
 Authentication__Google__ClientId=…            # optional (AC-03); the Google button shows only when both are set
 Authentication__Google__ClientSecret=…
-# Added by later cards:
-# Doku__ClientId / Doku__SecretKey                                          (PAY-04)
+# DOKU (PAY-04, D-110). Live keys only on the server; sandbox keys locally (user-secrets). In the DOKU Back Office set
+# the notification URL to https://latihansoal.id/webhooks/doku and activate QRIS, the VA banks, e-wallets and cards.
+Doku__ClientId=…
+Doku__SecretKey=…
+Doku__Environment=Production                  # default Sandbox; a Development run refuses Production
+# Doku__ReturnUrl defaults to Site__BaseUrl + /bayar/{0}; Doku__VirtualAccountMinutes=1440, Doku__HostedPageMinutes=30
 ```
 
 **App changes OPS-02 must make so this works:**

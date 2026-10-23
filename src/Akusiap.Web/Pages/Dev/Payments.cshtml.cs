@@ -13,7 +13,8 @@ namespace Akusiap.Web.Pages.Dev;
 
 /// <summary>
 /// <c>/dev/pembayaran</c>, Development only (PAY-01): start a test payment for a paid exam with the fake gateway, see its
-/// instructions, and play the gateway's "paid" notification. Answers 404 in every other environment.
+/// instructions, and play the gateway's "paid" notification (DOKU-format and signed with the sandbox key when DOKU is
+/// configured, PAY-04). Answers 404 in every other environment.
 /// Unlocking the exam after payment comes with PAY-06.
 /// </summary>
 [Authorize]
@@ -23,6 +24,8 @@ public sealed class PaymentsModel(
     ApplyGatewayNotification applyNotification,
     ICurrentUser currentUser,
     IClock clock,
+    IPaymentGateway gateway,
+    Microsoft.Extensions.Options.IOptions<DokuOptions> doku,
     IWebHostEnvironment environment) : PageModel
 {
     public const string Route = "/dev/pembayaran";
@@ -81,7 +84,7 @@ public sealed class PaymentsModel(
         }
 
         var result = await createPayment.HandleAsync(
-            new CreatePaymentRequest(userId, PaymentItem.ForExamPurchase(purchase.Id, exam.Title), exam.PriceIdr!.Value, method, method == PaymentMethod.VirtualAccount ? "BCA" : null),
+            new CreatePaymentRequest(userId, PaymentItem.ForExamPurchase(purchase.Id, exam.Title), exam.PriceIdr!.Value, method, method switch { PaymentMethod.VirtualAccount => "BCA", PaymentMethod.EWallet => "OVO", _ => null }),
             cancellationToken);
         Message = result.Succeeded ? $"Created {result.Value!.OrderNumber}" : string.Join(", ", result.Problems.Select(p => p.Code));
         return Redirect(Route);
@@ -96,8 +99,11 @@ public sealed class PaymentsModel(
             return NotFound();
         }
 
-        var (outcome, _) = await applyNotification.HandleAsync(
-            FakePaymentGateway.CreateNotification(payment.InvoiceNumber, status, payment.AmountIdr), cancellationToken);
+        // With DOKU configured (sandbox), play a DOKU-format notification signed with the sandbox key (PAY-04).
+        var notification = gateway is DokuGateway
+            ? DokuGateway.CreateSampleNotification(doku.Value, payment.InvoiceNumber, status == "PAID" ? "SUCCESS" : status, payment.AmountIdr, clock.UtcNow)
+            : FakePaymentGateway.CreateNotification(payment.InvoiceNumber, status, payment.AmountIdr);
+        var (outcome, _) = await applyNotification.HandleAsync(notification, cancellationToken);
         Message = $"{payment.OrderNumber}: {status} → {outcome} at {clock.UtcNow:u}";
         return Redirect(Route);
     }
