@@ -19,7 +19,7 @@
     <ul class="space-y-3" data-testid="pending-list">
       @foreach (var payment in Model.Pending)
       {
-        <li class="space-y-2 rounded-xl border border-slate-200 bg-white p-4" data-testid="pending-payment" data-order="@payment.OrderNumber">
+        <li class="space-y-2 card p-4" data-testid="pending-payment" data-order="@payment.OrderNumber">
           <p class="font-semibold">@payment.ItemTitle</p>
           <p class="text-sm text-slate-600"><idr value="@payment.AmountIdr" /> · @payment.OrderNumber</p>
           @if (payment.ExpiresAt is { } deadline)

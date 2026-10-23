@@ -5,6 +5,7 @@
 @* Learning journey (GAM-01): level with XP progress, streak, totals and the badge collection (earned and still locked). *@
 @{
   ViewData["Title"] = T["Journey.Title"].Value;
+  ViewData["Wide"] = true;
   var j = Model.Journey;
   var milestones = Enum.GetValues<BadgeCode>().Where(c => !Journey.IsRankBadge(c)).ToList();
   var earnedMilestones = j.Badges.Where(b => b.ExamId is null).Select(b => b.Code).ToHashSet();
@@ -15,27 +16,27 @@
 <section class="space-y-5">
   <a href="/learn" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Learn.Title"]</a>
 
-  <div class="bg-hero space-y-4 rounded-2xl p-5 text-white shadow-sm" data-testid="journey-level">
+  <div class="glow rise space-y-4 p-5 sm:p-6" data-testid="journey-level">
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center gap-4">
-        <span class="inline-flex size-20 shrink-0 items-center justify-center rounded-full border-4 border-accent-400 text-2xl font-extrabold" data-testid="level">@j.Level.Level</span>
+        <span class="dial size-20" style="--p: @j.Level.Percent; --ring: var(--color-accent-500)"><span class="text-2xl font-extrabold" data-testid="level">@j.Level.Level</span></span>
         <span class="space-y-0.5">
-          <span class="block text-sm text-brand-100">@T["Journey.Level", j.Level.Level]</span>
+          <span class="block text-sm text-slate-600">@T["Journey.Level", j.Level.Level]</span>
           <span class="block text-xl font-extrabold">@T[$"Journey.Rank.{Math.Min(j.Level.Level, 10)}"]</span>
         </span>
       </div>
-      <div class="on-dark rounded-xl px-4 py-2 text-center" data-testid="streak">
+      <div class="card px-4 py-2 text-center" data-testid="streak">
         <span class="block text-2xl font-extrabold">🔥 @j.Streak.Current</span>
-        <span class="block text-xs text-brand-100">@T["Journey.StreakDays"]</span>
+        <span class="block text-xs text-slate-600">@T["Journey.StreakDays"]</span>
       </div>
     </div>
     <div class="space-y-1">
-      <div class="on-dark h-3 overflow-hidden rounded-full" role="progressbar" aria-valuemin="0" aria-valuemax="@j.Level.XpForNextLevel" aria-valuenow="@j.Level.XpIntoLevel" aria-label="@T["Journey.Xp"]">
+      <div class="h-3 overflow-hidden rounded-full bg-slate-200" role="progressbar" aria-valuemin="0" aria-valuemax="@j.Level.XpForNextLevel" aria-valuenow="@j.Level.XpIntoLevel" aria-label="@T["Journey.Xp"]">
         <div class="h-full rounded-full bg-accent-400" style="width: @(j.Level.Percent)%"></div>
       </div>
-      <p class="text-sm text-brand-100" data-testid="xp">@T["Journey.XpProgress", j.Level.Xp, j.Level.XpIntoLevel, j.Level.XpForNextLevel, j.Level.Level + 1]</p>
+      <p class="text-sm text-slate-600" data-testid="xp">@T["Journey.XpProgress", j.Level.Xp, j.Level.XpIntoLevel, j.Level.XpForNextLevel, j.Level.Level + 1]</p>
     </div>
-    <p class="text-sm text-brand-100">@(j.Streak.ActiveToday ? T["Journey.StreakDone"] : T["Journey.StreakKeep"]) · @T["Journey.Longest", j.Streak.Longest]</p>
+    <p class="text-sm text-slate-600">@(j.Streak.ActiveToday ? T["Journey.StreakDone"] : T["Journey.StreakKeep"]) · @T["Journey.Longest", j.Streak.Longest]</p>
   </div>
 
   <ul class="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="journey-stats">
@@ -47,7 +48,7 @@
       ("Journey.Stat.Cards", j.Stats.FlashcardReviews.ToString(System.Globalization.CultureInfo.CurrentCulture)),
     })
     {
-      <li class="card p-4"><span class="block text-2xl font-extrabold text-brand-700">@value</span><span class="block text-sm text-slate-600">@T[label]</span></li>
+      <li class="stat"><span class="num block text-2xl font-extrabold text-brand-700">@value</span><span class="block text-sm text-slate-600">@T[label]</span></li>
     }
   </ul>
 
@@ -73,7 +74,7 @@
       @foreach (var code in milestones)
       {
         var earned = earnedMilestones.Contains(code);
-        <li class="card space-y-2 p-4 @(earned ? null : "opacity-60")" data-testid="milestone" data-code="@code" data-earned="@(earned ? "true" : "false")">
+        <li class="card space-y-2 p-4 @(earned ? null : "border-dashed opacity-60")" data-testid="milestone" data-code="@code" data-earned="@(earned ? "true" : "false")">
           <span class="inline-flex size-11 items-center justify-center rounded-full text-xl @(earned ? "bg-accent-100" : "bg-slate-100")">@(earned ? "🏅" : "🔒")</span>
           <span class="block font-bold leading-snug">@T[$"Badge.{code}"]</span>
           <span class="block text-sm text-slate-600">@T[$"Badge.{code}.How"]</span>

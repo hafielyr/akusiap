@@ -4,7 +4,8 @@
   ViewData["Title"] = T["Account.SignIn.Title"].Value;
 }
 
-<section class="card mx-auto max-w-md space-y-6 p-6 sm:p-8">
+<div class="frame rise mx-auto max-w-md sm:mt-6">
+<section class="card space-y-6 p-6 sm:p-8">
   <div class="flex justify-center"><partial name="_LogoPartial" /></div>
   <h1 class="text-2xl font-extrabold leading-tight">@T["Account.SignIn.Heading"]</h1>
   @if (Model.PasswordWasReset)
@@ -51,3 +52,4 @@
     <a href="@AccountRoutes.WithReturnUrl(AccountRoutes.Register, Model.ReturnUrl)" class="inline-flex min-h-11 items-center font-semibold text-brand-700">@T["Nav.Register"]</a>
   </p>
 </section>
+</div>

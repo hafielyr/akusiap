@@ -8,25 +8,26 @@
 }
 
 <section class="space-y-6">
-  <div class="space-y-2">
-    <h1 class="text-2xl font-bold leading-tight">@T["Pricing.Title"]</h1>
-    <p class="text-slate-600">@T["Pricing.Lead"]</p>
+  <div class="glow space-y-2 px-5 py-7 sm:px-8">
+    <span class="eyebrow">@T["Pricing.Eyebrow"]</span>
+    <h1 class="text-3xl font-extrabold leading-tight tracking-tight">@T["Pricing.Title"]</h1>
+    <p class="max-w-xl text-slate-600">@T["Pricing.Lead"]</p>
   </div>
 
-  <div class="grid gap-4 sm:grid-cols-2">
-    <article class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="exam-card">
-      <h2 class="text-lg font-semibold">@T["Pricing.SingleExam"]</h2>
+  <div class="frame grid gap-1.5 sm:grid-cols-2">
+    <article class="card space-y-3 p-5" data-testid="exam-card">
+      <h2 class="text-lg font-extrabold">@T["Pricing.SingleExam"]</h2>
       @if (pricing.Exam is { } exam)
       {
         <p class="text-slate-700">@exam.Title</p>
-        <p class="text-2xl font-bold" data-testid="exam-price"><idr value="@exam.PriceIdr" /></p>
+        <p class="text-3xl font-extrabold tracking-tight" data-testid="exam-price"><idr value="@exam.PriceIdr" /></p>
         <p class="text-sm text-slate-600">@T["Catalog.AccessDays", exam.AccessDays]</p>
         <a href="@ExamRoutes.Checkout(exam.Id)" class="btn btn-secondary w-full" data-testid="buy-exam">@T["ExamPage.Buy"]</a>
       }
       else if (pricing.LowestExamPriceIdr is { } lowest)
       {
         <p class="text-sm text-slate-600">@T["Pricing.From"]</p>
-        <p class="text-2xl font-bold" data-testid="exam-price"><idr value="@lowest" /></p>
+        <p class="text-3xl font-extrabold tracking-tight" data-testid="exam-price"><idr value="@lowest" /></p>
         <p class="text-sm text-slate-600">@T["Pricing.SingleExamHint"]</p>
         <a href="@ExamRoutes.Catalog" class="btn btn-secondary w-full">@T["Learn.Access.Browse"]</a>
       }
@@ -36,8 +37,8 @@
       }
     </article>
 
-    <article class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="plan-card">
-      <h2 class="text-lg font-semibold">@(pricing.PlanName ?? T["Pricing.Subscription"].Value)</h2>
+    <article class="card space-y-3 p-5 ring-2 ring-brand-600" data-testid="plan-card">
+      <h2 class="text-lg font-extrabold">@(pricing.PlanName ?? T["Pricing.Subscription"].Value)</h2>
       <p class="text-sm text-slate-600">@T["Pricing.PlanHint"]</p>
       @if (pricing.Packages.Count == 0)
       {
@@ -48,7 +49,7 @@
         <ul class="space-y-2">
           @foreach (var package in pricing.Packages)
           {
-            <li class="space-y-2 rounded-lg border p-3 @(package.IsCheapestMonthly ? "border-brand-600 bg-brand-50" : "border-slate-200")"
+            <li class="space-y-2 rounded-2xl border p-3 @(package.IsCheapestMonthly ? "border-brand-600 bg-brand-50" : "border-slate-200")"
                 data-testid="package" data-months="@package.DurationMonths" data-cheapest="@(package.IsCheapestMonthly ? "true" : "false")">
               <div class="flex items-start justify-between gap-2">
                 <div>

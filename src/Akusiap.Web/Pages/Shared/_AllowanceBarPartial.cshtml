@@ -3,7 +3,7 @@
 @{
   int Percent(int used, int? max) => max is > 0 ? Math.Min(100, used * 100 / max.Value) : 100;
 }
-<div class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="allowance-bar">
+<div class="space-y-3 card p-4" data-testid="allowance-bar">
   @if (Model.IsUnlimited)
   {
     <p class="text-sm text-slate-700" data-testid="allowance-unlimited">@T["Own.Allowance.Unlimited"]</p>

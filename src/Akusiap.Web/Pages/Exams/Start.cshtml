@@ -40,11 +40,11 @@
 
   <form method="post" class="space-y-5" novalidate
         x-data="{ mode: '@Model.Form.Mode', untimed: @(Model.Form.Untimed ? "true" : "false") }">
-    <fieldset class="space-y-2">
-      <legend class="label">@T["Session.Setup.Mode"]</legend>
+    <fieldset class="grid gap-2 sm:grid-cols-2">
+      <legend class="label mb-2">@T["Session.Setup.Mode"]</legend>
       @foreach (var mode in new[] { AttemptMode.Practice, AttemptMode.Simulation })
       {
-        <label class="flex min-h-11 cursor-pointer items-start gap-3 rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-brand-600">
+        <label class="card card-link flex min-h-11 cursor-pointer items-start gap-3 p-4 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50">
           <input type="radio" name="Form.Mode" value="@mode" checked="@(Model.Form.Mode == mode)" x-model="mode" class="mt-1 size-5 accent-brand-600" data-testid="mode-@mode" />
           <span>
             <span class="block font-semibold">@T[$"Session.Setup.{mode}"]</span>

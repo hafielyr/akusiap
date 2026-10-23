@@ -1102,4 +1102,35 @@
   <data name="Journey.Week" xml:space="preserve"><value>Week of {0}</value></data>
   <data name="Account.Confirm.SavedToFile" xml:space="preserve"><value>Development mode: the confirmation email was not sent but saved as an .eml file in src/Akusiap.Web/.dev-mail. Set Email:Smtp to send real emails.</value></data>
   <data name="Account.Confirm.NotSent" xml:space="preserve"><value>The confirmation email could not be sent because no email server is set up. Please contact the admin.</value></data>
+  <data name="Theme.Toggle" xml:space="preserve"><value>Switch light or dark theme</value></data>
+  <data name="Nav.Main" xml:space="preserve"><value>Main navigation</value></data>
+  <data name="Home.Showcase.Score" xml:space="preserve"><value>Simulation score</value></data>
+  <data name="Home.Showcase.Streak" xml:space="preserve"><value>Day streak</value></data>
+  <data name="Home.Showcase.Cat" xml:space="preserve"><value>CAT tryout</value></data>
+  <data name="Home.Showcase.Board" xml:space="preserve"><value>Leaderboard</value></data>
+  <data name="Home.Categories.Eyebrow" xml:space="preserve"><value>Exam categories</value></data>
+  <data name="Home.Features.Eyebrow" xml:space="preserve"><value>Features</value></data>
+  <data name="Home.Steps.Eyebrow" xml:space="preserve"><value>Get started</value></data>
+  <data name="Home.New" xml:space="preserve"><value>New</value></data>
+  <data name="Home.Feature.Leaderboard" xml:space="preserve"><value>Leaderboards &amp; badges</value></data>
+  <data name="Home.Feature.Leaderboard.Text" xml:space="preserve"><value>Compare score and time with other people and win rank badges.</value></data>
+  <data name="Catalog.Eyebrow" xml:space="preserve"><value>Catalog</value></data>
+  <data name="ExamPage.Stat.Questions" xml:space="preserve"><value>Questions</value></data>
+  <data name="ExamPage.Stat.Topics" xml:space="preserve"><value>Topics</value></data>
+  <data name="ExamPage.Stat.Trial" xml:space="preserve"><value>Trial questions</value></data>
+  <data name="Learn.Group.Practice" xml:space="preserve"><value>Practice</value></data>
+  <data name="Learn.Group.Content" xml:space="preserve"><value>My content</value></data>
+  <data name="Learn.Group.Account" xml:space="preserve"><value>Account</value></data>
+  <data name="Learn.DrillDone" xml:space="preserve"><value>Today's goal reached</value></data>
+  <data name="Pricing.Eyebrow" xml:space="preserve"><value>Pricing</value></data>
+  <data name="Home.Pillars.File" xml:space="preserve"><value>pillars-of-success.txt</value></data>
+  <data name="Home.Pillars.Practice" xml:space="preserve"><value>Practice</value></data>
+  <data name="Home.Pillars.Explanations" xml:space="preserve"><value>Review</value></data>
+  <data name="Home.Pillars.Simulation" xml:space="preserve"><value>Mock</value></data>
+  <data name="Home.Pillars.Streak" xml:space="preserve"><value>Streak</value></data>
+  <data name="Home.Pillars.Rank" xml:space="preserve"><value>Rank</value></data>
+  <data name="Home.Pillars.Motto" xml:space="preserve"><value>Practice is the pillar of success</value></data>
+  <data name="Home.Showcase.Eyebrow" xml:space="preserve"><value>How you practise</value></data>
+  <data name="Home.Showcase.Title" xml:space="preserve"><value>Practice that feels like play</value></data>
+  <data name="Home.Showcase.Lead" xml:space="preserve"><value>Take simulations like the real CAT, keep your daily streak and watch your name climb the leaderboard.</value></data>
 </root>

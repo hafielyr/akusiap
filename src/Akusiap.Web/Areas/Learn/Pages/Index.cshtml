@@ -1,12 +1,37 @@
 @page "/learn"
 @model Akusiap.Web.Areas.Learn.Pages.IndexModel
-@* Learn area entry (SignedIn, AC-06): links to access, history, own questions, payments and the profile. *@
+@using Akusiap.Application.Gamification
+@* Learn area entry (SignedIn, AC-06; BRD-03 bento): today's drill with the streak, the level, then the learner's pages
+   in three groups. Until the email is confirmed it shows a resend button (AC-02). *@
 @{
   ViewData["Title"] = T["Learn.Title"].Value;
+  ViewData["Wide"] = true;
+  var drill = Model.Drill;
+  var groups = new (string Title, (string Href, string Title, string Text, string TestId, string Tint, string Icon)[] Tiles)[]
+  {
+    ("Learn.Group.Practice", new[]
+    {
+      ("/learn/kartu", "Flashcards.Title", "Flashcards.Link", "learn-flashcards-link", "bg-accent-50 text-accent-700", "M4 7h12v12H4zM8 7V4h12v12h-4"),
+      ("/learn/riwayat", "History.Title", "History.Link", "learn-history-link", "bg-brand-50 text-brand-700", "M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"),
+      ("/learn/campuran", "Mix.Title", "Mix.Link", "learn-mix-link", "bg-green-50 text-green-700", "M4 7h3l10 10h3M4 17h3l3-3M14 10l3-3h3M18 4l3 3-3 3M18 14l3 3-3 3"),
+      ("/learn/kelas", "Class.Title", "Class.Link", "learn-classes-link", "bg-red-50 text-red-700", "M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 20v-1a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"),
+    }),
+    ("Learn.Group.Content", new[]
+    {
+      ("/learn/ujian-saya", "Own.Exams.Title", "Own.Exams.Link", "learn-own-exams-link", "bg-brand-50 text-brand-700", "M5 4h14v16H5zM9 8h6M9 12h6M9 16h3"),
+      ("/learn/soal-saya", "Own.Questions.Title", "Own.Questions.Link", "learn-own-questions-link", "bg-accent-50 text-accent-700", "M4 20l4-1 10-10-3-3L5 16l-1 4zM14 7l3 3"),
+    }),
+    ("Learn.Group.Account", new[]
+    {
+      ("/learn/akses", "Learn.Access.Title", "Learn.Access.Link", "learn-access-link", "bg-green-50 text-green-700", "M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3zM9 12l2 2 4-4"),
+      ("/learn/pembayaran", "Pay.Pending.Title", "Pay.Pending.Link", "learn-payments-link", "bg-accent-50 text-accent-700", "M3 7h18v10H3zM3 10h18M7 14h3"),
+      ("/learn/profil", "Profile.Title", "Profile.Link", "learn-profile-link", "bg-slate-100 text-slate-700", "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0"),
+    }),
+  };
 }
 
-<section class="space-y-4 py-6">
-  <h1 class="text-2xl font-extrabold leading-tight">@T["Learn.Title"]</h1>
+<section class="space-y-6">
+  <h1 class="text-3xl font-extrabold leading-tight tracking-tight">@T["Learn.Title"]</h1>
 
   @if (Model.ResendMessage is { } message)
   {
@@ -16,7 +41,7 @@
 
   @if (!Model.EmailConfirmed)
   {
-    <div class="space-y-3 rounded-xl border border-amber-200 bg-amber-50 p-4" data-testid="confirm-pending">
+    <div class="space-y-3 rounded-2xl border border-amber-200 bg-amber-50 p-4" data-testid="confirm-pending">
       <p class="text-sm text-amber-900">@T["Account.Confirm.Pending"]</p>
       <form method="post" asp-page-handler="ResendConfirmation">
         <button type="submit" class="btn btn-secondary w-full sm:w-auto">@T["Account.Confirm.Resend"]</button>
@@ -24,34 +49,62 @@
     </div>
   }
 
-  @{
-    var tiles = new (string Href, string Title, string Text, string TestId, string Tint, string Icon)[]
-    {
-      ("/learn/hari-ini", "Today.Title", "Today.Lead", "learn-today-link", "bg-brand-600 text-white", "M12 3v2M12 19v2M5 12H3M21 12h-2M7 7L5.5 5.5M18.5 18.5L17 17M7 17l-1.5 1.5M18.5 5.5L17 7M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"),
-      ("/learn/perjalanan", "Journey.Title", "Journey.Link", "learn-journey-link", "bg-accent-50 text-accent-700", "M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 6h3v1a3 3 0 0 1-3 3M7 6H4v1a3 3 0 0 0 3 3"),
-      ("/learn/kelas", "Class.Title", "Class.Link", "learn-classes-link", "bg-brand-50 text-brand-700", "M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 20v-1a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"),
-      ("/learn/kartu", "Flashcards.Title", "Flashcards.Link", "learn-flashcards-link", "bg-accent-50 text-accent-700", "M4 7h12v12H4zM8 7V4h12v12h-4"),
-      ("/learn/riwayat", "History.Title", "History.Link", "learn-history-link", "bg-brand-50 text-brand-700", "M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"),
-      ("/learn/campuran", "Mix.Title", "Mix.Link", "learn-mix-link", "bg-accent-50 text-accent-700", "M4 7h3l10 10h3M4 17h3l3-3M14 10l3-3h3M18 4l3 3-3 3M18 14l3 3-3 3"),
-      ("/learn/ujian-saya", "Own.Exams.Title", "Own.Exams.Link", "learn-own-exams-link", "bg-brand-50 text-brand-700", "M5 4h14v16H5zM9 8h6M9 12h6M9 16h3"),
-      ("/learn/soal-saya", "Own.Questions.Title", "Own.Questions.Link", "learn-own-questions-link", "bg-brand-50 text-brand-700", "M4 20l4-1 10-10-3-3L5 16l-1 4zM14 7l3 3"),
-      ("/learn/akses", "Learn.Access.Title", "Learn.Access.Link", "learn-access-link", "bg-brand-50 text-brand-700", "M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3zM9 12l2 2 4-4"),
-      ("/learn/pembayaran", "Pay.Pending.Title", "Pay.Pending.Link", "learn-payments-link", "bg-accent-50 text-accent-700", "M3 7h18v10H3zM3 10h18M7 14h3"),
-      ("/learn/profil", "Profile.Title", "Profile.Link", "learn-profile-link", "bg-slate-100 text-slate-700", "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0"),
-    };
+  <div class="grid gap-3 sm:grid-cols-3">
+    <a href="/learn/hari-ini" class="glow card-link rise flex flex-col justify-between gap-5 p-5 sm:col-span-2 sm:p-6" data-testid="learn-today-link">
+      <span class="flex items-start justify-between gap-3">
+        <span class="space-y-2">
+          <span class="eyebrow">@T["Today.Title"]</span>
+          <span class="block text-2xl font-extrabold tracking-tight">@T["Drill.Title"]</span>
+          <span class="block text-sm text-slate-600">@T["Drill.Lead", DailyDrills.Size]</span>
+        </span>
+        <span class="card shrink-0 px-3 py-2 text-center">
+          <span class="block text-2xl font-extrabold">🔥 @drill.Streak.Current</span>
+          <span class="block text-xs text-slate-500">@T["Journey.StreakDays"]</span>
+        </span>
+      </span>
+      <span class="flex flex-wrap items-center justify-between gap-3">
+        <span class="flex gap-1.5" aria-label="@T["Drill.Week"]">
+          @foreach (var (day, done) in drill.Week)
+          {
+            <span class="size-4 rounded-full @(done ? "bg-accent-400" : day == drill.Week[^1].Day ? "border-2 border-brand-600" : "bg-slate-200")"></span>
+          }
+        </span>
+        <span class="btn @(drill.State == DrillState.Done ? "btn-secondary" : "btn-primary")">
+          @(drill.State switch { DrillState.InProgress => T["Drill.Continue"], DrillState.Done => T["Learn.DrillDone"], _ => T["Drill.Start"] }) <span class="arrow" aria-hidden="true">→</span>
+        </span>
+      </span>
+    </a>
+
+    <a href="/learn/perjalanan" class="card card-link rise d1 flex items-center gap-4 p-5 sm:flex-col sm:justify-center sm:text-center" data-testid="learn-journey-link">
+      <span class="dial size-16 sm:size-24" style="--p: @Model.Level.Percent"><span><span class="text-2xl font-extrabold">@Model.Level.Level</span></span></span>
+      <span class="space-y-0.5">
+        <span class="block font-bold">@T["Journey.Level", Model.Level.Level]</span>
+        <span class="block text-sm text-slate-600">@T["Journey.XpShort", Model.Level.Xp]</span>
+      </span>
+    </a>
+  </div>
+
+  @foreach (var group in groups)
+  {
+    <section class="space-y-3">
+      <h2 class="eyebrow">@T[group.Title]</h2>
+      <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        @foreach (var tile in group.Tiles)
+        {
+          <li>
+            <a href="@tile.Href" class="card card-link flex h-full min-h-11 items-center gap-3 p-4" data-testid="@tile.TestId">
+              <span class="icon-tile @tile.Tint">
+                <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="@tile.Icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </span>
+              <span class="min-w-0 flex-1 space-y-0.5">
+                <span class="block font-bold leading-snug text-slate-900">@T[tile.Title]</span>
+                <span class="block text-sm text-slate-600">@T[tile.Text]</span>
+              </span>
+              <span class="arrow text-slate-400" aria-hidden="true">→</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
   }
-  <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3">
-    @foreach (var tile in tiles)
-    {
-      <li>
-        <a href="@tile.Href" class="card card-link flex h-full min-h-11 flex-col gap-2 p-4" data-testid="@tile.TestId">
-          <span class="icon-tile @tile.Tint">
-            <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="@tile.Icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
-          </span>
-          <span class="font-bold leading-snug text-slate-900">@T[tile.Title]</span>
-          <span class="text-sm text-slate-600">@T[tile.Text]</span>
-        </a>
-      </li>
-    }
-  </ul>
 </section>

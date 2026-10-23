@@ -1102,4 +1102,35 @@
   <data name="Journey.Week" xml:space="preserve"><value>Minggu {0}</value></data>
   <data name="Account.Confirm.SavedToFile" xml:space="preserve"><value>Mode pengembangan: email konfirmasi tidak dikirim, tetapi disimpan sebagai file .eml di folder src/Akusiap.Web/.dev-mail. Atur Email:Smtp agar email benar-benar terkirim.</value></data>
   <data name="Account.Confirm.NotSent" xml:space="preserve"><value>Email konfirmasi belum bisa dikirim karena server email belum diatur. Hubungi admin.</value></data>
+  <data name="Theme.Toggle" xml:space="preserve"><value>Ganti tema terang atau gelap</value></data>
+  <data name="Nav.Main" xml:space="preserve"><value>Navigasi utama</value></data>
+  <data name="Home.Showcase.Score" xml:space="preserve"><value>Skor simulasi</value></data>
+  <data name="Home.Showcase.Streak" xml:space="preserve"><value>Hari beruntun</value></data>
+  <data name="Home.Showcase.Cat" xml:space="preserve"><value>Tryout CAT</value></data>
+  <data name="Home.Showcase.Board" xml:space="preserve"><value>Papan peringkat</value></data>
+  <data name="Home.Categories.Eyebrow" xml:space="preserve"><value>Kategori ujian</value></data>
+  <data name="Home.Features.Eyebrow" xml:space="preserve"><value>Fitur</value></data>
+  <data name="Home.Steps.Eyebrow" xml:space="preserve"><value>Mulai</value></data>
+  <data name="Home.New" xml:space="preserve"><value>Baru</value></data>
+  <data name="Home.Feature.Leaderboard" xml:space="preserve"><value>Papan peringkat &amp; lencana</value></data>
+  <data name="Home.Feature.Leaderboard.Text" xml:space="preserve"><value>Bandingkan nilai dan waktu dengan peserta lain, raih lencana juara.</value></data>
+  <data name="Catalog.Eyebrow" xml:space="preserve"><value>Katalog</value></data>
+  <data name="ExamPage.Stat.Questions" xml:space="preserve"><value>Soal</value></data>
+  <data name="ExamPage.Stat.Topics" xml:space="preserve"><value>Topik</value></data>
+  <data name="ExamPage.Stat.Trial" xml:space="preserve"><value>Soal coba</value></data>
+  <data name="Learn.Group.Practice" xml:space="preserve"><value>Latihan</value></data>
+  <data name="Learn.Group.Content" xml:space="preserve"><value>Konten saya</value></data>
+  <data name="Learn.Group.Account" xml:space="preserve"><value>Akun</value></data>
+  <data name="Learn.DrillDone" xml:space="preserve"><value>Target hari ini tercapai</value></data>
+  <data name="Pricing.Eyebrow" xml:space="preserve"><value>Harga</value></data>
+  <data name="Home.Pillars.File" xml:space="preserve"><value>pilar-sukses.txt</value></data>
+  <data name="Home.Pillars.Practice" xml:space="preserve"><value>Latihan</value></data>
+  <data name="Home.Pillars.Explanations" xml:space="preserve"><value>Bahas</value></data>
+  <data name="Home.Pillars.Simulation" xml:space="preserve"><value>Simulasi</value></data>
+  <data name="Home.Pillars.Streak" xml:space="preserve"><value>Streak</value></data>
+  <data name="Home.Pillars.Rank" xml:space="preserve"><value>Juara</value></data>
+  <data name="Home.Pillars.Motto" xml:space="preserve"><value>Latihan adalah pilar kesuksesan</value></data>
+  <data name="Home.Showcase.Eyebrow" xml:space="preserve"><value>Cara belajar</value></data>
+  <data name="Home.Showcase.Title" xml:space="preserve"><value>Latihan yang terasa seperti main</value></data>
+  <data name="Home.Showcase.Lead" xml:space="preserve"><value>Kerjakan simulasi seperti CAT asli, jaga streak harian, dan lihat namamu naik di papan peringkat.</value></data>
 </root>

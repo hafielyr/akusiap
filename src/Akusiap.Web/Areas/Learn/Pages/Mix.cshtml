@@ -18,7 +18,7 @@
   <form method="post" class="space-y-5" novalidate data-testid="mix-form">
     <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
 
-    <label class="flex min-h-11 items-center gap-3 rounded-xl border border-slate-200 bg-white p-4 font-medium">
+    <label class="flex min-h-11 items-center gap-3 card p-4 font-medium">
       <input type="checkbox" name="IncludeOwn" value="true" class="size-5 accent-brand-600" checked="@Model.IncludeOwn" disabled="@(options.OwnQuestionCount == 0)" data-testid="mix-own" />
       <span>@T["Mix.Own", options.OwnQuestionCount]</span>
     </label>
@@ -29,7 +29,7 @@
     }
     @foreach (var exam in options.Exams)
     {
-      <fieldset class="space-y-1 rounded-xl border border-slate-200 bg-white p-4" data-testid="mix-exam" data-exam="@exam.ExamId">
+      <fieldset class="space-y-1 card p-4" data-testid="mix-exam" data-exam="@exam.ExamId">
         <legend class="sr-only">@exam.Title</legend>
         <label class="flex min-h-11 items-center gap-3 font-medium">
           <input type="checkbox" name="ExamIds" value="@exam.ExamId" class="size-5 accent-brand-600" checked="@Model.ExamIds.Contains(exam.ExamId)" />

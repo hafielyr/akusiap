@@ -47,7 +47,7 @@
     <ol class="space-y-4" data-testid="review-items">
       @foreach (var item in review.Items)
       {
-        <li class="space-y-3 rounded-xl border border-slate-200 bg-white p-4" data-testid="review-item" data-position="@item.Position" data-correct="@(item.IsCorrect ? "true" : "false")">
+        <li class="space-y-3 card p-4" data-testid="review-item" data-position="@item.Position" data-correct="@(item.IsCorrect ? "true" : "false")">
           <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
             @T["Session.Player.Question"] @item.Position · <span class="@(item.IsCorrect ? "text-green-700" : "text-red-700")">@(item.IsCorrect ? T["Session.Review.RightShort"] : T["Session.Review.WrongShort"])</span>@(item.IsFlagged ? " · " + T["Session.Player.Flagged"].Value : null)
           </p>
