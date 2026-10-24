@@ -73,6 +73,10 @@ public sealed class FakePaymentGateway(IClock clock) : IPaymentGateway
         }
     }
 
+    /// <summary>The fake has no status API: the dev page (<c>/dev/pembayaran</c>) plays the gateway's notifications instead.</summary>
+    public Task<GatewayStatusCheck?> CheckStatusAsync(string invoiceNumber, CancellationToken cancellationToken) =>
+        Task.FromResult<GatewayStatusCheck?>(null);
+
     public Task<GatewayRefundResult> RefundAsync(GatewayRefundRequest request, CancellationToken cancellationToken) =>
         Task.FromResult(new GatewayRefundResult(true, "FAKE-REFUND-" + Guid.NewGuid().ToString("N")[..8], null, null));
 

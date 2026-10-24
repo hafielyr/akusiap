@@ -20,6 +20,7 @@ namespace Akusiap.Infrastructure.Payments;
 public sealed partial class DokuGateway(HttpClient http, IOptions<DokuOptions> options, IClock clock, ILogger<DokuGateway> logger) : IPaymentGateway
 {
     public const string CheckoutPath = "/checkout/v1/payment";
+    public const string StatusPath = "/orders/v1/status/";
 
     private static readonly Dictionary<string, string> WalletTypes = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -68,31 +69,28 @@ public sealed partial class DokuGateway(HttpClient http, IOptions<DokuOptions> o
             return null;
         }
 
-        try
-        {
-            using var json = JsonDocument.Parse(notification.Body);
-            var root = json.RootElement;
-            var order = root.GetProperty("order");
-            var invoice = order.GetProperty("invoice_number").GetString();
-            if (string.IsNullOrEmpty(invoice))
-            {
-                return null;
-            }
+        return ReadEvent(notification.Body, _ => requestId);
+    }
 
-            var status = root.TryGetProperty("transaction", out var tx) && tx.TryGetProperty("status", out var s) ? s.GetString() : null;
-            var kind = status?.ToUpperInvariant() switch
-            {
-                "SUCCESS" => GatewayEventKind.Paid,
-                "FAILED" => GatewayEventKind.Failed,
-                "EXPIRED" => GatewayEventKind.Expired,
-                _ => GatewayEventKind.Other,
-            };
-            return new GatewayEvent(requestId, invoice, kind, Amount(order), kind == GatewayEventKind.Paid ? null : status);
-        }
-        catch (Exception ex) when (ex is JsonException or KeyNotFoundException or InvalidOperationException or FormatException)
+    /// <summary>
+    /// DOKU's status API (<c>GET /orders/v1/status/{invoice}</c>), signed like every request. Its answer has the same
+    /// <c>order</c> and <c>transaction</c> fields as a notification. The event id is the invoice plus the status, so each
+    /// final status is applied once however often the page asks.
+    /// </summary>
+    public async Task<GatewayStatusCheck?> CheckStatusAsync(string invoiceNumber, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(invoiceNumber);
+        var (status, text, _) = await SendAsync(HttpMethod.Get, StatusPath + Uri.EscapeDataString(invoiceNumber), null, cancellationToken).ConfigureAwait(false);
+        if (status == System.Net.HttpStatusCode.NotFound)
         {
             return null;
         }
+
+        var ev = ReadEvent(text, e => $"status:{e.InvoiceNumber}:{e.Kind}")
+            ?? throw new InvalidOperationException("DOKU sent an unreadable status.");
+        return string.Equals(ev.InvoiceNumber, invoiceNumber, StringComparison.Ordinal)
+            ? new GatewayStatusCheck(ev, text)
+            : throw new InvalidOperationException("DOKU answered with another invoice.");
     }
 
     /// <summary>
@@ -209,25 +207,7 @@ public sealed partial class DokuGateway(HttpClient http, IOptions<DokuOptions> o
 
     private async Task<(string RequestId, JsonDocument Json)> PostAsync(string target, JsonObject body, CancellationToken cancellationToken)
     {
-        var json = body.ToJsonString();
-        var requestId = Guid.NewGuid().ToString();
-        var timestamp = Timestamp(clock.UtcNow);
-        using var message = new HttpRequestMessage(HttpMethod.Post, new Uri(target, UriKind.Relative));
-        message.Headers.Add("Client-Id", Options.ClientId);
-        message.Headers.Add("Request-Id", requestId);
-        message.Headers.Add("Request-Timestamp", timestamp);
-        message.Headers.Add("Signature", DokuSignature.Sign(Options.SecretKey, Options.ClientId, requestId, timestamp, target, json));
-        message.Content = new StringContent(json, Encoding.UTF8);
-        message.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-        using var response = await http.SendAsync(message, cancellationToken).ConfigureAwait(false);
-        var text = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-        if (!response.IsSuccessStatusCode)
-        {
-            var reason = ErrorMessage(text);
-            LogRejected(logger, target, (int)response.StatusCode, reason);
-            throw new InvalidOperationException($"DOKU {(int)response.StatusCode}: {reason}");
-        }
-
+        var (_, text, requestId) = await SendAsync(HttpMethod.Post, target, body.ToJsonString(), cancellationToken).ConfigureAwait(false);
         try
         {
             return (requestId, JsonDocument.Parse(text));
@@ -235,6 +215,66 @@ public sealed partial class DokuGateway(HttpClient http, IOptions<DokuOptions> o
         catch (JsonException ex)
         {
             throw new InvalidOperationException("DOKU sent an unreadable answer.", ex);
+        }
+    }
+
+    /// <summary>A signed request (a body only for POST). Any error except 404 raises DOKU's message.</summary>
+    private async Task<(System.Net.HttpStatusCode Status, string Text, string RequestId)> SendAsync(
+        HttpMethod method, string target, string? json, CancellationToken cancellationToken)
+    {
+        var requestId = Guid.NewGuid().ToString();
+        var timestamp = Timestamp(clock.UtcNow);
+        using var message = new HttpRequestMessage(method, new Uri(target, UriKind.Relative));
+        message.Headers.Add("Client-Id", Options.ClientId);
+        message.Headers.Add("Request-Id", requestId);
+        message.Headers.Add("Request-Timestamp", timestamp);
+        message.Headers.Add("Signature", DokuSignature.Sign(Options.SecretKey, Options.ClientId, requestId, timestamp, target, json));
+        if (json is not null)
+        {
+            message.Content = new StringContent(json, Encoding.UTF8);
+            message.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        }
+
+        using var response = await http.SendAsync(message, cancellationToken).ConfigureAwait(false);
+        var text = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        if (!response.IsSuccessStatusCode && response.StatusCode != System.Net.HttpStatusCode.NotFound)
+        {
+            var reason = ErrorMessage(text);
+            LogRejected(logger, target, (int)response.StatusCode, reason);
+            throw new InvalidOperationException($"DOKU {(int)response.StatusCode}: {reason}");
+        }
+
+        return (response.StatusCode, text, requestId);
+    }
+
+    /// <summary>The event in a notification or status answer (both carry <c>order</c> and <c>transaction</c>); null when unreadable.</summary>
+    private static GatewayEvent? ReadEvent(string body, Func<GatewayEvent, string> eventId)
+    {
+        try
+        {
+            using var json = JsonDocument.Parse(body);
+            var root = json.RootElement;
+            var order = root.GetProperty("order");
+            var invoice = order.GetProperty("invoice_number").GetString();
+            if (string.IsNullOrEmpty(invoice))
+            {
+                return null;
+            }
+
+            var status = root.TryGetProperty("transaction", out var tx) && tx.TryGetProperty("status", out var s) ? s.GetString() : null;
+            var kind = status?.ToUpperInvariant() switch
+            {
+                "SUCCESS" => GatewayEventKind.Paid,
+                "FAILED" => GatewayEventKind.Failed,
+                "EXPIRED" => GatewayEventKind.Expired,
+                _ => GatewayEventKind.Other,
+            };
+            var ev = new GatewayEvent(string.Empty, invoice, kind, Amount(order), kind == GatewayEventKind.Paid ? null : status);
+            return ev with { EventId = eventId(ev) };
+        }
+        catch (Exception ex) when (ex is JsonException or KeyNotFoundException or InvalidOperationException or FormatException)
+        {
+            return null;
         }
     }
 
