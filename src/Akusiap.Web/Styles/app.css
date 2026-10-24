@@ -153,7 +153,6 @@
   .fc-verdict.is-wrong { background: var(--color-red-50); color: var(--color-red-800); box-shadow: inset 0 0 0 1px var(--color-red-200); }
   /* A call to action that sticks to the bottom of a phone screen; the help button moves up out of its way. */
   .sticky-cta { position: sticky; bottom: .75rem; z-index: 30; }
-  @media (max-width: 39.99rem) { body:has(.sticky-cta) .help-fab { bottom: 5rem; } }
   .card-in { animation: card-in .35s cubic-bezier(.2, .8, .2, 1) both; }
   @media (prefers-reduced-motion: reduce) { .rise, .cursor, .card-in, .opt.is-right, .opt.is-wrong, .fc-toast, .fc-verdict { animation: none; } .card-link:hover, .btn:hover .arrow, .card-link:hover .arrow, .opt:hover { transform: none; } }
 
@@ -170,3 +169,8 @@
 @keyframes card-in { from { opacity: 0; transform: translateX(1.5rem) rotate(1deg); } }
 @keyframes pop { 0% { opacity: .4; transform: scale(.96); } 60% { transform: scale(1.02); } }
 @keyframes shake { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+
+/* Outside the layers so it beats the button's bottom-4 utility: on phones the help button moves above a sticky bar. */
+@media (max-width: 39.99rem) {
+  body:has(.sticky-cta) .help-fab { bottom: 5rem; }
+}
