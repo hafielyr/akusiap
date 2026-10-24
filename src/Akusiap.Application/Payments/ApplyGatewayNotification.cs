@@ -48,20 +48,37 @@ public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway g
             return (NotificationOutcome.Unreadable, null);
         }
 
+        return await StoreAndApplyAsync(parsed, notification.Body, () => gateway.VerifySignature(notification), cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Applies a status the app fetched from the gateway's own API (<see cref="IPaymentGateway.CheckStatusAsync"/>): the
+    /// request was signed with our keys and answered over HTTPS, so it is trusted like a verified notification. It is
+    /// stored and de-duplicated the same way.
+    /// </summary>
+    public Task<(NotificationOutcome Outcome, Payment? Payment)> HandleCheckedStatusAsync(GatewayStatusCheck check, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(check);
+        return StoreAndApplyAsync(check.Event, check.Body, () => true, cancellationToken);
+    }
+
+    private async Task<(NotificationOutcome Outcome, Payment? Payment)> StoreAndApplyAsync(
+        GatewayEvent parsed, string payload, Func<bool> verify, CancellationToken cancellationToken)
+    {
         if (await db.PaymentWebhookEvents.AnyAsync(e => e.Gateway == gateway.Name && e.GatewayEventId == parsed.EventId, cancellationToken).ConfigureAwait(false))
         {
             return (NotificationOutcome.Duplicate, null);
         }
 
         var now = clock.UtcNow;
-        var signatureValid = gateway.VerifySignature(notification);
+        var signatureValid = verify();
         var payment = await db.Payments.SingleOrDefaultAsync(p => p.InvoiceNumber == parsed.InvoiceNumber, cancellationToken).ConfigureAwait(false);
         var stored = new PaymentWebhookEvent
         {
             Gateway = gateway.Name,
             GatewayEventId = parsed.EventId,
             PaymentId = payment?.Id,
-            Payload = notification.Body,
+            Payload = payload,
             SignatureValid = signatureValid,
             ReceivedAt = now,
         };
