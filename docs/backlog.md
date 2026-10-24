@@ -262,6 +262,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: `/learn/kartu`: pick an exam with access (or "Kartu saya"), then a set of 10 cards (due first, then wrong, then new). Each card shows the question, then on flip shows the answer, explanation and key fact. Four rating buttons write a ReviewLog and update the card via Sm2Scheduler. Each card loads as an htmx partial.
 - AC: A set ends after 10 cards with a summary. Questions from exams the user can no longer access are excluded.
 
+### MEM-04 Flashcards: pick the answer · M
+- Stories: M-01, M-03, owner request (2026-10-24: make the flashcards cooler; the learner picks an answer and a right answer shows the next card) · Depends on: MEM-03
+- Scope: Each card shows its options as large lettered tiles (A–D; keys A–D or 1–4 on a keyboard). Picking posts the options (htmx). Right (exactly the correct options) is rated Good and the next card slides in with "Benar!". Wrong is rated Forgot and the same card comes back with the picked option red, the right one green, the explanation and a "next card" button that sticks to the bottom of a phone screen. Multi-select questions pick several, then "Periksa jawaban". "Belum tahu? Lihat jawaban" keeps the flip and the four self-ratings. A header band shows the deck, the card number, a progress bar per card (right/wrong/current) and a streak after two right in a row; the summary shows a score ring. The picks are stored on the attempt item (D-112).
+- AC: Picking the right option shows the next card without a page load; a wrong pick shows the answer first; the summary counts the ratings; works at 360 px in light and dark and without JS.
+
 ## E7 Payments and purchasing (M3)
 
 ### PAY-01 Payment schema and gateway abstraction · M
@@ -291,6 +296,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: A checkout method without DOKU: the learner sees the bank account to transfer to and a WhatsApp button with the order number and amount prefilled; the payment stays Pending until an admin confirms the transfer in `/admin/transaksi` (Paid, with who and when) or it expires; confirming fulfils exactly like a DOKU payment.
 - Needs from the owner: the bank, account number and account name to show; the WhatsApp number for confirmations (or the support number); how long the learner has to transfer; whether amounts get a unique code (for example +123) to match transfers; who may confirm (admins only?).
 - AC: An admin confirmation unlocks access once; an unconfirmed manual payment expires on time; the account details come from configuration, not code.
+
+### PAY-12 Checkout that fits the screen · S
+- Stories: P-04, owner request (2026-10-24: checkout without scrolling down; a nicer UI, researched against other checkouts) · Depends on: PAY-03
+- Scope: Common checkout patterns (D-113): the order summary and total always in view, methods as tiles grouped by type with QRIS pinned first, a pay button that stays on screen (sticky at the bottom on phones, in the summary column on wide screens), and the terms checkbox next to the button. Phones: compact summary, 2-column tiles, a bottom bar with the checkbox, total, chosen method and "Bayar". Wide screens: methods left, summary + "Bayar" right. Virtual-account tiles show just the bank (the group heading says "Virtual account"). The help button moves above sticky bars on phones and shows only its icon.
+- AC: At 360×640 the summary, the first method and "Bayar" are on the first screen and "Bayar" stays on screen while scrolling; at 1280 px the whole checkout fits without scrolling; all checkout tests still pass.
 
 ### PAY-05 Payment instructions and pending payments · M
 - Stories: ID-10, ID-11, ID-12, ID-13 · Depends on: PAY-03, PAY-01

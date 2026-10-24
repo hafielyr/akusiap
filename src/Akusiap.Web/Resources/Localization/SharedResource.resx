@@ -792,7 +792,6 @@
   <data name="Flashcards.Empty" xml:space="preserve"><value>Belum ada kartu untuk dilatih di sini.</value></data>
   <data name="Flashcards.NoAccess" xml:space="preserve"><value>Anda tidak punya akses penuh ke ujian ini.</value></data>
   <data name="Flashcards.CardOf" xml:space="preserve"><value>Kartu {0} dari {1}</value></data>
-  <data name="Flashcards.Flip" xml:space="preserve"><value>Lihat jawaban</value></data>
   <data name="Flashcards.Rate" xml:space="preserve"><value>Seberapa ingat Anda?</value></data>
   <data name="Flashcards.Rating.Forgot" xml:space="preserve"><value>Lupa</value></data>
   <data name="Flashcards.Rating.Hard" xml:space="preserve"><value>Sulit</value></data>
@@ -1159,4 +1158,20 @@
   <data name="Home.Art.Ascii" xml:space="preserve"><value>Ilustrasi kuil berpilar lima dalam seni ASCII</value></data>
   <data name="Pay.OpenHosted" xml:space="preserve"><value>Lanjutkan ke halaman pembayaran</value></data>
   <data name="Pay.HostedHint" xml:space="preserve"><value>Anda akan membayar di halaman aman DOKU, lalu kembali ke sini.</value></data>
+  <data name="Flashcards.Correct" xml:space="preserve"><value>Benar!</value></data>
+  <data name="Flashcards.Wrong" xml:space="preserve"><value>Belum tepat. Jawaban yang benar ditandai hijau.</value></data>
+  <data name="Flashcards.PickOne" xml:space="preserve"><value>Pilih jawaban yang benar</value></data>
+  <data name="Flashcards.PickAll" xml:space="preserve"><value>Pilih semua jawaban yang benar</value></data>
+  <data name="Flashcards.Check" xml:space="preserve"><value>Periksa jawaban</value></data>
+  <data name="Flashcards.Next" xml:space="preserve"><value>Kartu berikutnya</value></data>
+  <data name="Flashcards.SeeSummary" xml:space="preserve"><value>Lihat hasil set</value></data>
+  <data name="Flashcards.Streak" xml:space="preserve"><value>{0} benar beruntun</value></data>
+  <data name="Flashcards.DontKnow" xml:space="preserve"><value>Belum tahu? Lihat jawaban</value></data>
+  <data name="Flashcards.KeysHint" xml:space="preserve"><value>Tekan A–D atau 1–4 untuk memilih.</value></data>
+  <data name="Flashcards.Score" xml:space="preserve"><value>benar</value></data>
+  <data name="Flashcards.Progress" xml:space="preserve"><value>Progres set</value></data>
+  <data name="Checkout.Secure" xml:space="preserve"><value>Pembayaran aman lewat DOKU</value></data>
+  <data name="Checkout.QrisHint" xml:space="preserve"><value>Scan dari aplikasi bank atau e-wallet apa pun</value></data>
+  <data name="Checkout.Fastest" xml:space="preserve"><value>Paling cepat</value></data>
+  <data name="Checkout.ChooseAbove" xml:space="preserve"><value>Pilih metode pembayaran</value></data>
 </root>

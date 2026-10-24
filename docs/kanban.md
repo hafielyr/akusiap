@@ -16,6 +16,8 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [BRD-04] Full-width hero and question search · M8 · deps: BRD-03 · (claude-opus-5.5, 2026-10-22)
 - [BRD-05] ASCII art landing hero · M8 · deps: BRD-04 · (claude-opus-5.5, 2026-10-22)
 - [PAY-04] DOKU client · M3 · deps: PAY-01 · (claude-opus-5.5, 2026-10-23)
+- [MEM-04] Flashcards: pick the answer · M2 · deps: MEM-03 · (claude-opus-5.5, 2026-10-24)
+- [PAY-12] Checkout that fits the screen · M3 · deps: PAY-03 · (claude-opus-5.5, 2026-10-24)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->
