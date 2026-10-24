@@ -151,6 +151,11 @@
   .fc-toast, .fc-verdict { border-radius: .875rem; padding: .5rem .75rem; font-weight: 700; animation: pop .35s ease-out; }
   .fc-toast, .fc-verdict.is-right { background: var(--color-green-50); color: var(--color-green-800); box-shadow: inset 0 0 0 1px var(--color-green-200); }
   .fc-verdict.is-wrong { background: var(--color-red-50); color: var(--color-red-800); box-shadow: inset 0 0 0 1px var(--color-red-200); }
+  /* Payment method tiles on checkout (PAY-12). */
+  .pay-tile { display: flex; min-height: 3.5rem; cursor: pointer; align-items: center; gap: .75rem; border: 1.5px solid var(--line); border-radius: 1rem; padding: .625rem .75rem; background: var(--surface); font-size: .9375rem; transition: border-color .15s, background-color .15s; }
+  .pay-tile:hover { border-color: var(--color-brand-300); }
+  .pay-tile:has(input:checked) { border-color: var(--color-brand-600); background: var(--color-brand-50); box-shadow: 0 0 0 3px var(--color-brand-100); }
+  .pay-tile:has(input:focus-visible) { outline: 2px solid var(--color-brand-500); outline-offset: 2px; }
   /* A call to action that sticks to the bottom of a phone screen; the help button moves up out of its way. */
   .sticky-cta { position: sticky; bottom: .75rem; z-index: 30; }
   .card-in { animation: card-in .35s cubic-bezier(.2, .8, .2, 1) both; }
@@ -173,4 +178,5 @@
 /* Outside the layers so it beats the button's bottom-4 utility: on phones the help button moves above a sticky bar. */
 @media (max-width: 39.99rem) {
   body:has(.sticky-cta) .help-fab { bottom: 5rem; }
+  body:has(.sticky-cta-tall) .help-fab { bottom: 9.5rem; }
 }

@@ -297,6 +297,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Needs from the owner: the bank, account number and account name to show; the WhatsApp number for confirmations (or the support number); how long the learner has to transfer; whether amounts get a unique code (for example +123) to match transfers; who may confirm (admins only?).
 - AC: An admin confirmation unlocks access once; an unconfirmed manual payment expires on time; the account details come from configuration, not code.
 
+### PAY-12 Checkout that fits the screen · S
+- Stories: P-04, owner request (2026-10-24: checkout without scrolling down; a nicer UI, researched against other checkouts) · Depends on: PAY-03
+- Scope: Common checkout patterns (D-113): the order summary and total always in view, methods as tiles grouped by type with QRIS pinned first, a pay button that stays on screen (sticky at the bottom on phones, in the summary column on wide screens), and the terms checkbox next to the button. Phones: compact summary, 2-column tiles, a bottom bar with the checkbox, total, chosen method and "Bayar". Wide screens: methods left, summary + "Bayar" right. Virtual-account tiles show just the bank (the group heading says "Virtual account"). The help button moves above sticky bars on phones and shows only its icon.
+- AC: At 360×640 the summary, the first method and "Bayar" are on the first screen and "Bayar" stays on screen while scrolling; at 1280 px the whole checkout fits without scrolling; all checkout tests still pass.
+
 ### PAY-05 Payment instructions and pending payments · M
 - Stories: ID-10, ID-11, ID-12, ID-13 · Depends on: PAY-03, PAY-01
 - Scope: `/bayar/{orderNumber}`: QRIS shows a QR image (generated server-side as SVG) on desktop and a "Buka aplikasi" deeplink on mobile; VA shows the number with a copy button, per-bank step-by-step instructions (accordion, `id`/`en`) and a countdown to ExpiresAt. htmx polls the status every 5 s and redirects to success when Paid. `/learn/pembayaran` lists Pending payments with "Lihat instruksi".

@@ -1170,4 +1170,8 @@
   <data name="Flashcards.KeysHint" xml:space="preserve"><value>Tekan A–D atau 1–4 untuk memilih.</value></data>
   <data name="Flashcards.Score" xml:space="preserve"><value>benar</value></data>
   <data name="Flashcards.Progress" xml:space="preserve"><value>Progres set</value></data>
+  <data name="Checkout.Secure" xml:space="preserve"><value>Pembayaran aman lewat DOKU</value></data>
+  <data name="Checkout.QrisHint" xml:space="preserve"><value>Scan dari aplikasi bank atau e-wallet apa pun</value></data>
+  <data name="Checkout.Fastest" xml:space="preserve"><value>Paling cepat</value></data>
+  <data name="Checkout.ChooseAbove" xml:space="preserve"><value>Pilih metode pembayaran</value></data>
 </root>
