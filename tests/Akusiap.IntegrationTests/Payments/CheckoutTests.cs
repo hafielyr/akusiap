@@ -38,7 +38,7 @@ public sealed partial class CheckoutTests : IAsyncLifetime
 
         Assert.Contains("Rp79.000", page, StringComparison.Ordinal);
         Assert.Contains($"Akses sampai {Wib(TestClock.DefaultStart.AddDays(30))}.", page, StringComparison.Ordinal);
-        Assert.Equal(["QRIS", "VA-BCA", "VA-BNI", "VA-BRI", "VA-MANDIRI", "EWALLET-OVO", "EWALLET-DANA", "EWALLET-SHOPEEPAY"], Channels(page));
+        Assert.Equal(["QRIS", "VA-BCA", "VA-BNI", "VA-BRI", "VA-MANDIRI", "EWALLET-OVO", "EWALLET-DANA", "EWALLET-SHOPEEPAY", "CARD"], Channels(page));
         Assert.Equal(HttpStatusCode.Redirect, placed.StatusCode);
         var order = placed.Headers.Location!.OriginalString["/bayar/".Length..];
         Assert.True(OrderNumbers.IsValid(order), order);

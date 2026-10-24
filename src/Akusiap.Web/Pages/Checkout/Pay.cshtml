@@ -67,7 +67,13 @@
 
         @if (payment.DeeplinkUrl is { } deeplink)
         {
-          <a href="@deeplink" class="btn btn-primary w-full" data-testid="pay-deeplink">@T["Pay.OpenApp"]</a>
+          @* Card, e-wallets and QRIS continue on DOKU's hosted page (PAY-04, D-110); the fake gateway links a dev page. *@
+          var hosted = deeplink.StartsWith("https://", StringComparison.OrdinalIgnoreCase);
+          <a href="@deeplink" class="btn btn-primary w-full" data-testid="pay-deeplink">@(hosted ? T["Pay.OpenHosted"] : T["Pay.OpenApp"])</a>
+          @if (hosted)
+          {
+            <p class="text-center text-sm text-slate-600" data-testid="pay-hosted-hint">@T["Pay.HostedHint"]</p>
+          }
         }
 
         @if (payment.VaNumber is { } va)
