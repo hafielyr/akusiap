@@ -281,7 +281,7 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 
 ### PAY-04 DOKU client · M
 - Stories: ID-10, ID-11, ID-12, P-04 · Depends on: PAY-01
-- Update (2026-10-23, D-110): mixed approach confirmed by the owner. Virtual accounts (BCA, BNI, BRI, Mandiri) on the non-SNAP Direct API; card, e-wallets and QRIS on DOKU Checkout limited to the chosen method; VA 24 h, others 30 min; QRIS must be activated in the DOKU Back Office.
+- Update (2026-10-23, D-110): mixed approach confirmed by the owner. Virtual accounts (BCA, BNI, BRI, Mandiri) on the non-SNAP Direct API; card, e-wallets and QRIS on DOKU Checkout limited to the chosen method; VA 24 h, others 30 min; QRIS works on Checkout since the owner activated it.
 - Scope: Implement `IPaymentGateway` with DOKU (sandbox in dev; D-10): QRIS, bank transfer VA, e-wallets (deeplink) and credit card, matching `Payment.Method`. Store DOKU's `invoice_number` and `Request-Id` on the payment. Verify the signature of every DOKU HTTP notification as DOKU documents it before trusting it. Credentials (`Doku:ClientId`, `Doku:SecretKey`) from user-secrets/env only. Typed HttpClient with retries. Pick the DOKU product (Checkout or Direct API) in this card and record it as a decision.
 - AC: Against the sandbox (manual, behind an env flag), a QRIS and a VA charge return instructions, and a sample notification passes signature verification. Unit tests use recorded JSON fixtures.
 
