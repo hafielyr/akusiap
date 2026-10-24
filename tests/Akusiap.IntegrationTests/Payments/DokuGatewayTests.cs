@@ -140,6 +140,31 @@ public sealed class DokuGatewayTests
         Assert.Null(gateway.ParseNotification(new GatewayNotification(new Dictionary<string, string>(), """{"order":{"invoice_number":"LSI-1"}}""")));
     }
 
+    [Fact]
+    public async Task The_status_api_is_asked_with_a_signed_get_and_read_like_a_notification()
+    {
+        // Recorded from the sandbox (trimmed) for a BCA virtual account paid in DOKU's simulator.
+        var handler = new StubHandler(HttpStatusCode.OK, """{"order":{"invoice_number":"LSI-20261024-YVFF","amount":49000},"transaction":{"status":"SUCCESS","type":"PAYMENT","date":"2026-10-24T07:46:32Z"},"service":{"id":"VIRTUAL_ACCOUNT"}}""");
+
+        var check = await Gateway(handler).CheckStatusAsync("LSI-20261024-YVFF", CancellationToken.None);
+
+        Assert.NotNull(check);
+        Assert.Equal(("status:LSI-20261024-YVFF:Paid", "LSI-20261024-YVFF", GatewayEventKind.Paid, (long?)49_000), (check.Event.EventId, check.Event.InvoiceNumber, check.Event.Kind, check.Event.AmountIdr));
+        var sent = handler.Requests.Single();
+        Assert.Equal("/orders/v1/status/LSI-20261024-YVFF", sent.Path);
+        Assert.Equal(string.Empty, sent.Body);
+        var expected = DokuSignature.Sign(Options.SecretKey, Options.ClientId, sent.Headers["Request-Id"], sent.Headers["Request-Timestamp"], sent.Path, null);
+        Assert.Equal(expected, sent.Headers["Signature"]);                                  // GET: signed without a Digest
+    }
+
+    [Fact]
+    public async Task An_invoice_dokus_status_api_doesnt_know_has_no_status()
+    {
+        var handler = new StubHandler(HttpStatusCode.NotFound, """{"error":{"code":"not_found","message":"Order not found"}}""");
+
+        Assert.Null(await Gateway(handler).CheckStatusAsync("LSI-20261024-NONE", CancellationToken.None));
+    }
+
     private DokuGateway Gateway(StubHandler handler) =>
         new(new HttpClient(handler) { BaseAddress = new Uri(DokuOptions.SandboxUrl) }, Microsoft.Extensions.Options.Options.Create(Options), _clock, NullLogger<DokuGateway>.Instance);
 
@@ -154,7 +179,7 @@ public sealed class DokuGatewayTests
     }
 
     /// <summary>Answers every request with one recorded response and keeps what was sent.</summary>
-    private sealed class StubHandler(HttpStatusCode status, string response) : HttpMessageHandler
+    internal sealed class StubHandler(HttpStatusCode status, string response) : HttpMessageHandler
     {
         public sealed record Sent(string Path, Dictionary<string, string> Headers, string Body);
 

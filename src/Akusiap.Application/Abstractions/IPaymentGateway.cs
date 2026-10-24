@@ -31,6 +31,9 @@ public enum GatewayEventKind
 /// <param name="EventId">Unique per notification (DOKU <c>Request-Id</c>); the duplicate guard (BR-26).</param>
 public sealed record GatewayEvent(string EventId, string InvoiceNumber, GatewayEventKind Kind, long? AmountIdr, string? Reason);
 
+/// <summary>A status the app asked the gateway for itself (not a notification); <paramref name="Body"/> is the answer as received.</summary>
+public sealed record GatewayStatusCheck(GatewayEvent Event, string Body);
+
 public sealed record GatewayRefundRequest(string InvoiceNumber, long AmountIdr, string Reason);
 
 /// <param name="RefundLinkUrl">Set when the payer must give details first (DOKU non-direct refunds).</param>
@@ -51,6 +54,12 @@ public interface IPaymentGateway
 
     /// <summary>The event in a notification, or null when the body can't be read.</summary>
     GatewayEvent? ParseNotification(GatewayNotification notification);
+
+    /// <summary>
+    /// Asks the gateway for an invoice's current status: the fallback when its notification doesn't arrive (a missed
+    /// webhook, or a dev machine the gateway can't reach). Null when the gateway doesn't know the invoice.
+    /// </summary>
+    Task<GatewayStatusCheck?> CheckStatusAsync(string invoiceNumber, CancellationToken cancellationToken);
 
     Task<GatewayRefundResult> RefundAsync(GatewayRefundRequest request, CancellationToken cancellationToken);
 }
