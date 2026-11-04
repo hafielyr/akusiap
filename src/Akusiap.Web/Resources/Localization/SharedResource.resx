@@ -1174,4 +1174,6 @@
   <data name="Checkout.QrisHint" xml:space="preserve"><value>Scan dari aplikasi bank atau e-wallet apa pun</value></data>
   <data name="Checkout.Fastest" xml:space="preserve"><value>Paling cepat</value></data>
   <data name="Checkout.ChooseAbove" xml:space="preserve"><value>Pilih metode pembayaran</value></data>
+  <data name="Account.Side.Title" xml:space="preserve"><value>Satu akun untuk semua latihan Anda</value></data>
+  <data name="Account.Side.Lead" xml:space="preserve"><value>Simpan nilai, lanjutkan sesi dari HP mana pun, dan buka ujian gratis.</value></data>
 </root>

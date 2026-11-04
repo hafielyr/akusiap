@@ -2,11 +2,13 @@
 @model RegisterModel
 @{
   ViewData["Title"] = T["Account.Register.Title"].Value;
+  ViewData["Wide"] = true;
 }
 
-<div class="frame rise mx-auto max-w-md sm:mt-6">
-<section class="card space-y-6 p-6 sm:p-8">
-  <div class="flex justify-center"><partial name="_LogoPartial" /></div>
+@* Side by side on wide screens (BRD-08): why an account helps on the left, the form on the right. Phones get the form only. *@
+<div class="frame rise mx-auto grid max-w-md gap-1.5 sm:mt-4 lg:max-w-4xl lg:grid-cols-2">
+<partial name="_AuthSidePartial" />
+<section class="card space-y-5 p-5 sm:p-8 lg:self-center">
   <div class="space-y-2">
     <h1 class="text-2xl font-extrabold leading-tight">@T["Account.Register.Heading"]</h1>
     <p class="text-slate-600">@T["Account.Register.Lead"]</p>

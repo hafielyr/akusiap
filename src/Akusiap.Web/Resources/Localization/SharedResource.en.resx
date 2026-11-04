@@ -1174,4 +1174,6 @@
   <data name="Checkout.QrisHint" xml:space="preserve"><value>Scan with any bank or e-wallet app</value></data>
   <data name="Checkout.Fastest" xml:space="preserve"><value>Fastest</value></data>
   <data name="Checkout.ChooseAbove" xml:space="preserve"><value>Choose a payment method</value></data>
+  <data name="Account.Side.Title" xml:space="preserve"><value>One account for all your practice</value></data>
+  <data name="Account.Side.Lead" xml:space="preserve"><value>Keep your scores, resume on any phone, and open the free exams.</value></data>
 </root>

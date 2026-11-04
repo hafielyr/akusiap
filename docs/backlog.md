@@ -474,6 +474,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: Use the width that wide screens leave empty and tighten phones (D-114). Exam page: buttons and leaderboard in a right column that stays in view. Session setup: modes side by side, count and time on one row, topics as chips, switches in a 2-column grid, "Mulai" stuck to the bottom on phones. Today and Profile: two columns on wide screens. /learn: 2-column tiles on phones (descriptions from tablet width up). Journey: denser badge grid. Footer: two columns on phones. Test ids and form fields unchanged.
 - AC: The changed pages are shorter at 360 px and 1280 px (measured before and after), with no sideways scroll; all page, session and journey tests pass.
 
+### BRD-08 Side-by-side sign-up and sign-in · S
+- Stories: owner request (2026-10-24: put "Daftar" to the side so the learner doesn't scroll, easy on mobile) · Depends on: BRD-07
+- Scope: Sign-up and sign-in (D-115): on wide screens a blue panel (free trial, a headline and four features) sits beside the form; on phones the form stands alone without the extra logo, so the whole form and the switch link fit the first screen. Other account pages are short and unchanged.
+- AC: At 1280×800 the panel and the whole form fit without scrolling; at 360×740 the submit button and the "Masuk"/"Daftar" link are on the first screen; account tests still pass.
+
 ### DRL-01 Daily drill with points and streak · M
 - Stories: owner request (gamified daily drills) · Depends on: SRS-03, SES-06
 - Scope: `/learn/hari-ini` gets "Latihan harian": a 10-question set built from the learner's accessible exams (due review cards first, then new questions), a daily goal (one completed drill), XP per correct answer and a streak counted in Jakarta days. Needs a new table for drill progress (streak, XP, last drill date) in this card's migration; record it as an addition to `schema.sql` (like D-68).
