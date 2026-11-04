@@ -151,6 +151,11 @@
   .fc-toast, .fc-verdict { border-radius: .875rem; padding: .5rem .75rem; font-weight: 700; animation: pop .35s ease-out; }
   .fc-toast, .fc-verdict.is-right { background: var(--color-green-50); color: var(--color-green-800); box-shadow: inset 0 0 0 1px var(--color-green-200); }
   .fc-verdict.is-wrong { background: var(--color-red-50); color: var(--color-red-800); box-shadow: inset 0 0 0 1px var(--color-red-200); }
+  /* Compact form switches (BRD-07): a checkbox tile for a 2-column grid, and a chip for multi-picks like topics. */
+  .toggle-tile { display: flex; min-height: 3rem; cursor: pointer; align-items: center; gap: .625rem; border: 1px solid var(--line); border-radius: .875rem; padding: .5rem .75rem; background: var(--surface); font-size: .875rem; line-height: 1.25rem; }
+  .toggle-tile:has(input:checked) { border-color: var(--color-brand-300); background: var(--color-brand-50); }
+  .toggle-chip { display: inline-flex; min-height: 2.75rem; cursor: pointer; align-items: center; gap: .5rem; border: 1px solid var(--line); border-radius: 9999px; padding: .375rem .875rem; background: var(--surface); font-size: .875rem; }
+  .toggle-chip:has(input:checked) { border-color: var(--color-brand-600); background: var(--color-brand-50); color: var(--ink); }
   /* Payment method tiles on checkout (PAY-12). */
   .pay-tile { display: flex; min-height: 3.5rem; cursor: pointer; align-items: center; gap: .75rem; border: 1.5px solid var(--line); border-radius: 1rem; padding: .625rem .75rem; background: var(--surface); font-size: .9375rem; transition: border-color .15s, background-color .15s; }
   .pay-tile:hover { border-color: var(--color-brand-300); }

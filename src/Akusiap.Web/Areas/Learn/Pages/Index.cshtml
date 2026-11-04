@@ -88,19 +88,19 @@
   {
     <section class="space-y-3">
       <h2 class="eyebrow">@T[group.Title]</h2>
-      <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-3">
         @foreach (var tile in group.Tiles)
         {
           <li>
-            <a href="@tile.Href" class="card card-link flex h-full min-h-11 items-center gap-3 p-4" data-testid="@tile.TestId">
+            <a href="@tile.Href" class="card card-link flex h-full min-h-11 flex-col items-start gap-2 p-3 sm:flex-row sm:items-center sm:gap-3 sm:p-4" data-testid="@tile.TestId">
               <span class="icon-tile @tile.Tint">
                 <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="@tile.Icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
               </span>
               <span class="min-w-0 flex-1 space-y-0.5">
                 <span class="block font-bold leading-snug text-slate-900">@T[tile.Title]</span>
-                <span class="block text-sm text-slate-600">@T[tile.Text]</span>
+                <span class="hidden text-sm text-slate-600 sm:block">@T[tile.Text]</span>
               </span>
-              <span class="arrow text-slate-400" aria-hidden="true">→</span>
+              <span class="arrow hidden text-slate-400 sm:inline" aria-hidden="true">→</span>
             </a>
           </li>
         }

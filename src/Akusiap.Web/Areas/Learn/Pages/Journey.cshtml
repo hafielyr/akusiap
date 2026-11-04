@@ -70,14 +70,13 @@
 
   <section class="space-y-3" aria-labelledby="milestones">
     <h2 id="milestones" class="section-title">@T["Journey.Badges", earnedMilestones.Count, milestones.Count]</h2>
-    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <ul class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
       @foreach (var code in milestones)
       {
         var earned = earnedMilestones.Contains(code);
-        <li class="card space-y-2 p-4 @(earned ? null : "border-dashed opacity-60")" data-testid="milestone" data-code="@code" data-earned="@(earned ? "true" : "false")">
-          <span class="inline-flex size-11 items-center justify-center rounded-full text-xl @(earned ? "bg-accent-100" : "bg-slate-100")">@(earned ? "🏅" : "🔒")</span>
-          <span class="block font-bold leading-snug">@T[$"Badge.{code}"]</span>
-          <span class="block text-sm text-slate-600">@T[$"Badge.{code}.How"]</span>
+        <li class="card flex items-start gap-2.5 p-3 @(earned ? null : "border-dashed opacity-60")" data-testid="milestone" data-code="@code" data-earned="@(earned ? "true" : "false")">
+          <span class="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-lg @(earned ? "bg-accent-100" : "bg-slate-100")">@(earned ? "🏅" : "🔒")</span>
+          <span class="min-w-0"><span class="block text-sm font-bold leading-snug">@T[$"Badge.{code}"]</span><span class="block text-xs text-slate-600">@T[$"Badge.{code}.How"]</span></span>
         </li>
       }
     </ul>

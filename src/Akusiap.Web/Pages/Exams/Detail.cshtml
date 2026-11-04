@@ -3,15 +3,16 @@
 @using Akusiap.Application.Catalog
 @using Akusiap.Domain.Content
 @using Akusiap.Web.Identity
-@* An exam's page (CAT-02): price, buttons for the viewer's access decision, description and topics. *@
+@* An exam's page (CAT-02): price, buttons for the viewer's access decision, description and topics. Wide screens put the buttons in a right column that stays in view (BRD-07); phones keep one column with the buttons right after the header. *@
 @{
   var exam = Model.Exam;
   ViewData["Title"] = exam.Title;
+  ViewData["Wide"] = true;
   var registerUrl = AccountRoutes.WithReturnUrl(AccountRoutes.Register, ExamRoutes.Detail(exam.Id));
   var signInUrl = AccountRoutes.WithReturnUrl(AccountRoutes.SignIn, ExamRoutes.Detail(exam.Id));
 }
 
-<article class="space-y-6">
+<article class="space-y-4">
   <a href="@ExamRoutes.Catalog" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["ExamPage.Back"]</a>
 
   @if (exam.Status != ExamStatus.Published)
@@ -19,7 +20,9 @@
     <p role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="preview-notice">@T["ExamPage.Draft"]</p>
   }
 
-  <header class="glow space-y-4 px-5 py-6 sm:px-7">
+  <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-6">
+  <div class="contents lg:col-start-1 lg:row-start-1 lg:block lg:space-y-6">
+  <header class="glow order-1 space-y-4 px-5 py-6 sm:px-7">
     @if (exam.SubjectName is not null)
     {
       <p class="chip">@exam.SubjectName</p>
@@ -49,6 +52,30 @@
     </ul>
     <p class="sr-only">@T["ExamPage.QuestionSummary", exam.ActiveQuestionCount]</p>
   </header>
+
+  @if (!string.IsNullOrWhiteSpace(exam.Description))
+  {
+    <p class="order-3 whitespace-pre-line text-slate-700" data-testid="exam-description">@exam.Description.Trim()</p>
+  }
+
+  @if (exam.Topics.Count > 0)
+  {
+    <section class="order-4 space-y-2">
+      <h2 class="section-title">@T["ExamPage.Topics"]</h2>
+      <ul class="card divide-y divide-slate-200" data-testid="exam-topics">
+        @foreach (var topic in exam.Topics)
+        {
+          <li class="flex items-center justify-between gap-3 px-4 py-3">
+            <span>@topic.Name</span>
+            <span class="shrink-0 text-sm text-slate-500">@T["Catalog.QuestionCount", topic.QuestionCount]</span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+  </div>
+
+  <aside class="order-2 space-y-4 lg:sticky lg:top-20 lg:col-start-2 lg:row-start-1">
 
   @if (Model.OpenAttemptId is { } openAttempt)
   {
@@ -102,24 +129,6 @@
     </a>
   }
 
-  @if (!string.IsNullOrWhiteSpace(exam.Description))
-  {
-    <p class="whitespace-pre-line text-slate-700" data-testid="exam-description">@exam.Description.Trim()</p>
-  }
-
-  @if (exam.Topics.Count > 0)
-  {
-    <section class="space-y-2">
-      <h2 class="section-title">@T["ExamPage.Topics"]</h2>
-      <ul class="card divide-y divide-slate-200" data-testid="exam-topics">
-        @foreach (var topic in exam.Topics)
-        {
-          <li class="flex items-center justify-between gap-3 px-4 py-3">
-            <span>@topic.Name</span>
-            <span class="shrink-0 text-sm text-slate-500">@T["Catalog.QuestionCount", topic.QuestionCount]</span>
-          </li>
-        }
-      </ul>
-    </section>
-  }
+  </aside>
+  </div>
 </article>
