@@ -18,6 +18,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PAY-04] DOKU client · M3 · deps: PAY-01 · (claude-opus-5.5, 2026-10-23)
 - [MEM-04] Flashcards: pick the answer · M2 · deps: MEM-03 · (claude-opus-5.5, 2026-10-24)
 - [PAY-12] Checkout that fits the screen · M3 · deps: PAY-03 · (claude-opus-5.5, 2026-10-24)
+- [BRD-07] Less scrolling on key pages · M8 · deps: BRD-03 · (claude-opus-5.5, 2026-11-04)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

@@ -4,7 +4,8 @@
 @using Akusiap.Domain.Sessions
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Akusiap.Web.Localization.SharedResource> S
 @* Session setup (SES-02). Alpine only shows the fields of the chosen mode; without JavaScript both show and the server
-   ignores the Practice fields in Simulation. *@
+   ignores the Practice fields in Simulation. Compact (BRD-07): modes side by side, count and time on one row, topics as
+   chips, switches in a 2-column grid, and "Mulai" stuck to the bottom on phones. *@
 @{
   var setup = Model.Setup;
   var preset = setup.Preset;
@@ -18,7 +19,7 @@
   var noSimulationsLeft = setup.SimulationAttemptsLeft == 0;
 }
 
-<section class="mx-auto max-w-md space-y-5">
+<section class="mx-auto max-w-2xl space-y-4">
   <div class="space-y-1">
     <a href="@ExamRoutes.Detail(setup.ExamId)" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @setup.Title</a>
     <h1 class="text-2xl font-bold leading-tight">@T["Session.Setup.Title"]</h1>
@@ -38,73 +39,76 @@
     </ul>
   }
 
-  <form method="post" class="space-y-5" novalidate
+  <form method="post" class="space-y-4" novalidate
         x-data="{ mode: '@Model.Form.Mode', untimed: @(Model.Form.Untimed ? "true" : "false") }">
-    <fieldset class="grid gap-2 sm:grid-cols-2">
+    <fieldset class="grid grid-cols-2 gap-2">
       <legend class="label mb-2">@T["Session.Setup.Mode"]</legend>
       @foreach (var mode in new[] { AttemptMode.Practice, AttemptMode.Simulation })
       {
-        <label class="card card-link flex min-h-11 cursor-pointer items-start gap-3 p-4 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50">
-          <input type="radio" name="Form.Mode" value="@mode" checked="@(Model.Form.Mode == mode)" x-model="mode" class="mt-1 size-5 accent-brand-600" data-testid="mode-@mode" />
+        <label class="card card-link flex min-h-11 cursor-pointer items-start gap-2 p-3 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50 sm:gap-3 sm:p-4">
+          <input type="radio" name="Form.Mode" value="@mode" checked="@(Model.Form.Mode == mode)" x-model="mode" class="mt-0.5 size-5 shrink-0 accent-brand-600" data-testid="mode-@mode" />
           <span>
             <span class="block font-semibold">@T[$"Session.Setup.{mode}"]</span>
-            <span class="block text-sm text-slate-600">@T[$"Session.Setup.{mode}Hint"]</span>
+            <span class="block text-xs text-slate-600 sm:text-sm">@T[$"Session.Setup.{mode}Hint"]</span>
           </span>
         </label>
       }
     </fieldset>
 
     <div x-show="mode === 'Practice'" class="space-y-4" data-testid="practice-fields">
-      <div class="space-y-1">
-        <label asp-for="Form.QuestionCount" class="label">@T["Session.Setup.QuestionCount", setup.AvailableCount]</label>
-        <input asp-for="Form.QuestionCount" type="number" min="1" max="@setup.AvailableCount" inputmode="numeric" class="input" />
-        <span asp-validation-for="Form.QuestionCount" class="field-error"></span>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="space-y-1">
+          <label asp-for="Form.QuestionCount" class="label">@T["Session.Setup.QuestionCount", setup.AvailableCount]</label>
+          <input asp-for="Form.QuestionCount" type="number" min="1" max="@setup.AvailableCount" inputmode="numeric" class="input" />
+        </div>
+        <div x-show="!untimed" class="space-y-1">
+          <label asp-for="Form.TimeLimitMinutes" class="label">@T["Admin.Preset.TimeLimit"]</label>
+          <input asp-for="Form.TimeLimitMinutes" type="number" min="@(preset.TimeLimitMinutes ?? 1)" max="@SessionRulesBuilder.MaxTimeLimitMinutes" inputmode="numeric" class="input" />
+        </div>
       </div>
+      <span asp-validation-for="Form.QuestionCount" class="field-error"></span>
+      @if (preset.TimeLimitMinutes is { } floor)
+      {
+        <p x-show="!untimed" class="text-sm text-slate-500">@T["Session.Setup.MinTime", floor]</p>
+      }
+      <span asp-validation-for="Form.TimeLimitMinutes" class="field-error"></span>
 
       @if (setup.Topics.Count > 1)
       {
-        <fieldset class="space-y-1">
-          <legend class="label">@T["Session.Setup.Topics"]</legend>
-          @foreach (var topic in setup.Topics)
-          {
-            <label class="flex min-h-11 items-center gap-3">
-              <input type="checkbox" name="Form.TopicIds" value="@topic.Id" checked="@Model.Form.TopicIds.Contains(topic.Id)" class="size-5 rounded border-slate-300 accent-brand-600" />
-              <span>@topic.Name <span class="text-sm text-slate-500">(@T["Catalog.QuestionCount", topic.QuestionCount])</span></span>
-            </label>
-          }
+        <fieldset class="space-y-2">
+          <legend class="label mb-2">@T["Session.Setup.Topics"]</legend>
+          <div class="flex flex-wrap gap-2">
+            @foreach (var topic in setup.Topics)
+            {
+              <label class="toggle-chip">
+                <input type="checkbox" name="Form.TopicIds" value="@topic.Id" checked="@Model.Form.TopicIds.Contains(topic.Id)" class="size-4 rounded border-slate-300 accent-brand-600" />
+                <span>@topic.Name <span class="text-slate-500">· @topic.QuestionCount</span></span>
+              </label>
+            }
+          </div>
           <span asp-validation-for="Form.TopicIds" class="field-error"></span>
         </fieldset>
       }
 
-      <div class="space-y-1">
-        <label class="flex min-h-11 items-center gap-3">
-          <input asp-for="Form.Untimed" x-model="untimed" class="size-5 rounded border-slate-300 accent-brand-600" />
+      <div class="grid grid-cols-2 gap-2">
+        <label class="toggle-tile">
+          <input asp-for="Form.Untimed" x-model="untimed" class="size-5 shrink-0 rounded border-slate-300 accent-brand-600" />
           <span>@T["Admin.Presets.Untimed"]</span>
         </label>
-        <div x-show="!untimed" class="space-y-1">
-          <label asp-for="Form.TimeLimitMinutes" class="label">@T["Admin.Preset.TimeLimit"]</label>
-          <input asp-for="Form.TimeLimitMinutes" type="number" min="@(preset.TimeLimitMinutes ?? 1)" max="@SessionRulesBuilder.MaxTimeLimitMinutes" inputmode="numeric" class="input" />
-          @if (preset.TimeLimitMinutes is { } floor)
-          {
-            <p class="text-sm text-slate-500">@T["Session.Setup.MinTime", floor]</p>
-          }
-        </div>
-        <span asp-validation-for="Form.TimeLimitMinutes" class="field-error"></span>
+        <label class="toggle-tile">
+          <input asp-for="Form.HintsEnabled" disabled="@(!preset.HintsEnabled)" class="size-5 shrink-0 rounded border-slate-300 accent-brand-600" />
+          <span>@T["Session.Setup.Hints"]@if (!preset.HintsEnabled) { <span class="block text-xs text-slate-500">@T["Session.Rules.HintsOff"]</span> }</span>
+        </label>
+        <label class="toggle-tile">
+          <input asp-for="Form.ShuffleQuestions" class="size-5 shrink-0 rounded border-slate-300 accent-brand-600" />
+          <span>@T["Admin.Preset.ShuffleQuestions"]</span>
+        </label>
+        <label class="toggle-tile">
+          <input asp-for="Form.ShuffleOptions" class="size-5 shrink-0 rounded border-slate-300 accent-brand-600" />
+          <span>@T["Admin.Preset.ShuffleOptions"]</span>
+        </label>
       </div>
-
-      <label class="flex min-h-11 items-center gap-3">
-        <input asp-for="Form.HintsEnabled" disabled="@(!preset.HintsEnabled)" class="size-5 rounded border-slate-300 accent-brand-600" />
-        <span>@T["Session.Setup.Hints"]@if (!preset.HintsEnabled) { <span class="text-sm text-slate-500"> · @T["Session.Rules.HintsOff"]</span> }</span>
-      </label>
       <span asp-validation-for="Form.HintsEnabled" class="field-error"></span>
-      <label class="flex min-h-11 items-center gap-3">
-        <input asp-for="Form.ShuffleQuestions" class="size-5 rounded border-slate-300 accent-brand-600" />
-        <span>@T["Admin.Preset.ShuffleQuestions"]</span>
-      </label>
-      <label class="flex min-h-11 items-center gap-3">
-        <input asp-for="Form.ShuffleOptions" class="size-5 rounded border-slate-300 accent-brand-600" />
-        <span>@T["Admin.Preset.ShuffleOptions"]</span>
-      </label>
     </div>
 
     <div x-show="mode === 'Simulation'" class="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm" data-testid="simulation-rules">
@@ -116,6 +120,8 @@
       }
     </div>
 
-    <button type="submit" class="btn btn-primary w-full" data-testid="start">@T["Session.Setup.Start"]</button>
+    <div class="sticky-cta">
+      <button type="submit" class="btn btn-primary w-full shadow-lg" data-testid="start">@T["Session.Setup.Start"] <span class="arrow" aria-hidden="true">→</span></button>
+    </div>
   </form>
 </section>
