@@ -1,40 +1,147 @@
 @model Akusiap.Application.Memorization.FlashcardCard
+@using Akusiap.Domain.Content
 @using Akusiap.Domain.Memorization
-@* One flashcard (MEM-03): the question, "Lihat jawaban" flips it (Alpine), and a rating swaps in the next card (htmx). *@
+@*
+  One flashcard as a quiz (MEM-03, MEM-04, D-112). Tapping an option posts it (htmx): a right pick swaps in the next
+  card with a "Benar!" note; a wrong pick comes back as this card with the answer shown and a "next" button.
+  "Lihat jawaban" still flips the card (Alpine) for self-rating with the four buttons.
+*@
 @{
-  var rateUrl = $"{IndexModel.SetUrl(Model.AttemptId)}?handler=Rate";
+  var setUrl = IndexModel.SetUrl(Model.AttemptId);
+  var answerUrl = $"{setUrl}?handler=Answer";
+  var rateUrl = $"{setUrl}?handler=Rate";
+  var multi = Model.Type == QuestionType.MultiSelect;
+  var answered = Model.IsAnswered;
+  var wasRight = Model.Results[Model.Position - 1] == true;
+  var lastCard = Model.Results.All(r => r is not null);
+  var feedback = (ViewData[SetModel.FeedbackKey] ?? TempData[SetModel.FeedbackKey]) as string;
+  var nextDue = (ViewData[SetModel.NextDueKey] ?? TempData[SetModel.NextDueKey]) as string;
+  const string letters = "ABCDEFGH";
 }
-<article id="flashcard" x-data="{ flipped: false }" class="space-y-4 card p-4" data-testid="flashcard" data-position="@Model.Position">
-  @if ((ViewData[SetModel.NextDueKey] ?? TempData[SetModel.NextDueKey]) is string nextDue)
-  {
-    <p role="status" class="rounded-lg bg-slate-100 px-3 py-2 text-sm text-slate-700" data-testid="next-due">@T["Flashcards.NextDue", nextDue]</p>
-  }
-  <div class="space-y-1">
-    <p class="text-xs font-medium uppercase tracking-wide text-slate-500">@(Model.Title ?? T["Flashcards.MyCards"].Value) · @T["Flashcards.CardOf", Model.Position, Model.Total]</p>
-    <p class="whitespace-pre-line text-lg font-medium">@Model.Text</p>
-  </div>
-  <ul class="space-y-2">
-    @foreach (var option in Model.Options)
-    {
-      <li class="rounded-lg border border-slate-200 px-3 py-2 text-sm" @(option.IsCorrect ? Html.Raw(":class=\"flipped && 'border-green-600 bg-green-50 font-semibold'\"") : null)>@option.Text</li>
-    }
-  </ul>
-  <button type="button" class="btn btn-primary w-full" x-show="!flipped" @@click="flipped = true" data-testid="flip">@T["Flashcards.Flip"]</button>
-  <div x-show="flipped" x-cloak class="space-y-4" data-testid="answer">
-    <p class="whitespace-pre-line text-sm text-slate-700">@Model.Explanation</p>
-    @if (Model.KeyFact is not null)
-    {
-      <p class="text-sm text-slate-700"><span class="font-semibold">@T["Session.Player.KeyFact"]:</span> @Model.KeyFact</p>
-    }
-    <form method="post" action="@rateUrl" asp-antiforgery="true" hx-post="@rateUrl" hx-target="#flashcard" hx-swap="outerHTML" class="space-y-2">
-      <input type="hidden" name="position" value="@Model.Position" />
-      <p class="label">@T["Flashcards.Rate"]</p>
-      <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        @foreach (var rating in Enum.GetValues<ReviewRating>())
-        {
-          <button type="submit" name="rating" value="@rating" class="btn @(rating == ReviewRating.Forgot ? "btn-secondary" : "btn-primary")" data-testid="rate-@rating">@T[$"Flashcards.Rating.{rating}"]</button>
-        }
+<article id="flashcard" class="deck card-in" data-testid="flashcard" data-position="@Model.Position" data-answered="@(answered ? "true" : "false")"
+         x-data="{ flipped: false, picked: null }"
+         @@keydown.window="if ($event.ctrlKey || $event.metaKey || $event.altKey || ['INPUT', 'TEXTAREA', 'SELECT'].includes($event.target.tagName)) return; const k = $event.key.toLowerCase(); const next = $root.querySelector('[data-next]'); if (next && k === 'arrowright') { $event.preventDefault(); next.click(); return; } const n = 'abcdefgh'.indexOf(k) >= 0 ? 'abcdefgh'.indexOf(k) : '12345678'.indexOf(k); const b = n >= 0 ? $root.querySelectorAll('[data-key]')[n] : null; if (b && !b.disabled) { $event.preventDefault(); b.click(); }">
+  <div class="fc">
+    <header class="fc-top">
+      <div class="flex items-center justify-between gap-2 text-sm">
+        <span class="min-w-0 truncate font-semibold">@(Model.Title ?? T["Flashcards.MyCards"].Value)</span>
+        <span class="flex shrink-0 items-center gap-2">
+          @if (Model.Streak >= 2)
+          {
+            <span class="fc-chip" data-testid="streak">🔥 @T["Flashcards.Streak", Model.Streak]</span>
+          }
+          <span class="fc-chip num">@Model.Position/@Model.Total</span>
+        </span>
       </div>
-    </form>
+      <ol class="pips" aria-label="@T["Flashcards.Progress"]" style="grid-template-columns: repeat(@Model.Total, minmax(0, 1fr))">
+        @for (var i = 0; i < Model.Results.Count; i++)
+        {
+          var state = Model.Results[i] switch { true => "ok", false => "no", _ => i == Model.Position - 1 ? "now" : "" };
+          <li class="pip @state"><span class="sr-only">@T["Flashcards.CardOf", i + 1, Model.Total]</span></li>
+        }
+      </ol>
+    </header>
+
+    <div class="space-y-4 p-4 sm:p-6">
+      @if (feedback == "correct")
+      {
+        <p role="status" class="fc-toast" data-testid="flashcard-correct">✓ @T["Flashcards.Correct"]@if (nextDue is not null) {<span class="font-normal"> · @T["Flashcards.NextDue", nextDue]</span>}</p>
+      }
+      else if (answered)
+      {
+        <p role="status" class="fc-verdict @(wasRight ? "is-right" : "is-wrong")" data-testid="flashcard-verdict" data-correct="@(wasRight ? "true" : "false")">
+          @(wasRight ? $"✓ {T["Flashcards.Correct"].Value}" : $"✗ {T["Flashcards.Wrong"].Value}")
+          @if (nextDue is not null)
+          {
+            <span class="block text-sm font-normal" data-testid="next-due">@T["Flashcards.NextDue", nextDue]</span>
+          }
+        </p>
+      }
+      else if (nextDue is not null)
+      {
+        <p role="status" class="rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700" data-testid="next-due">@T["Flashcards.NextDue", nextDue]</p>
+      }
+
+      <p class="whitespace-pre-line text-lg font-semibold leading-snug sm:text-xl">@Model.Text</p>
+
+      @if (answered)
+      {
+        <ul class="grid gap-2 sm:grid-cols-2">
+          @for (var i = 0; i < Model.Options.Count; i++)
+          {
+            var option = Model.Options[i];
+            var mark = option.IsCorrect ? "is-right" : Model.Picked.Contains(option.Id) ? "is-wrong" : "is-dim";
+            <li class="opt @mark" data-testid="option" data-state="@mark"><span class="key">@(option.IsCorrect ? "✓" : Model.Picked.Contains(option.Id) ? "✗" : letters[i % letters.Length].ToString())</span><span>@option.Text</span></li>
+          }
+        </ul>
+        <div class="space-y-2 rounded-2xl bg-slate-50 p-4 text-sm text-slate-700" data-testid="answer">
+          <p class="whitespace-pre-line">@Model.Explanation</p>
+          @if (Model.KeyFact is not null)
+          {
+            <p><span class="font-semibold">@T["Session.Player.KeyFact"]:</span> @Model.KeyFact</p>
+          }
+        </div>
+        <div class="sticky-cta">
+          <a href="@setUrl" hx-get="@setUrl?handler=Card" hx-target="#flashcard" hx-swap="outerHTML show:window:top" data-next
+             class="btn btn-primary w-full shadow-lg" data-testid="next-card">@(lastCard ? T["Flashcards.SeeSummary"] : T["Flashcards.Next"]) <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      }
+      else
+      {
+        <form method="post" action="@answerUrl" asp-antiforgery="true" hx-post="@answerUrl" hx-target="#flashcard" hx-swap="outerHTML show:window:top" class="space-y-3" data-testid="answer-form">
+          <input type="hidden" name="position" value="@Model.Position" />
+          <p class="text-xs font-bold uppercase tracking-wide text-slate-500">@(multi ? T["Flashcards.PickAll"] : T["Flashcards.PickOne"])</p>
+          <div class="grid gap-2 sm:grid-cols-2">
+            @for (var i = 0; i < Model.Options.Count; i++)
+            {
+              var option = Model.Options[i];
+              var correct = option.IsCorrect ? "flipped && 'is-right'" : "flipped && 'is-dim'";
+              if (multi)
+              {
+                <label class="opt cursor-pointer" x-bind:class="@correct" data-testid="option">
+                  <input type="checkbox" name="option" value="@option.Id" class="peer sr-only" data-key x-bind:disabled="flipped" />
+                  <span class="key">@letters[i % letters.Length]</span><span>@option.Text</span>
+                </label>
+              }
+              else
+              {
+                <button type="submit" name="option" value="@option.Id" class="opt" data-key data-testid="option"
+                        x-bind:disabled="flipped" x-bind:class="picked === @option.Id ? 'is-picked' : (@correct)"
+                        @@click="picked = @option.Id">
+                  <span class="key">@letters[i % letters.Length]</span><span>@option.Text</span>
+                </button>
+              }
+            }
+          </div>
+          @if (multi)
+          {
+            <button type="submit" class="btn btn-primary w-full" x-show="!flipped" data-testid="check">@T["Flashcards.Check"]</button>
+          }
+        </form>
+
+        <button type="button" class="btn btn-secondary w-full" x-show="!flipped" @@click="flipped = true" data-testid="flip">@T["Flashcards.DontKnow"]</button>
+        <p class="hidden text-center text-xs text-slate-500 sm:block" x-show="!flipped">@T["Flashcards.KeysHint"]</p>
+
+        <div x-show="flipped" x-cloak class="space-y-4" data-testid="answer">
+          <div class="space-y-2 rounded-2xl bg-slate-50 p-4 text-sm text-slate-700">
+            <p class="whitespace-pre-line">@Model.Explanation</p>
+            @if (Model.KeyFact is not null)
+            {
+              <p><span class="font-semibold">@T["Session.Player.KeyFact"]:</span> @Model.KeyFact</p>
+            }
+          </div>
+          <form method="post" action="@rateUrl" asp-antiforgery="true" hx-post="@rateUrl" hx-target="#flashcard" hx-swap="outerHTML show:window:top" class="space-y-2">
+            <input type="hidden" name="position" value="@Model.Position" />
+            <p class="label">@T["Flashcards.Rate"]</p>
+            <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              @foreach (var rating in Enum.GetValues<ReviewRating>())
+              {
+                <button type="submit" name="rating" value="@rating" class="btn @(rating == ReviewRating.Forgot ? "btn-secondary" : "btn-primary")" data-testid="rate-@rating">@T[$"Flashcards.Rating.{rating}"]</button>
+              }
+            </div>
+          </form>
+        </div>
+      }
+    </div>
   </div>
 </article>

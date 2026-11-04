@@ -12,7 +12,7 @@ namespace Akusiap.Application.Memorization;
 /// <summary>A deck to pick on <c>/learn/kartu</c>: an exam with access, or "Kartu saya" (ExamId null).</summary>
 public sealed record FlashcardDeck(long? ExamId, string? Title, int DueCount);
 
-public sealed record FlashcardOption(string Text, bool IsCorrect);
+public sealed record FlashcardOption(long Id, string Text, bool IsCorrect);
 
 public sealed record FlashcardCard(
     long AttemptId,
@@ -23,7 +23,19 @@ public sealed record FlashcardCard(
     string Text,
     IReadOnlyList<FlashcardOption> Options,
     string Explanation,
-    string? KeyFact);
+    string? KeyFact,
+    IReadOnlyList<bool?> Results,
+    IReadOnlyList<long> Picked)
+{
+    /// <summary>Whether this card was already answered or rated in the set (its answer is then shown).</summary>
+    public bool IsAnswered => Results[Position - 1] is not null;
+
+    /// <summary>Correct answers in a row, counting back from the last answered card.</summary>
+    public int Streak => Results.Where(r => r is not null).Reverse().TakeWhile(r => r == true).Count();
+}
+
+/// <summary>The outcome of picking options on a card (MEM-04): right or wrong, and when the card comes back.</summary>
+public sealed record FlashcardAnswer(bool IsCorrect, DateTime NextDue);
 
 public sealed record FlashcardSummary(long AttemptId, string? Title, int Total, int Forgot, int Hard, int Good, int Easy);
 
@@ -139,31 +151,39 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
     }
 
     /// <summary>The next card not yet rated, or null when the set is finished (or not the viewer's).</summary>
-    public async Task<FlashcardCard?> NextCardAsync(long attemptId, CancellationToken cancellationToken)
+    public Task<FlashcardCard?> NextCardAsync(long attemptId, CancellationToken cancellationToken) =>
+        CardAsync(attemptId, position: null, cancellationToken);
+
+    /// <summary>
+    /// The card at <paramref name="position"/>, answered or not, with the options the learner picked: shows the answer
+    /// after a wrong pick (MEM-04). Null when the set isn't the viewer's.
+    /// </summary>
+    public Task<FlashcardCard?> CardAtAsync(long attemptId, int position, CancellationToken cancellationToken) =>
+        CardAsync(attemptId, position, cancellationToken);
+
+    /// <summary>
+    /// Checks the picked options (MEM-04, D-112): exactly the question's correct options is right and rated Good,
+    /// anything else is rated Forgot (SM-2 brings it back the next day). The picks are kept on the item. A card already
+    /// rated keeps its rating. Null when the set or card isn't the viewer's.
+    /// </summary>
+    public async Task<FlashcardAnswer?> AnswerAsync(long attemptId, int position, IReadOnlyCollection<long> optionIds, CancellationToken cancellationToken)
     {
-        var set = await OwnSetAsync(attemptId, cancellationToken).ConfigureAwait(false);
-        if (set is null || set.Status != AttemptStatus.InProgress)
+        ArgumentNullException.ThrowIfNull(optionIds);
+        var userId = UserId();
+        var options = await db.AttemptItems.AsNoTracking()
+            .Where(i => i.AttemptId == attemptId && i.Position == position && i.Attempt!.UserId == userId && i.Attempt.Mode == AttemptMode.Flashcard)
+            .Select(i => i.Question!.Options.Select(o => new { o.Id, o.IsCorrect }).ToList())
+            .SingleOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+        if (options is null)
         {
             return null;
         }
 
-        var card = await db.AttemptItems.AsNoTracking()
-            .Where(i => i.AttemptId == attemptId && !i.IsAnswered)
-            .OrderBy(i => i.Position)
-            .Select(i => new
-            {
-                i.Position,
-                i.Question!.QuestionType,
-                i.Question.Text,
-                i.Question.Explanation,
-                i.Question.KeyFact,
-                Options = i.Question.Options.OrderBy(o => o.SortOrder).ThenBy(o => o.Id).Select(o => new FlashcardOption(o.Text, o.IsCorrect)).ToList(),
-            })
-            .FirstOrDefaultAsync(cancellationToken)
-            .ConfigureAwait(false);
-        return card is null
-            ? null
-            : new FlashcardCard(attemptId, card.Position, set.TotalCount, set.Title, card.QuestionType, card.Text, card.Options, card.Explanation, card.KeyFact);
+        var picked = optionIds.Where(id => options.Any(o => o.Id == id)).Distinct().ToList();
+        var isCorrect = picked.Count > 0 && options.Where(o => o.IsCorrect).Select(o => o.Id).ToHashSet().SetEquals(picked);
+        var due = await RateCoreAsync(attemptId, position, isCorrect ? ReviewRating.Good : ReviewRating.Forgot, picked, cancellationToken).ConfigureAwait(false);
+        return due is { } nextDue ? new FlashcardAnswer(isCorrect, nextDue) : null;
     }
 
     /// <summary>
@@ -172,7 +192,45 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
     /// Rating a card twice changes nothing. Returns the card's next due time (SRS-02), or null when the set isn't the
     /// viewer's.
     /// </summary>
-    public async Task<DateTime?> RateAsync(long attemptId, int position, ReviewRating rating, CancellationToken cancellationToken)
+    public Task<DateTime?> RateAsync(long attemptId, int position, ReviewRating rating, CancellationToken cancellationToken) =>
+        RateCoreAsync(attemptId, position, rating, picked: [], cancellationToken);
+
+    private async Task<FlashcardCard?> CardAsync(long attemptId, int? position, CancellationToken cancellationToken)
+    {
+        var set = await OwnSetAsync(attemptId, cancellationToken).ConfigureAwait(false);
+        if (set is null || (position is null && set.Status != AttemptStatus.InProgress))
+        {
+            return null;
+        }
+
+        var items = db.AttemptItems.AsNoTracking().Where(i => i.AttemptId == attemptId);
+        var chosen = position is { } at ? items.Where(i => i.Position == at) : items.Where(i => !i.IsAnswered).OrderBy(i => i.Position);
+        var card = await chosen
+            .Select(i => new
+            {
+                i.Position,
+                i.Question!.QuestionType,
+                i.Question.Text,
+                i.Question.Explanation,
+                i.Question.KeyFact,
+                Options = i.Question.Options.OrderBy(o => o.SortOrder).ThenBy(o => o.Id).Select(o => new FlashcardOption(o.Id, o.Text, o.IsCorrect)).ToList(),
+                Picked = i.SelectedOptions.Select(o => o.QuestionOptionId).ToList(),
+            })
+            .FirstOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+        if (card is null)
+        {
+            return null;
+        }
+
+        var results = await items.OrderBy(i => i.Position)
+            .Select(i => i.IsAnswered ? (bool?)i.IsCorrect : null)
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+        return new FlashcardCard(attemptId, card.Position, set.TotalCount, set.Title, card.QuestionType, card.Text, card.Options, card.Explanation, card.KeyFact, results, card.Picked);
+    }
+
+    private async Task<DateTime?> RateCoreAsync(long attemptId, int position, ReviewRating rating, IReadOnlyList<long> picked, CancellationToken cancellationToken)
     {
         if (!Enum.IsDefined(rating))
         {
@@ -206,6 +264,11 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
         item.IsAnswered = true;
         item.IsCorrect = rating is ReviewRating.Good or ReviewRating.Easy;
         item.AnsweredAt = now;
+        foreach (var optionId in picked)
+        {
+            item.SelectedOptions.Add(new AttemptItemOption { QuestionOptionId = optionId });
+        }
+
         attempt.LastSavedAt = now;
         if (attempt.Items.All(i => i.IsAnswered))
         {

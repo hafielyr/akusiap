@@ -1,21 +1,37 @@
 @model Akusiap.Application.Memorization.FlashcardSummary
-@* End of a set (MEM-03): how each card was rated, and the next step. *@
-<article id="flashcard" class="space-y-4 card p-4 text-center" data-testid="flashcard-summary">
-  @if ((ViewData[SetModel.NextDueKey] ?? TempData[SetModel.NextDueKey]) is string nextDue)
-  {
-    <p role="status" class="rounded-lg bg-slate-100 px-3 py-2 text-sm text-slate-700" data-testid="next-due">@T["Flashcards.NextDue", nextDue]</p>
-  }
-  <h1 class="text-2xl font-bold leading-tight">@T["Flashcards.Done"]</h1>
-  <p class="text-slate-600">@(Model.Title ?? T["Flashcards.MyCards"].Value)</p>
-  <dl class="grid grid-cols-2 gap-2 text-left sm:grid-cols-4">
-    @foreach (var (label, count) in new (string, int)[] { ("Forgot", Model.Forgot), ("Hard", Model.Hard), ("Good", Model.Good), ("Easy", Model.Easy) })
+@* End of a set (MEM-03, MEM-04): a score ring (cards remembered), how each card was rated, and the next step. *@
+@{
+  var remembered = Model.Good + Model.Easy;
+  var percent = Model.Total == 0 ? 0 : (int)Math.Round(100.0 * remembered / Model.Total);
+  var feedback = (ViewData[SetModel.FeedbackKey] ?? TempData[SetModel.FeedbackKey]) as string;
+}
+<article id="flashcard" class="deck card-in" data-testid="flashcard-summary">
+  <div class="fc space-y-5 p-5 text-center sm:p-8">
+    @if (feedback == "correct")
     {
-      <div class="rounded-lg border border-slate-200 p-3">
-        <dt class="text-xs text-slate-500">@T[$"Flashcards.Rating.{label}"]</dt>
-        <dd class="text-xl font-bold" data-testid="summary-@label">@count</dd>
-      </div>
+      <p role="status" class="fc-toast" data-testid="flashcard-correct">✓ @T["Flashcards.Correct"]</p>
     }
-  </dl>
-  <p class="text-sm text-slate-600" data-testid="summary-total">@T["Flashcards.SummaryTotal", Model.Total]</p>
-  <a href="@IndexModel.Route" class="btn btn-primary w-full">@T["Flashcards.Again"]</a>
+    else if ((ViewData[SetModel.NextDueKey] ?? TempData[SetModel.NextDueKey]) is string nextDue)
+    {
+      <p role="status" class="rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700" data-testid="next-due">@T["Flashcards.NextDue", nextDue]</p>
+    }
+    <div class="dial mx-auto size-32" style="--p: @percent; --ring: var(--color-green-500)" data-testid="summary-score">
+      <span class="flex flex-col"><span class="num text-3xl font-extrabold">@remembered/@Model.Total</span><span class="text-xs text-slate-500">@T["Flashcards.Score"]</span></span>
+    </div>
+    <div class="space-y-1">
+      <h1 class="text-2xl font-extrabold leading-tight">@T["Flashcards.Done"]</h1>
+      <p class="text-slate-600">@(Model.Title ?? T["Flashcards.MyCards"].Value)</p>
+    </div>
+    <dl class="grid grid-cols-4 gap-2 text-center">
+      @foreach (var (label, count, tone) in new (string, int, string)[] { ("Forgot", Model.Forgot, "text-red-700"), ("Hard", Model.Hard, "text-amber-700"), ("Good", Model.Good, "text-green-700"), ("Easy", Model.Easy, "text-brand-700") })
+      {
+        <div class="stat px-1 py-2">
+          <dt class="text-xs text-slate-500">@T[$"Flashcards.Rating.{label}"]</dt>
+          <dd class="num text-xl font-extrabold @tone" data-testid="summary-@label">@count</dd>
+        </div>
+      }
+    </dl>
+    <p class="text-sm text-slate-600" data-testid="summary-total">@T["Flashcards.SummaryTotal", Model.Total]</p>
+    <a href="@IndexModel.Route" class="btn btn-primary w-full">@T["Flashcards.Again"] <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
 </article>

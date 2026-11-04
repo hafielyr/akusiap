@@ -262,6 +262,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: `/learn/kartu`: pick an exam with access (or "Kartu saya"), then a set of 10 cards (due first, then wrong, then new). Each card shows the question, then on flip shows the answer, explanation and key fact. Four rating buttons write a ReviewLog and update the card via Sm2Scheduler. Each card loads as an htmx partial.
 - AC: A set ends after 10 cards with a summary. Questions from exams the user can no longer access are excluded.
 
+### MEM-04 Flashcards: pick the answer · M
+- Stories: M-01, M-03, owner request (2026-10-24: make the flashcards cooler; the learner picks an answer and a right answer shows the next card) · Depends on: MEM-03
+- Scope: Each card shows its options as large lettered tiles (A–D; keys A–D or 1–4 on a keyboard). Picking posts the options (htmx). Right (exactly the correct options) is rated Good and the next card slides in with "Benar!". Wrong is rated Forgot and the same card comes back with the picked option red, the right one green, the explanation and a "next card" button that sticks to the bottom of a phone screen. Multi-select questions pick several, then "Periksa jawaban". "Belum tahu? Lihat jawaban" keeps the flip and the four self-ratings. A header band shows the deck, the card number, a progress bar per card (right/wrong/current) and a streak after two right in a row; the summary shows a score ring. The picks are stored on the attempt item (D-112).
+- AC: Picking the right option shows the next card without a page load; a wrong pick shows the answer first; the summary counts the ratings; works at 360 px in light and dark and without JS.
+
 ## E7 Payments and purchasing (M3)
 
 ### PAY-01 Payment schema and gateway abstraction · M

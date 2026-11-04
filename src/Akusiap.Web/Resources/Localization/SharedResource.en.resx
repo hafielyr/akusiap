@@ -792,7 +792,6 @@
   <data name="Flashcards.Empty" xml:space="preserve"><value>There are no cards to practise here yet.</value></data>
   <data name="Flashcards.NoAccess" xml:space="preserve"><value>You don't have full access to this exam.</value></data>
   <data name="Flashcards.CardOf" xml:space="preserve"><value>Card {0} of {1}</value></data>
-  <data name="Flashcards.Flip" xml:space="preserve"><value>Show the answer</value></data>
   <data name="Flashcards.Rate" xml:space="preserve"><value>How well did you remember?</value></data>
   <data name="Flashcards.Rating.Forgot" xml:space="preserve"><value>Forgot</value></data>
   <data name="Flashcards.Rating.Hard" xml:space="preserve"><value>Hard</value></data>
@@ -1159,4 +1158,16 @@
   <data name="Home.Art.Ascii" xml:space="preserve"><value>A temple of five pillars drawn in ASCII art</value></data>
   <data name="Pay.OpenHosted" xml:space="preserve"><value>Continue to the payment page</value></data>
   <data name="Pay.HostedHint" xml:space="preserve"><value>You will pay on DOKU's secure page, then come back here.</value></data>
+  <data name="Flashcards.Correct" xml:space="preserve"><value>Correct!</value></data>
+  <data name="Flashcards.Wrong" xml:space="preserve"><value>Not quite. The right answer is marked green.</value></data>
+  <data name="Flashcards.PickOne" xml:space="preserve"><value>Pick the right answer</value></data>
+  <data name="Flashcards.PickAll" xml:space="preserve"><value>Pick every right answer</value></data>
+  <data name="Flashcards.Check" xml:space="preserve"><value>Check answer</value></data>
+  <data name="Flashcards.Next" xml:space="preserve"><value>Next card</value></data>
+  <data name="Flashcards.SeeSummary" xml:space="preserve"><value>See the set results</value></data>
+  <data name="Flashcards.Streak" xml:space="preserve"><value>{0} in a row</value></data>
+  <data name="Flashcards.DontKnow" xml:space="preserve"><value>Not sure? Show the answer</value></data>
+  <data name="Flashcards.KeysHint" xml:space="preserve"><value>Press A–D or 1–4 to choose.</value></data>
+  <data name="Flashcards.Score" xml:space="preserve"><value>correct</value></data>
+  <data name="Flashcards.Progress" xml:space="preserve"><value>Set progress</value></data>
 </root>
