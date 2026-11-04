@@ -1,0 +1,27 @@
+@model (Akusiap.Application.Payments.CheckoutSummary Summary, string Title, string Kind, string? What, string Until)
+@* The order summary on checkout (PAY-03, PAY-12): what is bought, until when, and the total including tax. *@
+<article class="card space-y-3 p-4 sm:p-5" data-testid="checkout-summary">
+  <div class="flex items-start justify-between gap-3">
+    <div class="min-w-0 space-y-0.5">
+      <p class="eyebrow">@Model.Kind</p>
+      <p class="text-lg font-bold leading-snug">@Model.Title</p>
+    </div>
+    <span class="icon-tile bg-brand-50 text-brand-700" aria-hidden="true">
+      <svg viewBox="0 0 24 24" class="size-5 fill-none stroke-current stroke-2"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5M10 13h6M10 17h6" /></svg>
+    </span>
+  </div>
+  <ul class="space-y-1 text-sm text-slate-700">
+    @if (Model.What is not null)
+    {
+      <li class="flex gap-2"><span class="text-green-600" aria-hidden="true">✓</span><span>@Model.What</span></li>
+    }
+    <li class="flex gap-2" data-testid="access-end"><span class="text-green-600" aria-hidden="true">✓</span><span>@Model.Until</span></li>
+  </ul>
+  <div class="border-t border-dashed border-slate-200 pt-3">
+    <div class="flex items-baseline justify-between gap-3">
+      <span class="text-sm font-semibold text-slate-700">@T["Checkout.Total"]</span>
+      <span class="num text-2xl font-extrabold" data-testid="checkout-price"><idr value="@Model.Summary.PriceIdr" /></span>
+    </div>
+    <p class="text-right text-xs text-slate-500">@T["Checkout.TaxIncluded"]</p>
+  </div>
+</article>

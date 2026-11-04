@@ -1170,4 +1170,8 @@
   <data name="Flashcards.KeysHint" xml:space="preserve"><value>Press A–D or 1–4 to choose.</value></data>
   <data name="Flashcards.Score" xml:space="preserve"><value>correct</value></data>
   <data name="Flashcards.Progress" xml:space="preserve"><value>Set progress</value></data>
+  <data name="Checkout.Secure" xml:space="preserve"><value>Secure payment through DOKU</value></data>
+  <data name="Checkout.QrisHint" xml:space="preserve"><value>Scan with any bank or e-wallet app</value></data>
+  <data name="Checkout.Fastest" xml:space="preserve"><value>Fastest</value></data>
+  <data name="Checkout.ChooseAbove" xml:space="preserve"><value>Choose a payment method</value></data>
 </root>
