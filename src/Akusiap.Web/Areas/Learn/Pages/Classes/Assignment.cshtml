@@ -13,7 +13,7 @@
 <section class="space-y-5">
   <a href="@ClassRoutes.Detail(Model.ClassId)" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Class.BackToClass"]</a>
   <div class="space-y-1">
-    <h1 class="text-2xl font-extrabold leading-tight">@r.Assignment.ExamTitle</h1>
+    <h1 class="text-2xl font-bold leading-tight">@r.Assignment.ExamTitle</h1>
     <p class="text-sm text-slate-600">@JakartaTime.Format(r.Assignment.OpensAt) – @JakartaTime.Format(r.Assignment.ClosesAt) · @T[$"Class.State.{r.Assignment.State}"]</p>
   </div>
 

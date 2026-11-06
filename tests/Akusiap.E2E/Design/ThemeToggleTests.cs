@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace Akusiap.E2E.Design;
 
-/// <summary>BRD-03: the theme toggle switches to dark, the choice survives a reload, and dark pages still fit 360 px.</summary>
+/// <summary>BRD-03, BRD-09: the theme toggle (in the phone menu) switches to dark, the choice survives a reload, and dark pages still fit 360 px.</summary>
 [Collection(UsesMobileSite.Name)]
 public sealed class ThemeToggleTests(MobileSite site)
 {
@@ -15,22 +15,24 @@ public sealed class ThemeToggleTests(MobileSite site)
         var html = page.Locator("html");
         var lightBackground = await BodyBackgroundAsync(page);
 
-        await page.GetByTestId("theme-toggle").ClickAsync();
+        await page.GetByTestId("menu-toggle").ClickAsync();
+        await page.GetByTestId("menu-theme-toggle").ClickAsync();
         await Assertions.Expect(html).ToHaveAttributeAsync("data-theme", "dark");
-        await Assertions.Expect(page.GetByTestId("theme-toggle")).ToHaveAttributeAsync("aria-pressed", "true");
+        await Assertions.Expect(page.GetByTestId("menu-theme-toggle")).ToHaveAttributeAsync("aria-pressed", "true");
         await page.ReloadAsync();
 
         await Assertions.Expect(html).ToHaveAttributeAsync("data-theme", "dark");
         Assert.NotEqual(lightBackground, await BodyBackgroundAsync(page));
         Assert.True(await IsDarkAsync(page), "The body background is dark");
-        Assert.True(await page.GetByTestId("home-showcase").IsVisibleAsync());
+        Assert.True(await page.GetByTestId("home-flashcard").IsVisibleAsync());
         Assert.Equal(0, await OverflowAsync(page));
 
         await page.GotoAsync("/ujian");
         await Assertions.Expect(html).ToHaveAttributeAsync("data-theme", "dark");
         Assert.Equal(0, await OverflowAsync(page));
 
-        await page.GetByTestId("theme-toggle").ClickAsync();
+        await page.GetByTestId("menu-toggle").ClickAsync();
+        await page.GetByTestId("menu-theme-toggle").ClickAsync();
         await page.ReloadAsync();
         Assert.Null(await html.GetAttributeAsync("data-theme")); // back to light: nothing is set on load
     }

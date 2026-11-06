@@ -16,17 +16,17 @@
 <section class="space-y-5">
   <a href="/learn" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Learn.Title"]</a>
 
-  <div class="glow rise space-y-4 p-5 sm:p-6" data-testid="journey-level">
+  <div class="panel rise space-y-4 p-5 sm:p-6" data-testid="journey-level">
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center gap-4">
-        <span class="dial size-20" style="--p: @j.Level.Percent; --ring: var(--color-accent-500)"><span class="text-2xl font-extrabold" data-testid="level">@j.Level.Level</span></span>
+        <span class="dial size-20" style="--p: @j.Level.Percent; --ring: var(--color-accent-500)"><span class="text-2xl font-bold" data-testid="level">@j.Level.Level</span></span>
         <span class="space-y-0.5">
           <span class="block text-sm text-slate-600">@T["Journey.Level", j.Level.Level]</span>
-          <span class="block text-xl font-extrabold">@T[$"Journey.Rank.{Math.Min(j.Level.Level, 10)}"]</span>
+          <span class="block text-xl font-bold">@T[$"Journey.Rank.{Math.Min(j.Level.Level, 10)}"]</span>
         </span>
       </div>
       <div class="card px-4 py-2 text-center" data-testid="streak">
-        <span class="block text-2xl font-extrabold">🔥 @j.Streak.Current</span>
+        <span class="block text-2xl font-bold">🔥 @j.Streak.Current</span>
         <span class="block text-xs text-slate-600">@T["Journey.StreakDays"]</span>
       </div>
     </div>
@@ -48,7 +48,7 @@
       ("Journey.Stat.Cards", j.Stats.FlashcardReviews.ToString(System.Globalization.CultureInfo.CurrentCulture)),
     })
     {
-      <li class="stat"><span class="num block text-2xl font-extrabold text-brand-700">@value</span><span class="block text-sm text-slate-600">@T[label]</span></li>
+      <li class="stat"><span class="num block text-2xl font-bold text-brand-700">@value</span><span class="block text-sm text-slate-600">@T[label]</span></li>
     }
   </ul>
 

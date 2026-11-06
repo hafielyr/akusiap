@@ -24,7 +24,7 @@
     <div class="space-y-1">
       <label for="Input_SubjectId" class="label">@T["Admin.Exam.Subject"]</label>
       <select id="Input_SubjectId" name="Input.SubjectId" class="input">
-        <option value="">—</option>
+        <option value="">@T["Common.Choose"]</option>
         @foreach (var subject in Model.Subjects)
         {
           <option value="@subject.Id" selected="@(subject.Id == input.SubjectId)">@subject.Name</option>

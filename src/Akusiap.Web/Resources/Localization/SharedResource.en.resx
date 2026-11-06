@@ -6,9 +6,8 @@
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="Layout.Help" xml:space="preserve"><value>Help</value></data>
   <data name="Layout.Language" xml:space="preserve"><value>Language</value></data>
-  <data name="Home.Title" xml:space="preserve"><value>Exam practice for CPNS, BUMN, Kedinasan &amp; UKMPPD</value></data>
-  <data name="Home.Heading" xml:space="preserve"><value>Practice for CPNS, BUMN, Kedinasan &amp; UKMPPD in one app</value></data>
-  <data name="Home.Lead" xml:space="preserve"><value>Work through questions with full explanations, timed simulations and flashcards that bring back what you haven&apos;t mastered yet. Start with 30 free trial questions.</value></data>
+  <data name="Home.Title" xml:space="preserve"><value>Practice questions for CPNS, BUMN, Kedinasan and UKMPPD</value></data>
+  <data name="Home.Lead" xml:space="preserve"><value>Do 30 trial questions with full explanations, no account needed. The ones you get wrong come back as flashcards until you know them.</value></data>
   <data name="Home.BrowseCatalog" xml:space="preserve"><value>Browse exam catalog</value></data>
   <data name="Error.Title" xml:space="preserve"><value>Something went wrong</value></data>
   <data name="Error.Heading" xml:space="preserve"><value>Sorry, something went wrong.</value></data>
@@ -855,9 +854,7 @@
   <data name="Nav.Pricing" xml:space="preserve"><value>Pricing</value></data>
   <data name="Footer.Tagline" xml:space="preserve"><value>Practice questions for CPNS, BUMN, service-school and UKMPPD selection exams. Study anytime from your phone.</value></data>
   <data name="Footer.Explore" xml:space="preserve"><value>Explore</value></data>
-  <data name="Home.Eyebrow" xml:space="preserve"><value>Your study partner for selection exams</value></data>
   <data name="Home.TryFree" xml:space="preserve"><value>Try 30 free questions</value></data>
-  <data name="Home.RegisterFree" xml:space="preserve"><value>Sign up free</value></data>
   <data name="Home.Trust.Trial" xml:space="preserve"><value>30 free trial questions</value></data>
   <data name="Home.Trust.Explanations" xml:space="preserve"><value>Full explanations</value></data>
   <data name="Home.Trust.Phone" xml:space="preserve"><value>Made for phones</value></data>
@@ -871,19 +868,12 @@
   <data name="Home.Category.Kedinasan.Hint" xml:space="preserve"><value>STAN, IPDN, STIS and more</value></data>
   <data name="Home.Category.Kedokteran" xml:space="preserve"><value>Medicine</value></data>
   <data name="Home.Category.Kedokteran.Hint" xml:space="preserve"><value>UKMPPD preparation</value></data>
-  <data name="Home.Features.Title" xml:space="preserve"><value>What you can use today</value></data>
   <data name="Home.Feature.Explanations" xml:space="preserve"><value>Full explanations</value></data>
-  <data name="Home.Feature.Explanations.Text" xml:space="preserve"><value>Every question has an explanation and a key fact, trial questions included.</value></data>
   <data name="Home.Feature.Simulation" xml:space="preserve"><value>Timed simulations</value></data>
   <data name="Home.Feature.Simulation.Text" xml:space="preserve"><value>Work against a time limit and a pass mark, then see your result per topic.</value></data>
-  <data name="Home.Feature.Flashcards" xml:space="preserve"><value>Smart flashcards</value></data>
-  <data name="Home.Feature.Flashcards.Text" xml:space="preserve"><value>Questions you got wrong come back at the right time with spaced repetition.</value></data>
+  <data name="Home.Feature.Flashcards" xml:space="preserve"><value>Flashcards from the questions you miss</value></data>
   <data name="Home.Feature.Retake" xml:space="preserve"><value>Retake what you missed</value></data>
   <data name="Home.Feature.Retake.Text" xml:space="preserve"><value>A full history and practice sets made of the questions you still miss.</value></data>
-  <data name="Home.Feature.Own" xml:space="preserve"><value>Write and share questions</value></data>
-  <data name="Home.Feature.Own.Text" xml:space="preserve"><value>Build your own questions and exams, then share them with friends by link.</value></data>
-  <data name="Home.Soon.Title" xml:space="preserve"><value>Coming soon</value></data>
-  <data name="Home.Soon.Badge" xml:space="preserve"><value>Coming soon</value></data>
   <data name="Home.Steps.Title" xml:space="preserve"><value>How to start</value></data>
   <data name="Home.Step.Try" xml:space="preserve"><value>Try for free</value></data>
   <data name="Home.Step.Try.Text" xml:space="preserve"><value>Pick an exam and do 30 trial questions without signing up.</value></data>
@@ -891,8 +881,7 @@
   <data name="Home.Step.Register.Text" xml:space="preserve"><value>Keep your results, unlock free exams and turn on flashcards.</value></data>
   <data name="Home.Step.Practise" xml:space="preserve"><value>Practise daily</value></data>
   <data name="Home.Step.Practise.Text" xml:space="preserve"><value>Review the cards that are due every day on the Today page.</value></data>
-  <data name="Home.Cta.Title" xml:space="preserve"><value>Ready to start practising?</value></data>
-  <data name="Home.Cta.Lead" xml:space="preserve"><value>Try the questions now, free and without signing up.</value></data>
+  <data name="Home.Cta.Title" xml:space="preserve"><value>Start with 30 free questions</value></data>
   <data name="Leaderboard.Title" xml:space="preserve"><value>Leaderboard</value></data>
   <data name="Leaderboard.Lead" xml:space="preserve"><value>Ranks use each person's first simulation: the highest score wins, and on a tie the faster time wins.</value></data>
   <data name="Leaderboard.Empty" xml:space="preserve"><value>No one is ranked yet. Finish a simulation to get on the board.</value></data>
@@ -1037,8 +1026,8 @@
   <data name="Badge.DailyGoal7.How" xml:space="preserve"><value>Finish the daily drill on 7 different days</value></data>
   <data name="Badge.DailyGoal30" xml:space="preserve"><value>30 daily goals</value></data>
   <data name="Badge.DailyGoal30.How" xml:space="preserve"><value>Finish the daily drill on 30 different days</value></data>
-  <data name="Home.Feature.Drills" xml:space="preserve"><value>Daily drills &amp; streaks</value></data>
-  <data name="Home.Feature.Drills.Text" xml:space="preserve"><value>10 questions a day, with points, levels and badges that keep you consistent.</value></data>
+  <data name="Home.Feature.Drills" xml:space="preserve"><value>Daily drills and streaks</value></data>
+  <data name="Home.Feature.Drills.Text" xml:space="preserve"><value>10 questions a day with points, levels and badges.</value></data>
   <data name="Cat.Label" xml:space="preserve"><value>CAT TRYOUT</value></data>
   <data name="Cat.Participant" xml:space="preserve"><value>Participant: {0}</value></data>
   <data name="Cat.Guest" xml:space="preserve"><value>Guest</value></data>
@@ -1055,10 +1044,8 @@
   <data name="Cat.ConfirmText" xml:space="preserve"><value>You can't change answers after finishing. Your score and the explanations appear afterwards.</value></data>
   <data name="Cat.ConfirmYes" xml:space="preserve"><value>Yes, finish</value></data>
   <data name="Admin.Preset.CatMode" xml:space="preserve"><value>Tryout CAT screen for simulations (full screen, no explanations until the end)</value></data>
-  <data name="Home.Feature.Cat" xml:space="preserve"><value>CAT tryouts like the official system</value></data>
-  <data name="Home.Feature.Cat.Text" xml:space="preserve"><value>Full screen with question numbers, doubt marks and a countdown, like the CAT exam.</value></data>
-  <data name="Home.Soon.Subtest" xml:space="preserve"><value>Scores per subtest (TWK, TIU, TKP)</value></data>
-  <data name="Home.Soon.Subtest.Text" xml:space="preserve"><value>See the score and passing grade for each subtest after a tryout.</value></data>
+  <data name="Home.Feature.Cat" xml:space="preserve"><value>Tryouts on a CAT layout</value></data>
+  <data name="Home.Feature.Cat.Text" xml:space="preserve"><value>Question numbers, doubt marks and a countdown on one full screen.</value></data>
   <data name="Admin.Nav.Leaderboards" xml:space="preserve"><value>Leaderboards</value></data>
   <data name="Admin.Leaderboards.Title" xml:space="preserve"><value>Leaderboards</value></data>
   <data name="Admin.Leaderboards.Lead" xml:space="preserve"><value>Set up each exam's leaderboard: on or off, weekly reset, and the badges it gives.</value></data>
@@ -1103,17 +1090,8 @@
   <data name="Account.Confirm.NotSent" xml:space="preserve"><value>The confirmation email could not be sent because no email server is set up. Please contact the admin.</value></data>
   <data name="Theme.Toggle" xml:space="preserve"><value>Switch light or dark theme</value></data>
   <data name="Nav.Main" xml:space="preserve"><value>Main navigation</value></data>
-  <data name="Home.Showcase.Score" xml:space="preserve"><value>Simulation score</value></data>
-  <data name="Home.Showcase.Streak" xml:space="preserve"><value>Day streak</value></data>
-  <data name="Home.Showcase.Cat" xml:space="preserve"><value>CAT tryout</value></data>
-  <data name="Home.Showcase.Board" xml:space="preserve"><value>Leaderboard</value></data>
-  <data name="Home.Categories.Eyebrow" xml:space="preserve"><value>Exam categories</value></data>
-  <data name="Home.Features.Eyebrow" xml:space="preserve"><value>Features</value></data>
-  <data name="Home.Steps.Eyebrow" xml:space="preserve"><value>Get started</value></data>
-  <data name="Home.New" xml:space="preserve"><value>New</value></data>
-  <data name="Home.Feature.Leaderboard" xml:space="preserve"><value>Leaderboards &amp; badges</value></data>
+  <data name="Home.Feature.Leaderboard" xml:space="preserve"><value>Leaderboards and badges</value></data>
   <data name="Home.Feature.Leaderboard.Text" xml:space="preserve"><value>Compare score and time with other people and win rank badges.</value></data>
-  <data name="Catalog.Eyebrow" xml:space="preserve"><value>Catalog</value></data>
   <data name="ExamPage.Stat.Questions" xml:space="preserve"><value>Questions</value></data>
   <data name="ExamPage.Stat.Topics" xml:space="preserve"><value>Topics</value></data>
   <data name="ExamPage.Stat.Trial" xml:space="preserve"><value>Trial questions</value></data>
@@ -1121,19 +1099,7 @@
   <data name="Learn.Group.Content" xml:space="preserve"><value>My content</value></data>
   <data name="Learn.Group.Account" xml:space="preserve"><value>Account</value></data>
   <data name="Learn.DrillDone" xml:space="preserve"><value>Today's goal reached</value></data>
-  <data name="Pricing.Eyebrow" xml:space="preserve"><value>Pricing</value></data>
-  <data name="Home.Pillars.File" xml:space="preserve"><value>pillars-of-success.txt</value></data>
-  <data name="Home.Pillars.Practice" xml:space="preserve"><value>Practice</value></data>
-  <data name="Home.Pillars.Explanations" xml:space="preserve"><value>Review</value></data>
-  <data name="Home.Pillars.Simulation" xml:space="preserve"><value>Mock</value></data>
-  <data name="Home.Pillars.Streak" xml:space="preserve"><value>Streak</value></data>
-  <data name="Home.Pillars.Rank" xml:space="preserve"><value>Rank</value></data>
-  <data name="Home.Pillars.Motto" xml:space="preserve"><value>Practice is the pillar of success</value></data>
-  <data name="Home.Showcase.Eyebrow" xml:space="preserve"><value>How you practise</value></data>
-  <data name="Home.Showcase.Title" xml:space="preserve"><value>Practice that feels like play</value></data>
-  <data name="Home.Showcase.Lead" xml:space="preserve"><value>Take simulations like the real CAT, keep your daily streak and watch your name climb the leaderboard.</value></data>
   <data name="Search.Title" xml:space="preserve"><value>Search questions</value></data>
-  <data name="Search.Eyebrow" xml:space="preserve"><value>Search</value></data>
   <data name="Search.Lead" xml:space="preserve"><value>Type words from a question, a topic or an exam name. We search every question in the catalog.</value></data>
   <data name="Search.Label" xml:space="preserve"><value>Search questions or exams</value></data>
   <data name="Search.Placeholder" xml:space="preserve"><value>Search questions, topics or exams…</value></data>
@@ -1149,10 +1115,6 @@
   <data name="Search.Questions" xml:space="preserve"><value>Questions ({0})</value></data>
   <data name="Search.Trial" xml:space="preserve"><value>Free trial question</value></data>
   <data name="Search.More" xml:space="preserve"><value>Showing {0} of {1} questions. Add words to narrow it down.</value></data>
-  <data name="Home.Float.Correct" xml:space="preserve"><value>Correct answer!</value></data>
-  <data name="Home.Float.Progress" xml:space="preserve"><value>Question 66/110 · TIU</value></data>
-  <data name="Home.Float.Streak" xml:space="preserve"><value>7-day streak</value></data>
-  <data name="Home.Float.Rank" xml:space="preserve"><value>Top of the week</value></data>
   <data name="Nav.Search" xml:space="preserve"><value>Search</value></data>
   <data name="Catalog.SearchQuestions" xml:space="preserve"><value>Search inside questions</value></data>
   <data name="Home.Art.Ascii" xml:space="preserve"><value>A temple of five pillars drawn in ASCII art</value></data>
@@ -1176,4 +1138,66 @@
   <data name="Checkout.ChooseAbove" xml:space="preserve"><value>Choose a payment method</value></data>
   <data name="Account.Side.Title" xml:space="preserve"><value>One account for all your practice</value></data>
   <data name="Account.Side.Lead" xml:space="preserve"><value>Keep your scores, resume on any phone, and open the free exams.</value></data>
+  <data name="Site.Description" xml:space="preserve"><value>Practice questions for CPNS, BUMN, service school and UKMPPD selection exams. Try it free and study from your phone.</value></data>
+  <data name="Layout.SkipToContent" xml:space="preserve"><value>Skip to content</value></data>
+  <data name="Nav.Account" xml:space="preserve"><value>Account</value></data>
+  <data name="Nav.Menu" xml:space="preserve"><value>Menu</value></data>
+  <data name="Theme.Label" xml:space="preserve"><value>Dark theme</value></data>
+  <data name="Home.Description" xml:space="preserve"><value>Try 30 free questions with full explanations, no account needed. Practice for CPNS, BUMN, service school and UKMPPD selection exams, and pay per exam.</value></data>
+  <data name="Home.Heading.Line1" xml:space="preserve"><value>Focus on your exam</value></data>
+  <data name="Home.Heading.Line2" xml:space="preserve"><value>CPNS, BUMN, Kedinasan, UKMPPD</value></data>
+  <data name="Home.TryFree.Note" xml:space="preserve"><value>No account, no credit card.</value></data>
+  <data name="Home.Fact.Explanations" xml:space="preserve"><value>An explanation for every question</value></data>
+  <data name="Home.Fact.PerExam" xml:space="preserve"><value>Pay per exam</value></data>
+  <data name="Home.Fact.Methods" xml:space="preserve"><value>QRIS or virtual account</value></data>
+  <data name="Home.SearchHint" xml:space="preserve"><value>Or search the questions</value></data>
+  <data name="Home.Art.Motto" xml:space="preserve"><value>Practice is the pillar of success</value></data>
+  <data name="Home.Focus.Line1" xml:space="preserve"><value>Not school subjects</value></data>
+  <data name="Home.Focus.Line2" xml:space="preserve"><value>Practice made for selection exams</value></data>
+  <data name="Home.Focus.Text" xml:space="preserve"><value>LatihanSoal is organised by selection exam, not by school grade: CPNS SKD, BUMN TKD and Akhlak, service schools and UKMPPD. Pick the exam and go straight to its questions.</value></data>
+  <data name="Home.Remember.Title" xml:space="preserve"><value>Every wrong answer becomes a flashcard</value></data>
+  <data name="Home.Remember.Text" xml:space="preserve"><value>Questions you answer wrong turn into flashcards automatically. Spaced repetition schedules them again, so you review what you have not mastered yet instead of what you already know.</value></data>
+  <data name="Home.Remember.Point.Auto" xml:space="preserve"><value>Cards are made from every tryout automatically</value></data>
+  <data name="Home.Remember.Point.Today" xml:space="preserve"><value>The Today page shows the cards that are due</value></data>
+  <data name="Home.Remember.Point.Retake" xml:space="preserve"><value>Retake only the questions you still miss</value></data>
+  <data name="Home.Example.Topic" xml:space="preserve"><value>TIU · Number series</value></data>
+  <data name="Home.Example.Due" xml:space="preserve"><value>Due today</value></data>
+  <data name="Home.Example.Question" xml:space="preserve"><value>2, 6, 12, 20, 30, … What comes next?</value></data>
+  <data name="Home.Example.Options" xml:space="preserve"><value>Answer options</value></data>
+  <data name="Home.Example.Correct" xml:space="preserve"><value>Correct. The gap grows by 2 each step: 4, 6, 8, 10, 12.</value></data>
+  <data name="Home.Example.Caption" xml:space="preserve"><value>Example flashcard</value></data>
+  <data name="Home.Benefits.Title" xml:space="preserve"><value>Why LatihanSoal</value></data>
+  <data name="Home.Benefit.Try.Title" xml:space="preserve"><value>Try before you pay</value></data>
+  <data name="Home.Benefit.Try.Text" xml:space="preserve"><value>Every paid exam has 30 trial questions with explanations and key facts, so you can judge the questions before you sign up.</value></data>
+  <data name="Home.Benefit.Pay.Title" xml:space="preserve"><value>Pay per exam</value></data>
+  <data name="Home.Benefit.Pay.Text" xml:space="preserve"><value>Buy one exam for the access period shown on its page, or subscribe to open every exam. Pay by QRIS or virtual account.</value></data>
+  <data name="Home.Benefit.Light.Title" xml:space="preserve"><value>Light on your phone</value></data>
+  <data name="Home.Benefit.Light.Text" xml:space="preserve"><value>Built for phone screens and limited data. Answers save as you go, so a dropped signal does not lose your progress.</value></data>
+  <data name="Home.More.Title" xml:space="preserve"><value>Also in LatihanSoal</value></data>
+  <data name="Home.Tagline.Label" xml:space="preserve"><value>The LatihanSoal promise</value></data>
+  <data name="Home.Tagline.Line1" xml:space="preserve"><value>The questions you miss come back</value></data>
+  <data name="Home.Tagline.Line2" xml:space="preserve"><value>until you know them</value></data>
+  <data name="Home.Step.Label" xml:space="preserve"><value>Step {0}</value></data>
+  <data name="Home.Own.Title" xml:space="preserve"><value>Write questions, share them with friends</value></data>
+  <data name="Home.Own.Text" xml:space="preserve"><value>Write your own questions and exams, then share the link. Friends only enter a name to take it, no account needed.</value></data>
+  <data name="Home.Own.Cta" xml:space="preserve"><value>Write your own questions</value></data>
+  <data name="Home.Faq.Title" xml:space="preserve"><value>Frequently asked questions</value></data>
+  <data name="Home.Faq.Lead" xml:space="preserve"><value>Still unsure? Ask us with the Help button.</value></data>
+  <data name="Home.Faq.Free.Q" xml:space="preserve"><value>Can I really try it for free?</value></data>
+  <data name="Home.Faq.Free.A" xml:space="preserve"><value>Yes. Every paid exam has 30 trial questions you can start right away without an account, with explanations. Free exams open in full once you sign up.</value></data>
+  <data name="Home.Faq.Account.Q" xml:space="preserve"><value>Do I need an account?</value></data>
+  <data name="Home.Faq.Account.A" xml:space="preserve"><value>Not for trial questions. Sign up free to keep your results, open free exams and use flashcards. Trial results you already have move to your new account.</value></data>
+  <data name="Home.Faq.Pay.Q" xml:space="preserve"><value>How do I pay?</value></data>
+  <data name="Home.Faq.Pay.A" xml:space="preserve"><value>Choose an exam or a subscription package, then pay by QRIS or virtual account. The available methods are shown on the payment page, and access opens once the payment is received.</value></data>
+  <data name="Home.Faq.Access.Q" xml:space="preserve"><value>How long does my access last?</value></data>
+  <data name="Home.Faq.Access.A" xml:space="preserve"><value>Each exam has its own access period, shown on the exam page before you pay. A subscription opens every exam in the catalog for the whole period.</value></data>
+  <data name="Home.Faq.Official.Q" xml:space="preserve"><value>Is this an official BKN or government app?</value></data>
+  <data name="Home.Faq.Official.A" xml:space="preserve"><value>No. LatihanSoal is an independent practice app and is not affiliated with BKN, BUMN, the service schools or the UKMPPD organisers.</value></data>
+  <data name="Home.Faq.Signal.Q" xml:space="preserve"><value>Does it work on a weak signal?</value></data>
+  <data name="Home.Faq.Signal.A" xml:space="preserve"><value>Yes. The pages are light, and each answer is saved when you pick it, so a short drop in signal does not wipe your progress.</value></data>
+  <data name="Home.Faq.WrongKey.Q" xml:space="preserve"><value>What if an answer key is wrong?</value></data>
+  <data name="Home.Faq.WrongKey.A" xml:space="preserve"><value>Tap Report this question on the review page. Our team checks reports question by question and fixes them.</value></data>
+  <data name="Home.Faq.Own.Q" xml:space="preserve"><value>Can I write my own questions?</value></data>
+  <data name="Home.Faq.Own.A" xml:space="preserve"><value>Yes. Once you sign up you can write your own questions and exams, practise them and share the link with friends.</value></data>
+  <data name="Common.Choose" xml:space="preserve"><value>Choose…</value></data>
 </root>
