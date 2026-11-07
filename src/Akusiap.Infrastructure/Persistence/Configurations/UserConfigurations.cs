@@ -16,6 +16,8 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             t.HasCheckConstraint("ck_users_deactivated_at", "is_active OR deactivated_at IS NOT NULL");
         });
         builder.Property(u => u.Email).IsRequired().HasColumnType("text");
+        // Existing rows get true; the sentinel makes EF still insert an explicit false.
+        builder.Property(u => u.PlanReminderEmails).HasDefaultValue(true).HasSentinel(true);
         // Case-insensitive uniqueness is the ux_users_email index on lower(email), created in the migration
         // because EF can't model expression indexes.
     }

@@ -1253,4 +1253,11 @@
   <data name="Progress.TopicLine" xml:space="preserve"><value>Answered {0}% · Mastered {1}%</value></data>
   <data name="Progress.Link" xml:space="preserve"><value>Progress</value></data>
   <data name="Progress.LinkLabel" xml:space="preserve"><value>Progress for {0}</value></data>
+  <data name="PlanReminder.Subject" xml:space="preserve"><value>Today's tasks: {0} new questions and {1} review cards</value></data>
+  <data name="PlanReminder.Intro" xml:space="preserve"><value>Here are your study tasks for today:</value></data>
+  <data name="PlanReminder.Line" xml:space="preserve"><value>{0} ({1}): {2} new questions, {3} review cards</value></data>
+  <data name="PlanReminder.Open" xml:space="preserve"><value>Open today's tasks</value></data>
+  <data name="PlanReminder.Footer" xml:space="preserve"><value>Don't want these emails? Turn them off in your profile: {0}</value></data>
+  <data name="Profile.PlanReminder" xml:space="preserve"><value>Daily task reminder email</value></data>
+  <data name="Profile.PlanReminderHint" xml:space="preserve"><value>Sent at 06:00 WIB when you have an exam goal and tasks that day.</value></data>
 </root>

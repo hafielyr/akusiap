@@ -2053,6 +2053,12 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("phone_number_confirmed");
 
+                    b.Property<bool>("PlanReminderEmails")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("plan_reminder_emails");
+
                     b.Property<string>("PreferredLanguage")
                         .IsRequired()
                         .HasColumnType("text")
