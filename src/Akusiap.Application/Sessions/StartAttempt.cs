@@ -265,7 +265,15 @@ public sealed class StartAttempt(
     public Task<Result<StartedAttempt>> StartDailyDrillAsync(IReadOnlyList<long> questionIds, int questionCount, CancellationToken cancellationToken) =>
         StartPrivateSetAsync(questionIds, questionCount, AttemptSource.DailyDrill, shuffleQuestions: false, cancellationToken);
 
-    private async Task<Result<StartedAttempt>> StartPrivateSetAsync(IReadOnlyList<long> questionIds, int questionCount, AttemptSource source, bool shuffleQuestions, CancellationToken cancellationToken)
+    /// <summary>
+    /// Starts today's part of a goal's plan (PLN-02) from questions the caller already checked against the learner's
+    /// access to <paramref name="examId"/> and ordered (due cards first). Like the daily drill, but tied to the exam so
+    /// the result and history show the exam.
+    /// </summary>
+    public Task<Result<StartedAttempt>> StartStudyPlanAsync(long examId, IReadOnlyList<long> questionIds, int questionCount, CancellationToken cancellationToken) =>
+        StartPrivateSetAsync(questionIds, questionCount, AttemptSource.StudyPlan, shuffleQuestions: false, cancellationToken, examId);
+
+    private async Task<Result<StartedAttempt>> StartPrivateSetAsync(IReadOnlyList<long> questionIds, int questionCount, AttemptSource source, bool shuffleQuestions, CancellationToken cancellationToken, long? examId = null)
     {
         ArgumentNullException.ThrowIfNull(questionIds);
         var userId = currentUser.UserId ?? throw new InvalidOperationException("Private practice sets need a signed-in user.");
@@ -288,7 +296,7 @@ public sealed class StartAttempt(
         var attempt = new Attempt
         {
             UserId = userId,
-            ExamId = null,
+            ExamId = examId,
             Source = source,
             Mode = rules.Mode,
             RulesSnapshot = JsonSerializer.Serialize(rules, Json),
