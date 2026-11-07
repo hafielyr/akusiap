@@ -118,7 +118,7 @@
     <div class="space-y-1">
       <label for="Input_Difficulty" class="label">@T["Admin.Question.Difficulty"]</label>
       <select id="Input_Difficulty" name="Input.Difficulty" class="input">
-        <option value="">—</option>
+        <option value="">@T["Common.Choose"]</option>
         @for (short level = Question.MinDifficulty; level <= Question.MaxDifficulty; level++)
         {
           <option value="@level" selected="@(level == input.Difficulty)">@T[$"Admin.Difficulty.{level}"]</option>

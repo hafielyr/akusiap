@@ -17,7 +17,7 @@
 <section class="mx-auto max-w-xl space-y-5">
   <div class="space-y-1">
     <p class="text-sm text-slate-600">@(!string.IsNullOrEmpty(r.Title) ? r.Title : r.Source == AttemptSource.DailyDrill ? T["Drill.Title"].Value : T["History.Mixed"].Value)</p>
-    <h1 class="text-3xl font-extrabold leading-tight tracking-tight">@T["Session.Result.Title"]</h1>
+    <h1 class="text-3xl font-bold leading-tight tracking-tight">@T["Session.Result.Title"]</h1>
   </div>
 
   @if (TempData["Flash"] is string flash)
@@ -28,8 +28,8 @@
   @{
     var ringColor = r.Passed switch { true => "var(--color-green-600)", false => "var(--color-red-600)", _ => "var(--color-brand-600)" };
   }
-  <article class="glow rise flex flex-col items-center gap-2 p-6 text-center" data-testid="result-score">
-    <span class="dial size-36" style="--p: @((int)Math.Round(r.ScorePercent)); --ring: @ringColor"><span><span class="num text-4xl font-extrabold tracking-tight">@r.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</span></span></span>
+  <article class="panel rise flex flex-col items-center gap-2 p-6 text-center" data-testid="result-score">
+    <span class="dial size-36" style="--p: @((int)Math.Round(r.ScorePercent)); --ring: @ringColor"><span><span class="num text-4xl font-bold tracking-tight">@r.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</span></span></span>
     <p class="text-slate-700">@T["Session.Result.Correct", r.CorrectCount, r.TotalCount]</p>
     @if (r.Passed is { } passed)
     {
@@ -44,7 +44,7 @@
       ? Akusiap.Web.Areas.Learn.Pages.Classes.ClassRoutes.Assignment(classId, assignmentId)
       : $"/ujian/{standing.ExamId}/peringkat";
     <a href="@boardUrl" class="card card-link flex items-center gap-4 p-4" data-testid="result-rank">
-      <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full border-4 border-accent-400 text-lg font-extrabold text-brand-800">#@standing.Rank</span>
+      <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-full border-4 border-accent-400 text-lg font-bold text-brand-800">#@standing.Rank</span>
       <span class="space-y-0.5"><span class="block font-bold">@T[standing.Weekly ? "Leaderboard.YouRankWeek" : "Leaderboard.YouRank", standing.Rank, standing.Total]</span><span class="block text-sm text-brand-700">@T["Leaderboard.See"]</span></span>
     </a>
   }

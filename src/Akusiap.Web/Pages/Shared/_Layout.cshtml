@@ -1,7 +1,12 @@
 @using System.Globalization
+@using Akusiap.Application.Abstractions
 @inject IOptions<SupportOptions> Support
-@* Site shell (BRD-01): sticky white header with the logo, page content, and a footer with links and the language switcher.
-   Pages that draw their own full-width sections (the home page) set ViewData["FullWidth"] = true. *@
+@inject IOptions<SiteOptions> Site
+@inject IClock Clock
+@* Site shell (BRD-01, BRD-09): a floating header with the logo, page content, and a footer with links and the language
+   switcher. Phones get a "Menu" disclosure for the main links and the theme switch. Pages that draw their own
+   full-width sections (the home page) set ViewData["FullWidth"] = true; ViewData["Description"] overrides the default
+   meta description. *@
 @{
   var currentCulture = CultureInfo.CurrentUICulture;
   var returnUrl = $"{Context.Request.PathBase}{Context.Request.Path}{Context.Request.QueryString}";
@@ -13,6 +18,10 @@
   // The CAT tryout screen (TRY-01) is full screen: no site header either.
   var cat = ViewData["Cat"] is true;
   var path = Context.Request.Path;
+  var pageTitle = ViewData["Title"] is string title ? $"{title} · {Brand.Name}" : Brand.Name;
+  var description = ViewData["Description"] as string ?? T["Site.Description"].Value;
+  var siteBase = string.IsNullOrWhiteSpace(Site.Value.BaseUrl) ? $"{Context.Request.Scheme}://{Context.Request.Host}" : Site.Value.BaseUrl.TrimEnd('/');
+  var mainLinks = new (string Href, string Label)[] { ("/ujian", T["Nav.Catalog"].Value), ("/cari", T["Nav.Search"].Value), ("/harga", T["Nav.Pricing"].Value) };
 }
 <!DOCTYPE html>
 <html lang="@currentCulture.TwoLetterISOLanguageName">
@@ -23,11 +32,20 @@
   <meta name="color-scheme" content="light dark" />
   @* BRD-03 (D-103): apply the saved theme, else the system one, before the page paints. *@
   <script>try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.dataset.theme='dark'}catch(e){}</script>
-  <title>@(ViewData["Title"] is string title ? $"{title} · {Brand.Name}" : Brand.Name)</title>
+  <title>@pageTitle</title>
+  <meta name="description" content="@description" />
   @if (ViewData["NoIndex"] is true)
   {
     <meta name="robots" content="noindex" />
   }
+  @* Link previews (WhatsApp, social). No og:image yet: the share image needs the owner's approval (D-116). *@
+  <meta property="og:site_name" content="@Brand.Name" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="@pageTitle" />
+  <meta property="og:description" content="@description" />
+  <meta property="og:url" content="@($"{siteBase}{Context.Request.PathBase}{path}")" />
+  <meta property="og:locale" content="@(currentCulture.TwoLetterISOLanguageName == "en" ? "en_US" : "id_ID")" />
+  <meta name="twitter:card" content="summary" />
   <link rel="icon" href="~/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
   @if (ViewData["NoHtmx"] is not true)
@@ -38,46 +56,72 @@
   @await RenderSectionAsync("Head", required: false)
 </head>
 <body class="canvas flex min-h-dvh flex-col font-sans text-slate-900 antialiased">
+  <a href="#main" class="sr-only z-50 min-h-11 items-center rounded-xl bg-brand-600 px-3 py-2 font-semibold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:inline-flex" data-testid="skip-link">@T["Layout.SkipToContent"]</a>
   @if (!cat)
   {
-  <header class="glass sticky top-0 z-30 border-b border-slate-200">
-    <div class="mx-auto flex h-16 max-w-5xl items-center justify-between gap-1.5 px-4">
+  <header class="sticky top-0 z-30 px-2 pt-2">
+    <div class="glass mx-auto flex h-14 max-w-5xl items-center justify-between gap-1.5 rounded-2xl border border-slate-200 pr-1 pl-3">
       <a asp-page="/Index" aria-label="@Brand.Name" class="shrink-0"><partial name="_LogoPartial" /></a>
-      <nav class="hidden sm:flex" aria-label="@T["Nav.Main"]">
-        <span class="seg">
-          <a href="/ujian" aria-current="@(path.StartsWithSegments("/ujian") ? "page" : null)">@T["Nav.Catalog"]</a>
-          <a href="/cari" aria-current="@(path.StartsWithSegments("/cari") ? "page" : null)">@T["Nav.Search"]</a>
-          <a href="/harga" aria-current="@(path.StartsWithSegments("/harga") ? "page" : null)">@T["Nav.Pricing"]</a>
-        </span>
+      <nav class="hidden items-center gap-1 sm:flex" aria-label="@T["Nav.Main"]">
+        @foreach (var (href, label) in mainLinks)
+        {
+          <a href="@href" aria-current="@(path.StartsWithSegments(href) ? "page" : null)"
+             class="inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 aria-[current=page]:bg-slate-100 aria-[current=page]:text-slate-900">@label</a>
+        }
       </nav>
-      <nav class="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+      <nav class="flex items-center gap-1.5 text-sm font-semibold text-slate-700" aria-label="@T["Nav.Account"]">
         @await RenderSectionAsync("Nav", required: false)
         <partial name="_AuthNavPartial" />
-        <partial name="_ThemeTogglePartial" />
+        <span class="hidden sm:inline-flex"><partial name="_ThemeTogglePartial" /></span>
+        <details class="site-menu sm:hidden" x-data x-on:keydown.escape.window="if ($el.open) { $el.open = false; $el.querySelector('summary').focus() }">
+          <summary class="inline-flex size-11 flex-col items-center justify-center gap-1 rounded-xl text-slate-700 hover:bg-slate-100" data-testid="menu-toggle">
+            <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+            <span class="text-xs leading-none font-semibold">@T["Nav.Menu"]</span>
+          </summary>
+          <div class="menu-panel" data-testid="menu-panel">
+            <nav aria-label="@T["Nav.Main"]">
+              <ul class="space-y-1">
+                @for (var i = 0; i < mainLinks.Length; i++)
+                {
+                  var (href, label) = mainLinks[i];
+                  <li class="menu-item" style="--i: @i">
+                    <a href="@href" aria-current="@(path.StartsWithSegments(href) ? "page" : null)"
+                       class="flex min-h-12 items-center rounded-xl px-3 heading-6 text-slate-900 hover:bg-slate-100 aria-[current=page]:bg-brand-50 aria-[current=page]:text-brand-700">@label</a>
+                  </li>
+                }
+              </ul>
+            </nav>
+            <div class="menu-item mt-6 flex items-center justify-between rounded-xl border border-slate-200 px-3 py-1" style="--i: @mainLinks.Length">
+              <span class="body-5 text-slate-700">@T["Theme.Label"]</span>
+              <partial name="_ThemeTogglePartial" view-data='new ViewDataDictionary(ViewData) { ["ToggleTestId"] = "menu-theme-toggle" }' />
+            </div>
+          </div>
+        </details>
       </nav>
     </div>
   </header>
   }
 
-  <main id="main" class="@(fullWidth || cat ? "w-full flex-1" : wide ? "mx-auto w-full max-w-5xl flex-1 px-4 py-6" : "mx-auto w-full max-w-3xl flex-1 px-4 py-6")">
+  <main id="main" tabindex="-1" class="@(fullWidth || cat ? "w-full flex-1" : wide ? "mx-auto w-full max-w-5xl flex-1 px-4 py-6" : "mx-auto w-full max-w-3xl flex-1 px-4 py-6") focus:outline-none">
     @RenderBody()
   </main>
 
   @if (!focus)
   {
   <footer class="border-t border-slate-200 bg-white">
-    <div class="mx-auto grid max-w-5xl grid-cols-2 gap-x-4 gap-y-5 px-4 pt-6 pb-20 text-sm text-slate-600 sm:grid-cols-3 sm:gap-6 sm:pt-8 sm:pb-24">
+    <div class="mx-auto grid max-w-5xl grid-cols-2 gap-x-4 gap-y-6 px-4 pt-6 pb-20 text-sm text-slate-600 sm:grid-cols-3 sm:gap-6 sm:pt-8 sm:pb-24">
       <div class="col-span-2 space-y-2 sm:col-span-1 sm:space-y-3">
         <partial name="_LogoPartial" />
         <p class="max-w-sm">@T["Footer.Tagline"]</p>
       </div>
-      <nav aria-label="@T["Footer.Explore"]" class="flex flex-col gap-1">
-        <p class="font-semibold text-slate-900">@T["Footer.Explore"]</p>
-        <a href="/ujian" class="py-1 hover:text-brand-700">@T["Nav.Catalog"]</a>
-        <a href="/harga" class="py-1 hover:text-brand-700">@T["Nav.Pricing"]</a>
+      <nav aria-label="@T["Footer.Explore"]" class="flex flex-col">
+        <p class="pb-1 font-semibold text-slate-900">@T["Footer.Explore"]</p>
+        <a href="/ujian" class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Nav.Catalog"]</a>
+        <a href="/cari" class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Nav.Search"]</a>
+        <a href="/harga" class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Nav.Pricing"]</a>
         @if (!string.IsNullOrWhiteSpace(Support.Value.WhatsAppNumber))
         {
-          <a href="@Support.Value.WhatsAppUrl" target="_blank" rel="noopener" class="py-1 hover:text-brand-700">@T["Layout.Help"]</a>
+          <a href="@Support.Value.WhatsAppUrl" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Layout.Help"]</a>
         }
       </nav>
       <div class="flex flex-col gap-1">
@@ -92,15 +136,17 @@
           }
         </nav>
       </div>
-      <p class="col-span-2 text-xs text-slate-500 sm:col-span-3">&copy; @DateTime.UtcNow.Year @Brand.Name · @Brand.Domain</p>
+      @* Terms and privacy links go here once their text exists (AC-05, blocked on the owner). *@
+      <p class="col-span-2 text-xs text-slate-500 sm:col-span-3">&copy; @Clock.UtcNow.Year @Brand.Name · @Brand.Domain</p>
     </div>
   </footer>
   }
 
   @if (!string.IsNullOrWhiteSpace(Support.Value.WhatsAppNumber))
   {
+    @* green-700: white text on it is 5.0:1 (green-600 was 3.3:1, below WCAG AA). *@
     <a href="@Support.Value.WhatsAppUrl" target="_blank" rel="noopener" data-testid="whatsapp-support"
-       class="help-fab fixed right-4 bottom-4 z-40 flex min-h-12 items-center gap-2 rounded-full bg-green-600 px-4 text-sm font-semibold text-white shadow-lg hover:bg-green-700">
+       class="help-fab fixed right-4 bottom-4 z-40 flex min-h-12 items-center gap-2 rounded-full bg-green-700 px-4 text-sm font-semibold text-white shadow-lg hover:bg-green-800">
       <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 fill-current"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3 1 2.6 1.1 2.8.1.2 1.9 3 4.7 4.2 1.7.7 2.4.8 3.3.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.4-.2Z"/></svg>
       <span class="max-sm:sr-only">@T["Layout.Help"]</span>
     </a>

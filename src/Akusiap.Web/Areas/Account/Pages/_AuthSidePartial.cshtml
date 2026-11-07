@@ -1,11 +1,11 @@
 @* The panel beside the sign-up and sign-in forms on wide screens (BRD-08, D-115): why an account is worth it. Hidden below
    1024 px, where the form stands alone so it fits the first screen. *@
-<aside class="bg-panel relative hidden flex-col justify-between gap-8 overflow-hidden rounded-[1.4rem] p-8 text-white lg:flex" data-testid="auth-side">
+<aside class="bg-panel hidden flex-col justify-between gap-8 rounded-3xl p-8 text-white lg:flex" data-testid="auth-side">
   <div class="space-y-6">
     <div class="space-y-3">
-      <p class="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-bold ring-1 ring-white/25">@T["Home.Trust.Trial"]</p>
-      <p class="text-3xl font-extrabold leading-tight tracking-tight">@T["Account.Side.Title"]</p>
-      <p class="text-white/80">@T["Account.Side.Lead"]</p>
+      <p class="body-5 text-white">@T["Home.Trust.Trial"]</p>
+      <p class="text-3xl font-bold leading-tight tracking-tight">@T["Account.Side.Title"]</p>
+      <p class="text-white">@T["Account.Side.Lead"]</p>
     </div>
     <ul class="space-y-3">
       @foreach (var key in new[] { "Home.Feature.Cat", "Home.Feature.Explanations", "Home.Feature.Flashcards", "Home.Feature.Drills" })
@@ -17,6 +17,5 @@
       }
     </ul>
   </div>
-  <p class="text-sm text-white/80">@T["Home.Trust.Phone"] · @T["Home.Trust.Explanations"]</p>
-  <span class="pointer-events-none absolute -right-16 -bottom-16 size-56 rounded-full bg-white/10" aria-hidden="true"></span>
+  <p class="text-sm text-white">@T["Home.Trust.Phone"] · @T["Home.Trust.Explanations"]</p>
 </aside>

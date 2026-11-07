@@ -20,7 +20,7 @@
       {
         <div class="shrink-0 rounded-xl bg-white px-3 py-1 text-center text-brand-900">
           <span class="block text-xs font-semibold">@T["Cat.TimeLeft"]</span>
-          <span class="block font-mono text-xl font-extrabold" role="timer" aria-live="off" data-testid="timer" x-text="clock"></span>
+          <span class="block font-mono text-xl font-bold" role="timer" aria-live="off" data-testid="timer" x-text="clock"></span>
         </div>
       }
     </div>
@@ -84,7 +84,7 @@
 
   <div x-show="confirming" x-cloak class="fixed inset-0 z-40 flex items-center justify-center p-4" style="background: rgb(11 47 107 / .6)" role="dialog" aria-modal="true" aria-labelledby="cat-confirm-title" data-testid="confirm-finish">
     <div class="card w-full max-w-sm space-y-4 p-5">
-      <p id="cat-confirm-title" class="text-lg font-extrabold">@T["Cat.ConfirmTitle"]</p>
+      <p id="cat-confirm-title" class="text-lg font-bold">@T["Cat.ConfirmTitle"]</p>
       <ul class="space-y-1 text-sm text-slate-700">
         <li>@T["Cat.Answered"]: <span class="font-bold" x-text="answeredCount"></span></li>
         <li>@T["Cat.Ragu"]: <span class="font-bold" x-text="flaggedCount"></span></li>

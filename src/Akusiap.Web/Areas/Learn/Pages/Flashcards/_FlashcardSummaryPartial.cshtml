@@ -16,10 +16,10 @@
       <p role="status" class="rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700" data-testid="next-due">@T["Flashcards.NextDue", nextDue]</p>
     }
     <div class="dial mx-auto size-32" style="--p: @percent; --ring: var(--color-green-500)" data-testid="summary-score">
-      <span class="flex flex-col"><span class="num text-3xl font-extrabold">@remembered/@Model.Total</span><span class="text-xs text-slate-500">@T["Flashcards.Score"]</span></span>
+      <span class="flex flex-col"><span class="num text-3xl font-bold">@remembered/@Model.Total</span><span class="text-xs text-slate-500">@T["Flashcards.Score"]</span></span>
     </div>
     <div class="space-y-1">
-      <h1 class="text-2xl font-extrabold leading-tight">@T["Flashcards.Done"]</h1>
+      <h1 class="text-2xl font-bold leading-tight">@T["Flashcards.Done"]</h1>
       <p class="text-slate-600">@(Model.Title ?? T["Flashcards.MyCards"].Value)</p>
     </div>
     <dl class="grid grid-cols-4 gap-2 text-center">
@@ -27,7 +27,7 @@
       {
         <div class="stat px-1 py-2">
           <dt class="text-xs text-slate-500">@T[$"Flashcards.Rating.{label}"]</dt>
-          <dd class="num text-xl font-extrabold @tone" data-testid="summary-@label">@count</dd>
+          <dd class="num text-xl font-bold @tone" data-testid="summary-@label">@count</dd>
         </div>
       }
     </dl>

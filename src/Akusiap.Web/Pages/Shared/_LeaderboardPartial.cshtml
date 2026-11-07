@@ -32,7 +32,7 @@ else
           <span class="text-xl">@(p.Rank == 1 ? "🥇" : p.Rank == 2 ? "🥈" : "🥉")</span>
           <span class="avatar @(place == 0 ? "size-14 text-lg" : "") @Tint(p.Name)">@Initial(p.Name)</span>
           <span class="w-full truncate text-sm font-bold">@p.Name</span>
-          <span class="num text-lg font-extrabold text-brand-700">@p.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</span>
+          <span class="num text-lg font-bold text-brand-700">@p.ScorePercent.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</span>
           <span class="num text-xs text-slate-500">@Time(p.TimeSpentSeconds)</span>
         </div>
       }
@@ -64,7 +64,7 @@ else
     }
     @if (Model.Viewer is { } me && !viewerInTop)
     {
-      <li class="px-4 py-1 text-center text-slate-400">…</li>
+      <li class="px-4 py-1 text-center text-slate-500">…</li>
       <li class="flex items-center gap-2 sm:gap-3 bg-brand-50 px-3 py-2.5 sm:px-4 font-semibold" data-testid="leaderboard-row" data-rank="@me.Rank" data-viewer="true">
         <span class="w-7 sm:w-8"><span class="inline-flex size-7 items-center justify-center text-sm">@me.Rank</span></span>
         <span class="avatar size-8 text-xs @Tint(me.Name)">@Initial(me.Name)</span>

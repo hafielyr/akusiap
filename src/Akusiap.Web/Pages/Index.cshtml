@@ -1,130 +1,113 @@
 @page
 @model IndexModel
-@using Akusiap.Web.Identity
-@* Home (BRD-01, BRD-03, BRD-04, BRD-05): a light full-width hero with the question search and a generated ASCII
-   temple, a live-looking product showcase, exam categories, a bento of what works today, what is coming, how it works, and a final call to action. Only "Segera hadir" mentions unbuilt features. The
-   showcase is illustration built from plain HTML (sample names and numbers), hidden from screen readers. *@
+@using System.Text.Json
+@inject IOptions<SupportOptions> Support
+@* Home (BRD-09, D-116): a conversion landing page with one primary action, "Coba 30 soal gratis". Order: hero, exam
+   picker, why selection exams, benefits (one flagship plus a list), the tagline that lights up word by word, how to
+   start, own questions, FAQ, and the same call to action again. Every claim comes from docs/unique-selling-points.md;
+   there are no invented numbers, names or testimonials. The flashcard is a labelled example built from the app's own
+   card styles. Motion lives in wwwroot/js/home.js and stops under reduced motion. *@
 @{
   ViewData["Title"] = T["Home.Title"].Value;
+  ViewData["Description"] = T["Home.Description"].Value;
   ViewData["FullWidth"] = true;
-  var categories = new (string Key, string Query, string Tint, string Icon)[]
+  var categories = new (string Key, string Query, string Icon)[]
   {
-    ("Cpns", "CPNS", "bg-brand-50 text-brand-700", "M4 20h16M5 20V10l7-5 7 5v10M9 20v-5h6v5M9 11h.01M15 11h.01"),
-    ("Bumn", "BUMN", "bg-accent-50 text-accent-700", "M4 8h16v11H4zM9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M4 13h16"),
-    ("Kedinasan", "Kedinasan", "bg-green-50 text-green-700", "M12 4l9 4-9 4-9-4 9-4zM6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M21 8v6"),
-    ("Kedokteran", "UKMPPD", "bg-red-50 text-red-700", "M7 4v5a4 4 0 0 0 8 0V4M11 13v2a4 4 0 0 0 8 0v-1M19 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"),
+    ("Cpns", "CPNS", "M4 20h16M5 20V10l7-5 7 5v10M9 20v-5h6v5M9 11h.01M15 11h.01"),
+    ("Bumn", "BUMN", "M4 8h16v11H4zM9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M4 13h16"),
+    ("Kedinasan", "Kedinasan", "M12 4l9 4-9 4-9-4 9-4zM6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M21 8v6"),
+    ("Kedokteran", "UKMPPD", "M7 4v5a4 4 0 0 0 8 0V4M11 13v2a4 4 0 0 0 8 0v-1M19 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"),
   };
-  var small = new (string Key, string Icon)[]
+  var benefits = new (string Key, string Icon)[]
   {
-    ("Leaderboard", "M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 6h3v1a3 3 0 0 1-3 3M7 6H4v1a3 3 0 0 0 3 3"),
-    ("Explanations", "M5 5h10l4 4v10H5zM15 5v4h4M8 13h8M8 16h5"),
+    ("Try", "M5 5h10l4 4v10H5zM15 5v4h4M8 13h8M8 16h5"),
+    ("Pay", "M3 7h18v10H3zM3 11h18M7 15h3"),
+    ("Light", "M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM11 18h2"),
+  };
+  var more = new (string Key, string Icon)[]
+  {
+    ("Cat", "M4 5h16v11H4zM8 20h8M12 16v4M8 9h2M12 9h4M8 12h8"),
     ("Simulation", "M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"),
-    ("Flashcards", "M4 7h12v12H4zM8 7V4h12v12h-4"),
+    ("Drills", "M7 3v3M17 3v3M4 7h16v13H4zM8 12l3 3 5-5"),
+    ("Leaderboard", "M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 6h3v1a3 3 0 0 1-3 3M7 6H4v1a3 3 0 0 0 3 3"),
     ("Retake", "M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"),
-    ("Own", "M4 20l4-1 10-10-3-3L5 16l-1 4zM14 7l3 3"),
   };
   var steps = new[] { "Try", "Register", "Practise" };
-  // Showcase grid states: a = answered, r = ragu-ragu, e = empty.
-  const string catCells = "aaraaaeaaraeaeee";
-  const string arrow = "→";
+  var facts = new[] { "Home.Fact.Explanations", "Home.Fact.PerExam", "Home.Fact.Methods" };
+  var faqs = new[] { "Free", "Account", "Pay", "Access", "Official", "Signal", "WrongKey", "Own" };
+  var exampleOptions = new[] { ("A", "40"), ("B", "42"), ("C", "44"), ("D", "48") };
+  var tagline = new[] { T["Home.Tagline.Line1"].Value, T["Home.Tagline.Line2"].Value };
+  const string check = "M5 10.5l3 3 7-7";
+  // FAQ structured data (AEO): the same questions and answers as the visible list.
+  var faqJson = JsonSerializer.Serialize(new Dictionary<string, object>
+  {
+    ["@context"] = "https://schema.org",
+    ["@type"] = "FAQPage",
+    ["mainEntity"] = faqs.Select(f => new Dictionary<string, object>
+    {
+      ["@type"] = "Question",
+      ["name"] = T[$"Home.Faq.{f}.Q"].Value,
+      ["acceptedAnswer"] = new Dictionary<string, string> { ["@type"] = "Answer", ["text"] = T[$"Home.Faq.{f}.A"].Value },
+    }).ToArray(),
+  });
 }
 
-<section class="hero-ascii relative overflow-hidden border-b border-slate-200" aria-labelledby="home-heading" data-testid="home-hero">
-  <div class="mx-auto grid max-w-6xl items-center gap-6 px-4 pt-10 pb-6 sm:pt-16 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pb-14">
+@section Head {
+  @* "!" opts out of tag helpers, which would encode the "+" in the type. *@
+  <!script type="application/ld+json">@Html.Raw(faqJson)</!script>
+  <script src="~/js/home.js" asp-append-version="true" defer></script>
+}
+
+<section class="hero-ascii border-b border-slate-200" aria-labelledby="home-heading" data-testid="home-hero">
+  <div class="mx-auto grid max-w-6xl items-center gap-8 px-4 pt-8 pb-12 sm:pt-12 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pt-16 lg:pb-16">
     <div class="space-y-6">
-      <span class="eyebrow">@T["Home.Eyebrow"]</span>
-      <h1 id="home-heading" class="text-4xl font-extrabold leading-[1.05] tracking-tight text-balance text-brand-900 sm:text-6xl">@T["Home.Heading"]</h1>
-      <p class="max-w-xl text-lg text-slate-600">@T["Home.Lead"]</p>
-      <div class="max-w-xl">
-        <partial name="_SearchBoxPartial" model="((string?)null, false, false)" />
+      <h1 id="home-heading" class="hero-heading heading-4 max-w-[680px] sm:heading-2">
+        <span class="block">@T["Home.Heading.Line1"]</span>
+        <span class="block">@T["Home.Heading.Line2"]</span>
+      </h1>
+      <p class="max-w-[680px] body-3 text-pretty text-slate-600 sm:body-7">@T["Home.Lead"]</p>
+      <div class="space-y-2">
+        <a href="/ujian" class="btn btn-primary w-full sm:w-auto" data-testid="home-try">@T["Home.TryFree"] <span class="arrow" aria-hidden="true">→</span></a>
+        <p class="body-6 text-slate-600">@T["Home.TryFree.Note"]</p>
       </div>
-      <div class="flex flex-wrap gap-3">
-        <a href="/ujian" class="btn btn-primary" data-testid="home-try">@T["Home.TryFree"] <span class="arrow" aria-hidden="true">@arrow</span></a>
-        @if (User.Identity?.IsAuthenticated != true)
+      <ul class="flex flex-wrap gap-x-4 gap-y-2" data-testid="home-facts">
+        @foreach (var key in facts)
         {
-          <a href="@AccountRoutes.Register" class="btn btn-dark">@T["Home.RegisterFree"]</a>
+          <li class="inline-flex items-center gap-2 body-5 text-slate-700">
+            <svg aria-hidden="true" viewBox="0 0 20 20" class="size-4 shrink-0 text-green-700"><path d="@check" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>@T[key]
+          </li>
         }
+      </ul>
+      <div class="max-w-xl space-y-2 border-t border-slate-200 pt-6">
+        <p class="title-4 text-slate-700">@T["Home.SearchHint"]</p>
+        <partial name="_SearchBoxPartial" model="((string?)null, false, false)" />
       </div>
     </div>
     <figure class="rise d1" data-testid="home-art">
-      @* Generated by tools/art/ascii-hero.cs (BRD-05, D-108): an ASCII temple of five pillars. *@
-      <img src="~/img/hero-ascii.svg" asp-append-version="true" alt="@T["Home.Art.Ascii"]" width="907" height="998" class="art-ascii mx-auto w-full max-w-xl" />
-      <figcaption class="mt-2 text-center font-mono text-xs text-slate-500">$ @T["Home.Pillars.Motto"]<span class="cursor" aria-hidden="true"></span></figcaption>
+      @* Generated by tools/art/ascii-hero.cs (BRD-05, D-108): an ASCII temple of five pillars, the identity motif. *@
+      <img src="~/img/hero-ascii.svg" asp-append-version="true" alt="@T["Home.Art.Ascii"]" width="907" height="998" fetchpriority="high" decoding="async"
+           class="art-ascii mx-auto w-full max-w-[18rem] sm:max-w-sm lg:max-w-xl" />
+      <figcaption class="mt-2 text-center caption-4 text-slate-600">@T["Home.Art.Motto"]</figcaption>
     </figure>
   </div>
 </section>
 
-<section class="mx-auto max-w-6xl px-4 pt-12" aria-labelledby="home-showcase-title">
-  <div class="glow rise grid items-center gap-8 px-5 py-9 sm:px-10 sm:py-12 lg:grid-cols-2">
-    <div class="space-y-4">
-      <span class="eyebrow">@T["Home.Showcase.Eyebrow"]</span>
-      <h2 id="home-showcase-title" class="section-title">@T["Home.Showcase.Title"]</h2>
-      <p class="max-w-xl text-slate-600">@T["Home.Showcase.Lead"]</p>
-      <ul class="flex flex-wrap gap-2 text-sm text-slate-700">
-        @foreach (var key in new[] { "Home.Trust.Trial", "Home.Trust.Explanations", "Home.Trust.Phone" })
-        {
-          <li class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5">
-            <svg aria-hidden="true" viewBox="0 0 20 20" class="size-4 text-green-600"><path d="M5 10.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>@T[key]
-          </li>
-        }
-      </ul>
-    </div>
-
-    <div class="frame rise d2" aria-hidden="true" data-testid="home-showcase">
-      <div class="grid grid-cols-2 gap-1.5">
-        <div class="card space-y-2 p-4">
-          <p class="text-xs font-semibold text-slate-500">@T["Home.Showcase.Score"]</p>
-          <p class="flex items-baseline gap-2"><span class="num text-3xl font-extrabold">92</span><span class="delta">↑ 12%</span></p>
-          <svg viewBox="0 0 120 32" class="h-8 w-full text-brand-500"><polyline points="0,28 18,22 34,25 52,15 70,18 88,9 104,11 120,3" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
-        </div>
-        <div class="card space-y-2 p-4">
-          <p class="text-xs font-semibold text-slate-500">@T["Home.Showcase.Streak"]</p>
-          <p class="text-3xl font-extrabold">🔥 7</p>
-          <p class="flex gap-1">
-            @for (var d = 0; d < 7; d++)
-            {
-              <span class="size-3 rounded-full @(d < 5 ? "bg-accent-400" : d == 5 ? "border-2 border-brand-600" : "bg-slate-200")"></span>
-            }
-          </p>
-        </div>
-        <div class="card col-span-2 space-y-3 p-4">
-          <p class="flex items-center justify-between text-xs font-semibold"><span class="text-slate-500">@T["Home.Showcase.Cat"]</span><span class="num rounded-full bg-brand-900 px-2 py-0.5 text-white">01:24:09</span></p>
-          <p class="grid grid-cols-8 gap-1.5">
-            @for (var c = 0; c < catCells.Length; c++)
-            {
-              <span class="flex h-7 items-center justify-center rounded-md text-xs font-bold @(catCells[c] == 'a' ? "bg-green-600 text-white" : catCells[c] == 'r' ? "bg-accent-400 text-slate-900" : "border border-slate-300 text-slate-500")">@(c + 1)</span>
-            }
-          </p>
-        </div>
-        <div class="card col-span-2 space-y-2 p-4">
-          <p class="text-xs font-semibold text-slate-500">@T["Home.Showcase.Board"]</p>
-          @foreach (var (rank, name, score, tint) in new[] { (1, "Ana", "96", "bg-accent-100 text-accent-800"), (2, "Budi", "92", "bg-brand-100 text-brand-800"), (3, "Citra", "90", "bg-green-100 text-green-800") })
-          {
-            <p class="flex items-center gap-3 text-sm"><span class="w-4 font-bold text-slate-400">@rank</span><span class="avatar size-7 text-xs @tint">@name[..1]</span><span class="flex-1 font-semibold">@name</span><span class="num font-bold">@score</span>@(rank == 1 ? "🏆" : "")</p>
-          }
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="mx-auto max-w-6xl space-y-5 px-4 py-12" aria-labelledby="home-categories">
+<section class="reveal mx-auto max-w-6xl space-y-6 px-4 py-12 sm:py-16" aria-labelledby="home-categories">
   <div class="space-y-2">
-    <span class="eyebrow">@T["Home.Categories.Eyebrow"]</span>
     <h2 id="home-categories" class="section-title">@T["Home.Categories.Title"]</h2>
-    <p class="text-slate-600">@T["Home.Categories.Lead"]</p>
+    <p class="body-3 text-slate-600">@T["Home.Categories.Lead"]</p>
   </div>
   <ul class="grid grid-cols-2 gap-3 md:grid-cols-4">
     @foreach (var category in categories)
     {
       <li>
-        <a href="/ujian?q=@category.Query" class="card card-link flex h-full flex-col gap-3 p-2" data-testid="home-category">
-          <span class="preview flex h-24 items-center justify-center @category.Tint">
-            <svg aria-hidden="true" viewBox="0 0 24 24" class="size-10"><path d="@category.Icon" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <a href="/ujian?q=@category.Query" class="card card-link flex h-full flex-col gap-3 p-4" data-testid="home-category">
+          <span class="icon-tile bg-brand-50 text-brand-700">
+            <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="@category.Icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </span>
-          <span class="space-y-0.5 px-2 pb-2">
-            <span class="flex items-center justify-between font-bold text-slate-900">@T[$"Home.Category.{category.Key}"]<span class="arrow text-slate-400" aria-hidden="true">@arrow</span></span>
-            <span class="block text-sm text-slate-600">@T[$"Home.Category.{category.Key}.Hint"]</span>
+          <span class="space-y-1">
+            <span class="block body-1 text-slate-900">@T[$"Home.Category.{category.Key}"]</span>
+            <span class="block body-6 text-slate-600">@T[$"Home.Category.{category.Key}.Hint"]</span>
           </span>
         </a>
       </li>
@@ -132,95 +115,164 @@
   </ul>
 </section>
 
-<section class="mx-auto max-w-6xl space-y-5 px-4 pb-12" aria-labelledby="home-features">
-  <div class="space-y-2">
-    <span class="eyebrow">@T["Home.Features.Eyebrow"]</span>
-    <h2 id="home-features" class="section-title">@T["Home.Features.Title"]</h2>
+<section class="reveal mx-auto grid max-w-6xl gap-6 px-4 pb-12 sm:pb-16 lg:grid-cols-2 lg:items-end lg:gap-12" aria-labelledby="home-focus">
+  <h2 id="home-focus" class="heading-5 text-balance text-slate-900 sm:heading-4">
+    <span class="block">@T["Home.Focus.Line1"]</span>
+    <span class="block text-brand-700">@T["Home.Focus.Line2"]</span>
+  </h2>
+  <p class="body-3 text-pretty text-slate-600">@T["Home.Focus.Text"]</p>
+</section>
+
+<section class="border-y border-slate-200 bg-white" aria-labelledby="home-remember">
+  <div class="reveal mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:py-16 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+    <div class="space-y-4">
+      <h2 id="home-remember" class="section-title">@T["Home.Remember.Title"]</h2>
+      <p class="body-3 text-pretty text-slate-600">@T["Home.Remember.Text"]</p>
+      <ul class="space-y-2 body-5 text-slate-700">
+        @foreach (var key in new[] { "Home.Remember.Point.Auto", "Home.Remember.Point.Today", "Home.Remember.Point.Retake" })
+        {
+          <li class="flex items-start gap-2">
+            <svg aria-hidden="true" viewBox="0 0 20 20" class="mt-0.5 size-4 shrink-0 text-green-700"><path d="@check" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>@T[key]
+          </li>
+        }
+      </ul>
+    </div>
+    @* A labelled example, not a control: plain list items, so nothing looks clickable that isn't (R-26). *@
+    <figure class="mx-auto w-full max-w-md" data-testid="home-flashcard">
+      <div class="deck">
+        <div class="fc">
+          <div class="fc-top">
+            <div class="flex items-center justify-between gap-2">
+              <span class="fc-chip">@T["Home.Example.Topic"]</span>
+              <span class="caption-4 text-white">@T["Home.Example.Due"]</span>
+            </div>
+            <p class="title-2 text-white">@T["Home.Example.Question"]</p>
+          </div>
+          <div class="space-y-2 p-4">
+            <ul class="space-y-2" aria-label="@T["Home.Example.Options"]">
+              @foreach (var (letter, value) in exampleOptions)
+              {
+                <li class="opt @(letter == "B" ? "is-right" : "is-dim")"><span class="key">@letter</span><span class="num">@value</span></li>
+              }
+            </ul>
+            <p class="fc-verdict is-right body-5">@T["Home.Example.Correct"]</p>
+          </div>
+        </div>
+      </div>
+      <figcaption class="text-center caption-4 text-slate-600">@T["Home.Example.Caption"]</figcaption>
+    </figure>
   </div>
-  <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" data-testid="home-bento">
-    <li class="card flex flex-col gap-4 p-2 sm:col-span-2">
-      <div class="preview space-y-3 p-4" aria-hidden="true">
-        <p class="flex items-center justify-between rounded-xl bg-brand-900 px-3 py-2 text-xs font-semibold text-white"><span>@T["Cat.Label"]</span><span class="num">01:24:09</span></p>
-        <p class="grid grid-cols-10 gap-1.5">
-          @for (var c = 0; c < 20; c++)
-          {
-            var state = catCells[c % catCells.Length];
-            <span class="h-6 rounded-md @(state == 'a' ? "bg-green-600" : state == 'r' ? "bg-accent-400" : "border border-slate-300 bg-white")"></span>
-          }
-        </p>
-      </div>
-      <div class="space-y-1 px-3 pb-3">
-        <p class="flex flex-wrap items-center gap-2 text-lg font-bold text-slate-900">@T["Home.Feature.Cat"]<span class="badge-soon">@T["Home.New"]</span></p>
-        <p class="text-sm text-slate-600">@T["Home.Feature.Cat.Text"]</p>
-      </div>
-    </li>
-    <li class="card flex flex-col gap-4 p-2">
-      <div class="preview flex items-center justify-between gap-3 p-4" aria-hidden="true">
-        <span class="text-3xl font-extrabold">🔥 7</span>
-        <span class="flex gap-1">
-          @for (var d = 0; d < 7; d++)
-          {
-            <span class="size-3 rounded-full @(d < 6 ? "bg-accent-400" : "border-2 border-brand-600")"></span>
-          }
-        </span>
-      </div>
-      <div class="space-y-1 px-3 pb-3">
-        <p class="flex flex-wrap items-center gap-2 text-lg font-bold text-slate-900">@T["Home.Feature.Drills"]<span class="badge-soon">@T["Home.New"]</span></p>
-        <p class="text-sm text-slate-600">@T["Home.Feature.Drills.Text"]</p>
-      </div>
-    </li>
-    @foreach (var feature in small)
+</section>
+
+<section class="reveal mx-auto max-w-6xl px-4 py-12 sm:py-16" aria-labelledby="home-benefits">
+  <h2 id="home-benefits" class="sr-only">@T["Home.Benefits.Title"]</h2>
+  <ul class="grid gap-8 md:grid-cols-3 md:gap-6" data-testid="home-benefits">
+    @foreach (var (key, icon) in benefits)
     {
-      <li class="card flex gap-3 p-4">
+      <li class="space-y-3">
         <span class="icon-tile bg-brand-50 text-brand-700">
-          <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="@feature.Icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6"><path d="@icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </span>
-        <span class="space-y-1">
-          <span class="block font-bold text-slate-900">@T[$"Home.Feature.{feature.Key}"]</span>
-          <span class="block text-sm text-slate-600">@T[$"Home.Feature.{feature.Key}.Text"]</span>
-        </span>
+        <h3 class="heading-6 text-slate-900">@T[$"Home.Benefit.{key}.Title"]</h3>
+        <p class="body-3 text-pretty text-slate-600">@T[$"Home.Benefit.{key}.Text"]</p>
       </li>
     }
   </ul>
-</section>
 
-<section class="mx-auto max-w-6xl space-y-5 px-4 pb-12" aria-labelledby="home-soon">
-  <h2 id="home-soon" class="section-title">@T["Home.Soon.Title"]</h2>
-  <ul class="grid gap-3 sm:grid-cols-2">
-    @foreach (var key in new[] { "Subtest" })
-    {
-      <li class="card space-y-2 border-dashed p-5" data-testid="home-soon">
-        <span class="badge-soon">@T["Home.Soon.Badge"]</span>
-        <p class="text-lg font-bold text-slate-900">@T[$"Home.Soon.{key}"]</p>
-        <p class="text-sm text-slate-600">@T[$"Home.Soon.{key}.Text"]</p>
-      </li>
-    }
-  </ul>
-</section>
-
-<section class="mx-auto max-w-6xl space-y-5 px-4 pb-12" aria-labelledby="home-steps">
-  <div class="space-y-2">
-    <span class="eyebrow">@T["Home.Steps.Eyebrow"]</span>
-    <h2 id="home-steps" class="section-title">@T["Home.Steps.Title"]</h2>
+  <div class="mt-12 space-y-4">
+    <h3 class="title-2 text-slate-900">@T["Home.More.Title"]</h3>
+    <ul class="frame grid gap-2 sm:grid-cols-2 lg:grid-cols-5" data-testid="home-more">
+      @foreach (var (key, icon) in more)
+      {
+        <li class="card flex gap-3 p-4 lg:flex-col">
+          <svg aria-hidden="true" viewBox="0 0 24 24" class="size-6 shrink-0 text-brand-700"><path d="@icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <span class="space-y-1">
+            <span class="block body-4 text-slate-900">@T[$"Home.Feature.{key}"]</span>
+            <span class="block body-6 text-slate-600">@T[$"Home.Feature.{key}.Text"]</span>
+          </span>
+        </li>
+      }
+    </ul>
   </div>
-  <ol class="frame grid gap-1.5 sm:grid-cols-3">
+</section>
+
+<section class="border-y border-slate-200 bg-white" aria-label="@T["Home.Tagline.Label"]" data-testid="home-tagline">
+  <p class="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+    <span class="block max-w-[680px] heading-4 text-balance text-slate-900 sm:heading-2 xl:heading-1">
+      @foreach (var line in tagline)
+      {
+        <span class="block">
+          @foreach (var word in line.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+          {
+            <span class="tagline-word">@word</span>@(" ")
+          }
+        </span>
+      }
+    </span>
+  </p>
+</section>
+
+<section class="reveal mx-auto max-w-6xl space-y-8 px-4 py-12 sm:py-16" aria-labelledby="home-steps">
+  <h2 id="home-steps" class="section-title">@T["Home.Steps.Title"]</h2>
+  <ol class="grid gap-6 md:grid-cols-3 md:gap-0" data-testid="home-steps">
     @for (var i = 0; i < steps.Length; i++)
     {
-      <li class="card space-y-2 p-5">
-        <span class="num block text-4xl font-extrabold text-brand-200">0@(i + 1)</span>
-        <span class="block font-bold text-slate-900">@T[$"Home.Step.{steps[i]}"]</span>
-        <span class="block text-sm text-slate-600">@T[$"Home.Step.{steps[i]}.Text"]</span>
+      <li class="relative flex gap-4 md:flex-col md:pr-8">
+        @* The connecting line: a 1 px rule between the markers, down on phones and across on wide screens. *@
+        @if (i < steps.Length - 1)
+        {
+          <span class="absolute top-10 -bottom-6 left-5 w-px bg-slate-300 md:top-5 md:right-0 md:bottom-auto md:left-12 md:h-px md:w-auto" aria-hidden="true"></span>
+        }
+        <span class="relative grid size-10 shrink-0 place-items-center rounded-full border border-slate-300 bg-white body-1 text-brand-700 num">@(i + 1)</span>
+        <span class="space-y-1 md:pt-2">
+          <span class="block caption-4 text-slate-600">@T["Home.Step.Label", i + 1]</span>
+          <span class="block heading-6 text-slate-900">@T[$"Home.Step.{steps[i]}"]</span>
+          <span class="block body-3 text-pretty text-slate-600">@T[$"Home.Step.{steps[i]}.Text"]</span>
+        </span>
       </li>
     }
   </ol>
 </section>
 
-<section class="mx-auto max-w-6xl px-4 pb-14">
-  <div class="glow flex flex-col items-start gap-5 p-7 sm:flex-row sm:items-center sm:justify-between sm:p-10">
-    <div class="space-y-1">
-      <p class="text-2xl font-extrabold tracking-tight sm:text-3xl">@T["Home.Cta.Title"]</p>
-      <p class="text-slate-600">@T["Home.Cta.Lead"]</p>
+<section class="reveal mx-auto max-w-6xl px-4 pb-12 sm:pb-16" aria-labelledby="home-own">
+  <div class="panel flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+    <div class="space-y-2">
+      <h2 id="home-own" class="heading-6 text-slate-900">@T["Home.Own.Title"]</h2>
+      <p class="max-w-xl body-3 text-pretty text-slate-600">@T["Home.Own.Text"]</p>
     </div>
-    <a href="/ujian" class="btn btn-primary">@T["Home.BrowseCatalog"] <span class="arrow" aria-hidden="true">@arrow</span></a>
+    <a href="/learn/soal-saya" class="btn btn-secondary shrink-0">@T["Home.Own.Cta"]</a>
+  </div>
+</section>
+
+<section class="border-t border-slate-200 bg-white" aria-labelledby="home-faq">
+  <div class="reveal mx-auto grid max-w-6xl gap-6 px-4 py-12 sm:py-16 lg:grid-cols-[1fr_2fr] lg:gap-12">
+    <div class="space-y-2">
+      <h2 id="home-faq" class="section-title">@T["Home.Faq.Title"]</h2>
+      @if (!string.IsNullOrWhiteSpace(Support.Value.WhatsAppNumber))
+      {
+        @* Points at the WhatsApp help button, so it only shows when that button does. *@
+        <p class="body-3 text-slate-600">@T["Home.Faq.Lead"]</p>
+      }
+    </div>
+    <div class="divide-y divide-slate-200 border-y border-slate-200" data-testid="home-faq">
+      @foreach (var faq in faqs)
+      {
+        <details class="faq">
+          <summary class="body-1 text-slate-900">@T[$"Home.Faq.{faq}.Q"]<span class="faq-mark text-slate-600" aria-hidden="true"></span></summary>
+          <p class="pb-4 body-3 text-pretty text-slate-600">@T[$"Home.Faq.{faq}.A"]</p>
+        </details>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16" aria-labelledby="home-cta">
+  <div class="bg-panel flex flex-col items-start gap-6 rounded-3xl p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-10">
+    <div class="space-y-2">
+      <h2 id="home-cta" class="heading-5 text-balance sm:heading-4">@T["Home.Cta.Title"]</h2>
+      <p class="body-3 text-white">@T["Home.TryFree.Note"]</p>
+    </div>
+    @* The one yellow accent on the page: the last call to action, the same as the first. *@
+    <a href="/ujian" class="btn btn-accent w-full shrink-0 sm:w-auto" data-testid="home-cta">@T["Home.TryFree"] <span class="arrow" aria-hidden="true">→</span></a>
   </div>
 </section>

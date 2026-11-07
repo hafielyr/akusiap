@@ -16,7 +16,7 @@
   <a href="@ClassRoutes.Index" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Class.Title"]</a>
   <div class="bg-panel space-y-1 rounded-2xl p-5 text-white shadow-sm">
     <p class="text-sm text-brand-100">@T["Class.TeacherIs", c.TeacherName]</p>
-    <h1 class="text-2xl font-extrabold leading-tight" data-testid="class-name">@c.Name</h1>
+    <h1 class="text-2xl font-bold leading-tight" data-testid="class-name">@c.Name</h1>
   </div>
   @if (TempData["Flash"] is string flash)
   {
@@ -28,7 +28,7 @@
     <section class="card space-y-3 p-4" x-data="{ copied: false }" data-testid="invite">
       <h2 class="font-bold">@T["Class.Invite"]</h2>
       <p class="text-sm text-slate-600">@T["Class.InviteHint"]</p>
-      <p class="text-3xl font-extrabold tracking-wide text-brand-700" data-testid="invite-code">@c.InviteCode</p>
+      <p class="text-3xl font-bold tracking-wide text-brand-700" data-testid="invite-code">@c.InviteCode</p>
       <div class="flex gap-2">
         <input readonly value="@joinLink" class="input min-w-0 flex-1 text-sm" aria-label="@T["Class.InviteLink"]" />
         <button type="button" class="btn btn-secondary shrink-0" @@click="navigator.clipboard.writeText('@joinLink').then(() => copied = true)">
