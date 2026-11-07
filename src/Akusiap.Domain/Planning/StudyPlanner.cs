@@ -42,6 +42,23 @@ public static class StudyPlanner
         : planDays >= 2 ? Math.Max(1, planDays * ShortPlanReviewPercent / 100)
         : 0;
 
+    /// <summary>
+    /// How many questions should be answered by now on a straight line over the learning days (PLN-04): none on the
+    /// day the goal is set, all of them once the review phase begins.
+    /// </summary>
+    public static int ExpectedAnswered(DateOnly planStart, DateOnly examDate, DateOnly today, int poolSize)
+    {
+        var planDays = examDate.DayNumber - planStart.DayNumber;
+        var learningDays = planDays - ReviewPhaseDays(planDays);
+        if (learningDays <= 0)
+        {
+            return poolSize;
+        }
+
+        var elapsed = Math.Clamp(today.DayNumber - planStart.DayNumber, 0, learningDays);
+        return (int)Math.Ceiling((decimal)poolSize * elapsed / learningDays);
+    }
+
     /// <param name="planStart">The Jakarta day the goal was set or its date last moved.</param>
     /// <param name="unansweredAtStartOfDay">Questions in the pool with no answer before today.</param>
     /// <param name="newDoneToday">Questions answered for the first time today.</param>

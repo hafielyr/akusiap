@@ -32,7 +32,7 @@
         var goal = plan.Goal;
         var day = plan.Day;
         <li class="card space-y-4 p-4" data-testid="goal-countdown" data-exam="@goal.ExamId" data-phase="@day.Phase">
-          <a href="/learn/target" class="flex min-h-11 items-center gap-4">
+          <a href="/learn/target/@goal.Id" class="flex min-h-11 items-center gap-4" data-testid="plan-progress-link">
             <span class="min-w-16 text-3xl font-bold tabular-nums text-brand-700" data-testid="goal-countdown-days">@(goal.DaysLeft == 0 ? T["Goals.ExamToday"] : T["Goals.DaysLeft", goal.DaysLeft])</span>
             <span class="min-w-0 flex-1 space-y-0.5">
               <span class="block font-semibold">@goal.ExamTitle</span>
