@@ -42,6 +42,22 @@ public static class StudyPlanner
         : planDays >= 2 ? Math.Max(1, planDays * ShortPlanReviewPercent / 100)
         : 0;
 
+    /// <summary>Days before the exam that always get a full simulation (PLN-06).</summary>
+    public static IReadOnlyList<int> SimulationDaysLeft { get; } = [7, 3];
+
+    public const int SimulationEveryDays = 7;
+
+    /// <summary>
+    /// Whether the plan has a full Simulation today (PLN-06, D-127): every 7 days from the plan start (not on the start
+    /// day itself) and on H-7 and H-3; never on or after the exam day.
+    /// </summary>
+    public static bool IsSimulationDay(DateOnly planStart, DateOnly examDate, DateOnly today)
+    {
+        var daysLeft = examDate.DayNumber - today.DayNumber;
+        var sinceStart = today.DayNumber - planStart.DayNumber;
+        return daysLeft > 0 && (SimulationDaysLeft.Contains(daysLeft) || (sinceStart > 0 && sinceStart % SimulationEveryDays == 0));
+    }
+
     /// <summary>
     /// How many questions should be answered by now on a straight line over the learning days (PLN-04): none on the
     /// day the goal is set, all of them once the review phase begins.

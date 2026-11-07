@@ -82,7 +82,7 @@ Who it's for: job seekers and graduates preparing for one specific selection exa
 ### 11. A plan that ends on your exam day 🛠️
 - **What:** the learner enters the date of their exam. Each day the app says how many new questions to do and which cards to review, so every question is covered, and the wrong ones reviewed, before that date. The last week is for review and simulations.
 - **Why it matters:** learners know their exam date but not how to pace themselves. A daily quota tied to the date turns "study more" into a number they can finish today.
-- **Status:** PLN-01 (exam goal and countdown), PLN-02 (daily plan on the Today page), PLN-03 (every card comes back before the exam), PLN-04 (mastery per topic and the schedule check) and PLN-05 (daily reminder email) built, in review; PLN-06 (scheduled simulations) planned.
+- **Status:** PLN-01 to PLN-06 built, in review: exam goal and countdown, daily plan on the Today page, every card back before the exam, mastery per topic with a schedule check, daily reminder email, and scheduled simulations. Subtest scores in simulations wait for TRY-02 (scoring rules from the owner).
 - *Competitor gap to verify:* whether competitors build a daily plan from an exam date, or only offer fixed study schedules.
 
 ## Messaging pillars (draft copy, Indonesian)
