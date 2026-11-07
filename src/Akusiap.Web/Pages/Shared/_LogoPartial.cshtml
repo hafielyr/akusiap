@@ -1,17 +1,29 @@
-@* LatihanSoal logo (BRD-02, D-100): a column built from exam sheets, because practice is the pillar of success. The
-   capital is a curling sheet, the shaft a stack of lined sheets and the base two stacked slabs. The wordmark stacks
-   LATIHAN over a light blue SOAL. favicon.svg uses the same mark on a white tile. *@
+@* LatihanSoal logo (BRD-10, D-118; replaces the exam-sheet column of D-100): a stack of books that becomes a pillar,
+   because practice is the pillar of success. The capital is an open book, the shaft four books seen from the spine
+   (ink and the wordmark's sky blue in turn, slightly uneven like a real stack), and the base two wide slabs. Ink parts
+   use currentColor and the open pages var(--surface), so the mark flips in dark mode while the blue books stay blue.
+   The wordmark stacks LATIHAN over a light blue SOAL. favicon.svg and favicon.ico use the same mark on a white tile. *@
 <span class="inline-flex items-center gap-1.5" data-testid="logo">
-  <svg aria-hidden="true" viewBox="0 0 48 56" class="h-10 w-[2.15rem] shrink-0 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M17 14v30h20V14" fill="var(--surface)" />
-    <path d="M11 20q10.5-4.5 21 0v24H16l-5-5z" fill="var(--surface)" />
-    <path d="M11 39h5v5" />
-    <path d="M15.5 26.5h12M15.5 31.5h12M15.5 36.5h8" />
-    <path d="M9 4h30a5 5 0 0 1 0 10H9A5 5 0 0 1 9 4z" fill="var(--surface)" />
-    <circle cx="9" cy="9" r="2.2" />
-    <circle cx="39" cy="9" r="2.2" />
-    <path d="M9 44h30v4H9z" fill="var(--surface)" />
-    <path d="M5 48h38v5H5z" fill="currentColor" />
+  <svg aria-hidden="true" viewBox="0 0 48 56" class="h-10 w-[2.15rem] shrink-0 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M24 8.5C19.5 5.5 13 5 6.5 6.2V13.6C13 12.4 19.5 12.9 24 15.9z" fill="var(--surface)" />
+    <path d="M24 8.5C28.5 5.5 35 5 41.5 6.2V13.6C35 12.4 28.5 12.9 24 15.9z" fill="var(--surface)" />
+    <path d="M24 8.5v7.4" />
+    <path d="M10.5 9.5c3.5-.5 7-.2 10 1.2M37.5 9.5c-3.5-.5-7-.2-10 1.2" stroke-width="1.4" />
+    <g stroke="none">
+      <rect x="14.5" y="17.2" width="19" height="6.2" rx="1.2" fill="currentColor" />
+      <rect x="13.5" y="24.2" width="21" height="6.2" rx="1.2" fill="#1d9bf0" />
+      <rect x="15" y="31.2" width="18.5" height="6.2" rx="1.2" fill="currentColor" />
+      <rect x="14" y="38.2" width="20" height="6.2" rx="1.2" fill="#1d9bf0" />
+      <rect x="9" y="45.2" width="30" height="3.6" rx="1" fill="currentColor" />
+      <rect x="6" y="49.6" width="36" height="3.6" rx="1" fill="currentColor" />
+    </g>
+    @* Spine details: bands on the ink books, a label on the blue ones. *@
+    <g stroke="var(--surface)" stroke-width="1.3">
+      <path d="M18 19.1v2.4M30 19.1v2.4" />
+      <path d="M20 27.3h8" />
+      <path d="M18.5 33.1v2.4M30 33.1v2.4" />
+      <path d="M20 41.3h8" />
+    </g>
   </svg>
   <span class="flex flex-col text-base leading-none font-bold tracking-wide uppercase">
     <span class="text-slate-900">Latihan</span>
