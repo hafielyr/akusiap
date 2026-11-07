@@ -1200,4 +1200,32 @@
   <data name="Home.Faq.Own.Q" xml:space="preserve"><value>Can I write my own questions?</value></data>
   <data name="Home.Faq.Own.A" xml:space="preserve"><value>Yes. Once you sign up you can write your own questions and exams, practise them and share the link with friends.</value></data>
   <data name="Common.Choose" xml:space="preserve"><value>Choose…</value></data>
+  <data name="Goals.Title" xml:space="preserve"><value>Exam goals</value></data>
+  <data name="Goals.Lead" xml:space="preserve"><value>Enter the date of your exam. The countdown shows on the Today page.</value></data>
+  <data name="Goals.Link" xml:space="preserve"><value>Count down to your exam day</value></data>
+  <data name="Goals.ListTitle" xml:space="preserve"><value>Active goals</value></data>
+  <data name="Goals.None" xml:space="preserve"><value>No goals yet. Pick an exam and its date below.</value></data>
+  <data name="Goals.FormTitle" xml:space="preserve"><value>Add or change a goal</value></data>
+  <data name="Goals.FormHint" xml:space="preserve"><value>Picking an exam that already has a goal changes its date.</value></data>
+  <data name="Goals.Exam" xml:space="preserve"><value>Exam</value></data>
+  <data name="Goals.Date" xml:space="preserve"><value>Exam date</value></data>
+  <data name="Goals.Save" xml:space="preserve"><value>Save goal</value></data>
+  <data name="Goals.Saved" xml:space="preserve"><value>Goal saved.</value></data>
+  <data name="Goals.Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Goals.RemoveLabel" xml:space="preserve"><value>Remove the goal for {0}</value></data>
+  <data name="Goals.Removed" xml:space="preserve"><value>Goal removed.</value></data>
+  <data name="Goals.NoExams" xml:space="preserve"><value>There are no exams you can pick yet.</value></data>
+  <data name="Goals.DaysLeft" xml:space="preserve"><value>D-{0}</value></data>
+  <data name="Goals.ExamToday" xml:space="preserve"><value>Exam day</value></data>
+  <data name="Goals.Past" xml:space="preserve"><value>Past</value></data>
+  <data name="Goals.Countdowns" xml:space="preserve"><value>Exam countdowns</value></data>
+  <data name="Goals.DateRequired" xml:space="preserve"><value>Enter the exam date.</value></data>
+  <data name="Goals.DateNotInFuture" xml:space="preserve"><value>Pick a date after today.</value></data>
+  <data name="Goals.DateTooFar" xml:space="preserve"><value>Pick a date at most {0} years from now.</value></data>
+  <data name="Goals.NoAccess" xml:space="preserve"><value>This exam can't be picked. Choose one from the list.</value></data>
+  <data name="Goals.SetPrompt" xml:space="preserve"><value>When is your exam?</value></data>
+  <data name="Goals.SetPromptHint" xml:space="preserve"><value>Add the date to see a countdown here.</value></data>
+  <data name="Goals.ExamPageSet" xml:space="preserve"><value>Set an exam goal</value></data>
+  <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Add your exam date for a countdown.</value></data>
+  <data name="Goals.ExamPageChange" xml:space="preserve"><value>Change goal</value></data>
 </root>

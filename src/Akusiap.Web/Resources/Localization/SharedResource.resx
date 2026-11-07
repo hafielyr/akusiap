@@ -1200,4 +1200,32 @@
   <data name="Home.Faq.Own.Q" xml:space="preserve"><value>Bisa bikin soal sendiri?</value></data>
   <data name="Home.Faq.Own.A" xml:space="preserve"><value>Bisa. Setelah daftar, Anda bisa menyusun soal dan ujian sendiri, berlatih, lalu membagikan tautannya ke teman.</value></data>
   <data name="Common.Choose" xml:space="preserve"><value>Pilih…</value></data>
+  <data name="Goals.Title" xml:space="preserve"><value>Target ujian</value></data>
+  <data name="Goals.Lead" xml:space="preserve"><value>Isi tanggal ujian Anda. Hitung mundurnya tampil di halaman Hari ini.</value></data>
+  <data name="Goals.Link" xml:space="preserve"><value>Hitung mundur ke hari ujian</value></data>
+  <data name="Goals.ListTitle" xml:space="preserve"><value>Target aktif</value></data>
+  <data name="Goals.None" xml:space="preserve"><value>Belum ada target. Pilih ujian dan tanggalnya di bawah.</value></data>
+  <data name="Goals.FormTitle" xml:space="preserve"><value>Tambah atau ubah target</value></data>
+  <data name="Goals.FormHint" xml:space="preserve"><value>Memilih ujian yang sudah punya target akan mengganti tanggalnya.</value></data>
+  <data name="Goals.Exam" xml:space="preserve"><value>Ujian</value></data>
+  <data name="Goals.Date" xml:space="preserve"><value>Tanggal ujian</value></data>
+  <data name="Goals.Save" xml:space="preserve"><value>Simpan target</value></data>
+  <data name="Goals.Saved" xml:space="preserve"><value>Target tersimpan.</value></data>
+  <data name="Goals.Remove" xml:space="preserve"><value>Hapus</value></data>
+  <data name="Goals.RemoveLabel" xml:space="preserve"><value>Hapus target {0}</value></data>
+  <data name="Goals.Removed" xml:space="preserve"><value>Target dihapus.</value></data>
+  <data name="Goals.NoExams" xml:space="preserve"><value>Belum ada ujian yang bisa Anda pilih.</value></data>
+  <data name="Goals.DaysLeft" xml:space="preserve"><value>H-{0}</value></data>
+  <data name="Goals.ExamToday" xml:space="preserve"><value>Hari H</value></data>
+  <data name="Goals.Past" xml:space="preserve"><value>Sudah lewat</value></data>
+  <data name="Goals.Countdowns" xml:space="preserve"><value>Hitung mundur ujian</value></data>
+  <data name="Goals.DateRequired" xml:space="preserve"><value>Isi tanggal ujian.</value></data>
+  <data name="Goals.DateNotInFuture" xml:space="preserve"><value>Pilih tanggal setelah hari ini.</value></data>
+  <data name="Goals.DateTooFar" xml:space="preserve"><value>Pilih tanggal paling lambat {0} tahun dari sekarang.</value></data>
+  <data name="Goals.NoAccess" xml:space="preserve"><value>Ujian ini tidak bisa dipilih. Pilih ujian dari daftar.</value></data>
+  <data name="Goals.SetPrompt" xml:space="preserve"><value>Kapan ujian Anda?</value></data>
+  <data name="Goals.SetPromptHint" xml:space="preserve"><value>Isi tanggalnya untuk melihat hitung mundur di sini.</value></data>
+  <data name="Goals.ExamPageSet" xml:space="preserve"><value>Pasang target ujian</value></data>
+  <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Isi tanggal ujian Anda untuk hitung mundur.</value></data>
+  <data name="Goals.ExamPageChange" xml:space="preserve"><value>Ubah target</value></data>
 </root>

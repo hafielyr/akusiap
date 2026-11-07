@@ -75,6 +75,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<Domain.Gamification.LeaderboardSettings> LeaderboardSettings => Set<Domain.Gamification.LeaderboardSettings>();
 
+    public DbSet<Domain.Planning.StudyGoal> StudyGoals => Set<Domain.Planning.StudyGoal>();
+
     public Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken) =>
         Database.BeginTransactionAsync(cancellationToken);
 

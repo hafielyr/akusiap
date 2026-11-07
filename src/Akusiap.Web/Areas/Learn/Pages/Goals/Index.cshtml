@@ -1,0 +1,92 @@
+@page "/learn/target"
+@model Akusiap.Web.Areas.Learn.Pages.Goals.IndexModel
+@using System.Globalization
+@* Exam goals (PLN-01, D-120): active goals with their countdown, then the form to set or move an exam date. Two
+   columns on wide screens (BRD-07). *@
+@{
+  ViewData["Title"] = T["Goals.Title"].Value;
+  ViewData["Wide"] = true;
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[$"Input.{field}"]?.Errors.FirstOrDefault()?.ErrorMessage;
+  const string isoDate = "yyyy-MM-dd";
+}
+
+<section class="space-y-5">
+  <div class="space-y-1">
+    <h1 class="text-3xl font-bold leading-tight tracking-tight">@T["Goals.Title"]</h1>
+    <p class="text-slate-600">@T["Goals.Lead"]</p>
+  </div>
+  @if (TempData["Flash"] is string flash)
+  {
+    <p role="status" class="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800" data-testid="flash">@T[flash]</p>
+  }
+
+  <div class="grid items-start gap-5 lg:grid-cols-2 lg:gap-6">
+    <section class="space-y-3" aria-labelledby="goals-active">
+      <h2 id="goals-active" class="section-title">@T["Goals.ListTitle"]</h2>
+      @if (Model.Goals.Count == 0)
+      {
+        <p class="card border-dashed p-6 text-center text-slate-600" data-testid="goals-none">@T["Goals.None"]</p>
+      }
+      else
+      {
+        <ul class="space-y-2" data-testid="goals">
+          @foreach (var goal in Model.Goals)
+          {
+            <li class="card flex flex-wrap items-center gap-x-4 gap-y-3 p-4" data-testid="goal" data-exam="@goal.ExamId">
+              @if (goal.DaysLeft < 0)
+              {
+                <span class="min-w-16 text-sm font-semibold text-slate-600" data-testid="goal-days">@T["Goals.Past"]</span>
+              }
+              else
+              {
+                <span class="min-w-16 text-2xl font-bold tabular-nums text-brand-700" data-testid="goal-days">@(goal.DaysLeft == 0 ? T["Goals.ExamToday"] : T["Goals.DaysLeft", goal.DaysLeft])</span>
+              }
+              <span class="min-w-0 flex-1">
+                <span class="block font-semibold">@goal.ExamTitle</span>
+                <span class="block text-sm text-slate-600" data-testid="goal-date">@goal.ExamDate.ToString("d MMM yyyy", CultureInfo.CurrentCulture)</span>
+              </span>
+              <form method="post" asp-page-handler="Remove" asp-route-id="@goal.Id">
+                <button type="submit" class="btn btn-secondary" aria-label="@T["Goals.RemoveLabel", goal.ExamTitle]" data-testid="goal-remove">@T["Goals.Remove"]</button>
+              </form>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+    <section class="card space-y-3 p-4" aria-labelledby="goals-form">
+      <h2 id="goals-form" class="font-bold">@T["Goals.FormTitle"]</h2>
+      @if (Model.Exams.Count == 0)
+      {
+        <p class="text-sm text-slate-600" data-testid="goals-no-exams">@T["Goals.NoExams"] <a href="/ujian" class="inline-flex min-h-11 items-center font-semibold text-brand-700">@T["Today.Catalog"]</a></p>
+      }
+      else
+      {
+        <form method="post" class="space-y-3" novalidate data-testid="goal-form">
+          <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+          <div class="space-y-1">
+            <label for="Input_ExamId" class="label">@T["Goals.Exam"]</label>
+            <select id="Input_ExamId" name="Input.ExamId" class="input">
+              @foreach (var exam in Model.Exams)
+              {
+                <option value="@exam.ExamId" selected="@(exam.ExamId == Model.Input.ExamId)">@exam.Title</option>
+              }
+            </select>
+            @if (ErrorFor("ExamId") is { } examError) { <span class="field-error" data-testid="error-exam">@examError</span> }
+          </div>
+          <div class="space-y-1">
+            <label for="Input_ExamDate" class="label">@T["Goals.Date"]</label>
+            <input id="Input_ExamDate" name="Input.ExamDate" type="date" class="input"
+                   min="@Model.MinDate.ToString(isoDate, CultureInfo.InvariantCulture)"
+                   max="@Model.MaxDate.ToString(isoDate, CultureInfo.InvariantCulture)"
+                   value="@(Model.Input.ExamDate?.ToString(isoDate, CultureInfo.InvariantCulture))" />
+            @if (ErrorFor("ExamDate") is { } dateError) { <span class="field-error" data-testid="error-date">@dateError</span> }
+          </div>
+          <p class="text-xs text-slate-500">@T["Goals.FormHint"]</p>
+          <button type="submit" class="btn btn-primary w-full sm:w-auto" data-testid="goal-save">@T["Goals.Save"]</button>
+        </form>
+      }
+    </section>
+  </div>
+</section>

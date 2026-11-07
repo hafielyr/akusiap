@@ -43,6 +43,7 @@ public static class DependencyInjection
         services.AddScoped<Gamification.DailyDrills>();
         services.AddScoped<Gamification.LeaderboardAdmin>();
         services.AddScoped<Gamification.WeeklyLeaderboardAwards>();
+        services.AddScoped<Planning.StudyGoals>();
         services.AddScoped<Access.AccessibleQuestions>();
         services.AddScoped<Classes.Classes>();
         services.AddScoped<ExpireAccess>();
