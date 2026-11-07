@@ -484,6 +484,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: Fix the audit findings (D-116) and rebuild the home page as a conversion landing page with one primary action, "Coba 30 soal gratis" (D-117): hero, exam picker, why selection exams, benefits with a labelled example flashcard, a tagline that lights up word by word, how to start, own questions, an 8-question FAQ with FAQPage data, and the same call to action at the end. Site-wide: pointer cursor on controls, visible focus on search fields, AA contrast, 44 px footer links, a skip link, meta description and link-preview tags, a phone "Menu" with the main links and the theme switch, flat surfaces instead of dot grids and glows, Tailwind type, radius and motion steps.
 - AC: At 360×640 the "Coba 30 soal gratis" button is on the first screen and nothing scrolls sideways; the FAQ opens; the tagline words light up once scrolled into view (all at once under reduced motion); the phone menu opens, shows Katalog, Cari soal and Harga, and closes with Escape; the home page has a meta description, og tags and FAQPage JSON-LD; buttons show the pointer cursor; no invented numbers, names or "official CAT" claims remain.
 
+### BRD-10 Book-pillar logo · S
+- Stories: owner request (2026-11-07: "change the logo to be a stack of books that become a pillar") · Depends on: BRD-09
+- Scope: A new mark for the logo partial, `favicon.svg` and `favicon.ico` (D-118): an open book as the capital, four books seen from the spine as the shaft (ink and sky blue in turn) and two wide slabs as the base. The wordmark is unchanged.
+- AC: The mark reads as books forming a pillar at 24, 40 and 220 px, in light and dark; the favicon files show the same mark; every page still renders the logo.
+
 ### DRL-01 Daily drill with points and streak · M
 - Stories: owner request (gamified daily drills) · Depends on: SRS-03, SES-06
 - Scope: `/learn/hari-ini` gets "Latihan harian": a 10-question set built from the learner's accessible exams (due review cards first, then new questions), a daily goal (one completed drill), XP per correct answer and a streak counted in Jakarta days. Needs a new table for drill progress (streak, XP, last drill date) in this card's migration; record it as an addition to `schema.sql` (like D-68).
