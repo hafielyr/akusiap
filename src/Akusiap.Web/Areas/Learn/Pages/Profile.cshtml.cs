@@ -9,8 +9,9 @@ using Microsoft.Extensions.Localization;
 namespace Akusiap.Web.Areas.Learn.Pages;
 
 /// <summary>
-/// <c>/learn/profil</c> (AC-04, stories A-03, A-04): display name, phone (+62), preferred language and the
-/// "Saya juga mengajar" switch, plus a separate change-password form. Saving refreshes the sign-in cookie so the new
+/// <c>/learn/profil</c> (AC-04, stories A-03, A-04): display name, phone (+62), preferred language, the
+/// "Saya juga mengajar" switch, the leaderboard name switch and the daily plan reminder switch (PLN-05), plus a
+/// separate change-password form. Saving refreshes the sign-in cookie so the new
 /// name and roles show at once, and sets the culture cookie so the language changes on the next page. Each handler
 /// binds and validates only its own form (<c>TryUpdateModelAsync</c>).
 /// </summary>
@@ -48,6 +49,7 @@ public sealed class ProfileModel(UserManager<User> users, SignInManager<User> si
             PreferredLanguage = user.PreferredLanguage,
             IsTeacher = await users.IsInRoleAsync(user, RoleNames.Teacher),
             HideOnLeaderboard = user.HideOnLeaderboard,
+            PlanReminderEmails = user.PlanReminderEmails,
         };
         return Page();
     }
@@ -89,6 +91,7 @@ public sealed class ProfileModel(UserManager<User> users, SignInManager<User> si
         user.PhoneNumber = phone;
         user.PreferredLanguage = Input.PreferredLanguage;
         user.HideOnLeaderboard = Input.HideOnLeaderboard;
+        user.PlanReminderEmails = Input.PlanReminderEmails;
         Check(await users.UpdateAsync(user));
 
         var isTeacher = await users.IsInRoleAsync(user, RoleNames.Teacher);
@@ -201,6 +204,9 @@ public sealed class ProfileInput
     /// <summary>Show "Peserta #XXXX" instead of the name on public leaderboards (GAM-01).</summary>
     [Display(Name = "Profile.HideOnLeaderboard")]
     public bool HideOnLeaderboard { get; set; }
+
+    /// <summary>The daily plan reminder email (PLN-05).</summary>
+    public bool PlanReminderEmails { get; set; } = true;
 }
 
 public sealed class PasswordInput
