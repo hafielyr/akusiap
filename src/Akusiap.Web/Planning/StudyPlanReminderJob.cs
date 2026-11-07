@@ -19,7 +19,7 @@ namespace Akusiap.Web.Planning;
 
 /// <summary>
 /// Daily at 06:00 WIB (PLN-05, story M-14, D-126): emails each learner with an active exam goal today's new questions,
-/// due cards and days left per goal, in their preferred language, with a link to the Today page. Skipped when the
+/// due cards, days left and any scheduled simulation (PLN-06) per goal, in their preferred language, with a link to the Today page. Skipped when the
 /// profile switch is off, the email isn't confirmed, nothing is planned, or a reminder already went out this Jakarta
 /// day. The plan is computed by <see cref="StudyPlans"/> in a scope acting as the learner, so access rules match the
 /// Today page. Needs <c>Site:BaseUrl</c> for the links; without it nothing is sent.
@@ -65,7 +65,7 @@ public sealed partial class StudyPlanReminderJob(
         foreach (var learner in learners)
         {
             var plans = await PlansForAsync(learner.Id, cancellationToken);
-            var due = plans.Where(p => p.Day.NewLeftToday + p.DueCards > 0).ToList();
+            var due = plans.Where(p => p.Day.NewLeftToday + p.DueCards > 0 || p.Simulation == PlanSimulation.Due).ToList();
             if (due.Count == 0)
             {
                 continue;
@@ -78,7 +78,7 @@ public sealed partial class StudyPlanReminderJob(
                 Channel = NotificationChannel.Email,
                 TemplateCode = NotificationTemplate.ReviewDue,
                 Language = learner.PreferredLanguage,
-                Payload = JsonSerializer.Serialize(due.Select(p => new { examId = p.Goal.ExamId, daysLeft = p.Goal.DaysLeft, newQuestions = p.Day.NewLeftToday, dueCards = p.DueCards }), Json),
+                Payload = JsonSerializer.Serialize(due.Select(p => new { examId = p.Goal.ExamId, daysLeft = p.Goal.DaysLeft, newQuestions = p.Day.NewLeftToday, dueCards = p.DueCards, simulation = p.Simulation == PlanSimulation.Due }), Json),
                 ScheduledAt = now,
             };
             try
@@ -120,7 +120,7 @@ public sealed partial class StudyPlanReminderJob(
             var subject = t["PlanReminder.Subject", plans.Sum(p => p.Day.NewLeftToday), plans.Sum(p => p.DueCards)].Value;
             var greeting = t["Email.Greeting", displayName].Value;
             var intro = t["PlanReminder.Intro"].Value;
-            var lines = plans.Select(p => t["PlanReminder.Line", p.Goal.ExamTitle, p.Goal.DaysLeft == 0 ? t["Goals.ExamToday"].Value : t["Goals.DaysLeft", p.Goal.DaysLeft].Value, p.Day.NewLeftToday, p.DueCards].Value).ToList();
+            var lines = plans.Select(p => t[p.Simulation == PlanSimulation.Due ? "PlanReminder.LineSimulation" : "PlanReminder.Line", p.Goal.ExamTitle, p.Goal.DaysLeft == 0 ? t["Goals.ExamToday"].Value : t["Goals.DaysLeft", p.Goal.DaysLeft].Value, p.Day.NewLeftToday, p.DueCards].Value).ToList();
             var action = t["PlanReminder.Open"].Value;
             var footer = t["PlanReminder.Footer", profileUrl].Value;
             var items = new StringBuilder();

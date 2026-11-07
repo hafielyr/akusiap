@@ -1260,4 +1260,10 @@
   <data name="PlanReminder.Footer" xml:space="preserve"><value>Don't want these emails? Turn them off in your profile: {0}</value></data>
   <data name="Profile.PlanReminder" xml:space="preserve"><value>Daily task reminder email</value></data>
   <data name="Profile.PlanReminderHint" xml:space="preserve"><value>Sent at 06:00 WIB when you have an exam goal and tasks that day.</value></data>
+  <data name="Plan.Simulation" xml:space="preserve"><value>Simulation scheduled today</value></data>
+  <data name="Plan.SimulationHint" xml:space="preserve"><value>One full simulation under the exam's rules.</value></data>
+  <data name="Plan.SimulationStart" xml:space="preserve"><value>Start simulation</value></data>
+  <data name="Plan.SimulationContinue" xml:space="preserve"><value>Continue simulation</value></data>
+  <data name="Plan.SimulationDone" xml:space="preserve"><value>Today's simulation is done.</value></data>
+  <data name="PlanReminder.LineSimulation" xml:space="preserve"><value>{0} ({1}): {2} new questions, {3} review cards, and 1 simulation</value></data>
 </root>

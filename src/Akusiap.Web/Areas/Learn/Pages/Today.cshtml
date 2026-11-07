@@ -71,7 +71,7 @@
             {
               <a href="@Akusiap.Web.Pages.Sessions.SessionRoutes.Player(open)" class="btn btn-primary w-full" data-testid="plan-continue">@T["Plan.Continue"]</a>
             }
-            else if (plan.DoneToday)
+            else if (plan.TasksDoneToday)
             {
               <p class="rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-800" data-testid="plan-done">@T["Plan.Done"]</p>
             }
@@ -82,6 +82,28 @@
                 <button type="submit" class="btn btn-primary w-full" data-testid="plan-start">@T["Plan.Start"]</button>
                 <p class="text-center text-xs text-slate-500">@T["Plan.SessionHint", Akusiap.Application.Planning.StudyPlans.SessionSize]</p>
               </form>
+            }
+            @if (plan.Simulation != Akusiap.Application.Planning.PlanSimulation.None)
+            {
+              <div class="space-y-2 border-t border-slate-200 pt-3" data-testid="plan-simulation" data-state="@plan.Simulation">
+                <p class="font-semibold">@T["Plan.Simulation"]</p>
+                @switch (plan.Simulation)
+                {
+                  case Akusiap.Application.Planning.PlanSimulation.Done:
+                    <p class="rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-800">@T["Plan.SimulationDone"]</p>
+                    break;
+                  case Akusiap.Application.Planning.PlanSimulation.InProgress:
+                    <a href="@Akusiap.Web.Pages.Sessions.SessionRoutes.Player(plan.SimulationAttemptId!.Value)" class="btn btn-secondary w-full" data-testid="plan-simulation-continue">@T["Plan.SimulationContinue"]</a>
+                    break;
+                  default:
+                    <p class="text-sm text-slate-600">@T["Plan.SimulationHint"]</p>
+                    <form method="post" asp-page-handler="Simulation">
+                      <input type="hidden" name="goalId" value="@goal.Id" />
+                      <button type="submit" class="btn btn-secondary w-full" data-testid="plan-simulation-start">@T["Plan.SimulationStart"]</button>
+                    </form>
+                    break;
+                }
+              </div>
             }
           }
         </li>

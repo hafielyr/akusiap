@@ -76,4 +76,22 @@ public sealed class TodayModel(
 
         return Redirect(SessionRoutes.Player(result.Value));
     }
+
+    /// <summary>Opens or starts the goal's scheduled simulation (PLN-06).</summary>
+    public async Task<IActionResult> OnPostSimulationAsync(long goalId, CancellationToken cancellationToken)
+    {
+        var result = await plans.StartSimulationAsync(goalId, cancellationToken);
+        if (result.IsNotFound)
+        {
+            return NotFound();
+        }
+
+        if (!result.Succeeded)
+        {
+            TempData["Flash"] = result.Problems[0].Code;
+            return Redirect(Route);
+        }
+
+        return Redirect(SessionRoutes.Player(result.Value));
+    }
 }

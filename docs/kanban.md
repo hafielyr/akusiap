@@ -7,7 +7,6 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 
 ## Ready
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
-- [PLN-06] Scheduled simulations · M9 · deps: PLN-02 (subtest scores need TRY-02)
 
 ## In Progress
 
@@ -27,6 +26,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [PLN-03] Card reviews before the exam date · M9 · deps: PLN-02 · (claude-opus-5.5, 2026-11-07)
 - [PLN-04] Mastery and progress per topic · M9 · deps: PLN-02 · (claude-opus-5.5, 2026-11-07)
 - [PLN-05] Daily plan reminder · M9 · deps: PLN-02 · (claude-opus-5.5, 2026-11-07)
+- [PLN-06] Scheduled simulations · M9 · deps: PLN-02 (subtest scores need TRY-02) · (claude-opus-5.5, 2026-11-07)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

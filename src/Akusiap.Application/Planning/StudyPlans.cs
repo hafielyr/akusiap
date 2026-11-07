@@ -15,8 +15,33 @@ namespace Akusiap.Application.Planning;
 /// </summary>
 public sealed record StudyPlanToday(StudyGoalView Goal, StudyPlanDay Day, int PoolSize, int Answered, int DueCards, long? OpenAttemptId)
 {
-    /// <summary>Nothing left to do today: no new questions left in the quota and no due cards.</summary>
-    public bool DoneToday => Day.NewLeftToday == 0 && DueCards == 0 && OpenAttemptId is null;
+    /// <summary>Today's scheduled simulation (PLN-06), if any.</summary>
+    public PlanSimulation Simulation { get; init; } = PlanSimulation.None;
+
+    /// <summary>The unfinished simulation on this exam, when <see cref="Simulation"/> is InProgress.</summary>
+    public long? SimulationAttemptId { get; init; }
+
+    /// <summary>Today's questions and cards are done: no new questions left in the quota, no due cards, no open session.</summary>
+    public bool TasksDoneToday => Day.NewLeftToday == 0 && DueCards == 0 && OpenAttemptId is null;
+
+    /// <summary>Nothing left to do today: tasks done and no simulation to take.</summary>
+    public bool DoneToday => TasksDoneToday && Simulation is PlanSimulation.None or PlanSimulation.Done;
+}
+
+/// <summary>A plan's simulation for today (PLN-06, D-127).</summary>
+public enum PlanSimulation
+{
+    /// <summary>Not a simulation day.</summary>
+    None,
+
+    /// <summary>Scheduled today and not taken yet.</summary>
+    Due,
+
+    /// <summary>Scheduled today and one is unfinished.</summary>
+    InProgress,
+
+    /// <summary>Scheduled today and one was finished today.</summary>
+    Done,
 }
 
 /// <summary>A goal's progress (PLN-04): <see cref="Behind"/> is how many answers short of the straight-line schedule the learner is.</summary>
@@ -30,7 +55,7 @@ public sealed record GoalProgressView(StudyPlanToday Plan, int Mastered, int Exp
 /// through <see cref="IEntitlementService"/>: all of them with full access, the trial set with trial access. A plan
 /// session is a Practice attempt (Source StudyPlan, on the goal's exam) of up to 10 questions: due review cards first
 /// (oldest first), then questions never answered, up to what is left of today's quota. The review phase and the exam
-/// day offer due cards only.
+/// day offer due cards only. Simulation days (PLN-06, D-127) add a full Simulation of the exam.
 /// </summary>
 public sealed class StudyPlans(
     IAppDbContext db,
@@ -82,6 +107,24 @@ public sealed class StudyPlans(
         }
 
         var started = await startAttempt.StartStudyPlanAsync(goal.ExamId, picked, SessionSize, cancellationToken).ConfigureAwait(false);
+        return started.Succeeded ? Result.Ok(started.Value!.AttemptId) : Result.Fail<long>(started.Problems);
+    }
+
+    /// <summary>Opens the unfinished simulation on the goal's exam, or starts one (PLN-06), through the usual entitlement check.</summary>
+    public async Task<Result<long>> StartSimulationAsync(long goalId, CancellationToken cancellationToken)
+    {
+        var goal = (await goals.ActiveAsync(cancellationToken).ConfigureAwait(false)).FirstOrDefault(g => g.Id == goalId && g.DaysLeft >= 0);
+        if (goal is null)
+        {
+            return Result.Fail<long>(Problem.NotFound);
+        }
+
+        if (await OpenSimulationAsync(UserId(), goal.ExamId, cancellationToken).ConfigureAwait(false) is { } open)
+        {
+            return Result.Ok(open);
+        }
+
+        var started = await startAttempt.HandleAsync(new StartAttemptRequest(goal.ExamId, AttemptMode.Simulation), cancellationToken).ConfigureAwait(false);
         return started.Succeeded ? Result.Ok(started.Value!.AttemptId) : Result.Fail<long>(started.Problems);
     }
 
@@ -168,8 +211,30 @@ public sealed class StudyPlans(
         var unansweredAtStartOfDay = pool.Count - answered.Count + newDoneToday;
         var startDay = JakartaTime.Today(planStart);
         var day = StudyPlanner.Plan(startDay, goal.ExamDate, today, unansweredAtStartOfDay, newDoneToday);
-        return (new StudyPlanToday(goal, day, pool.Count, answered.Count, due.Count, open), pool, due, answered, startDay);
+        var plan = new StudyPlanToday(goal, day, pool.Count, answered.Count, due.Count, open);
+        if (pool.Count > 0 && StudyPlanner.IsSimulationDay(startDay, goal.ExamDate, today))
+        {
+            var openSimulation = await OpenSimulationAsync(userId, goal.ExamId, cancellationToken).ConfigureAwait(false);
+            var startOfToday = JakartaTime.StartOfDayUtc(today);
+            var finishedToday = await db.Attempts.AsNoTracking()
+                .AnyAsync(a => a.UserId == userId && a.ExamId == goal.ExamId && a.Mode == AttemptMode.Simulation && a.Status != AttemptStatus.InProgress && a.SubmittedAt >= startOfToday, cancellationToken)
+                .ConfigureAwait(false);
+            plan = plan with
+            {
+                Simulation = finishedToday ? PlanSimulation.Done : openSimulation is not null ? PlanSimulation.InProgress : PlanSimulation.Due,
+                SimulationAttemptId = finishedToday ? null : openSimulation,
+            };
+        }
+
+        return (plan, pool, due, answered, startDay);
     }
+
+    private Task<long?> OpenSimulationAsync(Guid userId, long examId, CancellationToken cancellationToken) =>
+        db.Attempts.AsNoTracking()
+            .Where(a => a.UserId == userId && a.ExamId == examId && a.Mode == AttemptMode.Simulation && a.Status == AttemptStatus.InProgress && a.ClassAssignmentId == null)
+            .OrderByDescending(a => a.Id)
+            .Select(a => (long?)a.Id)
+            .FirstOrDefaultAsync(cancellationToken);
 
     private List<long> Shuffle(IEnumerable<long> ids)
     {
