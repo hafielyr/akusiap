@@ -1,0 +1,76 @@
+@page "/learn/target/{id:long}"
+@model Akusiap.Web.Areas.Learn.Pages.Goals.DetailModel
+@using System.Globalization
+@* One goal's progress (PLN-04, D-122): answered and mastered overall, the schedule check, then topics weakest first.
+   Two columns on wide screens (BRD-07). *@
+@{
+  var p = Model.Progress;
+  var plan = p.Plan;
+  var goal = plan.Goal;
+  ViewData["Title"] = goal.ExamTitle;
+  ViewData["Wide"] = true;
+  int Percent(int count) => plan.PoolSize == 0 ? 0 : (int)Math.Round(count * 100m / plan.PoolSize, MidpointRounding.AwayFromZero);
+}
+
+<section class="space-y-5">
+  <a href="/learn/target" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Progress.Back"]</a>
+
+  <header class="flex flex-wrap items-center gap-x-4 gap-y-2">
+    <span class="min-w-16 text-3xl font-bold tabular-nums text-brand-700" data-testid="progress-days">@(goal.DaysLeft < 0 ? T["Goals.Past"] : goal.DaysLeft == 0 ? T["Goals.ExamToday"] : T["Goals.DaysLeft", goal.DaysLeft])</span>
+    <div class="min-w-0 flex-1 space-y-0.5">
+      <p class="eyebrow">@T["Progress.Title"]</p>
+      <h1 class="text-2xl font-bold leading-tight tracking-tight">@goal.ExamTitle</h1>
+      <p class="text-sm text-slate-600">@goal.ExamDate.ToString("d MMM yyyy", CultureInfo.CurrentCulture)</p>
+    </div>
+  </header>
+
+  @if (plan.PoolSize == 0)
+  {
+    <p class="card p-5 text-slate-600" data-testid="plan-empty">@T["Plan.NoQuestions"]</p>
+  }
+  else
+  {
+    <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-6">
+      <section class="space-y-3" aria-labelledby="progress-summary">
+        <h2 id="progress-summary" class="sr-only">@T["Progress.Title"]</h2>
+        <dl class="grid grid-cols-2 gap-2">
+          <div class="stat"><dt class="text-xs font-semibold text-slate-500">@T["Progress.Answered"]</dt><dd class="text-2xl font-bold tabular-nums text-slate-900" data-testid="progress-answered">@Percent(plan.Answered)%</dd><dd class="text-xs text-slate-500">@T["Progress.Of", plan.Answered, plan.PoolSize]</dd></div>
+          <div class="stat"><dt class="text-xs font-semibold text-slate-500">@T["Progress.Mastered"]</dt><dd class="text-2xl font-bold tabular-nums text-slate-900" data-testid="progress-mastered">@Percent(p.Mastered)%</dd><dd class="text-xs text-slate-500">@T["Progress.Of", p.Mastered, plan.PoolSize]</dd></div>
+        </dl>
+        @if (p.Behind > 0)
+        {
+          <p class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900" data-testid="progress-schedule" data-behind="@p.Behind">@T["Progress.Behind", p.Behind]</p>
+        }
+        else
+        {
+          <p class="rounded-lg bg-green-50 px-3 py-2 text-sm font-semibold text-green-800" data-testid="progress-schedule" data-behind="0">@T["Progress.OnSchedule"]</p>
+        }
+        <p class="text-sm text-slate-600">@T["Progress.MasteredHint"]</p>
+        @if (goal.DaysLeft >= 0)
+        {
+          <a href="/learn/hari-ini" class="btn btn-secondary w-full sm:w-auto">@T["Plan.Title"]</a>
+        }
+      </section>
+
+      <section class="space-y-3" aria-labelledby="progress-topics">
+        <h2 id="progress-topics" class="section-title">@T["Progress.Topics"]</h2>
+        <ol class="card divide-y divide-slate-200" data-testid="progress-topic-list">
+          @foreach (var topic in p.Topics)
+          {
+            <li class="space-y-2 px-4 py-3" data-testid="progress-topic" data-topic="@topic.TopicId">
+              <div class="flex items-baseline justify-between gap-3">
+                <span class="font-semibold">@topic.Name</span>
+                <span class="shrink-0 text-sm text-slate-500">@T["Catalog.QuestionCount", topic.Total]</span>
+              </div>
+              <div class="relative h-2 overflow-hidden rounded-full bg-slate-200" aria-hidden="true">
+                <div class="absolute inset-y-0 left-0 rounded-full bg-brand-200" style="width: @(topic.AnsweredPercent)%"></div>
+                <div class="absolute inset-y-0 left-0 rounded-full bg-brand-600" style="width: @(topic.MasteredPercent)%"></div>
+              </div>
+              <p class="text-sm text-slate-600" data-testid="progress-topic-shares">@T["Progress.TopicLine", topic.AnsweredPercent, topic.MasteredPercent]</p>
+            </li>
+          }
+        </ol>
+      </section>
+    </div>
+  }
+</section>

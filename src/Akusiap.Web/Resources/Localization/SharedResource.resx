@@ -1241,4 +1241,16 @@
   <data name="Plan.Done" xml:space="preserve"><value>Tugas hari ini selesai.</value></data>
   <data name="Plan.NoQuestions" xml:space="preserve"><value>Belum ada soal yang bisa Anda pakai di ujian ini.</value></data>
   <data name="Plan.NothingToday" xml:space="preserve"><value>Tugas hari ini sudah selesai. Tidak ada kartu yang jatuh tempo.</value></data>
+  <data name="Progress.Title" xml:space="preserve"><value>Progres target</value></data>
+  <data name="Progress.Back" xml:space="preserve"><value>Semua target</value></data>
+  <data name="Progress.Answered" xml:space="preserve"><value>Dikerjakan</value></data>
+  <data name="Progress.Mastered" xml:space="preserve"><value>Dikuasai</value></data>
+  <data name="Progress.Of" xml:space="preserve"><value>{0} dari {1} soal</value></data>
+  <data name="Progress.OnSchedule" xml:space="preserve"><value>Sesuai jadwal</value></data>
+  <data name="Progress.Behind" xml:space="preserve"><value>Tertinggal {0} soal dari jadwal</value></data>
+  <data name="Progress.MasteredHint" xml:space="preserve"><value>Dikuasai artinya jawaban terakhir benar, atau kartunya sudah masuk tahap ulasan. Jawaban salah membuat soal belum dikuasai lagi.</value></data>
+  <data name="Progress.Topics" xml:space="preserve"><value>Per topik, yang paling lemah dulu</value></data>
+  <data name="Progress.TopicLine" xml:space="preserve"><value>Dikerjakan {0}% · Dikuasai {1}%</value></data>
+  <data name="Progress.Link" xml:space="preserve"><value>Progres</value></data>
+  <data name="Progress.LinkLabel" xml:space="preserve"><value>Progres {0}</value></data>
 </root>
