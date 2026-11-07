@@ -71,4 +71,27 @@ public sealed class Sm2SchedulerTests
         Assert.Equal((ReviewRating.Good, 6m, 15m, Now), (log.Rating, log.IntervalBeforeDays, log.IntervalAfterDays, log.ReviewedAt));
         Assert.Same(log, Assert.Single(card.Logs));
     }
+
+    [Theory]
+    [InlineData(15, 10, 10)] // SM-2 lands after the cap: the cap wins
+    [InlineData(5, 10, 5)] // SM-2 lands before the cap: unchanged
+    [InlineData(15, null, 15)] // no goal: unchanged
+    [InlineData(15, -1, 15)] // the cap has passed (the day before the exam or later): unchanged
+    public void The_due_date_is_capped_only_by_a_cap_still_ahead(int dueInDays, int? capInDays, int expectedInDays)
+    {
+        DateTime? cap = capInDays is { } days ? Now.AddDays(days) : null;
+
+        Assert.Equal(Now.AddDays(expectedInDays), Sm2Scheduler.CapDue(Now.AddDays(dueInDays), cap, Now));
+    }
+
+    [Fact]
+    public void Apply_with_a_cap_moves_only_the_due_date()
+    {
+        var card = new ReviewCard { State = ReviewCardState.Review, IntervalDays = 15m, EaseFactor = 2.5m, Repetitions = 3, DueAt = Now };
+
+        var log = Sm2Scheduler.Apply(card, ReviewRating.Good, Now, dueCap: Now.AddDays(4));
+
+        Assert.Equal((ReviewCardState.Memorized, 38m, Now.AddDays(4)), (card.State, card.IntervalDays, card.DueAt));
+        Assert.Equal(38m, log.IntervalAfterDays);
+    }
 }
