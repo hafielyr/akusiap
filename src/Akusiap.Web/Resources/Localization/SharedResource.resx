@@ -1228,4 +1228,17 @@
   <data name="Goals.ExamPageSet" xml:space="preserve"><value>Pasang target ujian</value></data>
   <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Isi tanggal ujian Anda untuk hitung mundur.</value></data>
   <data name="Goals.ExamPageChange" xml:space="preserve"><value>Ubah target</value></data>
+  <data name="Plan.Title" xml:space="preserve"><value>Tugas hari ini</value></data>
+  <data name="Plan.New" xml:space="preserve"><value>Soal baru</value></data>
+  <data name="Plan.Cards" xml:space="preserve"><value>Kartu ulasan</value></data>
+  <data name="Plan.Progress" xml:space="preserve"><value>{0} dari {1} soal sudah dikerjakan · {2} hari belajar lagi</value></data>
+  <data name="Plan.ReviewPhase" xml:space="preserve"><value>Fase ulasan: tidak ada soal baru. Ulangi kartu sampai hari ujian.</value></data>
+  <data name="Plan.ExamDay" xml:space="preserve"><value>Hari ujian. Tidak ada soal baru hari ini.</value></data>
+  <data name="Plan.OverCap" xml:space="preserve"><value>{0} soal baru per hari, lebih dari {1}. Tanggal ujian sudah dekat untuk soal sebanyak ini.</value></data>
+  <data name="Plan.Start" xml:space="preserve"><value>Mulai tugas</value></data>
+  <data name="Plan.Continue" xml:space="preserve"><value>Lanjutkan tugas</value></data>
+  <data name="Plan.SessionHint" xml:space="preserve"><value>Maksimal {0} soal per sesi.</value></data>
+  <data name="Plan.Done" xml:space="preserve"><value>Tugas hari ini selesai.</value></data>
+  <data name="Plan.NoQuestions" xml:space="preserve"><value>Belum ada soal yang bisa Anda pakai di ujian ini.</value></data>
+  <data name="Plan.NothingToday" xml:space="preserve"><value>Tugas hari ini sudah selesai. Tidak ada kartu yang jatuh tempo.</value></data>
 </root>

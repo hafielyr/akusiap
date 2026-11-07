@@ -1228,4 +1228,17 @@
   <data name="Goals.ExamPageSet" xml:space="preserve"><value>Set an exam goal</value></data>
   <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Add your exam date for a countdown.</value></data>
   <data name="Goals.ExamPageChange" xml:space="preserve"><value>Change goal</value></data>
+  <data name="Plan.Title" xml:space="preserve"><value>Today's tasks</value></data>
+  <data name="Plan.New" xml:space="preserve"><value>New questions</value></data>
+  <data name="Plan.Cards" xml:space="preserve"><value>Review cards</value></data>
+  <data name="Plan.Progress" xml:space="preserve"><value>{0} of {1} questions done · {2} study days left</value></data>
+  <data name="Plan.ReviewPhase" xml:space="preserve"><value>Review phase: no new questions. Go over your cards until exam day.</value></data>
+  <data name="Plan.ExamDay" xml:space="preserve"><value>Exam day. No new questions today.</value></data>
+  <data name="Plan.OverCap" xml:space="preserve"><value>{0} new questions a day, more than {1}. The exam date is close for this many questions.</value></data>
+  <data name="Plan.Start" xml:space="preserve"><value>Start tasks</value></data>
+  <data name="Plan.Continue" xml:space="preserve"><value>Continue tasks</value></data>
+  <data name="Plan.SessionHint" xml:space="preserve"><value>Up to {0} questions per session.</value></data>
+  <data name="Plan.Done" xml:space="preserve"><value>Today's tasks are done.</value></data>
+  <data name="Plan.NoQuestions" xml:space="preserve"><value>There are no questions you can use in this exam yet.</value></data>
+  <data name="Plan.NothingToday" xml:space="preserve"><value>Today's tasks are done. No cards are due.</value></data>
 </root>
