@@ -68,15 +68,22 @@ Who it's for: job seekers and graduates preparing for one specific selection exa
 - **Proof today:** question reports and the admin queue (SES-11).
 - **Marketing angle (💡):** publish "X soal diperbaiki bulan ini" once there is data.
 
-### 9. Daily habit with points and streaks 🛠️
+### 9. Daily habit with points and streaks ✅
 - **What:** a daily 10-question drill, points for correct answers, and a streak counted in Indonesian time (WIB).
 - **Why it matters:** consistency beats cramming for selection exams, and streaks keep learners coming back.
-- **Status:** cards DRL-01 (drill, points, streak) and DRL-02 (badges and leaderboard; needs a privacy decision).
+- **Proof today:** the daily drill, XP and streak (DRL-01), badges and leaderboards with optional weekly reset (DRL-02, GAM-01).
+- **Not yet:** reminders (PLN-05).
 
 ### 10. Local by default ✅
 - **What:** Indonesian first (English available), WIB times, Rupiah prices, QRIS and virtual accounts, and WhatsApp support.
 - **Why it matters:** fewer barriers for first-time online learners.
 - **Proof today:** localisation, Jakarta time handling, payment channels and the WhatsApp button.
+
+### 11. A plan that ends on your exam day 🛠️
+- **What:** the learner enters the date of their exam. Each day the app says how many new questions to do and which cards to review, so every question is covered, and the wrong ones reviewed, before that date. The last week is for review and simulations.
+- **Why it matters:** learners know their exam date but not how to pace themselves. A daily quota tied to the date turns "study more" into a number they can finish today.
+- **Status:** PLN-01 (exam goal and countdown) in progress; PLN-02 to PLN-06 (daily plan, reviews before the date, mastery per topic, reminder email, scheduled simulations) planned.
+- *Competitor gap to verify:* whether competitors build a daily plan from an exam date, or only offer fixed study schedules.
 
 ## Messaging pillars (draft copy, Indonesian)
 

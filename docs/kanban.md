@@ -9,6 +9,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 <!-- Every dependency is in Review or Done. Agents take the top card. -->
 
 ## In Progress
+- [PLN-01] Exam goal and countdown · M9 · deps: SRS-03, ENT-02 · (claude-opus-5.5, 2026-11-07)
 
 ## Review
 - [AC-07] Real email in development · M1 · deps: AC-02 · (claude-opus-5.5, 2026-10-22)
@@ -128,3 +129,10 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 **Release 2 exit check**: A free learner writes 50 questions, builds 1 exam and shares it. A guest takes it by entering a name, sees the explanations and is invited to register. The admin takes the exam down and the link stops working. The daily due list shows wrong answers scheduled by SM-2.
 
 ### M8 Exam positioning (Release 2+)
+
+### M9 Study plan to exam day (Release 2+)
+- [PLN-02] Daily plan · M9 · deps: PLN-01
+- [PLN-03] Card reviews before the exam date · M9 · deps: PLN-02
+- [PLN-04] Mastery and progress per topic · M9 · deps: PLN-02
+- [PLN-05] Daily plan reminder · M9 · deps: PLN-02
+- [PLN-06] Scheduled simulations · M9 · deps: PLN-02 (subtest scores need TRY-02)
