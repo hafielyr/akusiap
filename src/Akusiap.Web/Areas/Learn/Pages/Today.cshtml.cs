@@ -7,17 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Akusiap.Web.Areas.Learn.Pages;
 
 /// <summary>
-/// <c>/learn/hari-ini</c> (SRS-03, DRL-01, story M-08): today's practice. The daily drill with its week strip and
-/// streak, the level strip, and the due flashcards in total and per exam with full access. The home page for signed-in
-/// learners.
+/// <c>/learn/hari-ini</c> (SRS-03, DRL-01, PLN-01, story M-08): today's practice. The exam countdowns, the daily drill
+/// with its week strip and streak, the level strip, and the due flashcards in total and per exam with full access. The
+/// home page for signed-in learners.
 /// </summary>
 public sealed class TodayModel(
     Application.Memorization.Flashcards flashcards,
     Badges badges,
     DailyDrills drills,
+    Application.Planning.StudyGoals goals,
     Application.Abstractions.ICurrentUser currentUser) : PageModel
 {
     public const string Route = "/learn/hari-ini";
+
+    /// <summary>Goals whose exam is today or later (PLN-01); passed goals stay only on <c>/learn/target</c>.</summary>
+    public IReadOnlyList<Application.Planning.StudyGoalView> Goals { get; private set; } = [];
 
     public FlashcardDeck All { get; private set; } = null!;
 
@@ -38,6 +42,7 @@ public sealed class TodayModel(
         Exams = [.. decks.Where(d => d.ExamId is not null).OrderByDescending(d => d.DueCount)];
         (Level, Streak) = await badges.SummaryAsync(currentUser.UserId!.Value, cancellationToken);
         Drill = await drills.TodayAsync(cancellationToken);
+        Goals = [.. (await goals.ActiveAsync(cancellationToken)).Where(g => g.DaysLeft >= 0)];
     }
 
     /// <summary>Opens the unfinished drill or starts a new one.</summary>
