@@ -35,3 +35,10 @@ public enum ShowAnswers
     AfterSubmit,
     Never,
 }
+
+/// <summary>Who wrote a question (ADM-T8): the app's own team, or someone else (a book, a site, a repo).</summary>
+public enum QuestionOrigin
+{
+    Original,
+    ThirdParty,
+}

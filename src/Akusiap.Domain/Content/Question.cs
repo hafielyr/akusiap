@@ -7,6 +7,7 @@ public class Question
     public const int KeyFactMaxLength = 200;
     public const short MinDifficulty = 1;
     public const short MaxDifficulty = 5;
+    public const int SourceUrlMaxLength = 1000;
 
     public long Id { get; set; }
 
@@ -35,6 +36,12 @@ public class Question
 
     /// <summary>Syllabus reference.</summary>
     public string? SourceNote { get; set; }
+
+    /// <summary>Who wrote the question; null when it was never recorded (ADM-T8).</summary>
+    public QuestionOrigin? Origin { get; set; }
+
+    /// <summary>Where the question was taken from or first published, as an http(s) link (ADM-T8).</summary>
+    public string? SourceUrl { get; set; }
 
     /// <summary>Links variants of the same fact.</summary>
     public Guid? VariantGroupId { get; set; }

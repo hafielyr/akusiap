@@ -24,6 +24,10 @@ public sealed class QuestionInput
 
     public string? SourceNote { get; set; }
 
+    public QuestionOrigin? Origin { get; set; }
+
+    public string? SourceUrl { get; set; }
+
     public QuestionStatus? Status { get; set; } = QuestionStatus.Draft;
 
     public List<OptionInput> Options { get; set; } = [];
@@ -48,6 +52,8 @@ public sealed class QuestionInput
             Hint = question.Hint,
             Difficulty = question.Difficulty,
             SourceNote = question.SourceNote,
+            Origin = question.Origin,
+            SourceUrl = question.SourceUrl,
             Status = question.Status,
             Options = question.Options.Select(o => new OptionInput { Id = o.Id, Text = o.Text, IsCorrect = o.IsCorrect }).ToList(),
         };
@@ -64,7 +70,9 @@ public sealed class QuestionInput
         Difficulty,
         SourceNote,
         Status,
-        Options.Select(o => new OptionRequest(o.Id, o.Text, o.IsCorrect)).ToList());
+        Options.Select(o => new OptionRequest(o.Id, o.Text, o.IsCorrect)).ToList(),
+        Origin,
+        SourceUrl);
 }
 
 public sealed class OptionInput

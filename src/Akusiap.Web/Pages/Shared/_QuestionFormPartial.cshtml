@@ -147,5 +147,26 @@
     @if (ErrorFor("SourceNote") is { } sourceError) { <span class="field-error">@sourceError</span> }
   </div>
 
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="space-y-1">
+      <label for="Input_Origin" class="label">@T["Admin.Question.Origin"]</label>
+      <select id="Input_Origin" name="Input.Origin" class="input">
+        <option value="">@T["Admin.Questions.OriginUnset"]</option>
+        @foreach (var origin in Enum.GetValues<QuestionOrigin>())
+        {
+          <option value="@origin" selected="@(origin == input.Origin)">@T[$"Admin.QuestionOrigin.{origin}"]</option>
+        }
+      </select>
+      @if (ErrorFor("Origin") is { } originError) { <span class="field-error">@originError</span> }
+    </div>
+
+    <div class="space-y-1">
+      <label for="Input_SourceUrl" class="label">@T["Admin.Question.SourceUrl"]</label>
+      <input id="Input_SourceUrl" name="Input.SourceUrl" type="url" inputmode="url" value="@input.SourceUrl" maxlength="@Question.SourceUrlMaxLength" class="input" placeholder="https://" />
+      @if (ErrorFor("SourceUrl") is { } sourceUrlError) { <span class="field-error">@sourceUrlError</span> }
+    </div>
+  </div>
+  <p class="text-sm text-slate-500">@T["Admin.Questions.OriginHelp"]</p>
+
   <button type="submit" class="btn btn-primary w-full sm:w-auto">@T["Admin.Save"]</button>
 </form>

@@ -52,6 +52,7 @@ Rules:
 | Exam.Status | Draft, Published, Unpublished, TakenDown |
 | Question.QuestionType | SingleChoice, MultiSelect, TrueFalse |
 | Question.Status | Draft, Active, Retired |
+| Question.Origin | Original, ThirdParty (nullable, ADM-T8; D-128) |
 | RulePreset.ShowAnswers | AfterEach, AfterSubmit, Never |
 | ExamPurchase.Status | AwaitingPayment, Active, Expired, Abandoned, Refunded |
 | Subscription.Status | AwaitingPayment, Active, Expired, Abandoned, Refunded |
