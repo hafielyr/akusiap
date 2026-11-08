@@ -520,3 +520,51 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
   - A removed student loses access and can't rejoin.
   - A badge is awarded only once.
   - The catalog and player stay within the OPS-01 budget.
+
+## E14 Study plan to exam day (M9)
+
+Owner goal (2026-11-07): the learner sets the date of their exam, the app decides which questions to do each day, flashcards bring back the ones they got wrong, and they master the questions before that date. Open to every signed-in learner; learners with only trial access get a plan from the trial questions (D-119).
+
+### PLN-01 Exam goal and countdown · M
+- Stories: owner request (2026-11-07); not in the stories doc (D-120) · Depends on: SRS-03, ENT-02
+- Scope:
+  - New table `study_goals` (user, exam, exam date as a Jakarta calendar date, created, archived) in migration `PLN-01_StudyGoals`; record it as an addition to `schema.sql` (D-120).
+  - `/learn/target`: the learner's active goals and a form to pick an exam and its date. Any published catalog exam the learner can start (trial access is enough, D-119). One active goal per exam; setting a goal again for the same exam changes its date. A goal can be removed (archived).
+  - The exam date must be after today (Jakarta) and at most two years ahead.
+  - Today page: a countdown card per active goal ("H-23", exam title, date). Without a goal, a link to set one.
+  - Exam page: a "Pasang target" link for signed-in learners who can start the exam.
+- AC:
+  - A learner sets a goal for a published exam and sees the countdown on `/learn/hari-ini`; the day count follows the test clock in Jakarta days.
+  - A date today or in the past, or more than two years ahead, is refused with a message.
+  - An unpublished exam, or one the learner can't start, is refused.
+  - Setting the same exam again keeps one active goal with the new date; a removed goal no longer shows.
+- Tests: unit (day count and date rules), integration (the AC above), E2E at 360 px: set a goal, then see the countdown on Today.
+
+### PLN-02 Daily plan · L
+- Stories: owner request · Depends on: PLN-01
+- Scope:
+  - A pure `StudyPlanner` in the domain: from the questions not yet answered for the goal's exam, the due cards and the days left, it gives today's new-question quota. The last days are a review phase with no new questions (D-121). The quota is recomputed every day, so missed days spread over the days that remain.
+  - Question pool: the exam's questions the learner can use (all with full access, the trial set with trial access, D-119). `AccessibleQuestions` does not count trial access today, so the planner needs its own pool.
+  - Today page: "Tugas hari ini" per goal (new questions and due cards) with a start button that opens a Practice attempt of up to 10 questions (due cards first, then new questions), like the daily drill.
+  - A warning when the quota is above the daily cap (D-121).
+- AC: The quota matches `ceil(unanswered / days left in the learning phase)`; after a missed day the remaining questions spread over the remaining days (test clock); in the review phase only cards are offered; questions outside the learner's access never appear.
+
+### PLN-03 Card reviews before the exam date · S
+- Stories: owner request · Depends on: PLN-02
+- Scope: When a card belongs to an exam with an active goal, its next due date is capped at the day before the exam (D-123). `Sm2Scheduler` stays pure; the cap is a parameter.
+- AC: A card whose SM-2 interval would land after the exam date is due the day before the exam instead (test clock); cards without a goal are unchanged.
+
+### PLN-04 Mastery and progress per topic · M
+- Stories: M-11, H-04, owner request · Depends on: PLN-02
+- Scope: A question counts as mastered by the rule in D-122. A goal page `/learn/target/{id}` shows, per topic, the share answered and the share mastered, and whether the learner is on schedule or behind by how many questions.
+- AC: Shares match the learner's answers and cards; a question answered wrong and not yet reviewed is not mastered; the weakest topics come first.
+
+### PLN-05 Daily plan reminder · M
+- Stories: M-14 · Depends on: PLN-02
+- Scope: A daily email per learner with an active goal: today's new questions, due cards and days left, sent through the `notifications` table with the `ReviewDue` template. A profile switch turns it off. No email when nothing is planned.
+- AC: One email per learner per Jakarta day at most (test clock); the switch stops it; it lists the right counts.
+
+### PLN-06 Scheduled simulations · M
+- Stories: owner request · Depends on: PLN-02 (subtest scores need TRY-02)
+- Scope: The plan adds a full Simulation every 7 days and on H-7 and H-3, shown in "Tugas hari ini". Subtest scores (TWK/TIU/TKP) follow TRY-02 once the owner gives the scoring rules.
+- AC: The simulation appears on the planned days and disappears once one is finished that day (test clock).

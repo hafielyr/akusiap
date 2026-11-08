@@ -1675,6 +1675,53 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Planning.StudyGoal", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("ArchivedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("archived_at");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateOnly>("ExamDate")
+                        .HasColumnType("date")
+                        .HasColumnName("exam_date");
+
+                    b.Property<long>("ExamId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("exam_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_study_goals");
+
+                    b.HasIndex("ExamId")
+                        .HasDatabaseName("ix_study_goals_exam_id");
+
+                    b.HasIndex(new[] { "UserId", "ExamId" }, "ux_study_goals_active")
+                        .IsUnique()
+                        .HasDatabaseName("ux_study_goals_active")
+                        .HasFilter("archived_at IS NULL");
+
+                    b.ToTable("study_goals", (string)null);
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Sessions.Attempt", b =>
                 {
                     b.Property<long>("Id")
@@ -2622,6 +2669,27 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_saved_payment_methods_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Planning.StudyGoal", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_study_goals_exams_exam_id");
+
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_study_goals_users_user_id");
+
+                    b.Navigation("Exam");
 
                     b.Navigation("User");
                 });

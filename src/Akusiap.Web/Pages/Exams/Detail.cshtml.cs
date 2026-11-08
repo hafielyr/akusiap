@@ -11,9 +11,16 @@ namespace Akusiap.Web.Pages.Exams;
 public sealed class DetailModel(
     GetCatalogExam getExam,
     Akusiap.Application.Sessions.FindOpenAttempt findOpen,
-    Akusiap.Application.Gamification.Leaderboards leaderboards) : PageModel
+    Akusiap.Application.Gamification.Leaderboards leaderboards,
+    Akusiap.Application.Planning.StudyGoals goals) : PageModel
 {
     public CatalogExamDetail Exam { get; private set; } = null!;
+
+    /// <summary>Signed-in viewers who can start a published exam can set a goal for it (PLN-01).</summary>
+    public bool CanSetGoal { get; private set; }
+
+    /// <summary>The viewer's active goal for this exam, if any (PLN-01).</summary>
+    public Akusiap.Application.Planning.StudyGoalView? Goal { get; private set; }
 
     /// <summary>An unfinished attempt of this viewer on this exam (SES-04 "continue" banner).</summary>
     public long? OpenAttemptId { get; private set; }
@@ -33,6 +40,12 @@ public sealed class DetailModel(
         var guestToken = User.Identity?.IsAuthenticated == true ? null : Akusiap.Web.Sessions.GuestTokenCookie.Read(Request);
         OpenAttemptId = await findOpen.HandleAsync(id, guestToken, cancellationToken);
         LeaderboardEnabled = await leaderboards.IsEnabledAsync(id, cancellationToken);
+        CanSetGoal = User.Identity?.IsAuthenticated == true && exam.Status == Akusiap.Domain.Content.ExamStatus.Published && exam.Decision.CanStart;
+        if (CanSetGoal)
+        {
+            Goal = await goals.ForExamAsync(id, cancellationToken);
+        }
+
         return Page();
     }
 }
