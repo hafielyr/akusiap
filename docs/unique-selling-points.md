@@ -12,6 +12,15 @@ Possible reasons for a learner to choose LatihanSoal over general learning platf
 
 Who it's for: job seekers and graduates preparing for one specific selection exam, often on a mid-range Android phone with limited data. They want to pass one exam, not join a school-curriculum platform.
 
+## Brand lines (owner, 2026-11-09)
+
+Every page and message leads with these two lines (D-124):
+
+1. **"Belajar menguasai soal secara cepat dan efisien."** The app helps the learner reach their exam goal by spending study time only where it's needed. Back the claim with the feature that makes it true, every time: explanations on every question, wrong answers turned into flashcards, spaced repetition that skips what's already known, results per topic, the exam goal countdown.
+2. **"Berlatih secara konsisten adalah pilar kesuksesan."** The pillar in the logo. It backs the daily drill, the streak and the Today page. Never turn it into a pass promise.
+
+Where they appear: the home hero ("Kuasai soal seleksi / dengan cepat dan efisien") and the tagline section ("Berlatih secara konsisten / adalah pilar kesuksesan"), the footer, the meta descriptions and the sign-up panel.
+
 ## Core selling points
 
 ### 1. Built for selection exams, not school subjects ✅ (positioning) / 🛠️ (CAT tryouts)
