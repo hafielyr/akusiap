@@ -21,6 +21,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [BRD-07] Less scrolling on key pages · M8 · deps: BRD-03 · (claude-opus-5.5, 2026-11-04)
 - [BRD-08] Side-by-side sign-up and sign-in · M8 · deps: BRD-07 · (claude-opus-5.5, 2026-11-04)
 - [BRD-09] Landing page rebuild and antislop audit fixes · M8 · deps: BRD-08 · (claude-opus-5.5, 2026-11-06)
+- [BRD-10] Book-pillar logo · M8 · deps: BRD-09 · (claude-opus-5.5, 2026-11-07)
 - [PLN-01] Exam goal and countdown · M9 · deps: SRS-03, ENT-02 · (claude-opus-5.5, 2026-11-07)
 - [PLN-02] Daily plan · M9 · deps: PLN-01 · (claude-opus-5.5, 2026-11-07)
 - [PLN-03] Card reviews before the exam date · M9 · deps: PLN-02 · (claude-opus-5.5, 2026-11-07)
