@@ -78,6 +78,8 @@ public interface IAppDbContext
 
     DbSet<Domain.Gamification.LeaderboardSettings> LeaderboardSettings { get; }
 
+    DbSet<Domain.Planning.StudyGoal> StudyGoals { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     /// <summary>For use cases that need several statements to succeed or fail together.</summary>
