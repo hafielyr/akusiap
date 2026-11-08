@@ -159,6 +159,9 @@
   .num { font-variant-numeric: tabular-nums; }
   .rise { animation: rise .6s var(--ease-out-soft) both; }
   .d1 { animation-delay: .06s; } .d2 { animation-delay: .12s; }
+  /* Logo mark (BRD-10, D-118): the owner's ink version on light surfaces, the white version on dark ones. */
+  .logo-mark { color: #14181c; }
+  [data-theme="dark"] .logo-mark { color: #fff; }
   /* ASCII hero (BRD-05, D-108): a flat pale blue band; in dark mode the generated art is inverted (hue kept) so it reads on dark. */
   .hero-ascii { background: var(--hero-bg); }
   [data-theme="dark"] .art-ascii { filter: invert(1) hue-rotate(180deg) brightness(1.35); }

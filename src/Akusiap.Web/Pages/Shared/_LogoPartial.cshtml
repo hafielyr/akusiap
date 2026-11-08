@@ -1,29 +1,11 @@
-@* LatihanSoal logo (BRD-10, D-118; replaces the exam-sheet column of D-100): a stack of books that becomes a pillar,
-   because practice is the pillar of success. The capital is an open book, the shaft four books seen from the spine
-   (ink and the wordmark's sky blue in turn, slightly uneven like a real stack), and the base two wide slabs. Ink parts
-   use currentColor and the open pages var(--surface), so the mark flips in dark mode while the blue books stay blue.
-   The wordmark stacks LATIHAN over a light blue SOAL. favicon.svg and favicon.ico use the same mark on a white tile. *@
+@* LatihanSoal logo (BRD-10, D-118): the owner's hand-inked column (Assets/pro-b-ink.svg and pro-b-white.svg, "Concept B"),
+   a fluted pillar that stands on a stack of books, because practice is the pillar of success. Both asset files hold the
+   same path in ink #14181C and white, so it is inlined once with fill="currentColor" and .logo-mark picks the colour:
+   ink on the light theme, white on the dark one. The viewBox is cropped to the drawing with 2 units of margin. The
+   wordmark stacks LATIHAN over a light blue SOAL. favicon.svg and favicon.ico use the same mark. *@
 <span class="inline-flex items-center gap-1.5" data-testid="logo">
-  <svg aria-hidden="true" viewBox="0 0 48 56" class="h-10 w-[2.15rem] shrink-0 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M24 8.5C19.5 5.5 13 5 6.5 6.2V13.6C13 12.4 19.5 12.9 24 15.9z" fill="var(--surface)" />
-    <path d="M24 8.5C28.5 5.5 35 5 41.5 6.2V13.6C35 12.4 28.5 12.9 24 15.9z" fill="var(--surface)" />
-    <path d="M24 8.5v7.4" />
-    <path d="M10.5 9.5c3.5-.5 7-.2 10 1.2M37.5 9.5c-3.5-.5-7-.2-10 1.2" stroke-width="1.4" />
-    <g stroke="none">
-      <rect x="14.5" y="17.2" width="19" height="6.2" rx="1.2" fill="currentColor" />
-      <rect x="13.5" y="24.2" width="21" height="6.2" rx="1.2" fill="#1d9bf0" />
-      <rect x="15" y="31.2" width="18.5" height="6.2" rx="1.2" fill="currentColor" />
-      <rect x="14" y="38.2" width="20" height="6.2" rx="1.2" fill="#1d9bf0" />
-      <rect x="9" y="45.2" width="30" height="3.6" rx="1" fill="currentColor" />
-      <rect x="6" y="49.6" width="36" height="3.6" rx="1" fill="currentColor" />
-    </g>
-    @* Spine details: bands on the ink books, a label on the blue ones. *@
-    <g stroke="var(--surface)" stroke-width="1.3">
-      <path d="M18 19.1v2.4M30 19.1v2.4" />
-      <path d="M20 27.3h8" />
-      <path d="M18.5 33.1v2.4M30 33.1v2.4" />
-      <path d="M20 41.3h8" />
-    </g>
+  <svg aria-hidden="true" viewBox="37.8 17.5 168.6 218.8" width="31" height="40" class="logo-mark h-10 w-auto shrink-0">
+    <path fill="currentColor" fill-rule="evenodd" d="M60.3 19.5Q128.1 19.7 195.8 20.5Q200.1 20.5 200.1 24.8Q200.5 33.5 199.9 41.7Q199.9 46.5 195.1 46.5Q127.9 46.8 59.4 45.5Q55.9 45.5 55.9 42.0Q56.4 32.5 56.1 23.7Q56.1 19.5 60.3 19.5ZM174.9 26.3Q185.0 26.4 195.3 26.5Q197.0 26.5 197.0 28.3Q197.0 33.5 197.0 39.0Q196.9 40.5 195.4 40.5Q184.9 40.5 175.6 40.3Q173.0 40.3 173.0 37.7Q172.9 33.3 173.0 28.2Q173.0 26.3 174.9 26.3ZM176.0 31.0Q187.4 32.9 195.0 31.1Q187.4 29.1 176.0 31.0ZM176.0 35.7Q187.4 37.5 195.0 35.8Q187.4 33.7 176.0 35.7ZM60.0 52.0Q128.0 52.0 196.0 52.0Q192.0 57.5 180.0 61.5Q128.0 61.0 76.0 61.5Q64.0 57.5 60.0 52.0ZM79.3 68.0Q128.0 67.0 176.4 68.0Q180.0 68.0 180.0 71.6Q180.1 117.0 180.0 163.2Q180.0 166.0 177.2 166.0Q128.0 166.4 79.8 166.0Q76.0 166.0 76.0 162.2Q76.6 117.0 76.0 71.3Q76.0 68.0 79.3 68.0ZM99.0 80.0Q93.8 121.4 98.3 154.0Q102.2 121.5 99.0 80.0ZM128.0 80.0Q124.0 114.0 127.7 154.0Q132.4 114.1 128.0 80.0ZM157.0 80.0Q152.8 120.7 157.6 154.0Q161.2 120.7 157.0 80.0ZM66.6 175.9Q133.5 174.0 199.8 170.1Q203.4 170.0 203.5 173.5Q204.0 182.9 204.4 192.6Q204.5 195.9 201.1 196.1Q134.5 198.6 68.1 201.9Q64.6 202.0 64.5 198.6Q64.2 189.0 63.6 179.2Q63.5 176.1 66.6 175.9ZM68.3 181.9Q78.7 181.3 89.2 180.9Q90.7 180.9 90.8 182.4Q91.1 187.9 91.3 193.4Q91.3 194.9 89.8 194.9Q79.4 195.3 69.8 195.8Q67.4 195.9 67.3 193.5Q67.3 188.9 66.8 183.4Q66.8 181.9 68.3 181.9ZM69.0 186.5Q76.6 187.8 87.9 185.7Q76.5 184.0 69.0 186.5ZM69.2 191.2Q76.8 192.6 88.1 190.3Q76.7 188.8 69.2 191.2ZM43.2 203.7Q120.2 204.7 196.8 206.3Q200.2 206.4 200.2 209.9Q199.9 220.4 199.8 231.1Q199.7 234.4 196.5 234.3Q119.8 232.9 43.0 231.7Q39.8 231.6 39.8 228.3Q40.2 217.6 40.2 206.5Q40.3 203.6 43.2 203.7ZM174.7 212.0Q185.1 212.1 194.9 212.3Q197.1 212.3 197.1 214.5Q196.9 220.3 196.9 226.8Q196.8 228.3 195.3 228.3Q184.8 228.2 174.4 227.9Q172.9 227.9 172.9 226.4Q173.2 219.9 173.1 213.5Q173.1 211.9 174.7 212.0ZM176.0 217.3Q187.4 219.6 195.0 217.6Q187.5 215.8 176.0 217.3ZM175.9 222.6Q187.3 224.5 194.9 223.0Q187.4 220.7 175.9 222.6Z" />
   </svg>
   <span class="flex flex-col text-base leading-none font-bold tracking-wide uppercase">
     <span class="text-slate-900">Latihan</span>

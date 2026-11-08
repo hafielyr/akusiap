@@ -485,9 +485,9 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - AC: At 360×640 the "Coba 30 soal gratis" button is on the first screen and nothing scrolls sideways; the FAQ opens; the tagline words light up once scrolled into view (all at once under reduced motion); the phone menu opens, shows Katalog, Cari soal and Harga, and closes with Escape; the home page has a meta description, og tags and FAQPage JSON-LD; buttons show the pointer cursor; no invented numbers, names or "official CAT" claims remain.
 
 ### BRD-10 Book-pillar logo · S
-- Stories: owner request (2026-11-07: "change the logo to be a stack of books that become a pillar") · Depends on: BRD-09
-- Scope: A new mark for the logo partial, `favicon.svg` and `favicon.ico` (D-118): an open book as the capital, four books seen from the spine as the shaft (ink and sky blue in turn) and two wide slabs as the base. The wordmark is unchanged.
-- AC: The mark reads as books forming a pillar at 24, 40 and 220 px, in light and dark; the favicon files show the same mark; every page still renders the logo.
+- Stories: owner request (2026-11-07: "change the logo to be a stack of books that become a pillar"; 2026-11-08: use the owner's drawing in `Assets/pro-b-ink.svg` and `Assets/pro-b-white.svg`) · Depends on: BRD-09
+- Scope: The owner's hand-inked mark, a fluted column on a stack of books, in the logo partial, `favicon.svg` and `favicon.ico` (D-118): the ink version on the light theme and the white version on the dark one. The wordmark is unchanged.
+- AC: The header shows the ink mark in light mode and the white mark in dark mode; the favicon files show the same mark (switching with the browser's colour scheme where the format allows); every page still renders the logo.
 
 ### DRL-01 Daily drill with points and streak · M
 - Stories: owner request (gamified daily drills) · Depends on: SRS-03, SES-06
