@@ -19,6 +19,12 @@ public sealed record StudyPlanToday(StudyGoalView Goal, StudyPlanDay Day, int Po
     public bool DoneToday => Day.NewLeftToday == 0 && DueCards == 0 && OpenAttemptId is null;
 }
 
+/// <summary>A goal's progress (PLN-04): <see cref="Behind"/> is how many answers short of the straight-line schedule the learner is.</summary>
+public sealed record GoalProgressView(StudyPlanToday Plan, int Mastered, int Expected, IReadOnlyList<TopicProgress> Topics)
+{
+    public int Behind => Math.Max(0, Expected - Plan.Answered);
+}
+
 /// <summary>
 /// The daily plan for exam goals (PLN-02, D-119, D-121). The pool is the goal exam's questions the learner can use
 /// through <see cref="IEntitlementService"/>: all of them with full access, the trial set with trial access. A plan
@@ -60,7 +66,7 @@ public sealed class StudyPlans(
             return Result.Fail<long>(Problem.NotFound);
         }
 
-        var (today, pool, due, answered) = await LoadAsync(goal, cancellationToken).ConfigureAwait(false);
+        var (today, pool, due, answered, _) = await LoadAsync(goal, cancellationToken).ConfigureAwait(false);
         if (today.OpenAttemptId is { } open)
         {
             return Result.Ok(open);
@@ -81,7 +87,48 @@ public sealed class StudyPlans(
         return started.Succeeded ? Result.Ok(started.Value!.AttemptId) : Result.Fail<long>(started.Problems);
     }
 
-    private async Task<(StudyPlanToday Today, IReadOnlyList<long> Pool, IReadOnlyList<long> Due, IReadOnlyDictionary<long, DateTime> Answered)> LoadAsync(
+    /// <summary>
+    /// A goal's progress page (PLN-04, D-122): answered and mastered questions overall and per topic (weakest first),
+    /// and how far behind a straight line over the learning days the learner is. Past goals work too.
+    /// </summary>
+    public async Task<Result<GoalProgressView>> ProgressAsync(long goalId, CancellationToken cancellationToken)
+    {
+        var goal = (await goals.ActiveAsync(cancellationToken).ConfigureAwait(false)).FirstOrDefault(g => g.Id == goalId);
+        if (goal is null)
+        {
+            return Result.Fail<GoalProgressView>(Problem.NotFound);
+        }
+
+        var userId = UserId();
+        var (today, pool, _, _, planStart) = await LoadAsync(goal, cancellationToken).ConfigureAwait(false);
+        var answers = await db.AttemptItems.AsNoTracking()
+            .Where(i => i.Attempt!.UserId == userId && i.IsAnswered && pool.Contains(i.QuestionId))
+            .Select(i => new { i.Id, i.QuestionId, i.IsCorrect, At = i.AnsweredAt ?? i.Attempt!.StartedAt })
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+        var lastCorrect = answers.GroupBy(a => a.QuestionId)
+            .ToDictionary(g => g.Key, g => g.OrderByDescending(a => a.At).ThenByDescending(a => a.Id).First().IsCorrect);
+        var cards = await db.ReviewCards.AsNoTracking()
+            .Where(c => c.UserId == userId && pool.Contains(c.QuestionId))
+            .ToDictionaryAsync(c => c.QuestionId, c => c.State, cancellationToken)
+            .ConfigureAwait(false);
+        var questions = await db.Questions.AsNoTracking()
+            .Where(q => pool.Contains(q.Id))
+            .Select(q => new { q.Id, q.TopicId, TopicName = q.Topic!.Name })
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        bool IsMastered(long questionId) => Mastery.IsMastered(
+            lastCorrect.TryGetValue(questionId, out var correct) ? correct : null,
+            cards.TryGetValue(questionId, out var state) ? state : null);
+        var topics = Mastery.WeakestFirst(questions
+            .GroupBy(q => (q.TopicId, q.TopicName))
+            .Select(g => new TopicProgress(g.Key.TopicId, g.Key.TopicName, g.Count(), g.Count(q => lastCorrect.ContainsKey(q.Id)), g.Count(q => IsMastered(q.Id)))));
+        var expected = StudyPlanner.ExpectedAnswered(planStart, goal.ExamDate, JakartaTime.Today(clock.UtcNow), pool.Count);
+        return Result.Ok(new GoalProgressView(today, topics.Sum(t => t.Mastered), expected, topics));
+    }
+
+    private async Task<(StudyPlanToday Today, IReadOnlyList<long> Pool, IReadOnlyList<long> Due, IReadOnlyDictionary<long, DateTime> Answered, DateOnly PlanStart)> LoadAsync(
         StudyGoalView goal, CancellationToken cancellationToken)
     {
         var userId = UserId();
@@ -121,8 +168,9 @@ public sealed class StudyPlans(
             .ConfigureAwait(false);
 
         var unansweredAtStartOfDay = pool.Count - answered.Count + newDoneToday;
-        var day = StudyPlanner.Plan(JakartaTime.Today(planStart), goal.ExamDate, today, unansweredAtStartOfDay, newDoneToday);
-        return (new StudyPlanToday(goal, day, pool.Count, answered.Count, due.Count, open), pool, due, answered);
+        var startDay = JakartaTime.Today(planStart);
+        var day = StudyPlanner.Plan(startDay, goal.ExamDate, today, unansweredAtStartOfDay, newDoneToday);
+        return (new StudyPlanToday(goal, day, pool.Count, answered.Count, due.Count, open), pool, due, answered, startDay);
     }
 
     private List<long> Shuffle(IEnumerable<long> ids)
