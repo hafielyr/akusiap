@@ -615,6 +615,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("key_fact");
 
+                    b.Property<string>("Origin")
+                        .HasColumnType("text")
+                        .HasColumnName("origin");
+
                     b.Property<Guid?>("OwnerUserId")
                         .HasColumnType("uuid")
                         .HasColumnName("owner_user_id");
@@ -627,6 +631,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Property<string>("SourceNote")
                         .HasColumnType("text")
                         .HasColumnName("source_note");
+
+                    b.Property<string>("SourceUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("source_url");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -666,6 +674,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.ToTable("questions", null, t =>
                         {
                             t.HasCheckConstraint("ck_questions_difficulty", "difficulty BETWEEN 1 AND 5");
+
+                            t.HasCheckConstraint("ck_questions_origin", "origin IN ('Original', 'ThirdParty')");
 
                             t.HasCheckConstraint("ck_questions_question_type", "question_type IN ('SingleChoice', 'MultiSelect', 'TrueFalse')");
 

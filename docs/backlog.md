@@ -143,6 +143,19 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - AC: A file with one bad row saves nothing and shows the row number and error. A valid file of 500 rows imports in under 10 s locally.
 - Tests: parser unit tests (xlsx and csv) and an all-or-nothing integration test.
 
+### ADM-T8 Question origin and source link · S
+- Stories: owner request (2026-11-08); not in the stories doc (D-128) · Depends on: ADM-T7
+- Scope:
+  - Two new optional question fields: who wrote it (`origin`: Original or ThirdParty; empty means not recorded) and the link it came from (`source_url`, an absolute http or https address, at most 1000 characters). Migration `ADMT8_QuestionOrigin`.
+  - Question editor: an origin select and a link field next to the source note.
+  - Import: optional columns `origin` (Sendiri / Orang lain, or the English names) and `source_url`; the template and its help sheet show them. Files without these columns still import.
+  - Admin question list: an origin filter and an origin badge on each row.
+- AC:
+  - An admin saves a question as "Buatan orang lain" with a link, sees both when editing it, and finds it with the origin filter.
+  - A link that is not an http or https address is refused with a message; an unknown origin in an import row is reported with its row number.
+  - Imported rows keep their origin and link; older files without the columns still import.
+- Tests: unit (validator and import mapper), integration (editor, list filter, import, template).
+
 ## E3 Entitlements (M1, priority)
 
 ### ENT-01 EntitlementPolicy (domain) · M

@@ -59,6 +59,9 @@ public static class QuestionImportMapper
     /// <summary>Arg: the letter.</summary>
     public const string CorrectNoOption = "Admin.Import.CorrectNoOption";
 
+    /// <summary>Arg: the value as written.</summary>
+    public const string OriginUnknown = "Admin.Import.OriginUnknown";
+
     public const string CorrectField = "Correct";
 
     private static readonly Dictionary<string, QuestionType> TypeNames = new(StringComparer.OrdinalIgnoreCase)
@@ -72,6 +75,17 @@ public static class QuestionImportMapper
         ["TrueFalse"] = QuestionType.TrueFalse,
         ["Benar/Salah"] = QuestionType.TrueFalse,
         ["BS"] = QuestionType.TrueFalse,
+    };
+
+    /// <summary>The origin column takes the enum names or these Indonesian words (ADM-T8).</summary>
+    private static readonly Dictionary<string, QuestionOrigin> OriginNames = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Original"] = QuestionOrigin.Original,
+        ["Sendiri"] = QuestionOrigin.Original,
+        ["Buatan sendiri"] = QuestionOrigin.Original,
+        ["ThirdParty"] = QuestionOrigin.ThirdParty,
+        ["Orang lain"] = QuestionOrigin.ThirdParty,
+        ["Buatan orang lain"] = QuestionOrigin.ThirdParty,
     };
 
     public static (SaveQuestionRequest Request, List<Problem> Problems) Map(QuestionImportRow row, ImportTopicDirectory topics, QuestionStatus status)
@@ -99,8 +113,21 @@ public static class QuestionImportMapper
             difficulty = short.TryParse(difficultyText, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) ? value : (short)-1;
         }
 
+        QuestionOrigin? origin = null;
+        if (TextRules.Clean(row.Origin) is { } originText)
+        {
+            if (OriginNames.TryGetValue(originText, out var parsedOrigin))
+            {
+                origin = parsedOrigin;
+            }
+            else
+            {
+                problems.Add(new Problem(OriginUnknown, QuestionValidator.OriginField, originText));
+            }
+        }
+
         var request = new SaveQuestionRequest(
-            null, topicId ?? 0, type, row.Text, row.Explanation, row.KeyFact, row.Hint, difficulty, row.SourceNote, status, options);
+            null, topicId ?? 0, type, row.Text, row.Explanation, row.KeyFact, row.Hint, difficulty, row.SourceNote, status, options, origin, row.SourceUrl);
 
         // Topic and correct-answer problems are already reported with clearer messages.
         problems.AddRange(QuestionValidator.Validate(request)

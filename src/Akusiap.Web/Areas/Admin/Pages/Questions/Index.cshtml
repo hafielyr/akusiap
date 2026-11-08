@@ -65,6 +65,16 @@
         }
       </select>
     </div>
+    <div class="space-y-1">
+      <label for="asal" class="label">@T["Admin.Question.Origin"]</label>
+      <select id="asal" name="asal" class="input">
+        <option value="">@T["Admin.Questions.All"]</option>
+        @foreach (var origin in Enum.GetValues<QuestionOrigin>())
+        {
+          <option value="@origin" selected="@(origin == Model.Origin)">@T[$"Admin.QuestionOrigin.{origin}"]</option>
+        }
+      </select>
+    </div>
     <div class="flex flex-wrap items-center gap-3 sm:col-span-2">
       <button type="submit" class="btn btn-secondary">@T["Admin.Questions.Apply"]</button>
       @if (Model.IsFiltered)
@@ -97,6 +107,10 @@
               @if (row.Difficulty is { } difficulty)
               {
                 <span class="rounded-full bg-slate-100 px-2 py-1 text-slate-700">@T["Admin.Questions.DifficultyBadge", difficulty]</span>
+              }
+              @if (row.Origin is { } rowOrigin)
+              {
+                <span class="rounded-full bg-slate-100 px-2 py-1 text-slate-700" data-testid="origin-badge">@T[$"Admin.QuestionOrigin.{rowOrigin}"]</span>
               }
             </span>
           </a>

@@ -22,6 +22,8 @@ public sealed class QuestionFileReaderTests
         var first = content.Rows[0];
         Assert.Equal(("SingleChoice", "A", "Jakarta", "2"), (first.Type, first.Correct, first.Options[0], first.Difficulty));
         Assert.Equal(8, first.Options.Count);
+        Assert.Equal(("Sendiri", true), (first.Origin, string.IsNullOrEmpty(first.SourceUrl)));
+        Assert.Equal(("Orang lain", "https://example.com/soal/12"), (content.Rows[1].Origin, content.Rows[1].SourceUrl));
     }
 
     [Fact]

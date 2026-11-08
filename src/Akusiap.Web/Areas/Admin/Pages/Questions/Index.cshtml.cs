@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Akusiap.Web.Areas.Admin.Pages.Questions;
 
-/// <summary>Question list with filters (subject, topic, status, type, text) and paging (ADM-T2).</summary>
+/// <summary>Question list with filters (subject, topic, status, type, origin, text) and paging (ADM-T2, ADM-T8).</summary>
 public sealed class IndexModel(ListQuestions listQuestions, ListSubjects listSubjects, ListTopicOptions listTopics) : PageModel
 {
     [BindProperty(SupportsGet = true, Name = "subjek")]
@@ -22,6 +22,9 @@ public sealed class IndexModel(ListQuestions listQuestions, ListSubjects listSub
     [BindProperty(SupportsGet = true, Name = "jenis")]
     public QuestionType? Type { get; set; }
 
+    [BindProperty(SupportsGet = true, Name = "asal")]
+    public QuestionOrigin? Origin { get; set; }
+
     [BindProperty(SupportsGet = true, Name = "q")]
     public string? Search { get; set; }
 
@@ -34,13 +37,13 @@ public sealed class IndexModel(ListQuestions listQuestions, ListSubjects listSub
 
     public IReadOnlyList<TopicOption> Topics { get; private set; } = [];
 
-    public bool IsFiltered => SubjectId is not null || TopicId is not null || Status is not null || Type is not null || !string.IsNullOrWhiteSpace(Search);
+    public bool IsFiltered => SubjectId is not null || TopicId is not null || Status is not null || Type is not null || Origin is not null || !string.IsNullOrWhiteSpace(Search);
 
     public async Task OnGetAsync(CancellationToken cancellationToken)
     {
         Subjects = await listSubjects.OptionsAsync(cancellationToken);
         Topics = await listTopics.HandleAsync(cancellationToken);
-        Results = await listQuestions.HandleAsync(new QuestionFilter(SubjectId, TopicId, Status, Type, Search, PageNumber), cancellationToken);
+        Results = await listQuestions.HandleAsync(new QuestionFilter(SubjectId, TopicId, Status, Type, Search, PageNumber, Origin), cancellationToken);
     }
 
     /// <summary>The list URL for another page, keeping the current filters.</summary>
@@ -59,6 +62,7 @@ public sealed class IndexModel(ListQuestions listQuestions, ListSubjects listSub
         Add("topik", TopicId);
         Add("status", Status);
         Add("jenis", Type);
+        Add("asal", Origin);
         Add("q", Search);
         Add("hal", page);
         return Microsoft.AspNetCore.Http.QueryString.Create(query).ToUriComponent() is { Length: > 0 } qs ? $"/admin/soal{qs}" : "/admin/soal";

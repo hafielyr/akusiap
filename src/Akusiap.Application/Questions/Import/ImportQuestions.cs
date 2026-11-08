@@ -125,6 +125,8 @@ public sealed class ImportQuestions(
                 Hint = TextRules.Clean(request.Hint),
                 Difficulty = request.Difficulty,
                 SourceNote = TextRules.Clean(request.SourceNote),
+                Origin = request.Origin,
+                SourceUrl = TextRules.Clean(request.SourceUrl),
                 Status = request.Status!.Value,
                 CreatedAt = now,
                 UpdatedAt = now,

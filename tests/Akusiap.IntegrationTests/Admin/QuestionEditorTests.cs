@@ -180,6 +180,36 @@ public sealed class QuestionEditorTests(PostgresFixture database)
     }
 
     [Fact]
+    public async Task Admin_records_who_wrote_a_question_and_its_link()
+    {
+        await using var app = await StartAsync();
+        using var admin = await app.CreateSignedInClientAsync(TestData.User().Build(), RoleNames.Admin);
+        var topicId = await CreateTopicAsync();
+        var form = Form(topicId, QuestionType.SingleChoice, $"Soal tamu {TestData.Unique()}", [(null, "A", true), (null, "B", false)]);
+        form["Input.Origin"] = "ThirdParty";
+        form["Input.SourceUrl"] = "https://blog.itera.ac.id/30-soal-twk/";
+
+        using var response = await admin.PostFormAsync("/admin/soal/baru", form);
+        var id = IdFrom(response);
+
+        await using (var db = database.CreateContext())
+        {
+            var question = await db.Questions.SingleAsync(q => q.Id == id);
+            Assert.Equal((QuestionOrigin.ThirdParty, "https://blog.itera.ac.id/30-soal-twk/"), (question.Origin!.Value, question.SourceUrl));
+        }
+
+        var page = await admin.GetStringAsync(new Uri($"/admin/soal/{id}", UriKind.Relative));
+        Assert.Contains("<option value=\"ThirdParty\" selected=\"selected\">", page, StringComparison.Ordinal);
+        Assert.Contains("value=\"https://blog.itera.ac.id/30-soal-twk/\"", page, StringComparison.Ordinal);
+        Assert.Equal(1, await CountAsync(admin, $"?topik={topicId}&asal=ThirdParty"));
+        Assert.Equal(0, await CountAsync(admin, $"?topik={topicId}&asal=Original"));
+
+        form["Input.SourceUrl"] = "blog.itera.ac.id";
+        using var bad = await admin.PostFormAsync($"/admin/soal/{id}", form);
+        Assert.Contains("Link harus diawali http:// atau https://.", WebUtility.HtmlDecode(await bad.Content.ReadAsStringAsync()), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task List_pages_by_twenty()
     {
         await using var app = await StartAsync();

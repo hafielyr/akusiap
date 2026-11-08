@@ -17,6 +17,8 @@ public static class QuestionImportColumns
     public const string Topic = "topic";
     public const string Difficulty = "difficulty";
     public const string SourceNote = "source_note";
+    public const string Origin = "origin";
+    public const string SourceUrl = "source_url";
 
     public const int MaxOptions = 8;
 
@@ -24,7 +26,7 @@ public static class QuestionImportColumns
 
     /// <summary>Every column, in template order.</summary>
     public static IReadOnlyList<string> All { get; } =
-        [Type, Text, .. OptionColumns, Correct, Explanation, KeyFact, Hint, Topic, Difficulty, SourceNote];
+        [Type, Text, .. OptionColumns, Correct, Explanation, KeyFact, Hint, Topic, Difficulty, SourceNote, Origin, SourceUrl];
 
     public static IReadOnlyList<string> Required { get; } = [Type, Text, Correct, Explanation, Topic];
 
@@ -33,7 +35,10 @@ public static class QuestionImportColumns
         new([.. (header ?? string.Empty).Where(char.IsLetterOrDigit).Select(char.ToLowerInvariant)]);
 }
 
-/// <summary>One data row as read from the file; every cell is raw text. <see cref="RowNumber"/> is the spreadsheet row.</summary>
+/// <summary>
+/// One data row as read from the file; every cell is raw text. <see cref="RowNumber"/> is the spreadsheet row. Files made
+/// before ADM-T8 have no origin or source_url column, so those cells default to null.
+/// </summary>
 public sealed record QuestionImportRow(
     int RowNumber,
     string? Type,
@@ -45,7 +50,9 @@ public sealed record QuestionImportRow(
     string? Hint,
     string? Topic,
     string? Difficulty,
-    string? SourceNote);
+    string? SourceNote,
+    string? Origin = null,
+    string? SourceUrl = null);
 
 /// <summary>The rows of an uploaded file, or why the file can't be read at all.</summary>
 public sealed record QuestionFileContent(IReadOnlyList<QuestionImportRow> Rows, Problem? FileProblem)

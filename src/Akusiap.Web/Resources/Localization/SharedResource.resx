@@ -146,6 +146,15 @@
   <data name="Admin.Question.Difficulty" xml:space="preserve"><value>Tingkat kesulitan</value></data>
   <data name="Admin.Question.Status" xml:space="preserve"><value>Status</value></data>
   <data name="Admin.Question.SourceNote" xml:space="preserve"><value>Sumber kisi-kisi (opsional)</value></data>
+  <data name="Admin.Question.Origin" xml:space="preserve"><value>Asal soal</value></data>
+  <data name="Admin.Question.SourceUrl" xml:space="preserve"><value>Link sumber (opsional)</value></data>
+  <data name="Admin.QuestionOrigin.Original" xml:space="preserve"><value>Buatan sendiri</value></data>
+  <data name="Admin.QuestionOrigin.ThirdParty" xml:space="preserve"><value>Buatan orang lain</value></data>
+  <data name="Admin.Questions.OriginUnset" xml:space="preserve"><value>Belum dicatat</value></data>
+  <data name="Admin.Questions.OriginHelp" xml:space="preserve"><value>Diambil dari buku, situs, atau repo orang lain? Pilih Buatan orang lain dan tempel linknya.</value></data>
+  <data name="Admin.Questions.OriginInvalid" xml:space="preserve"><value>Pilih asal soal dari daftar.</value></data>
+  <data name="Admin.Questions.SourceUrlInvalid" xml:space="preserve"><value>Link harus diawali http:// atau https://.</value></data>
+  <data name="Admin.Import.OriginUnknown" xml:space="preserve"><value>Asal soal &quot;{0}&quot; tidak dikenal. Tulis Sendiri atau Orang lain.</value></data>
   <data name="Admin.QuestionType.SingleChoice" xml:space="preserve"><value>Pilihan ganda</value></data>
   <data name="Admin.QuestionTypeName.SingleChoice" xml:space="preserve"><value>pilihan ganda</value></data>
   <data name="Admin.QuestionType.MultiSelect" xml:space="preserve"><value>Pilihan ganda kompleks</value></data>
