@@ -18,6 +18,8 @@
   ViewData["Wide"] = true;
   var official = test.ScheduleStatus == ScheduleStatus.Official;
   var returnUrl = TestRoutes.Detail(test.Slug);
+  // The tryout lines and the study steps describe SKD (TWK, TIU, TKP); other packages show only what every exam has.
+  var skd = package?.ScoringScheme == ScoringScheme.Skd;
 }
 
 <article class="space-y-4">
@@ -87,7 +89,7 @@
     </section>
   }
 
-  @if (package is not null)
+  @if (package is not null && skd)
   {
     <section class="order-4 space-y-3" aria-labelledby="method-heading" data-testid="test-method">
       <h2 id="method-heading" class="section-title">@T["Tests.Method.Title"]</h2>
@@ -129,7 +131,10 @@
 
         <ul class="space-y-2 text-sm text-slate-700" data-testid="package-includes">
           <li>@T["Tests.Includes.Bank", package.ActiveQuestionCount, string.Join(", ", package.Topics.OrderBy(t => SkdScoring.SubtestOf(t.Name) is { } s ? (int)s : 9).Select(t => $"{t.Name.Split('(').Last().TrimEnd(')')} {t.QuestionCount}"))]</li>
-          <li>@T["Tests.Includes.Tryout", SkdScoring.QuestionCount, SkdScoring.TimeLimitMinutes]</li>
+          @if (skd)
+          {
+            <li>@T["Tests.Includes.Tryout", SkdScoring.QuestionCount, SkdScoring.TimeLimitMinutes]</li>
+          }
           <li>@T["Tests.Includes.Analysis"]</li>
           <li>@T["Tests.Includes.Cards"]</li>
           <li>@T["Tests.Includes.Plan"]</li>
@@ -138,7 +143,7 @@
         @if (Model.CanStudy)
         {
           <nav aria-label="@T["Tests.Study"]" class="space-y-2" data-testid="study-tools">
-            <a href="@ExamRoutes.Start(package.Id)?mode=Simulation" class="btn btn-primary w-full" data-testid="tool-tryout">@T["Tests.Tool.Tryout"]</a>
+            <a href="@ExamRoutes.Start(package.Id)?mode=Simulation" class="btn btn-primary w-full" data-testid="tool-tryout">@(skd ? T["Tests.Tool.Tryout"] : T["Plan.SimulationStart"])</a>
             <a href="@ExamRoutes.Start(package.Id)?mode=Practice&jumlah=20" class="btn btn-secondary w-full" data-testid="tool-practice">@T["Tests.Tool.Practice"]</a>
             @if (User.Identity?.IsAuthenticated == true)
             {

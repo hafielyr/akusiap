@@ -37,11 +37,17 @@ public sealed class UpcomingTestsFlowTests(MobileSite site)
 
         await page.GotoAsync("/jadwal-tes");
         await page.GetByLabel("Cari tes, misalnya CPNS atau BUMN").FillAsync(tag);
+        // Wait for the htmx search to swap in the filtered list before touching it.
+        await Assertions.Expect(page.GetByTestId("tests-total")).ToHaveTextAsync("1 tes");
+        await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
         var card = page.Locator($"[data-testid=test-card][data-slug='cpns-{tag}']");
         await Assertions.Expect(card).ToBeVisibleAsync();
         await Assertions.Expect(card.GetByTestId("test-countdown")).ToHaveTextAsync("± 70 hari lagi");
         await Assertions.Expect(card.GetByTestId("test-package")).ToContainTextAsync("Rp50.000");
         Assert.Equal(0, await page.EvaluateAsync<int>("() => document.documentElement.scrollWidth - window.innerWidth"));
+        // The page can hide overflow, so also check that nothing outside the scrolling chip row sticks out on the right.
+        Assert.Equal(0, await page.EvaluateAsync<int>(
+            "() => Math.max(0, ...[...document.querySelectorAll('main *')].filter(e => !e.closest('.overflow-x-auto')).map(e => Math.ceil(e.getBoundingClientRect().right - window.innerWidth)))"));
 
         await card.ClickAsync();
         await page.WaitForURLAsync($"**/jadwal-tes/cpns-{tag}");

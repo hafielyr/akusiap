@@ -24,9 +24,11 @@
         <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 shrink-0 text-slate-500"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
         <label for="tests-q" class="sr-only">@T["Tests.Search"]</label>
         <input id="tests-q" name="q" type="search" value="@Model.Search" placeholder="@T["Tests.Search"]" maxlength="100" class="min-h-11 w-full min-w-0 bg-transparent px-2 text-base text-slate-900 outline-none placeholder:text-slate-500" autocomplete="off" />
+        <span id="tests-loading" class="htmx-indicator shrink-0 text-sm text-slate-600" role="status">@T["Tests.Loading"]</span>
         <button type="submit" class="btn btn-primary shrink-0 px-4">@T["Catalog.Apply"]</button>
       </div>
-      <fieldset>
+      @* min-w-0: a fieldset is at least as wide as its content by default, which would push the chip row off a phone. *@
+      <fieldset class="min-w-0">
         <legend class="sr-only">@T["Tests.Category"]</legend>
         @* Phones scroll the chips sideways to keep the list close to the top; wider screens wrap them. *@
         <div class="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible" data-testid="test-categories">
@@ -46,8 +48,7 @@
     </form>
   </div>
 
-  @* Loading and error states for htmx searches; without JavaScript the page simply reloads. *@
-  <p id="tests-loading" class="htmx-indicator text-sm text-slate-600" role="status">@T["Tests.Loading"]</p>
+  @* Error state for htmx searches (the loading state sits in the search box); without JavaScript the page reloads. *@
   <p id="tests-error" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" role="alert" hidden data-testid="tests-error">@T["Tests.LoadError"]</p>
 
   <partial name="_TestListPartial" model="Model" />
