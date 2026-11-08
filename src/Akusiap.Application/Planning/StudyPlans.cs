@@ -98,8 +98,10 @@ public sealed class StudyPlans(
         }
 
         var newQuestions = Math.Min(SessionSize - due.Count, today.Day.NewLeftToday);
-        var picked = due.Take(SessionSize)
-            .Concat(Shuffle(pool.Where(q => !answered.ContainsKey(q))).Take(Math.Max(0, newQuestions)))
+        // A due card's question can still be unanswered (a card added without an answer), so leave it out of the new ones.
+        var cards = due.Take(SessionSize).ToList();
+        var picked = cards
+            .Concat(Shuffle(pool.Where(q => !answered.ContainsKey(q)).Except(cards)).Take(Math.Max(0, newQuestions)))
             .ToList();
         if (picked.Count == 0)
         {

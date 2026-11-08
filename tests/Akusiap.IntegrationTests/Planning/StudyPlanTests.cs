@@ -82,6 +82,31 @@ public sealed class StudyPlanTests(PostgresFixture database)
     }
 
     [Fact]
+    public async Task A_due_card_never_also_comes_back_as_a_new_question_in_the_same_session()
+    {
+        await using var app = new AppFactory(database);
+        await app.SeedReferenceDataAsync();
+        var user = TestData.User().Build();
+        using var learner = await app.CreateSignedInClientAsync(user, RoleNames.Learner);
+        var exam = await SaveAsync(TestData.Exam().Free().WithQuestions(3));
+        var card = exam.Questions.OrderBy(q => q.SortOrder).First().QuestionId;
+        await using (var db = database.CreateContext())
+        {
+            db.ReviewCards.Add(new ReviewCard { UserId = user.Id, QuestionId = card, State = ReviewCardState.Learning, DueAt = app.Clock.UtcNow.AddHours(-1) });
+            await db.SaveChangesAsync();
+        }
+
+        // Exam tomorrow: one learning day, so the quota asks for all 3 unanswered questions, the card's own among them.
+        await SetGoalAsync(learner, exam.Id, JakartaTime.Today(app.Clock.UtcNow).AddDays(1));
+        var player = await StartAsync(learner, await GoalIdAsync(user.Id, exam.Id));
+
+        await using var check = database.CreateContext();
+        var items = await check.AttemptItems.Where(i => i.AttemptId == IdOf(player)).OrderBy(i => i.Position).Select(i => i.QuestionId).ToListAsync();
+        Assert.Equal(card, items[0]);
+        Assert.Equal(exam.Questions.Select(q => q.QuestionId).Order(), items.Order());
+    }
+
+    [Fact]
     public async Task The_review_phase_offers_only_due_cards()
     {
         await using var app = new AppFactory(database);
