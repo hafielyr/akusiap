@@ -104,4 +104,19 @@ public sealed class StudyPlannerTests
 
         Assert.Equal((StudyPhase.Learning, 0, 0), (day.Phase, day.NewQuota, day.NewLeftToday));
     }
+
+    [Theory]
+    [InlineData(0, false)] // the day the goal is set
+    [InlineData(6, false)]
+    [InlineData(7, true)] // every 7 days from the start
+    [InlineData(14, true)]
+    [InlineData(23, true)] // H-7 (exam on day 30)
+    [InlineData(27, true)] // H-3
+    [InlineData(28, true)] // day 28 is also a 7th day
+    [InlineData(29, false)]
+    [InlineData(30, false)] // the exam day
+    public void Simulations_come_every_7_days_and_on_h7_and_h3(int day, bool expected)
+    {
+        Assert.Equal(expected, StudyPlanner.IsSimulationDay(Start, Start.AddDays(30), Start.AddDays(day)));
+    }
 }

@@ -1260,4 +1260,10 @@
   <data name="PlanReminder.Footer" xml:space="preserve"><value>Tidak ingin menerima email ini? Matikan di Profil: {0}</value></data>
   <data name="Profile.PlanReminder" xml:space="preserve"><value>Email pengingat tugas harian</value></data>
   <data name="Profile.PlanReminderHint" xml:space="preserve"><value>Dikirim pukul 06.00 WIB jika Anda punya target ujian dan ada tugas hari itu.</value></data>
+  <data name="Plan.Simulation" xml:space="preserve"><value>Simulasi terjadwal hari ini</value></data>
+  <data name="Plan.SimulationHint" xml:space="preserve"><value>Satu simulasi penuh sesuai aturan ujian.</value></data>
+  <data name="Plan.SimulationStart" xml:space="preserve"><value>Mulai simulasi</value></data>
+  <data name="Plan.SimulationContinue" xml:space="preserve"><value>Lanjutkan simulasi</value></data>
+  <data name="Plan.SimulationDone" xml:space="preserve"><value>Simulasi hari ini selesai.</value></data>
+  <data name="PlanReminder.LineSimulation" xml:space="preserve"><value>{0} ({1}): {2} soal baru, {3} kartu ulasan, dan 1 simulasi</value></data>
 </root>
