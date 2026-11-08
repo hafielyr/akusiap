@@ -1253,4 +1253,11 @@
   <data name="Progress.TopicLine" xml:space="preserve"><value>Dikerjakan {0}% · Dikuasai {1}%</value></data>
   <data name="Progress.Link" xml:space="preserve"><value>Progres</value></data>
   <data name="Progress.LinkLabel" xml:space="preserve"><value>Progres {0}</value></data>
+  <data name="PlanReminder.Subject" xml:space="preserve"><value>Tugas hari ini: {0} soal baru dan {1} kartu ulasan</value></data>
+  <data name="PlanReminder.Intro" xml:space="preserve"><value>Ini tugas belajar Anda hari ini:</value></data>
+  <data name="PlanReminder.Line" xml:space="preserve"><value>{0} ({1}): {2} soal baru, {3} kartu ulasan</value></data>
+  <data name="PlanReminder.Open" xml:space="preserve"><value>Buka tugas hari ini</value></data>
+  <data name="PlanReminder.Footer" xml:space="preserve"><value>Tidak ingin menerima email ini? Matikan di Profil: {0}</value></data>
+  <data name="Profile.PlanReminder" xml:space="preserve"><value>Email pengingat tugas harian</value></data>
+  <data name="Profile.PlanReminderHint" xml:space="preserve"><value>Dikirim pukul 06.00 WIB jika Anda punya target ujian dan ada tugas hari itu.</value></data>
 </root>
