@@ -31,13 +31,15 @@ public sealed class IndexModel(StudyGoals goals, IClock clock, IStringLocalizer<
 
     public DateOnly MaxDate { get; private set; }
 
-    public async Task OnGetAsync(long? examId, CancellationToken cancellationToken)
+    /// <param name="date">Suggests a date (from a test page, CPNS-02) when the learner has no goal for the exam yet.</param>
+    public async Task OnGetAsync(long? examId, [FromQuery(Name = "tanggal")] DateOnly? date, CancellationToken cancellationToken)
     {
         await LoadAsync(cancellationToken);
         if (examId is { } id && Exams.Any(e => e.ExamId == id))
         {
             Input.ExamId = id;
-            Input.ExamDate = Goals.FirstOrDefault(g => g.ExamId == id)?.ExamDate;
+            Input.ExamDate = Goals.FirstOrDefault(g => g.ExamId == id)?.ExamDate
+                ?? (date is { } suggested && suggested >= MinDate && suggested <= MaxDate ? suggested : null);
         }
     }
 

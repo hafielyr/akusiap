@@ -1,0 +1,56 @@
+@page "/jadwal-tes"
+@model Akusiap.Web.Pages.Tests.IndexModel
+@using Akusiap.Domain.Content
+@* Upcoming tests (CPNS-01). The form is a plain GET (works without JavaScript); htmx swaps only #test-list. Category
+   chips are radio buttons so one choice is active; "Semua" clears it. *@
+@{
+  ViewData["Title"] = T["Tests.Title"].Value;
+  ViewData["Description"] = T["Tests.MetaDescription"].Value;
+}
+
+<section class="mx-auto max-w-3xl space-y-5">
+  <div class="panel space-y-3 px-5 py-7 sm:px-8">
+    <h1 class="text-3xl font-bold leading-tight tracking-tight">@T["Tests.Title"]</h1>
+    <p class="max-w-xl text-slate-600">@T["Tests.Lead"]</p>
+
+    <form method="get" action="@TestRoutes.List" role="search" class="space-y-3 pt-2"
+          hx-get="@TestRoutes.List" hx-target="#test-list" hx-swap="outerHTML" hx-push-url="true"
+          hx-trigger="input changed delay:300ms from:#tests-q, change from:.test-category, submit"
+          hx-indicator="#tests-loading"
+          hx-on::before-request="document.getElementById('tests-error').hidden = true"
+          hx-on::response-error="document.getElementById('tests-error').hidden = false"
+          hx-on::send-error="document.getElementById('tests-error').hidden = false">
+      <div class="card search-box flex items-center gap-1 rounded-2xl p-1 pl-4">
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 shrink-0 text-slate-500"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+        <label for="tests-q" class="sr-only">@T["Tests.Search"]</label>
+        <input id="tests-q" name="q" type="search" value="@Model.Search" placeholder="@T["Tests.Search"]" maxlength="100" class="min-h-11 w-full min-w-0 bg-transparent px-2 text-base text-slate-900 outline-none placeholder:text-slate-500" autocomplete="off" />
+        <button type="submit" class="btn btn-primary shrink-0 px-4">@T["Catalog.Apply"]</button>
+      </div>
+      <fieldset>
+        <legend class="sr-only">@T["Tests.Category"]</legend>
+        @* Phones scroll the chips sideways to keep the list close to the top; wider screens wrap them. *@
+        <div class="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible" data-testid="test-categories">
+          <label class="toggle-chip shrink-0">
+            <input type="radio" name="kategori" value="" checked="@(Model.Category is null)" class="test-category size-4 accent-brand-600" />
+            <span>@T["Tests.AllCategories"]</span>
+          </label>
+          @foreach (var category in Enum.GetValues<UpcomingTestCategory>())
+          {
+            <label class="toggle-chip shrink-0">
+              <input type="radio" name="kategori" value="@category" checked="@(Model.Category == category)" class="test-category size-4 accent-brand-600" />
+              <span>@T[$"Tests.Category.{category}"]</span>
+            </label>
+          }
+        </div>
+      </fieldset>
+    </form>
+  </div>
+
+  @* Loading and error states for htmx searches; without JavaScript the page simply reloads. *@
+  <p id="tests-loading" class="htmx-indicator text-sm text-slate-600" role="status">@T["Tests.Loading"]</p>
+  <p id="tests-error" class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" role="alert" hidden data-testid="tests-error">@T["Tests.LoadError"]</p>
+
+  <partial name="_TestListPartial" model="Model" />
+
+  <p class="text-sm text-slate-600">@T["Tests.Disclaimer"]</p>
+</section>

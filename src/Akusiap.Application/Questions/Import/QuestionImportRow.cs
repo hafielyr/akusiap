@@ -20,13 +20,16 @@ public static class QuestionImportColumns
     public const string Origin = "origin";
     public const string SourceUrl = "source_url";
 
+    /// <summary>Points per option in option order, for example "2,3,5,1,4" (TKP, CPNS-03). Optional.</summary>
+    public const string OptionPoints = "option_points";
+
     public const int MaxOptions = 8;
 
     public static IReadOnlyList<string> OptionColumns { get; } = [.. "ABCDEFGH".Select(letter => $"option_{char.ToLowerInvariant(letter)}")];
 
     /// <summary>Every column, in template order.</summary>
     public static IReadOnlyList<string> All { get; } =
-        [Type, Text, .. OptionColumns, Correct, Explanation, KeyFact, Hint, Topic, Difficulty, SourceNote, Origin, SourceUrl];
+        [Type, Text, .. OptionColumns, Correct, Explanation, KeyFact, Hint, Topic, Difficulty, SourceNote, Origin, SourceUrl, OptionPoints];
 
     public static IReadOnlyList<string> Required { get; } = [Type, Text, Correct, Explanation, Topic];
 
@@ -52,7 +55,8 @@ public sealed record QuestionImportRow(
     string? Difficulty,
     string? SourceNote,
     string? Origin = null,
-    string? SourceUrl = null);
+    string? SourceUrl = null,
+    string? OptionPoints = null);
 
 /// <summary>The rows of an uploaded file, or why the file can't be read at all.</summary>
 public sealed record QuestionFileContent(IReadOnlyList<QuestionImportRow> Rows, Problem? FileProblem)

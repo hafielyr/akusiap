@@ -115,6 +115,7 @@ public sealed class SaveQuestion(IAppDbContext db, IClock clock)
             option.Text = TextRules.Clean(input.Text)!;
             option.IsCorrect = input.IsCorrect;
             option.SortOrder = i + 1;
+            option.Points = input.Points;
         }
 
         return null;

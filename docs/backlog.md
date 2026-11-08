@@ -581,3 +581,49 @@ Owner goal (2026-11-07): the learner sets the date of their exam, the app decide
 - Stories: owner request · Depends on: PLN-02 (subtest scores need TRY-02)
 - Scope: The plan adds a full Simulation every 7 days and on H-7 and H-3, shown in "Tugas hari ini". Subtest scores (TWK/TIU/TKP) follow TRY-02 once the owner gives the scoring rules.
 - AC: The simulation appears on the planned days and disappears once one is finished that day (test clock).
+
+## E15 CPNS 2026 package (M10)
+
+Owner request (2026-11-09): show the hiring tests coming up this year so job seekers can scroll and search them, sell one CPNS 2026 package for Rp50.000 with its syllabus, practice, flashcards, CAT simulation and tryouts, analyse every session and repeat what the learner got wrong, and fill it with the best questions from the bank-soal files.
+
+### CPNS-01 Upcoming tests · M
+- Stories: owner request (2026-11-09); not in the stories doc (D-129) · Depends on: CAT-01
+- Scope:
+  - New table `upcoming_tests` (migration `CPNS01_UpcomingTestsAndSkd`): slug, name, organiser, category, summary, registration day, test day, date status (Official, Estimated, NotAnnounced), schedule note, outline, source link, package exam, published flag.
+  - Public page `/jadwal-tes`: published tests from today on (no date last), soonest first, grouped by month, with search and category chips (plain GET form, htmx swaps the list). Estimates show month and year only. Linked from the main menu and the footer.
+  - Admin `/admin/jadwal-tes`: list, add, edit and delete.
+- AC:
+  - A visitor finds a test by name or organiser and by category; past and hidden tests are left out.
+  - An estimated date never shows a day; the source link and the note say why it is an estimate.
+  - An admin adds a test with a package exam and sees it on `/jadwal-tes`; a bad slug or link is refused with a message.
+- Tests: unit (rules, outline), integration (list, search, htmx, 404, admin), E2E at 360 px.
+
+### CPNS-02 Test page with its package · M
+- Stories: owner request · Depends on: CPNS-01, CAT-02, PLN-01
+- Scope: `/jadwal-tes/{slug}`: countdown, dates and their status, schedule note and source, the outline as headed blocks, "how to study with this package", and the package box: price, access length, what it includes with real counts, and the exam's buttons (trial, buy, subscribe, register). Learners with access get the study tools instead: SKD tryout, practice by topic, flashcards and the study plan (goal form with the test day suggested). The exam page links back to its test page.
+- AC: A visitor sees the price and can start the trial or buy; a buyer sees the tools and no buy button; the goal link carries the test day.
+- Tests: integration (visitor, buyer, exam page link), E2E at 360 px.
+
+### CPNS-03 SKD scoring (unblocks TRY-02) · M
+- Stories: TRY-02 · Depends on: TRY-01
+- Scope: `question_options.points` (0–5) and `exams.scoring_scheme` (Standard, Skd). SKD results score TWK and TIU 5 for right and 0 otherwise, TKP by the picked option's points, and compare each subtest with its passing grade (KepmenPAN-RB 321/2024, D-130). A full 110-question test passes or fails; a shorter set shows each subtest scaled to a full one. Points come from the import column `option_points` or the question editor.
+- AC: Subtest scores and pass/fail follow D-130; a failed subtest says how many points are missing; inconsistent points are refused.
+- Tests: unit (scoring, points rule, import), integration (full pass, one subtest short, practice estimate).
+
+### CPNS-04 SKD tryout composition · S
+- Stories: TRY-01, TRY-02 · Depends on: CPNS-03
+- Scope: A Simulation of an SKD exam with full access takes 30 TWK, 35 TIU and 45 TKP questions in that order, random within each subtest, TKP questions with points first (D-131). The setup page takes `mode`, `topik` and `jumlah` from the link.
+- AC: Every tryout has the SKD order and size when the bank has enough questions.
+- Tests: unit (composition), integration (order).
+
+### CPNS-05 Session analysis · S
+- Stories: R-03, M-04, owner request · Depends on: SES-07, MEM-01
+- Scope: Every result page adds the weakest topic with a "practise this topic" link (setup preselects it), the time per question (against about 54 seconds on SKD exams) and how many wrong answers went to the flashcards, with a link to them (D-132).
+- AC: The weakest topic and link match the answers; untimed sets show no pace.
+- Tests: integration.
+
+### CPNS-06 CPNS 2026 package content · M
+- Stories: owner request · Depends on: CPNS-03, ADM-T8
+- Scope: `dotnet run --project src/Akusiap.Web -- load-cpns-pack <folder>` imports every question file in the folder (not the browsing workbook), skips duplicates and broken rows, reads TKP points from "Skor per pilihan", keeps low-quality questions as Draft, and builds the published exam "Paket CPNS 2026: SKD" (Rp50.000, 180 days, SKD scoring, tryout preset, 30-question trial) plus the starting list of upcoming tests (D-133). Safe to run again.
+- AC: Running it twice adds nothing the second time; the exam has every Active CPNS question and a valid trial set; CPNS 2026 on `/jadwal-tes` links to it.
+- Tests: unit (duplicate key, points, quality score), integration (load).

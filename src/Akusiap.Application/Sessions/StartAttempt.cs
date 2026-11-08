@@ -128,7 +128,20 @@ public sealed class StartAttempt(
             }
         }
 
-        var selected = QuestionSelection.Select(candidates, [.. rules.TopicIds], rules.QuestionCount, rules.ShuffleQuestions, rules.ShuffleOptions, random.Random);
+        IReadOnlyList<SelectedQuestion> selected;
+        var scheme = await db.Exams.Where(e => e.Id == request.ExamId).Select(e => e.ScoringScheme).SingleAsync(cancellationToken).ConfigureAwait(false);
+        if (scheme == ScoringScheme.Skd && rules.Mode == AttemptMode.Simulation && decision.Scope == QuestionScope.All)
+        {
+            // An SKD tryout (CPNS-04, D-131): 30 TWK, 35 TIU and 45 TKP in that order, like the CAT test.
+            var tryout = await ComposeSkdAsync(candidates, cancellationToken).ConfigureAwait(false);
+            rules = rules with { QuestionCount = tryout.Count, ShuffleQuestions = false };
+            selected = QuestionSelection.Select(tryout, [], tryout.Count, shuffleQuestions: false, rules.ShuffleOptions, random.Random);
+        }
+        else
+        {
+            selected = QuestionSelection.Select(candidates, [.. rules.TopicIds], rules.QuestionCount, rules.ShuffleQuestions, rules.ShuffleOptions, random.Random);
+        }
+
         var source = decision.Scope == QuestionScope.TrialOnly ? AttemptSource.Trial
             : decision.Level == AccessLevel.Shared ? AttemptSource.Shared
             : AttemptSource.Exam;
@@ -317,6 +330,22 @@ public sealed class StartAttempt(
         db.Attempts.Add(attempt);
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         return Result.Ok(new StartedAttempt(attempt.Id, source, selected.Count));
+    }
+
+    /// <summary>Picks an SKD tryout from the candidates: subtests come from topic names, TKP prefers scored options.</summary>
+    private async Task<IReadOnlyList<CandidateQuestion>> ComposeSkdAsync(IReadOnlyList<CandidateQuestion> candidates, CancellationToken cancellationToken)
+    {
+        var topicIds = candidates.Select(c => c.TopicId).Distinct().ToList();
+        var topics = await db.Topics.Where(t => topicIds.Contains(t.Id)).Select(t => new { t.Id, t.Name }).ToListAsync(cancellationToken).ConfigureAwait(false);
+        var subtests = topics.ToDictionary(t => t.Id, t => SkdScoring.SubtestOf(t.Name));
+        var questionIds = candidates.Select(c => c.QuestionId).ToList();
+        var withPoints = (await db.QuestionOptions
+            .Where(o => questionIds.Contains(o.QuestionId) && o.Points != null)
+            .Select(o => o.QuestionId)
+            .Distinct()
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false)).ToHashSet();
+        return SkdScoring.Compose(candidates, subtests, withPoints, random.Random);
     }
 
     /// <summary>The questions the decision allows, in exam order, with topic, type and option ids.</summary>

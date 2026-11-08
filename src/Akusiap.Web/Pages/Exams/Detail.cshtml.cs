@@ -12,8 +12,12 @@ public sealed class DetailModel(
     GetCatalogExam getExam,
     Akusiap.Application.Sessions.FindOpenAttempt findOpen,
     Akusiap.Application.Gamification.Leaderboards leaderboards,
-    Akusiap.Application.Planning.StudyGoals goals) : PageModel
+    Akusiap.Application.Planning.StudyGoals goals,
+    Akusiap.Application.UpcomingTests.UpcomingTests upcomingTests) : PageModel
 {
+    /// <summary>The upcoming test this exam prepares for, if one links to it (CPNS-02).</summary>
+    public Akusiap.Application.UpcomingTests.UpcomingTestItem? Test { get; private set; }
+
     public CatalogExamDetail Exam { get; private set; } = null!;
 
     /// <summary>Signed-in viewers who can start a published exam can set a goal for it (PLN-01).</summary>
@@ -40,6 +44,7 @@ public sealed class DetailModel(
         var guestToken = User.Identity?.IsAuthenticated == true ? null : Akusiap.Web.Sessions.GuestTokenCookie.Read(Request);
         OpenAttemptId = await findOpen.HandleAsync(id, guestToken, cancellationToken);
         LeaderboardEnabled = await leaderboards.IsEnabledAsync(id, cancellationToken);
+        Test = await upcomingTests.ForExamAsync(id, cancellationToken);
         CanSetGoal = User.Identity?.IsAuthenticated == true && exam.Status == Akusiap.Domain.Content.ExamStatus.Published && exam.Decision.CanStart;
         if (CanSetGoal)
         {

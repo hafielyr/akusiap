@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Akusiap.Application.Questions;
 
-public sealed record OptionDetail(long Id, string Text, bool IsCorrect);
+public sealed record OptionDetail(long Id, string Text, bool IsCorrect, int? Points = null);
 
 public sealed record QuestionDetail(
     long Id,
@@ -48,7 +48,7 @@ public sealed class GetQuestion(IAppDbContext db)
                 q.CreatedAt,
                 q.UpdatedAt,
                 db.ExamQuestions.Count(eq => eq.QuestionId == q.Id),
-                q.Options.OrderBy(o => o.SortOrder).Select(o => new OptionDetail(o.Id, o.Text, o.IsCorrect)).ToList(),
+                q.Options.OrderBy(o => o.SortOrder).Select(o => new OptionDetail(o.Id, o.Text, o.IsCorrect, o.Points)).ToList(),
                 q.Origin,
                 q.SourceUrl))
             .SingleOrDefaultAsync(cancellationToken)

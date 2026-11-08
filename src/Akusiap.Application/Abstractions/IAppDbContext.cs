@@ -80,6 +80,8 @@ public interface IAppDbContext
 
     DbSet<Domain.Planning.StudyGoal> StudyGoals { get; }
 
+    DbSet<UpcomingTest> UpcomingTests { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
     /// <summary>For use cases that need several statements to succeed or fail together.</summary>

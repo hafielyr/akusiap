@@ -1275,4 +1275,121 @@
   <data name="Plan.SimulationContinue" xml:space="preserve"><value>Continue simulation</value></data>
   <data name="Plan.SimulationDone" xml:space="preserve"><value>Today's simulation is done.</value></data>
   <data name="PlanReminder.LineSimulation" xml:space="preserve"><value>{0} ({1}): {2} new questions, {3} review cards, and 1 simulation</value></data>
+  <data name="Nav.Tests" xml:space="preserve"><value>Test dates</value></data>
+  <data name="Tests.Title" xml:space="preserve"><value>Hiring test dates</value></data>
+  <data name="Tests.MetaDescription" xml:space="preserve"><value>Upcoming CPNS, PPPK, BUMN, civil service school and other hiring tests, with their dates, what they cover and practice packages.</value></data>
+  <data name="Tests.Lead" xml:space="preserve"><value>Upcoming hiring tests, soonest first. Open a test to see what it covers and its practice package.</value></data>
+  <data name="Tests.Search" xml:space="preserve"><value>Search tests, for example CPNS or BUMN</value></data>
+  <data name="Tests.Category" xml:space="preserve"><value>Test type</value></data>
+  <data name="Tests.AllCategories" xml:space="preserve"><value>All</value></data>
+  <data name="Tests.Category.Cpns" xml:space="preserve"><value>CPNS</value></data>
+  <data name="Tests.Category.Pppk" xml:space="preserve"><value>PPPK</value></data>
+  <data name="Tests.Category.Kedinasan" xml:space="preserve"><value>Civil service school</value></data>
+  <data name="Tests.Category.Bumn" xml:space="preserve"><value>BUMN</value></data>
+  <data name="Tests.Category.TniPolri" xml:space="preserve"><value>Military and police</value></data>
+  <data name="Tests.Category.Banking" xml:space="preserve"><value>Banking and finance</value></data>
+  <data name="Tests.Category.Other" xml:space="preserve"><value>Other</value></data>
+  <data name="Tests.Disclaimer" xml:space="preserve"><value>Dates marked estimated are not official yet and may change. Always check the organiser's announcement before you register.</value></data>
+  <data name="Tests.Total" xml:space="preserve"><value>{0} tests</value></data>
+  <data name="Tests.Loading" xml:space="preserve"><value>Searching…</value></data>
+  <data name="Tests.LoadError" xml:space="preserve"><value>The test list didn't load. Check your connection and press Search again.</value></data>
+  <data name="Tests.NoMatch" xml:space="preserve"><value>No test matches. Try another word or pick All.</value></data>
+  <data name="Tests.Empty" xml:space="preserve"><value>No upcoming tests yet.</value></data>
+  <data name="Tests.NoDateYet" xml:space="preserve"><value>No date yet</value></data>
+  <data name="Tests.Status.Official" xml:space="preserve"><value>Official</value></data>
+  <data name="Tests.Status.Estimated" xml:space="preserve"><value>Estimated</value></data>
+  <data name="Tests.Status.NotAnnounced" xml:space="preserve"><value>Not announced</value></data>
+  <data name="Tests.TestOn" xml:space="preserve"><value>Test {0}</value></data>
+  <data name="Tests.RegistrationOn" xml:space="preserve"><value>Registration {0}</value></data>
+  <data name="Tests.PackageAvailable" xml:space="preserve"><value>Practice package available</value></data>
+  <data name="Tests.Today" xml:space="preserve"><value>Today</value></data>
+  <data name="Tests.Passed" xml:space="preserve"><value>Past</value></data>
+  <data name="Tests.DaysLeft" xml:space="preserve"><value>{0} days left</value></data>
+  <data name="Tests.DaysLeftEstimated" xml:space="preserve"><value>About {0} days left</value></data>
+  <data name="Tests.Back" xml:space="preserve"><value>All test dates</value></data>
+  <data name="Tests.DaysUnit" xml:space="preserve"><value>days left</value></data>
+  <data name="Tests.Registration" xml:space="preserve"><value>Registration</value></data>
+  <data name="Tests.TestDay" xml:space="preserve"><value>Test day</value></data>
+  <data name="Tests.StatusLabel" xml:space="preserve"><value>Date status</value></data>
+  <data name="Tests.Source" xml:space="preserve"><value>Schedule source</value></data>
+  <data name="Tests.Outline" xml:space="preserve"><value>What it covers</value></data>
+  <data name="Tests.Method.Title" xml:space="preserve"><value>How to study with this package</value></data>
+  <data name="Tests.Method.Tryout" xml:space="preserve"><value>1. Start with one tryout</value></data>
+  <data name="Tests.Method.TryoutHint" xml:space="preserve"><value>{0} questions in {1} minutes on a CAT screen. Your TWK, TIU and TKP scores are compared with the passing grades, so you know which subtest needs work.</value></data>
+  <data name="Tests.Method.Goal" xml:space="preserve"><value>2. Set your test date</value></data>
+  <data name="Tests.Method.GoalHint" xml:space="preserve"><value>The app spreads new questions over the days until the test and keeps the last 7 days for review.</value></data>
+  <data name="Tests.Method.Practice" xml:space="preserve"><value>3. Practise by topic</value></data>
+  <data name="Tests.Method.PracticeHint" xml:space="preserve"><value>After each session you see your weakest topic, your time per question and the explanation of every answer.</value></data>
+  <data name="Tests.Method.Cards" xml:space="preserve"><value>4. Repeat what you got wrong</value></data>
+  <data name="Tests.Method.CardsHint" xml:space="preserve"><value>Wrong answers become flashcards and come back on a review schedule until you answer them right.</value></data>
+  <data name="Tests.Method.Repeat" xml:space="preserve"><value>5. Take a tryout every week</value></data>
+  <data name="Tests.Method.RepeatHint" xml:space="preserve"><value>The study plan schedules a tryout every 7 days and on day -7 and day -3, so the {1}-minute limit feels normal.</value></data>
+  <data name="Tests.NoPackage" xml:space="preserve"><value>No practice package for this test yet.</value></data>
+  <data name="Tests.Includes.Bank" xml:space="preserve"><value>{0} questions with explanations ({1})</value></data>
+  <data name="Tests.Includes.Tryout" xml:space="preserve"><value>Tryout with {0} questions in {1} minutes, scored per subtest</value></data>
+  <data name="Tests.Includes.Analysis" xml:space="preserve"><value>Analysis after each session: weakest topic and pace</value></data>
+  <data name="Tests.Includes.Cards" xml:space="preserve"><value>Flashcards from your wrong answers</value></data>
+  <data name="Tests.Includes.Plan" xml:space="preserve"><value>A daily study plan up to the test day</value></data>
+  <data name="Tests.Study" xml:space="preserve"><value>Study tools</value></data>
+  <data name="Tests.Tool.Tryout" xml:space="preserve"><value>Start an SKD tryout</value></data>
+  <data name="Tests.Tool.Practice" xml:space="preserve"><value>Practise by topic</value></data>
+  <data name="Tests.Tool.Cards" xml:space="preserve"><value>Open flashcards</value></data>
+  <data name="Tests.Tool.Plan" xml:space="preserve"><value>Set your test date</value></data>
+  <data name="Tests.Tool.PlanSet" xml:space="preserve"><value>Study plan · {0} days left</value></data>
+  <data name="Tests.Buy" xml:space="preserve"><value>Buy package</value></data>
+  <data name="Tests.SeePackage" xml:space="preserve"><value>See package details</value></data>
+  <data name="Tests.ExamPageLink" xml:space="preserve"><value>{0} dates and syllabus</value></data>
+  <data name="Tests.ExamPageLinkHint" xml:space="preserve"><value>Dates, what is tested and how to study</value></data>
+  <data name="Skd.Title" xml:space="preserve"><value>SKD score</value></data>
+  <data name="Skd.Passed" xml:space="preserve"><value>Passing grade reached in all three subtests.</value></data>
+  <data name="Skd.Failed" xml:space="preserve"><value>Not passed yet: every subtest must reach its passing grade.</value></data>
+  <data name="Skd.PartialNote" xml:space="preserve"><value>This session is not a full tryout, so the scores below are estimates for a full subtest answered as accurately.</value></data>
+  <data name="Skd.CorrectOf" xml:space="preserve"><value>{0} of {1} best answers</value></data>
+  <data name="Skd.PassingGrade" xml:space="preserve"><value>pass {0}</value></data>
+  <data name="Skd.BarLabel" xml:space="preserve"><value>{0}: score {1}, passing grade {2}</value></data>
+  <data name="Skd.Gap" xml:space="preserve"><value>{0} points short of the passing grade.</value></data>
+  <data name="Skd.RulesNote" xml:space="preserve"><value>Scoring rules from KepmenPAN-RB No. 321 of 2024. The CPNS 2026 rules are not published yet.</value></data>
+  <data name="Analysis.Title" xml:space="preserve"><value>Session analysis</value></data>
+  <data name="Analysis.Weakest" xml:space="preserve"><value>Weakest topic: {0} ({1} of {2} right).</value></data>
+  <data name="Analysis.AllGood" xml:space="preserve"><value>No topic fell behind in this session.</value></data>
+  <data name="Analysis.PaceSlow" xml:space="preserve"><value>{0} seconds per question on average. The real test gives you about {1} seconds, so work on speed.</value></data>
+  <data name="Analysis.PaceOk" xml:space="preserve"><value>{0} seconds per question on average, within the real test's {1} seconds or so.</value></data>
+  <data name="Analysis.Pace" xml:space="preserve"><value>{0} seconds per question on average.</value></data>
+  <data name="Analysis.Cards" xml:space="preserve"><value>{0} wrong answers went to your flashcards and will come back until you master them.</value></data>
+  <data name="Analysis.PracticeTopic" xml:space="preserve"><value>Practise {0}</value></data>
+  <data name="Analysis.OpenCards" xml:space="preserve"><value>Review in flashcards</value></data>
+  <data name="Admin.Nav.UpcomingTests" xml:space="preserve"><value>Test dates</value></data>
+  <data name="Admin.UpcomingTests.Title" xml:space="preserve"><value>Test dates</value></data>
+  <data name="Admin.UpcomingTests.Add" xml:space="preserve"><value>Add test</value></data>
+  <data name="Admin.UpcomingTests.Edit" xml:space="preserve"><value>Edit test</value></data>
+  <data name="Admin.UpcomingTests.Lead" xml:space="preserve"><value>Hiring tests shown on /jadwal-tes. Link a test to a paid exam to show its package on the test page.</value></data>
+  <data name="Admin.UpcomingTests.Empty" xml:space="preserve"><value>No tests yet.</value></data>
+  <data name="Admin.UpcomingTests.Published" xml:space="preserve"><value>Shown</value></data>
+  <data name="Admin.UpcomingTests.Hidden" xml:space="preserve"><value>Hidden</value></data>
+  <data name="Admin.UpcomingTests.PackageIs" xml:space="preserve"><value>package: {0}</value></data>
+  <data name="Admin.UpcomingTests.Delete" xml:space="preserve"><value>Delete test</value></data>
+  <data name="Admin.UpcomingTests.SlugInvalid" xml:space="preserve"><value>The address may only hold lowercase letters, digits and hyphens, at most {0} characters.</value></data>
+  <data name="Admin.UpcomingTests.SlugTaken" xml:space="preserve"><value>Another test already uses this address.</value></data>
+  <data name="Admin.UpcomingTests.SourceUrlInvalid" xml:space="preserve"><value>Enter a full link starting with http:// or https://.</value></data>
+  <data name="Admin.UpcomingTests.OfficialNeedsDate" xml:space="preserve"><value>An official schedule needs a registration date or a test date.</value></data>
+  <data name="Admin.UpcomingTests.DatesOrder" xml:space="preserve"><value>The test date can't be before the registration date.</value></data>
+  <data name="Admin.UpcomingTests.ExamMissing" xml:space="preserve"><value>This exam doesn't exist or isn't an app exam.</value></data>
+  <data name="Admin.UpcomingTest.Name" xml:space="preserve"><value>Test name</value></data>
+  <data name="Admin.UpcomingTest.Slug" xml:space="preserve"><value>Address</value></data>
+  <data name="Admin.UpcomingTest.SlugHelp" xml:space="preserve"><value>The end of the link, for example cpns-2026 for /jadwal-tes/cpns-2026.</value></data>
+  <data name="Admin.UpcomingTest.Organizer" xml:space="preserve"><value>Organiser</value></data>
+  <data name="Admin.UpcomingTest.Category" xml:space="preserve"><value>Test type</value></data>
+  <data name="Admin.UpcomingTest.Summary" xml:space="preserve"><value>One-line summary</value></data>
+  <data name="Admin.UpcomingTest.Dates" xml:space="preserve"><value>Schedule</value></data>
+  <data name="Admin.UpcomingTest.ScheduleStatus" xml:space="preserve"><value>Date status</value></data>
+  <data name="Admin.UpcomingTest.ScheduleNote" xml:space="preserve"><value>Schedule note</value></data>
+  <data name="Admin.UpcomingTest.SourceUrl" xml:space="preserve"><value>Schedule source link</value></data>
+  <data name="Admin.UpcomingTest.Outline" xml:space="preserve"><value>What it covers</value></data>
+  <data name="Admin.UpcomingTest.OutlineHelp" xml:space="preserve"><value>Separate sections with one empty line. The first line of a section is its heading; the next lines are its points.</value></data>
+  <data name="Admin.UpcomingTest.Exam" xml:space="preserve"><value>Package (paid exam)</value></data>
+  <data name="Admin.UpcomingTest.NoExam" xml:space="preserve"><value>No package</value></data>
+  <data name="Admin.UpcomingTest.IsPublished" xml:space="preserve"><value>Show on /jadwal-tes</value></data>
+  <data name="Admin.Question.Points" xml:space="preserve"><value>Points</value></data>
+  <data name="Admin.Questions.PointsInvalid" xml:space="preserve"><value>Option points must be filled in for every option or for none, from 0 to {0}, on single-choice questions only, and the right option must score the most.</value></data>
+  <data name="Admin.Import.PointsUnreadable" xml:space="preserve"><value>The option_points cell "{0}" must hold one number per option, for example 2,3,5,1,4.</value></data>
 </root>

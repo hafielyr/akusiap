@@ -1,0 +1,81 @@
+@model Akusiap.Web.Pages.Tests.IndexModel
+@using System.Globalization
+@using Akusiap.Domain.Content
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Akusiap.Web.Localization.SharedResource> S
+@* The test list (CPNS-01): grouped by month of the test day (or registration day), tests without a date last. The date
+   tile shows the day only for official dates; estimates show month and year. Returned alone for htmx requests. *@
+@{
+  var groups = Model.Tests
+    .GroupBy(t => (t.TestStartsOn ?? t.RegistrationOpensOn) is { } d ? new DateOnly(d.Year, d.Month, 1) : (DateOnly?)null)
+    .ToList();
+}
+<div id="test-list" class="space-y-5" aria-live="polite">
+  <p class="text-sm font-semibold text-slate-500" data-testid="tests-total">@T["Tests.Total", Model.Tests.Count]</p>
+
+  @if (Model.Tests.Count == 0)
+  {
+    <p class="card border-dashed p-8 text-center text-slate-600" data-testid="tests-empty">@(Model.IsFiltered ? T["Tests.NoMatch"] : T["Tests.Empty"])</p>
+  }
+
+  @foreach (var group in groups)
+  {
+    <section class="space-y-2" aria-label="@(group.Key is { } m ? m.ToString("MMMM yyyy", CultureInfo.CurrentCulture) : S["Tests.NoDateYet"].Value)">
+      <h2 class="section-title">@(group.Key is { } month ? month.ToString("MMMM yyyy", CultureInfo.CurrentCulture) : T["Tests.NoDateYet"])</h2>
+      <ul class="space-y-2" data-testid="test-list">
+        @foreach (var test in group)
+        {
+          var date = test.TestStartsOn ?? test.RegistrationOpensOn;
+          var official = test.ScheduleStatus == ScheduleStatus.Official;
+          <li>
+            <a href="@TestRoutes.Detail(test.Slug)" class="card card-link flex gap-4 p-3 sm:p-4" data-testid="test-card" data-slug="@test.Slug">
+              <span class="flex w-16 shrink-0 flex-col items-center justify-center rounded-xl px-1 py-2 text-center @(test.PackageExamId is not null ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-800")" aria-hidden="true">
+                @if (date is { } d && official)
+                {
+                  <span class="text-2xl font-bold leading-none tabular-nums">@d.Day</span>
+                  <span class="text-xs font-semibold">@d.ToString("MMM", CultureInfo.CurrentCulture)</span>
+                }
+                else if (date is { } e)
+                {
+                  <span class="text-sm font-bold leading-tight">@e.ToString("MMM", CultureInfo.CurrentCulture)</span>
+                  <span class="text-xs font-semibold tabular-nums">@e.Year</span>
+                }
+                else
+                {
+                  <span class="text-2xl font-bold leading-none">?</span>
+                }
+              </span>
+              <span class="min-w-0 flex-1 space-y-1">
+                <span class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  <span class="text-lg font-bold leading-snug text-slate-900">@test.Name</span>
+                  <span class="text-sm text-slate-600">@T[$"Tests.Category.{test.Category}"]</span>
+                </span>
+                <span class="block text-sm text-slate-600">@test.Organizer</span>
+                @if (test.Summary is not null)
+                {
+                  <span class="block text-sm text-slate-700">@test.Summary</span>
+                }
+                <span class="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 text-sm">
+                  <span class="font-semibold @(official ? "text-green-700" : "text-amber-800")" data-testid="test-status">@T[$"Tests.Status.{test.ScheduleStatus}"]</span>
+                  @if (date is { } shown)
+                  {
+                    <span class="text-slate-700">@T[test.TestStartsOn is not null ? "Tests.TestOn" : "Tests.RegistrationOn", TestRoutes.Date(shown, test.ScheduleStatus)]</span>
+                  }
+                  @if (test.DaysLeft is { } days)
+                  {
+                    <span class="font-semibold text-slate-900" data-testid="test-countdown">@TestRoutes.Countdown(days, test.ScheduleStatus, S)</span>
+                  }
+                </span>
+                @if (test.PackageExamId is not null)
+                {
+                  <span class="block pt-1 text-sm font-semibold text-brand-700" data-testid="test-package">
+                    @T["Tests.PackageAvailable"]@if (test.PackagePriceIdr is { } price) {<text> · <idr value="@price" /></text>}
+                  </span>
+                }
+              </span>
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</div>

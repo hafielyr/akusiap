@@ -138,6 +138,7 @@ public sealed class ImportQuestions(
                     Text = TextRules.Clean(request.Options[i].Text)!,
                     IsCorrect = request.Options[i].IsCorrect,
                     SortOrder = i + 1,
+                    Points = request.Options[i].Points,
                 });
             }
 

@@ -46,6 +46,9 @@ public static class DependencyInjection
         services.AddScoped<Planning.StudyGoals>();
         services.AddScoped<Planning.StudyPlans>();
         services.AddScoped<Planning.ExamDayCap>();
+        services.AddScoped<UpcomingTests.UpcomingTests>();
+        services.AddScoped<UpcomingTests.ManageUpcomingTests>();
+        services.AddScoped<ContentPacks.CpnsPack>();
         services.AddScoped<Access.AccessibleQuestions>();
         services.AddScoped<Classes.Classes>();
         services.AddScoped<ExpireAccess>();

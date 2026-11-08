@@ -62,6 +62,9 @@ public static class QuestionImportMapper
     /// <summary>Arg: the value as written.</summary>
     public const string OriginUnknown = "Admin.Import.OriginUnknown";
 
+    /// <summary>The option_points cell is not one whole number per option. Arg: the value as written.</summary>
+    public const string PointsUnreadable = "Admin.Import.PointsUnreadable";
+
     public const string CorrectField = "Correct";
 
     private static readonly Dictionary<string, QuestionType> TypeNames = new(StringComparer.OrdinalIgnoreCase)
@@ -105,7 +108,8 @@ public static class QuestionImportMapper
         var before = problems.Count;
         var correct = ParseCorrect(row.Correct, optionTexts.Count, type, problems);
         var correctUnreadable = problems.Count > before;
-        var options = optionTexts.Select((text, i) => new OptionRequest(null, text, correct.Contains(i))).ToList();
+        var points = ParsePoints(row.OptionPoints, optionTexts.Count, problems);
+        var options = optionTexts.Select((text, i) => new OptionRequest(null, text, correct.Contains(i), points?[i])).ToList();
 
         short? difficulty = null;
         if (TextRules.Clean(row.Difficulty) is { } difficultyText)
@@ -134,6 +138,40 @@ public static class QuestionImportMapper
             .Where(p => !(topicProblem is not null && p.Code == QuestionValidator.TopicRequired))
             .Where(p => !(correctUnreadable && p.Code is QuestionValidator.ExactlyOneCorrect or QuestionValidator.AtLeastOneCorrect)));
         return (request, problems);
+    }
+
+    /// <summary>
+    /// The option_points cell (CPNS-03): whole numbers in option order, split by commas, semicolons or spaces, for example
+    /// "2,3,5,1,4". Empty means no points. A cell that isn't one number per option is reported; the range and "the right
+    /// option scores the most" are checked by <see cref="QuestionValidator"/>.
+    /// </summary>
+    private static int?[]? ParsePoints(string? value, int optionCount, List<Problem> problems)
+    {
+        if (TextRules.Clean(value) is not { } text)
+        {
+            return null;
+        }
+
+        var parts = text.Split([',', ';', ' '], StringSplitOptions.RemoveEmptyEntries);
+        var numbers = new int?[optionCount];
+        if (parts.Length != optionCount)
+        {
+            problems.Add(new Problem(PointsUnreadable, QuestionValidator.OptionsField, text));
+            return null;
+        }
+
+        for (var i = 0; i < parts.Length; i++)
+        {
+            if (!int.TryParse(parts[i], NumberStyles.Integer, CultureInfo.InvariantCulture, out var number))
+            {
+                problems.Add(new Problem(PointsUnreadable, QuestionValidator.OptionsField, text));
+                return null;
+            }
+
+            numbers[i] = number;
+        }
+
+        return numbers;
     }
 
     /// <summary>Options A–H up to the last one filled in; True/False rows may leave them empty ("Benar", "Salah").</summary>

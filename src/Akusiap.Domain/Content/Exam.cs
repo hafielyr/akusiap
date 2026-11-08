@@ -40,6 +40,9 @@ public class Exam
 
     public ExamStatus Status { get; set; } = ExamStatus.Draft;
 
+    /// <summary>How attempts are scored (CPNS-03, D-130). Not in schema.sql.</summary>
+    public ScoringScheme ScoringScheme { get; set; } = ScoringScheme.Standard;
+
     /// <summary>Requires a <see cref="ShareToken"/>.</summary>
     public bool IsShared { get; set; }
 

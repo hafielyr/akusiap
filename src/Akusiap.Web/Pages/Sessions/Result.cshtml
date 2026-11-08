@@ -38,6 +38,98 @@
     <p class="text-sm text-slate-600">@T["Session.Result.Time", minutes, seconds]@(r.Status == AttemptStatus.Expired ? " · " + T["Session.Result.Expired"].Value : null)</p>
   </article>
 
+  @if (r.Skd is { } skd)
+  {
+    @* SKD score (CPNS-03): each subtest against its passing grade. A full 110-question tryout passes or fails; a shorter
+       set shows the score scaled to a full subtest, so learners see how far they are from the passing grade. *@
+    <section class="panel space-y-4 p-5" aria-labelledby="skd-heading" data-testid="skd-score">
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 id="skd-heading" class="text-lg font-semibold">@T["Skd.Title"]</h2>
+        @if (skd.IsFullTest)
+        {
+          <p class="text-2xl font-bold tabular-nums" data-testid="skd-total">@skd.Total<span class="text-base font-semibold text-slate-500"> / @skd.MaxTotal</span></p>
+        }
+      </div>
+      @if (skd.Passed is { } skdPassed)
+      {
+        <p class="font-semibold @(skdPassed ? "text-green-700" : "text-red-700")" data-testid="skd-passed">@(skdPassed ? T["Skd.Passed"] : T["Skd.Failed"])</p>
+      }
+      else
+      {
+        <p class="text-sm text-slate-600">@T["Skd.PartialNote"]</p>
+      }
+      <ul class="space-y-3">
+        @foreach (var sub in skd.Subtests.Where(s => s.Questions > 0))
+        {
+          var shown = skd.IsFullTest ? sub.Score : sub.Projected;
+          var reached = skd.IsFullTest ? sub.Score >= sub.Rule.PassingGrade : sub.ReachesPassingGrade;
+          var width = Math.Clamp(100 * shown / sub.Rule.MaxScore, 0, 100);
+          var mark = 100 * sub.Rule.PassingGrade / sub.Rule.MaxScore;
+          <li class="space-y-1" data-testid="skd-subtest" data-subtest="@sub.Rule.Code">
+            <p class="flex flex-wrap items-baseline justify-between gap-x-3 text-sm">
+              <span class="font-semibold text-slate-900">@sub.Rule.Code <span class="font-normal text-slate-600">· @T["Skd.CorrectOf", sub.Correct, sub.Questions]</span></span>
+              <span class="tabular-nums"><span class="font-bold @(reached ? "text-green-700" : "text-red-700")" data-testid="skd-subtest-score">@shown</span> / @sub.Rule.MaxScore · @T["Skd.PassingGrade", sub.Rule.PassingGrade]</span>
+            </p>
+            <div class="relative h-3 rounded-full bg-slate-200" role="img" aria-label="@S["Skd.BarLabel", sub.Rule.Code, shown, sub.Rule.PassingGrade]">
+              <div class="h-3 rounded-full @(reached ? "bg-green-600" : "bg-red-600")" style="width: @(width)%"></div>
+              <div class="absolute -top-1 h-5 w-0.5 bg-slate-900" style="left: @(mark)%"></div>
+            </div>
+            @if (!reached)
+            {
+              <p class="text-sm text-slate-700">@T["Skd.Gap", skd.IsFullTest ? sub.Rule.PassingGrade - sub.Score : sub.Gap]</p>
+            }
+          </li>
+        }
+      </ul>
+      <p class="text-xs text-slate-500">@T["Skd.RulesNote"]</p>
+    </section>
+  }
+
+  @if (r.Analysis is { } analysis && r.TotalCount > 0)
+  {
+    @* Session analysis (CPNS-05): what to do next, from this session's answers. *@
+    <section class="card space-y-3 p-4" aria-labelledby="analysis-heading" data-testid="analysis">
+      <h2 id="analysis-heading" class="text-lg font-semibold">@T["Analysis.Title"]</h2>
+      <ul class="space-y-2 text-sm text-slate-700">
+        @if (analysis.WeakestTopic is { } weak)
+        {
+          <li data-testid="analysis-weakest">@T["Analysis.Weakest", weak.Topic, weak.Correct, weak.Total]</li>
+        }
+        else
+        {
+          <li data-testid="analysis-strong">@T["Analysis.AllGood"]</li>
+        }
+        @if (analysis.SecondsPerQuestion is { } pace)
+        {
+          <li data-testid="analysis-pace">
+            @if (analysis.TargetSecondsPerQuestion is { } target)
+            {
+              @(pace > target ? T["Analysis.PaceSlow", pace, target] : T["Analysis.PaceOk", pace, target])
+            }
+            else
+            {
+              @T["Analysis.Pace", pace]
+            }
+          </li>
+        }
+        @if (analysis.CardsQueued > 0)
+        {
+          <li data-testid="analysis-cards">@T["Analysis.Cards", analysis.CardsQueued]</li>
+        }
+      </ul>
+      <div class="grid gap-2 sm:grid-cols-2">
+        @if (analysis.WeakestTopic is { TopicId: > 0 } weakTopic && r.ExamId is { } weakExam)
+        {
+          <a href="@ExamRoutes.Start(weakExam)?topik=@weakTopic.TopicId" class="btn btn-secondary w-full" data-testid="analysis-practice">@T["Analysis.PracticeTopic", weakTopic.Topic]</a>
+        }
+        @if (analysis.CardsQueued > 0 && signedIn)
+        {
+          <a href="/learn/kartu" class="btn btn-secondary w-full" data-testid="analysis-open-cards">@T["Analysis.OpenCards"]</a>
+        }
+      </div>
+    </section>
+  }
+
   @if (Model.Standing is { } standing)
   {
     var boardUrl = standing.ClassroomId is { } classId && standing.ClassAssignmentId is { } assignmentId

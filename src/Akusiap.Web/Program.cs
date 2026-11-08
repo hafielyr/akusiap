@@ -71,6 +71,13 @@ builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Le
 
 var app = builder.Build();
 
+// `dotnet run --project src/Akusiap.Web -- load-cpns-pack <folder>` loads the CPNS 2026 package and exits (CPNS-06).
+if (args.Length >= 1 && args[0] == Akusiap.Web.ContentPacks.CpnsPackCommand.Name)
+{
+    Environment.ExitCode = await Akusiap.Web.ContentPacks.CpnsPackCommand.RunAsync(app.Services, args.Skip(1).ToArray());
+    return;
+}
+
 app.UseResponseCompression();
 
 if (!app.Environment.IsDevelopment())

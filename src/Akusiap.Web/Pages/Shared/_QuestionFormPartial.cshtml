@@ -1,7 +1,7 @@
 @model Akusiap.Web.Areas.Admin.Pages.Questions.QuestionFormView
 @using Akusiap.Domain.Content
 @* The question editor form. Fields post as Input.*; the answer options are managed by Alpine (wwwroot/js/question-form.js)
-   and post as Input.Options[i].Id/Text/IsCorrect in display order. *@
+   and post as Input.Options[i].Id/Text/IsCorrect/Points in display order. Points (0–5, TKP) only show for single choice. *@
 @{
   var input = Model.Input;
   var modelState = ViewContext.ViewData.ModelState;
@@ -77,6 +77,11 @@
                      x-bind:name="`Input.Options[${i}].IsCorrect`" x-bind:checked="option.isCorrect"
                      x-on:change="markCorrect(i, $event.target.checked)" />
               <span>@T["Admin.Question.Correct"]</span>
+            </label>
+            <label class="flex min-h-11 items-center gap-2 text-sm text-slate-700" x-show="type === 'SingleChoice'">
+              <span>@T["Admin.Question.Points"]</span>
+              <input type="number" min="0" max="5" inputmode="numeric" class="input w-16 px-2" placeholder="–"
+                     x-bind:name="`Input.Options[${i}].Points`" x-model="option.points" x-bind:disabled="type !== 'SingleChoice'" />
             </label>
             <template x-if="!isTrueFalse">
               <span class="flex items-center gap-1">

@@ -136,6 +136,15 @@
     </a>
   }
 
+  @if (Model.Test is { } test)
+  {
+    <a href="@Akusiap.Web.Pages.Tests.TestRoutes.Detail(test.Slug)" class="card card-link flex items-center gap-3 p-4" data-testid="test-link">
+      <span class="min-w-16 text-2xl font-bold tabular-nums text-brand-700">@(test.DaysLeft is { } days and >= 0 ? (test.ScheduleStatus == ScheduleStatus.Official ? "H-" : "± ") + days : "?")</span>
+      <span class="flex-1 space-y-0.5"><span class="block font-bold">@T["Tests.ExamPageLink", test.Name]</span><span class="block text-sm text-slate-600">@T["Tests.ExamPageLinkHint"]</span></span>
+      <span class="arrow text-slate-500" aria-hidden="true">→</span>
+    </a>
+  }
+
   @if (exam.Status == ExamStatus.Published && Model.LeaderboardEnabled)
   {
     <a href="/ujian/@exam.Id/peringkat" class="card card-link flex items-center gap-3 p-4" data-testid="leaderboard-link">

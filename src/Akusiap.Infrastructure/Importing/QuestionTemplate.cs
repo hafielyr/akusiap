@@ -29,7 +29,8 @@ internal sealed class QuestionTemplate : IQuestionTemplate
         ["source_note", "Catatan sumber. Opsional."],
         ["origin", "Sendiri (buatan tim sendiri) atau Orang lain (dari buku, situs, atau repo orang lain). Opsional; kosong berarti belum dicatat."],
         ["source_url", "Link asal soal, diawali http:// atau https:// (maks. 1000 karakter). Opsional."],
-        ["", "Baris contoh di sheet Soal boleh dihapus. Jika ada satu baris yang salah, tidak ada soal yang disimpan."],
+        ["option_points", "Poin tiap pilihan berurutan, misalnya 2,3,5,1,4 (soal TKP). Hanya untuk pilihan ganda; nilai 0–5 dan jawaban benar harus berpoin paling tinggi. Opsional."],
+        ["","Baris contoh di sheet Soal boleh dihapus. Jika ada satu baris yang salah, tidak ada soal yang disimpan."],
     ];
 
     public byte[] Create()

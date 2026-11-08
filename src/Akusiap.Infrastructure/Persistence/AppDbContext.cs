@@ -77,6 +77,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<Domain.Planning.StudyGoal> StudyGoals => Set<Domain.Planning.StudyGoal>();
 
+    public DbSet<UpcomingTest> UpcomingTests => Set<UpcomingTest>();
+
     public Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken) =>
         Database.BeginTransactionAsync(cancellationToken);
 

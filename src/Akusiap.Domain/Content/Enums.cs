@@ -42,3 +42,13 @@ public enum QuestionOrigin
     Original,
     ThirdParty,
 }
+
+/// <summary>
+/// How an exam is scored (CPNS-03, D-130). Standard: percent correct. Skd: the CPNS SKD rules in
+/// <see cref="Sessions.SkdScoring"/> (TWK, TIU and TKP subtests, each with its passing grade).
+/// </summary>
+public enum ScoringScheme
+{
+    Standard,
+    Skd,
+}

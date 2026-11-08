@@ -3,8 +3,11 @@ using Akusiap.Domain.Content;
 
 namespace Akusiap.Application.Questions;
 
-/// <summary>An answer option as typed in the editor. <paramref name="Id"/> is set for options that already exist.</summary>
-public sealed record OptionRequest(long? Id, string? Text, bool IsCorrect);
+/// <summary>
+/// An answer option as typed in the editor. <paramref name="Id"/> is set for options that already exist.
+/// <paramref name="Points"/> scores the option 0–5 (TKP, CPNS-03); null on right/wrong questions.
+/// </summary>
+public sealed record OptionRequest(long? Id, string? Text, bool IsCorrect, int? Points = null);
 
 /// <summary>
 /// Create (Id null) or edit an app question (ADM-01). Options are saved in the given order. <paramref name="Origin"/> and
@@ -76,6 +79,9 @@ public static class QuestionValidator
 
     /// <summary>Arg: option number.</summary>
     public const string OptionDuplicate = "Admin.Questions.OptionDuplicate";
+
+    /// <summary>Per-option points are incomplete, out of range or don't favour the right option. Arg: maximum points.</summary>
+    public const string PointsInvalid = "Admin.Questions.PointsInvalid";
 
     public const string TextLabel = "Admin.Question.Text";
     public const string ExplanationLabel = "Admin.Question.Explanation";
@@ -216,6 +222,14 @@ public static class QuestionValidator
         else if (correct != 1)
         {
             problems.Add(new Problem(ExactlyOneCorrect, OptionsField, TypeLabel(type)));
+            return;
+        }
+
+        // Per-option points (CPNS-03): all or none, 0–5, single choice only, and the right option scores the most.
+        if (options.Any(o => o.Points is not null)
+            && (type != QuestionType.SingleChoice || !Domain.Sessions.SkdScoring.ArePointsConsistent([.. options.Select(o => (o.IsCorrect, o.Points))])))
+        {
+            problems.Add(new Problem(PointsInvalid, OptionsField, Domain.Content.QuestionOption.MaxPoints));
         }
     }
 

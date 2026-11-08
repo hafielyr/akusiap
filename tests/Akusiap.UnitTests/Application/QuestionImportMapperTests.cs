@@ -126,6 +126,22 @@ public sealed class QuestionImportMapperTests
         Assert.Equal([QuestionValidator.SourceUrlInvalid], Map(Row(sourceUrl: "itera.ac.id")).Problems.Select(p => p.Code));
     }
 
+    [Fact]
+    public void Option_points_are_read_in_option_order()
+    {
+        var (request, problems) = Map(Row(options: ["a", "b", "c"], correct: "B", points: "2, 5;1"));
+        Assert.Empty(problems);
+        Assert.Equal([2, 5, 1], request.Options.Select(o => o.Points!.Value));
+    }
+
+    [Fact]
+    public void Unreadable_or_inconsistent_points_are_reported()
+    {
+        Assert.Contains(Map(Row(options: ["a", "b", "c"], points: "2,5")).Problems, p => p.Code == QuestionImportMapper.PointsUnreadable);
+        Assert.Contains(Map(Row(options: ["a", "b", "c"], points: "x,5,1")).Problems, p => p.Code == QuestionImportMapper.PointsUnreadable);
+        Assert.Contains(Map(Row(options: ["a", "b", "c"], correct: "A", points: "2,5,1")).Problems, p => p.Code == QuestionValidator.PointsInvalid);
+    }
+
     private static (SaveQuestionRequest Request, List<Akusiap.Application.Common.Problem> Problems) Map(QuestionImportRow row) =>
         QuestionImportMapper.Map(row, Topics, QuestionStatus.Active);
 
@@ -138,10 +154,11 @@ public sealed class QuestionImportMapperTests
         string? topic = "Aljabar",
         string? difficulty = null,
         string? origin = null,
-        string? sourceUrl = null)
+        string? sourceUrl = null,
+        string? points = null)
     {
         var cells = new string?[QuestionImportColumns.MaxOptions];
         (options ?? ["satu", "dua"]).CopyTo(cells, 0);
-        return new QuestionImportRow(2, type, text, cells, correct, explanation, null, null, topic, difficulty, null, origin, sourceUrl);
+        return new QuestionImportRow(2, type, text, cells, correct, explanation, null, null, topic, difficulty, null, origin, sourceUrl, points);
     }
 }
