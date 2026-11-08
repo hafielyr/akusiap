@@ -1833,7 +1833,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                             t.HasCheckConstraint("ck_attempts_score_percent", "score_percent BETWEEN 0 AND 100");
 
-                            t.HasCheckConstraint("ck_attempts_source", "source IN ('Exam', 'Trial', 'Shared', 'WrongOnly', 'Review', 'CustomMix', 'DailyDrill')");
+                            t.HasCheckConstraint("ck_attempts_source", "source IN ('Exam', 'Trial', 'Shared', 'WrongOnly', 'Review', 'CustomMix', 'DailyDrill', 'StudyPlan')");
 
                             t.HasCheckConstraint("ck_attempts_status", "status IN ('InProgress', 'Submitted', 'Expired')");
 

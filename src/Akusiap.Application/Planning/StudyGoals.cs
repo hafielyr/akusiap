@@ -116,8 +116,12 @@ public sealed class StudyGoals(IAppDbContext db, IEntitlementService entitlement
             db.StudyGoals.Add(goal);
         }
 
-        goal.ExamDate = examDate;
-        goal.UpdatedAt = now;
+        // UpdatedAt marks when the plan for this date began (PLN-02), so only a new date moves it.
+        if (goal.Id == 0 || goal.ExamDate != examDate)
+        {
+            goal.ExamDate = examDate;
+            goal.UpdatedAt = now;
+        }
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         return Result.Ok(goal.Id);
     }
