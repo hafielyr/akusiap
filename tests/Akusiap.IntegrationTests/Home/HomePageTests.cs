@@ -17,7 +17,7 @@ public sealed partial class HomePageTests(PostgresFixture database)
 
         var html = await client.GetStringAsync(new Uri("/", UriKind.Relative));
 
-        Assert.Contains("<meta name=\"description\" content=\"Coba 30 soal gratis", html, StringComparison.Ordinal);
+        Assert.Contains("<meta name=\"description\" content=\"Kuasai soal CPNS, BUMN, kedinasan, dan UKMPPD dengan cepat dan efisien", html, StringComparison.Ordinal);
         Assert.Contains("<meta property=\"og:title\" content=\"Latihan soal CPNS, BUMN, Kedinasan dan UKMPPD ", html, StringComparison.Ordinal);
         Assert.Contains("<meta property=\"og:locale\" content=\"id_ID\"", html, StringComparison.Ordinal);
         Assert.Contains("href=\"#main\"", html, StringComparison.Ordinal);
@@ -27,7 +27,7 @@ public sealed partial class HomePageTests(PostgresFixture database)
         using var faq = JsonDocument.Parse(json.Groups[1].Value);
         Assert.Equal("FAQPage", faq.RootElement.GetProperty("@type").GetString());
         var questions = faq.RootElement.GetProperty("mainEntity");
-        Assert.Equal(8, questions.GetArrayLength());
+        Assert.Equal(9, questions.GetArrayLength());
         Assert.Equal("Apakah benar bisa coba gratis?", questions[0].GetProperty("name").GetString());
     }
 
@@ -39,7 +39,7 @@ public sealed partial class HomePageTests(PostgresFixture database)
 
         var html = await client.GetStringAsync(new Uri("/harga", UriKind.Relative));
 
-        Assert.Contains("<meta name=\"description\" content=\"Latihan soal untuk seleksi CPNS", html, StringComparison.Ordinal);
+        Assert.Contains("<meta name=\"description\" content=\"Belajar menguasai soal CPNS", html, StringComparison.Ordinal);
         Assert.DoesNotContain("application/ld+json", html, StringComparison.Ordinal);
     }
 

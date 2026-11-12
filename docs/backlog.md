@@ -502,6 +502,11 @@ Each task is sized for one AI-agent run: one pull request that builds, passes te
 - Scope: The owner's hand-inked mark, a fluted column on a stack of books, in the logo partial, `favicon.svg` and `favicon.ico` (D-118): the ink version on the light theme and the white version on the dark one. The wordmark is unchanged.
 - AC: The header shows the ink mark in light mode and the white mark in dark mode; the favicon files show the same mark (switching with the browser's colour scheme where the format allows); every page still renders the logo.
 
+### BRD-11 Copy: master questions fast, practise consistently · S
+- Stories: owner request (2026-11-09: emphasise "belajar menguasai soal secara cepat dan efisien" and "berlatih secara konsisten adalah pilar kesuksesan", so learners see the app helps them reach their goal) · Depends on: BRD-09, PLN-01
+- Scope: Rewrite the home page, footer, meta descriptions and sign-up panel around the two brand lines (D-124): hero "Kuasai soal seleksi / dengan cepat dan efisien", a "Belajar yang perlu saja" section, the flagship "Ulangi yang belum dikuasai, lewati yang sudah", benefits for the daily drill and the exam goal, the tagline "Berlatih secara konsisten / adalah pilar kesuksesan", steps that end in daily practice, and a FAQ about how long to practise each day. Record the lines in `unique-selling-points.md`.
+- AC: Both lines appear on the home page and in the footer, in Indonesian and English; every speed or efficiency claim names the feature behind it; no pass promises, invented numbers or features that are not built yet (daily plan, mastery per topic); home, localization and FAQ tests pass.
+
 ### DRL-01 Daily drill with points and streak · M
 - Stories: owner request (gamified daily drills) · Depends on: SRS-03, SES-06
 - Scope: `/learn/hari-ini` gets "Latihan harian": a 10-question set built from the learner's accessible exams (due review cards first, then new questions), a daily goal (one completed drill), XP per correct answer and a streak counted in Jakarta days. Needs a new table for drill progress (streak, XP, last drill date) in this card's migration; record it as an addition to `schema.sql` (like D-68).
