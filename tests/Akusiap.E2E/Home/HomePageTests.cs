@@ -20,7 +20,7 @@ public sealed class HomePageTests(MobileSite site)
         Assert.True(response?.Ok, $"GET / returned {response?.Status}");
         Assert.Equal("id", await page.Locator("html").GetAttributeAsync("lang"));
         Assert.Equal(
-            "Fokus ke ujian Anda CPNS, BUMN, Kedinasan, UKMPPD",
+            "Kuasai soal seleksi dengan cepat dan efisien",
             string.Join(' ', (await page.Locator("h1").InnerTextAsync()).Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)));
         var tryFree = await page.GetByTestId("home-try").BoundingBoxAsync();
         Assert.NotNull(tryFree);
@@ -29,7 +29,7 @@ public sealed class HomePageTests(MobileSite site)
         Assert.True(await page.GetByTestId("home-art").IsVisibleAsync(), "The hero art is visible");
         Assert.Equal(4, await page.GetByTestId("home-category").CountAsync());
         Assert.Equal(3, await page.GetByTestId("home-benefits").Locator("> li").CountAsync());
-        Assert.Equal(8, await page.GetByTestId("home-faq").Locator("details").CountAsync());
+        Assert.Equal(9, await page.GetByTestId("home-faq").Locator("details").CountAsync());
         Assert.Equal("Coba 30 soal gratis →", string.Join(' ', (await page.GetByTestId("home-cta").InnerTextAsync()).Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)));
 
         var overflow = await page.EvaluateAsync<int>("() => document.documentElement.scrollWidth - window.innerWidth");
