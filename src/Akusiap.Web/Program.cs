@@ -15,6 +15,7 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddScoped<IdentityErrorDescriber, LocalizedIdentityErrorDescriber>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ActingUser>();
 builder.Services.AddScoped<Akusiap.Application.Abstractions.ICurrentUser, HttpCurrentUser>();
 var authentication = builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme);
 authentication.AddIdentityCookies();
@@ -69,6 +70,13 @@ builder.Services.Configure<BrotliCompressionProviderOptions>(options => options.
 builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Fastest);
 
 var app = builder.Build();
+
+// `dotnet run --project src/Akusiap.Web -- load-cpns-pack <folder>` loads the CPNS 2026 package and exits (CPNS-06).
+if (args.Length >= 1 && args[0] == Akusiap.Web.ContentPacks.CpnsPackCommand.Name)
+{
+    Environment.ExitCode = await Akusiap.Web.ContentPacks.CpnsPackCommand.RunAsync(app.Services, args.Skip(1).ToArray());
+    return;
+}
 
 app.UseResponseCompression();
 

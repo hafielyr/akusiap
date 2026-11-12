@@ -128,7 +128,10 @@ internal sealed class QuestionFileReader : IQuestionFileReader
                 Cell(r.Cells, QuestionImportColumns.Hint),
                 Cell(r.Cells, QuestionImportColumns.Topic),
                 Cell(r.Cells, QuestionImportColumns.Difficulty),
-                Cell(r.Cells, QuestionImportColumns.SourceNote)))
+                Cell(r.Cells, QuestionImportColumns.SourceNote),
+                Cell(r.Cells, QuestionImportColumns.Origin),
+                Cell(r.Cells, QuestionImportColumns.SourceUrl),
+                Cell(r.Cells, QuestionImportColumns.OptionPoints)))
             .ToList();
         return new QuestionFileContent(rows, null);
     }

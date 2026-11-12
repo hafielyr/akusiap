@@ -11,7 +11,8 @@ public sealed record QuestionFilter(
     QuestionStatus? Status = null,
     QuestionType? Type = null,
     string? Search = null,
-    int Page = 1);
+    int Page = 1,
+    QuestionOrigin? Origin = null);
 
 public sealed record QuestionRow(
     long Id,
@@ -21,7 +22,8 @@ public sealed record QuestionRow(
     QuestionType Type,
     QuestionStatus Status,
     short? Difficulty,
-    DateTime UpdatedAt);
+    DateTime UpdatedAt,
+    QuestionOrigin? Origin = null);
 
 public sealed record QuestionPage(IReadOnlyList<QuestionRow> Rows, int Page, int PageSize, int Total)
 {
@@ -51,6 +53,11 @@ public sealed class ListQuestions(IAppDbContext db)
             query = query.Where(q => q.Status == status);
         }
 
+        if (filter.Origin is { } origin)
+        {
+            query = query.Where(q => q.Origin == origin);
+        }
+
         if (filter.Type is { } type)
         {
             query = query.Where(q => q.QuestionType == type);
@@ -72,7 +79,7 @@ public sealed class ListQuestions(IAppDbContext db)
             .ThenByDescending(q => q.Id)
             .Skip((page - 1) * PageSize)
             .Take(PageSize)
-            .Select(q => new QuestionRow(q.Id, q.Text, q.Topic!.Subject!.Name, q.Topic.Name, q.QuestionType, q.Status, q.Difficulty, q.UpdatedAt))
+            .Select(q => new QuestionRow(q.Id, q.Text, q.Topic!.Subject!.Name, q.Topic.Name, q.QuestionType, q.Status, q.Difficulty, q.UpdatedAt, q.Origin))
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
 

@@ -26,6 +26,7 @@ public static class BackgroundJobs
     {
         services.AddScoped<Payments.ReceiptJob>();
         services.AddScoped<Payments.RenewalReminderJob>();
+        services.AddScoped<Planning.StudyPlanReminderJob>();
         if (!IsEnabled(configuration))
         {
             services.AddScoped<Akusiap.Application.Abstractions.IPaymentJobs, Payments.InlinePaymentJobs>();
@@ -63,6 +64,7 @@ public static class BackgroundJobs
         jobs.AddOrUpdate<Akusiap.Application.Access.ExpireAccess>(Akusiap.Application.Access.ExpireAccess.Id, job => job.RunAsync(CancellationToken.None), Akusiap.Application.Access.ExpireAccess.Cron);
         jobs.AddOrUpdate<Akusiap.Application.Payments.ExpirePendingPayments>(Akusiap.Application.Payments.ExpirePendingPayments.Id, job => job.RunAsync(CancellationToken.None), Akusiap.Application.Payments.ExpirePendingPayments.Cron);
         jobs.AddOrUpdate<Payments.RenewalReminderJob>(Payments.RenewalReminderJob.Id, job => job.RunAsync(CancellationToken.None), Payments.RenewalReminderJob.Cron);
+        jobs.AddOrUpdate<Planning.StudyPlanReminderJob>(Planning.StudyPlanReminderJob.Id, job => job.RunAsync(CancellationToken.None), Planning.StudyPlanReminderJob.Cron);
         jobs.AddOrUpdate<Akusiap.Application.Gamification.WeeklyLeaderboardAwards>(Akusiap.Application.Gamification.WeeklyLeaderboardAwards.Id, job => job.RunAsync(CancellationToken.None), Akusiap.Application.Gamification.WeeklyLeaderboardAwards.Cron);
         return app;
     }

@@ -1,6 +1,6 @@
 @page "/learn/hari-ini"
 @model Akusiap.Web.Areas.Learn.Pages.TodayModel
-@* Today (SRS-03, DRL-01, PLN-01): exam countdowns, the daily drill with its week strip, the level strip, and the due flashcards. Two columns on wide screens (BRD-07). *@
+@* Today (SRS-03, DRL-01, PLN-01, PLN-02): each exam goal with its countdown and today's plan, the daily drill with its week strip, the level strip, and the due flashcards. Two columns on wide screens (BRD-07). *@
 @{
   ViewData["Title"] = T["Today.Title"].Value;
   ViewData["Wide"] = true;
@@ -22,22 +22,94 @@
   }
   <div class="grid items-start gap-5 lg:grid-cols-2 lg:gap-6">
   <div class="space-y-5">
-  @if (Model.Goals.Count > 0)
+  @if (Model.Plans.Count > 0)
   {
-    <ul class="space-y-2" aria-label="@T["Goals.Countdowns"]" data-testid="goal-countdowns">
-      @foreach (var goal in Model.Goals)
+    <section class="space-y-2" aria-labelledby="plan-title">
+    <h2 id="plan-title" class="eyebrow">@T["Plan.Title"]</h2>
+    <ul class="space-y-3" aria-label="@T["Goals.Countdowns"]" data-testid="goal-countdowns">
+      @foreach (var plan in Model.Plans)
       {
-        <li>
-          <a href="/learn/target" class="card card-link flex items-center gap-4 p-4" data-testid="goal-countdown" data-exam="@goal.ExamId">
+        var goal = plan.Goal;
+        var day = plan.Day;
+        <li class="card space-y-4 p-4" data-testid="goal-countdown" data-exam="@goal.ExamId" data-phase="@day.Phase">
+          <a href="/learn/target/@goal.Id" class="flex min-h-11 items-center gap-4" data-testid="plan-progress-link">
             <span class="min-w-16 text-3xl font-bold tabular-nums text-brand-700" data-testid="goal-countdown-days">@(goal.DaysLeft == 0 ? T["Goals.ExamToday"] : T["Goals.DaysLeft", goal.DaysLeft])</span>
             <span class="min-w-0 flex-1 space-y-0.5">
               <span class="block font-semibold">@goal.ExamTitle</span>
               <span class="block text-sm text-slate-600">@goal.ExamDate.ToString("d MMM yyyy", System.Globalization.CultureInfo.CurrentCulture)</span>
             </span>
           </a>
+          @if (plan.PoolSize == 0)
+          {
+            <p class="text-sm text-slate-600" data-testid="plan-empty">@T["Plan.NoQuestions"]</p>
+          }
+          else
+          {
+            <dl class="grid grid-cols-2 gap-2">
+              <div class="stat"><dt class="text-xs font-semibold text-slate-500">@T["Plan.New"]</dt><dd class="text-2xl font-bold tabular-nums text-slate-900" data-testid="plan-new">@day.NewLeftToday</dd></div>
+              <div class="stat"><dt class="text-xs font-semibold text-slate-500">@T["Plan.Cards"]</dt><dd class="text-2xl font-bold tabular-nums text-slate-900" data-testid="plan-cards">@plan.DueCards</dd></div>
+            </dl>
+            <p class="text-sm text-slate-600" data-testid="plan-status">
+              @switch (day.Phase)
+              {
+                case Akusiap.Domain.Planning.StudyPhase.Review:
+                  @T["Plan.ReviewPhase"]
+                  break;
+                case Akusiap.Domain.Planning.StudyPhase.ExamDay:
+                  @T["Plan.ExamDay"]
+                  break;
+                default:
+                  @T["Plan.Progress", plan.Answered, plan.PoolSize, day.LearningDaysLeft]
+                  break;
+              }
+            </p>
+            @if (day.OverCap)
+            {
+              <p role="status" class="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="plan-warning">@T["Plan.OverCap", day.NewQuota, Akusiap.Domain.Planning.StudyPlanner.DailyCap]</p>
+            }
+            @if (plan.OpenAttemptId is { } open)
+            {
+              <a href="@Akusiap.Web.Pages.Sessions.SessionRoutes.Player(open)" class="btn btn-primary w-full" data-testid="plan-continue">@T["Plan.Continue"]</a>
+            }
+            else if (plan.TasksDoneToday)
+            {
+              <p class="rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-800" data-testid="plan-done">@T["Plan.Done"]</p>
+            }
+            else
+            {
+              <form method="post" asp-page-handler="Plan" class="space-y-1">
+                <input type="hidden" name="goalId" value="@goal.Id" />
+                <button type="submit" class="btn btn-primary w-full" data-testid="plan-start">@T["Plan.Start"]</button>
+                <p class="text-center text-xs text-slate-500">@T["Plan.SessionHint", Akusiap.Application.Planning.StudyPlans.SessionSize]</p>
+              </form>
+            }
+            @if (plan.Simulation != Akusiap.Application.Planning.PlanSimulation.None)
+            {
+              <div class="space-y-2 border-t border-slate-200 pt-3" data-testid="plan-simulation" data-state="@plan.Simulation">
+                <p class="font-semibold">@T["Plan.Simulation"]</p>
+                @switch (plan.Simulation)
+                {
+                  case Akusiap.Application.Planning.PlanSimulation.Done:
+                    <p class="rounded-xl bg-green-50 px-3 py-2 text-sm font-semibold text-green-800">@T["Plan.SimulationDone"]</p>
+                    break;
+                  case Akusiap.Application.Planning.PlanSimulation.InProgress:
+                    <a href="@Akusiap.Web.Pages.Sessions.SessionRoutes.Player(plan.SimulationAttemptId!.Value)" class="btn btn-secondary w-full" data-testid="plan-simulation-continue">@T["Plan.SimulationContinue"]</a>
+                    break;
+                  default:
+                    <p class="text-sm text-slate-600">@T["Plan.SimulationHint"]</p>
+                    <form method="post" asp-page-handler="Simulation">
+                      <input type="hidden" name="goalId" value="@goal.Id" />
+                      <button type="submit" class="btn btn-secondary w-full" data-testid="plan-simulation-start">@T["Plan.SimulationStart"]</button>
+                    </form>
+                    break;
+                }
+              </div>
+            }
+          }
         </li>
       }
     </ul>
+    </section>
   }
   else
   {

@@ -9,8 +9,8 @@ internal sealed class QuestionTemplate : IQuestionTemplate
 {
     private static readonly string[][] Examples =
     [
-        ["SingleChoice", "Ibu kota Indonesia adalah …", "Jakarta", "Bandung", "Surabaya", "Medan", "", "", "", "", "A", "Jakarta adalah ibu kota negara.", "Ibu kota: Jakarta", "", "Subjek / Topik", "2", "Contoh"],
-        ["MultiSelect", "Manakah yang termasuk bilangan prima?", "2", "4", "5", "9", "", "", "", "", "A,C", "2 dan 5 hanya habis dibagi 1 dan dirinya sendiri.", "", "Ingat definisi bilangan prima.", "Topik", "3", ""],
+        ["SingleChoice", "Ibu kota Indonesia adalah …", "Jakarta", "Bandung", "Surabaya", "Medan", "", "", "", "", "A", "Jakarta adalah ibu kota negara.", "Ibu kota: Jakarta", "", "Subjek / Topik", "2", "Contoh", "Sendiri", ""],
+        ["MultiSelect", "Manakah yang termasuk bilangan prima?", "2", "4", "5", "9", "", "", "", "", "A,C", "2 dan 5 hanya habis dibagi 1 dan dirinya sendiri.", "", "Ingat definisi bilangan prima.", "Topik", "3", "", "Orang lain", "https://example.com/soal/12"],
         ["TrueFalse", "Air mendidih pada 100 °C di permukaan laut.", "", "", "", "", "", "", "", "", "Benar", "Pada tekanan 1 atm air mendidih pada 100 °C.", "", "", "Topik", "1", ""],
     ];
 
@@ -27,7 +27,10 @@ internal sealed class QuestionTemplate : IQuestionTemplate
         ["topic", "Nama topik yang sudah ada, atau \"Subjek / Topik\" bila nama topik dipakai di beberapa subjek. Wajib."],
         ["difficulty", "1–5. Opsional."],
         ["source_note", "Catatan sumber. Opsional."],
-        ["", "Baris contoh di sheet Soal boleh dihapus. Jika ada satu baris yang salah, tidak ada soal yang disimpan."],
+        ["origin", "Sendiri (buatan tim sendiri) atau Orang lain (dari buku, situs, atau repo orang lain). Opsional; kosong berarti belum dicatat."],
+        ["source_url", "Link asal soal, diawali http:// atau https:// (maks. 1000 karakter). Opsional."],
+        ["option_points", "Poin tiap pilihan berurutan, misalnya 2,3,5,1,4 (soal TKP). Hanya untuk pilihan ganda; nilai 0–5 dan jawaban benar harus berpoin paling tinggi. Opsional."],
+        ["","Baris contoh di sheet Soal boleh dihapus. Jika ada satu baris yang salah, tidak ada soal yang disimpan."],
     ];
 
     public byte[] Create()

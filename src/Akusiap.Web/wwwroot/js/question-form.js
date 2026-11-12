@@ -3,7 +3,7 @@
 // The server re-validates everything (QuestionValidator); this only keeps the form convenient.
 window.questionForm = function (initial) {
   let nextKey = 0;
-  const option = (o) => ({ key: nextKey++, id: o.id ?? null, text: o.text ?? '', isCorrect: !!o.isCorrect });
+  const option = (o) => ({ key: nextKey++, id: o.id ?? null, text: o.text ?? '', isCorrect: !!o.isCorrect, points: o.points ?? '' });
   const trueFalse = () => [
     option({ text: initial.trueText, isCorrect: true }),
     option({ text: initial.falseText, isCorrect: false }),

@@ -496,6 +496,13 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("rule_preset_id");
 
+                    b.Property<string>("ScoringScheme")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValue("Standard")
+                        .HasColumnName("scoring_scheme");
+
                     b.Property<string>("ShareToken")
                         .HasColumnType("text")
                         .HasColumnName("share_token");
@@ -547,6 +554,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                             t.HasCheckConstraint("ck_exams_price_app_only", "owner_kind = 'App' OR price_idr IS NULL");
 
                             t.HasCheckConstraint("ck_exams_price_idr", "price_idr >= 0");
+
+                            t.HasCheckConstraint("ck_exams_scoring_scheme", "scoring_scheme IN ('Standard', 'Skd')");
 
                             t.HasCheckConstraint("ck_exams_shared_has_token", "NOT is_shared OR share_token IS NOT NULL");
 
@@ -615,6 +624,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("key_fact");
 
+                    b.Property<string>("Origin")
+                        .HasColumnType("text")
+                        .HasColumnName("origin");
+
                     b.Property<Guid?>("OwnerUserId")
                         .HasColumnType("uuid")
                         .HasColumnName("owner_user_id");
@@ -627,6 +640,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Property<string>("SourceNote")
                         .HasColumnType("text")
                         .HasColumnName("source_note");
+
+                    b.Property<string>("SourceUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("source_url");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -667,6 +684,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         {
                             t.HasCheckConstraint("ck_questions_difficulty", "difficulty BETWEEN 1 AND 5");
 
+                            t.HasCheckConstraint("ck_questions_origin", "origin IN ('Original', 'ThirdParty')");
+
                             t.HasCheckConstraint("ck_questions_question_type", "question_type IN ('SingleChoice', 'MultiSelect', 'TrueFalse')");
 
                             t.HasCheckConstraint("ck_questions_status", "status IN ('Draft', 'Active', 'Retired')");
@@ -685,6 +704,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean")
                         .HasColumnName("is_correct");
+
+                    b.Property<int?>("Points")
+                        .HasColumnType("integer")
+                        .HasColumnName("points");
 
                     b.Property<long>("QuestionId")
                         .HasColumnType("bigint")
@@ -705,7 +728,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.HasIndex("QuestionId")
                         .HasDatabaseName("ix_question_options_question_id");
 
-                    b.ToTable("question_options", (string)null);
+                    b.ToTable("question_options", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_question_options_points", "points BETWEEN 0 AND 5");
+                        });
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Content.RulePreset", b =>
@@ -850,6 +876,101 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ix_topics_subject_id_name");
 
                     b.ToTable("topics", (string)null);
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Content.UpcomingTest", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("category");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<long?>("ExamId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("exam_id");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_published");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Organizer")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("organizer");
+
+                    b.Property<string>("Outline")
+                        .HasColumnType("text")
+                        .HasColumnName("outline");
+
+                    b.Property<DateOnly?>("RegistrationOpensOn")
+                        .HasColumnType("date")
+                        .HasColumnName("registration_opens_on");
+
+                    b.Property<string>("ScheduleNote")
+                        .HasColumnType("text")
+                        .HasColumnName("schedule_note");
+
+                    b.Property<string>("ScheduleStatus")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("schedule_status");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("slug");
+
+                    b.Property<string>("SourceUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("source_url");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("text")
+                        .HasColumnName("summary");
+
+                    b.Property<DateOnly?>("TestStartsOn")
+                        .HasColumnType("date")
+                        .HasColumnName("test_starts_on");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_upcoming_tests");
+
+                    b.HasIndex("ExamId")
+                        .HasDatabaseName("ix_upcoming_tests_exam_id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasDatabaseName("ix_upcoming_tests_slug");
+
+                    b.HasIndex("IsPublished", "TestStartsOn")
+                        .HasDatabaseName("ix_upcoming_tests_is_published_test_starts_on");
+
+                    b.ToTable("upcoming_tests", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_upcoming_tests_category", "category IN ('Cpns', 'Pppk', 'Kedinasan', 'Bumn', 'TniPolri', 'Banking', 'Other')");
+
+                            t.HasCheckConstraint("ck_upcoming_tests_schedule_status", "schedule_status IN ('Official', 'Estimated', 'NotAnnounced')");
+                        });
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Gamification.LeaderboardSettings", b =>
@@ -1833,7 +1954,7 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                             t.HasCheckConstraint("ck_attempts_score_percent", "score_percent BETWEEN 0 AND 100");
 
-                            t.HasCheckConstraint("ck_attempts_source", "source IN ('Exam', 'Trial', 'Shared', 'WrongOnly', 'Review', 'CustomMix', 'DailyDrill')");
+                            t.HasCheckConstraint("ck_attempts_source", "source IN ('Exam', 'Trial', 'Shared', 'WrongOnly', 'Review', 'CustomMix', 'DailyDrill', 'StudyPlan')");
 
                             t.HasCheckConstraint("ck_attempts_status", "status IN ('InProgress', 'Submitted', 'Expired')");
 
@@ -2052,6 +2173,12 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean")
                         .HasColumnName("phone_number_confirmed");
+
+                    b.Property<bool>("PlanReminderEmails")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("plan_reminder_emails");
 
                     b.Property<string>("PreferredLanguage")
                         .IsRequired()
@@ -2466,6 +2593,17 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_topics_subjects_subject_id");
 
                     b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Content.UpcomingTest", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_upcoming_tests_exams_exam_id");
+
+                    b.Navigation("Exam");
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Gamification.LeaderboardSettings", b =>

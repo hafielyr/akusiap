@@ -23,4 +23,7 @@ public class User : IdentityUser<Guid>
 
     /// <summary>Show this user as "Peserta #XXXX" on public leaderboards (GAM-01). Not in schema.sql (D-94).</summary>
     public bool HideOnLeaderboard { get; set; }
+
+    /// <summary>Get the daily plan reminder email (PLN-05). On by default; switched off on the profile. Not in schema.sql (D-126).</summary>
+    public bool PlanReminderEmails { get; set; } = true;
 }

@@ -45,7 +45,15 @@ public sealed class StartModel(GetSessionSetup getSetup, StartAttempt startAttem
 
     public IReadOnlyList<string> Errors { get; private set; } = [];
 
-    public async Task<IActionResult> OnGetAsync(long id, CancellationToken cancellationToken)
+    /// <param name="mode">Preselects a mode, for links such as "Tryout" or "Latihan" on a test page (CPNS-02).</param>
+    /// <param name="topic">Preselects one topic for Practice, for "practise your weakest topic" (CPNS-05).</param>
+    /// <param name="count">Suggests a Practice question count; Practice is then untimed.</param>
+    public async Task<IActionResult> OnGetAsync(
+        long id,
+        [FromQuery(Name = "mode")] AttemptMode? mode,
+        [FromQuery(Name = "topik")] long? topic,
+        [FromQuery(Name = "jumlah")] int? count,
+        CancellationToken cancellationToken)
     {
         if (await LoadAsync(id, cancellationToken) is { } redirect)
         {
@@ -61,6 +69,26 @@ public sealed class StartModel(GetSessionSetup getSetup, StartAttempt startAttem
             ShuffleQuestions = Setup.Preset.ShuffleQuestions,
             ShuffleOptions = Setup.Preset.ShuffleOptions,
         };
+        if (mode is AttemptMode.Practice or AttemptMode.Simulation)
+        {
+            Form.Mode = mode.Value;
+        }
+
+        var available = Setup.AvailableCount;
+        if (topic is { } topicId && Setup.Topics.FirstOrDefault(t => t.Id == topicId) is { } chosen)
+        {
+            Form.Mode = AttemptMode.Practice;
+            Form.TopicIds = [topicId];
+            available = chosen.QuestionCount;
+            count ??= Math.Min(20, available);
+        }
+
+        if (count is > 0 && Form.Mode == AttemptMode.Practice)
+        {
+            Form.QuestionCount = Math.Min(count.Value, available);
+            Form.Untimed = true;
+        }
+
         return Page();
     }
 

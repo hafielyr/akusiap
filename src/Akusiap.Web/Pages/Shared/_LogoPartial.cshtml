@@ -1,14 +1,14 @@
 @* LatihanSoal logo (BRD-10, D-118): the owner's hand-inked column (Assets/pro-b-ink.svg and pro-b-white.svg, "Concept B"),
    a fluted pillar that stands on a stack of books, because practice is the pillar of success. Both asset files hold the
-   same path in ink #14181C and white, so wwwroot/img/logo-mark.svg holds it once as a symbol with fill="currentColor"
-   and .logo-mark picks the colour: ink on the light theme, white on the dark one. The path is about 2 KB and the layout
-   shows the logo twice, so it lives in that cached file rather than in every page (catalog HTML budget). The viewBox is
-   cropped to the drawing with 2 units of margin. The wordmark stacks LATIHAN over a light blue SOAL. favicon.svg and
-   favicon.ico use the same mark. *@
-@inject Microsoft.AspNetCore.Mvc.ViewFeatures.IFileVersionProvider Versions
+   same path in ink #14181C and white, so it lives once in wwwroot/img/logo-mark.svg (symbol "mark", fill="currentColor")
+   and .logo-mark picks the colour: ink on the light theme, white on the dark one. The page references the file instead
+   of inlining the 2 KB path in the header and the footer, so pages stay within the HTML budget (OPS-01) and the browser
+   caches the mark. The viewBox is cropped to the drawing with 2 units of margin. The wordmark stacks LATIHAN over a light
+   blue SOAL. favicon.svg and favicon.ico use the same mark. *@
 <span class="inline-flex items-center gap-1.5" data-testid="logo">
-  <svg aria-hidden="true" viewBox="37.8 17.5 168.6 218.8" width="31" height="40" class="logo-mark h-10 w-auto shrink-0">
-    <use href="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/img/logo-mark.svg")#mark" />
+  @* The outer viewBox starts at 0 0 with the drawing's size: <use> fills it and the symbol's own viewBox crops the mark. *@
+  <svg aria-hidden="true" viewBox="0 0 168.6 218.8" width="31" height="40" class="logo-mark h-10 w-auto shrink-0">
+    <use href="/img/logo-mark.svg#mark" />
   </svg>
   <span class="flex flex-col text-base leading-none font-bold tracking-wide uppercase">
     <span class="text-slate-900">Latihan</span>

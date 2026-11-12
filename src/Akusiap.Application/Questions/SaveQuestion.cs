@@ -70,6 +70,8 @@ public sealed class SaveQuestion(IAppDbContext db, IClock clock)
         question.Hint = TextRules.Clean(request.Hint);
         question.Difficulty = request.Difficulty;
         question.SourceNote = TextRules.Clean(request.SourceNote);
+        question.Origin = request.Origin;
+        question.SourceUrl = TextRules.Clean(request.SourceUrl);
         question.Status = request.Status!.Value;
         question.UpdatedAt = now;
 
@@ -113,6 +115,7 @@ public sealed class SaveQuestion(IAppDbContext db, IClock clock)
             option.Text = TextRules.Clean(input.Text)!;
             option.IsCorrect = input.IsCorrect;
             option.SortOrder = i + 1;
+            option.Points = input.Points;
         }
 
         return null;

@@ -46,10 +46,11 @@ public sealed record FlashcardSummary(long AttemptId, string? Title, int Total, 
 /// interval (SRS-02, D-87). Only questions the learner can fully use now are offered: an exam deck needs Full, Owner or Admin access, and
 /// "Kartu saya" keeps a card only while one of its exams still gives that access (trial access doesn't count), or
 /// while it is the learner's own Active question (SRS-01).
-/// Rating a card runs <see cref="Sm2Scheduler"/>, writes a <see cref="ReviewLog"/> and moves to the next card; after the
+/// Rating a card runs <see cref="Sm2Scheduler"/> (due no later than the day before an exam goal's date, PLN-03), writes a
+/// <see cref="ReviewLog"/> and moves to the next card; after the
 /// last card the set is closed and summarised.
 /// </summary>
-public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlements, ExamQuestionScope questionScope, ICurrentUser currentUser, IClock clock, Gamification.Badges badges)
+public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlements, ExamQuestionScope questionScope, ICurrentUser currentUser, IClock clock, Gamification.Badges badges, Planning.ExamDayCap examDayCap)
 {
     public const int SetSize = 10;
     public const string Empty = "Flashcards.Empty";
@@ -260,7 +261,8 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
             db.ReviewCards.Add(card);
         }
 
-        Sm2Scheduler.Apply(card, rating, now);
+        // PLN-03: a card for an exam with a goal comes back before the exam day (D-123).
+        Sm2Scheduler.Apply(card, rating, now, await examDayCap.ForQuestionAsync(userId, item.QuestionId, now, cancellationToken).ConfigureAwait(false));
         item.IsAnswered = true;
         item.IsCorrect = rating is ReviewRating.Good or ReviewRating.Easy;
         item.AnsweredAt = now;

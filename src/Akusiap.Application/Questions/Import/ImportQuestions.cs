@@ -125,6 +125,8 @@ public sealed class ImportQuestions(
                 Hint = TextRules.Clean(request.Hint),
                 Difficulty = request.Difficulty,
                 SourceNote = TextRules.Clean(request.SourceNote),
+                Origin = request.Origin,
+                SourceUrl = TextRules.Clean(request.SourceUrl),
                 Status = request.Status!.Value,
                 CreatedAt = now,
                 UpdatedAt = now,
@@ -136,6 +138,7 @@ public sealed class ImportQuestions(
                     Text = TextRules.Clean(request.Options[i].Text)!,
                     IsCorrect = request.Options[i].IsCorrect,
                     SortOrder = i + 1,
+                    Points = request.Options[i].Points,
                 });
             }
 

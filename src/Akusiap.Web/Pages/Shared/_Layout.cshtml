@@ -21,7 +21,7 @@
   var pageTitle = ViewData["Title"] is string title ? $"{title} · {Brand.Name}" : Brand.Name;
   var description = ViewData["Description"] as string ?? T["Site.Description"].Value;
   var siteBase = string.IsNullOrWhiteSpace(Site.Value.BaseUrl) ? $"{Context.Request.Scheme}://{Context.Request.Host}" : Site.Value.BaseUrl.TrimEnd('/');
-  var mainLinks = new (string Href, string Label)[] { ("/ujian", T["Nav.Catalog"].Value), ("/cari", T["Nav.Search"].Value), ("/harga", T["Nav.Pricing"].Value) };
+  var mainLinks = new (string Href, string Label)[] { ("/jadwal-tes", T["Nav.Tests"].Value), ("/ujian", T["Nav.Catalog"].Value), ("/cari", T["Nav.Search"].Value), ("/harga", T["Nav.Pricing"].Value) };
 }
 <!DOCTYPE html>
 <html lang="@currentCulture.TwoLetterISOLanguageName">
@@ -116,7 +116,8 @@
       </div>
       <nav aria-label="@T["Footer.Explore"]" class="flex flex-col">
         <p class="pb-1 font-semibold text-slate-900">@T["Footer.Explore"]</p>
-        <a href="/ujian" class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Nav.Catalog"]</a>
+        <a href="/jadwal-tes" class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Nav.Tests"]</a>
+        <a href="/ujian"class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Nav.Catalog"]</a>
         <a href="/cari" class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Nav.Search"]</a>
         <a href="/harga" class="inline-flex min-h-11 items-center hover:text-brand-700">@T["Nav.Pricing"]</a>
         @if (!string.IsNullOrWhiteSpace(Support.Value.WhatsAppNumber))

@@ -146,6 +146,15 @@
   <data name="Admin.Question.Difficulty" xml:space="preserve"><value>Tingkat kesulitan</value></data>
   <data name="Admin.Question.Status" xml:space="preserve"><value>Status</value></data>
   <data name="Admin.Question.SourceNote" xml:space="preserve"><value>Sumber kisi-kisi (opsional)</value></data>
+  <data name="Admin.Question.Origin" xml:space="preserve"><value>Asal soal</value></data>
+  <data name="Admin.Question.SourceUrl" xml:space="preserve"><value>Link sumber (opsional)</value></data>
+  <data name="Admin.QuestionOrigin.Original" xml:space="preserve"><value>Buatan sendiri</value></data>
+  <data name="Admin.QuestionOrigin.ThirdParty" xml:space="preserve"><value>Buatan orang lain</value></data>
+  <data name="Admin.Questions.OriginUnset" xml:space="preserve"><value>Belum dicatat</value></data>
+  <data name="Admin.Questions.OriginHelp" xml:space="preserve"><value>Diambil dari buku, situs, atau repo orang lain? Pilih Buatan orang lain dan tempel linknya.</value></data>
+  <data name="Admin.Questions.OriginInvalid" xml:space="preserve"><value>Pilih asal soal dari daftar.</value></data>
+  <data name="Admin.Questions.SourceUrlInvalid" xml:space="preserve"><value>Link harus diawali http:// atau https://.</value></data>
+  <data name="Admin.Import.OriginUnknown" xml:space="preserve"><value>Asal soal &quot;{0}&quot; tidak dikenal. Tulis Sendiri atau Orang lain.</value></data>
   <data name="Admin.QuestionType.SingleChoice" xml:space="preserve"><value>Pilihan ganda</value></data>
   <data name="Admin.QuestionTypeName.SingleChoice" xml:space="preserve"><value>pilihan ganda</value></data>
   <data name="Admin.QuestionType.MultiSelect" xml:space="preserve"><value>Pilihan ganda kompleks</value></data>
@@ -1219,15 +1228,159 @@
   <data name="Goals.ExamPageSet" xml:space="preserve"><value>Pasang target ujian</value></data>
   <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Isi tanggal ujian Anda untuk hitung mundur.</value></data>
   <data name="Goals.ExamPageChange" xml:space="preserve"><value>Ubah target</value></data>
-  <data name="Home.Fact.Cards" xml:space="preserve"><value>Soal salah jadi kartu hafalan</value></data>
-  <data name="Home.Benefit.Daily.Title" xml:space="preserve"><value>Sedikit, tapi setiap hari</value></data>
-  <data name="Home.Benefit.Daily.Text" xml:space="preserve"><value>Latihan harian berisi 10 soal: kartu yang jatuh tempo dulu, lalu soal baru. Streak mencatat setiap hari Anda berlatih, supaya kebiasaan itu terjaga.</value></data>
-  <data name="Home.Benefit.Goal.Title" xml:space="preserve"><value>Pasang target ujian</value></data>
-  <data name="Home.Benefit.Goal.Text" xml:space="preserve"><value>Setelah daftar, masukkan tanggal ujian Anda dan LatihanSoal menghitung mundur harinya. Anda selalu tahu berapa hari tersisa untuk berlatih.</value></data>
-  <data name="Home.Feature.Pay" xml:space="preserve"><value>Bayar per ujian</value></data>
-  <data name="Home.Feature.Pay.Text" xml:space="preserve"><value>Beli satu ujian sesuai masa aksesnya, atau berlangganan semua ujian. Lewat QRIS atau virtual account.</value></data>
-  <data name="Home.Feature.Light" xml:space="preserve"><value>Ringan di HP</value></data>
-  <data name="Home.Feature.Light.Text" xml:space="preserve"><value>Jawaban tersimpan otomatis, jadi progres tidak hilang saat sinyal putus.</value></data>
-  <data name="Home.Faq.Daily.Q" xml:space="preserve"><value>Berapa lama saya perlu berlatih setiap hari?</value></data>
-  <data name="Home.Faq.Daily.A" xml:space="preserve"><value>Mulai dari latihan harian: 10 soal, kartu yang jatuh tempo dulu, lalu soal baru. Yang paling menentukan adalah rutinnya, jadi usahakan berlatih setiap hari dan jaga streak Anda.</value></data>
+  <data name="Plan.Title" xml:space="preserve"><value>Tugas hari ini</value></data>
+  <data name="Plan.New" xml:space="preserve"><value>Soal baru</value></data>
+  <data name="Plan.Cards" xml:space="preserve"><value>Kartu ulasan</value></data>
+  <data name="Plan.Progress" xml:space="preserve"><value>{0} dari {1} soal sudah dikerjakan · {2} hari belajar lagi</value></data>
+  <data name="Plan.ReviewPhase" xml:space="preserve"><value>Fase ulasan: tidak ada soal baru. Ulangi kartu sampai hari ujian.</value></data>
+  <data name="Plan.ExamDay" xml:space="preserve"><value>Hari ujian. Tidak ada soal baru hari ini.</value></data>
+  <data name="Plan.OverCap" xml:space="preserve"><value>{0} soal baru per hari, lebih dari {1}. Tanggal ujian sudah dekat untuk soal sebanyak ini.</value></data>
+  <data name="Plan.Start" xml:space="preserve"><value>Mulai tugas</value></data>
+  <data name="Plan.Continue" xml:space="preserve"><value>Lanjutkan tugas</value></data>
+  <data name="Plan.SessionHint" xml:space="preserve"><value>Maksimal {0} soal per sesi.</value></data>
+  <data name="Plan.Done" xml:space="preserve"><value>Tugas hari ini selesai.</value></data>
+  <data name="Plan.NoQuestions" xml:space="preserve"><value>Belum ada soal yang bisa Anda pakai di ujian ini.</value></data>
+  <data name="Plan.NothingToday" xml:space="preserve"><value>Tugas hari ini sudah selesai. Tidak ada kartu yang jatuh tempo.</value></data>
+  <data name="Progress.Title" xml:space="preserve"><value>Progres target</value></data>
+  <data name="Progress.Back" xml:space="preserve"><value>Semua target</value></data>
+  <data name="Progress.Answered" xml:space="preserve"><value>Dikerjakan</value></data>
+  <data name="Progress.Mastered" xml:space="preserve"><value>Dikuasai</value></data>
+  <data name="Progress.Of" xml:space="preserve"><value>{0} dari {1} soal</value></data>
+  <data name="Progress.OnSchedule" xml:space="preserve"><value>Sesuai jadwal</value></data>
+  <data name="Progress.Behind" xml:space="preserve"><value>Tertinggal {0} soal dari jadwal</value></data>
+  <data name="Progress.MasteredHint" xml:space="preserve"><value>Dikuasai artinya jawaban terakhir benar, atau kartunya sudah masuk tahap ulasan. Jawaban salah membuat soal belum dikuasai lagi.</value></data>
+  <data name="Progress.Topics" xml:space="preserve"><value>Per topik, yang paling lemah dulu</value></data>
+  <data name="Progress.TopicLine" xml:space="preserve"><value>Dikerjakan {0}% · Dikuasai {1}%</value></data>
+  <data name="Progress.Link" xml:space="preserve"><value>Progres</value></data>
+  <data name="Progress.LinkLabel" xml:space="preserve"><value>Progres {0}</value></data>
+  <data name="PlanReminder.Subject" xml:space="preserve"><value>Tugas hari ini: {0} soal baru dan {1} kartu ulasan</value></data>
+  <data name="PlanReminder.Intro" xml:space="preserve"><value>Ini tugas belajar Anda hari ini:</value></data>
+  <data name="PlanReminder.Line" xml:space="preserve"><value>{0} ({1}): {2} soal baru, {3} kartu ulasan</value></data>
+  <data name="PlanReminder.Open" xml:space="preserve"><value>Buka tugas hari ini</value></data>
+  <data name="PlanReminder.Footer" xml:space="preserve"><value>Tidak ingin menerima email ini? Matikan di Profil: {0}</value></data>
+  <data name="Profile.PlanReminder" xml:space="preserve"><value>Email pengingat tugas harian</value></data>
+  <data name="Profile.PlanReminderHint" xml:space="preserve"><value>Dikirim pukul 06.00 WIB jika Anda punya target ujian dan ada tugas hari itu.</value></data>
+  <data name="Plan.Simulation" xml:space="preserve"><value>Simulasi terjadwal hari ini</value></data>
+  <data name="Plan.SimulationHint" xml:space="preserve"><value>Satu simulasi penuh sesuai aturan ujian.</value></data>
+  <data name="Plan.SimulationStart" xml:space="preserve"><value>Mulai simulasi</value></data>
+  <data name="Plan.SimulationContinue" xml:space="preserve"><value>Lanjutkan simulasi</value></data>
+  <data name="Plan.SimulationDone" xml:space="preserve"><value>Simulasi hari ini selesai.</value></data>
+  <data name="PlanReminder.LineSimulation" xml:space="preserve"><value>{0} ({1}): {2} soal baru, {3} kartu ulasan, dan 1 simulasi</value></data>
+  <data name="Nav.Tests" xml:space="preserve"><value>Jadwal tes</value></data>
+  <data name="Tests.Title" xml:space="preserve"><value>Jadwal tes kerja</value></data>
+  <data name="Tests.MetaDescription" xml:space="preserve"><value>Tes rekrutmen CPNS, PPPK, BUMN, sekolah kedinasan dan lainnya yang akan datang, dengan tanggal, materi dan paket latihannya.</value></data>
+  <data name="Tests.Lead" xml:space="preserve"><value>Tes rekrutmen yang akan datang, dari yang paling dekat. Buka satu tes untuk melihat materi yang diujikan dan paket latihannya.</value></data>
+  <data name="Tests.Search" xml:space="preserve"><value>Cari tes, misalnya CPNS atau BUMN</value></data>
+  <data name="Tests.Category" xml:space="preserve"><value>Jenis tes</value></data>
+  <data name="Tests.AllCategories" xml:space="preserve"><value>Semua</value></data>
+  <data name="Tests.Category.Cpns" xml:space="preserve"><value>CPNS</value></data>
+  <data name="Tests.Category.Pppk" xml:space="preserve"><value>PPPK</value></data>
+  <data name="Tests.Category.Kedinasan" xml:space="preserve"><value>Sekolah kedinasan</value></data>
+  <data name="Tests.Category.Bumn" xml:space="preserve"><value>BUMN</value></data>
+  <data name="Tests.Category.TniPolri" xml:space="preserve"><value>TNI dan Polri</value></data>
+  <data name="Tests.Category.Banking" xml:space="preserve"><value>Bank dan keuangan</value></data>
+  <data name="Tests.Category.Other" xml:space="preserve"><value>Lainnya</value></data>
+  <data name="Tests.Disclaimer" xml:space="preserve"><value>Tanggal berlabel perkiraan belum diumumkan resmi dan bisa berubah. Selalu cek pengumuman penyelenggara sebelum mendaftar.</value></data>
+  <data name="Tests.Total" xml:space="preserve"><value>{0} tes</value></data>
+  <data name="Tests.Loading" xml:space="preserve"><value>Mencari…</value></data>
+  <data name="Tests.LoadError" xml:space="preserve"><value>Daftar tes gagal dimuat. Periksa koneksi lalu tekan Cari lagi.</value></data>
+  <data name="Tests.NoMatch" xml:space="preserve"><value>Tidak ada tes yang cocok. Coba kata lain atau pilih Semua.</value></data>
+  <data name="Tests.Empty" xml:space="preserve"><value>Belum ada tes yang akan datang.</value></data>
+  <data name="Tests.NoDateYet" xml:space="preserve"><value>Tanggal belum ada</value></data>
+  <data name="Tests.Status.Official" xml:space="preserve"><value>Resmi</value></data>
+  <data name="Tests.Status.Estimated" xml:space="preserve"><value>Perkiraan</value></data>
+  <data name="Tests.Status.NotAnnounced" xml:space="preserve"><value>Belum diumumkan</value></data>
+  <data name="Tests.TestOn" xml:space="preserve"><value>Tes {0}</value></data>
+  <data name="Tests.RegistrationOn" xml:space="preserve"><value>Pendaftaran {0}</value></data>
+  <data name="Tests.PackageAvailable" xml:space="preserve"><value>Paket latihan tersedia</value></data>
+  <data name="Tests.Today" xml:space="preserve"><value>Hari ini</value></data>
+  <data name="Tests.Passed" xml:space="preserve"><value>Sudah lewat</value></data>
+  <data name="Tests.DaysLeft" xml:space="preserve"><value>H-{0}</value></data>
+  <data name="Tests.DaysLeftEstimated" xml:space="preserve"><value>± {0} hari lagi</value></data>
+  <data name="Tests.Back" xml:space="preserve"><value>Semua jadwal tes</value></data>
+  <data name="Tests.DaysUnit" xml:space="preserve"><value>hari lagi</value></data>
+  <data name="Tests.Registration" xml:space="preserve"><value>Pendaftaran</value></data>
+  <data name="Tests.TestDay" xml:space="preserve"><value>Hari tes</value></data>
+  <data name="Tests.StatusLabel" xml:space="preserve"><value>Status tanggal</value></data>
+  <data name="Tests.Source" xml:space="preserve"><value>Sumber jadwal</value></data>
+  <data name="Tests.Outline" xml:space="preserve"><value>Yang diujikan</value></data>
+  <data name="Tests.Method.Title" xml:space="preserve"><value>Cara belajar dengan paket ini</value></data>
+  <data name="Tests.Method.Tryout" xml:space="preserve"><value>1. Mulai dengan satu tryout</value></data>
+  <data name="Tests.Method.TryoutHint" xml:space="preserve"><value>{0} soal dalam {1} menit dengan tampilan CAT. Nilai TWK, TIU dan TKP langsung dibandingkan dengan ambang batas, jadi kamu tahu subtes mana yang perlu dikejar.</value></data>
+  <data name="Tests.Method.Goal" xml:space="preserve"><value>2. Pasang tanggal tes</value></data>
+  <data name="Tests.Method.GoalHint" xml:space="preserve"><value>Aplikasi membagi soal baru per hari sampai hari tes dan menyisakan 7 hari terakhir untuk mengulang.</value></data>
+  <data name="Tests.Method.Practice" xml:space="preserve"><value>3. Latihan per topik</value></data>
+  <data name="Tests.Method.PracticeHint" xml:space="preserve"><value>Setiap selesai sesi, kamu melihat topik terlemah, kecepatan per soal dan pembahasan tiap jawaban.</value></data>
+  <data name="Tests.Method.Cards" xml:space="preserve"><value>4. Ulangi yang salah</value></data>
+  <data name="Tests.Method.CardsHint" xml:space="preserve"><value>Soal yang salah otomatis jadi flashcard dan muncul lagi sesuai jadwal ulangan sampai kamu menjawabnya dengan benar.</value></data>
+  <data name="Tests.Method.Repeat" xml:space="preserve"><value>5. Tryout lagi tiap minggu</value></data>
+  <data name="Tests.Method.RepeatHint" xml:space="preserve"><value>Rencana belajar menjadwalkan tryout tiap 7 hari, lalu H-7 dan H-3, supaya kamu terbiasa dengan waktu {1} menit.</value></data>
+  <data name="Tests.NoPackage" xml:space="preserve"><value>Belum ada paket latihan untuk tes ini.</value></data>
+  <data name="Tests.Includes.Bank" xml:space="preserve"><value>{0} soal dengan pembahasan ({1})</value></data>
+  <data name="Tests.Includes.Tryout" xml:space="preserve"><value>Tryout {0} soal, {1} menit, dengan nilai per subtes</value></data>
+  <data name="Tests.Includes.Analysis" xml:space="preserve"><value>Analisis tiap sesi: topik terlemah dan kecepatan</value></data>
+  <data name="Tests.Includes.Cards" xml:space="preserve"><value>Flashcard dari soal yang salah</value></data>
+  <data name="Tests.Includes.Plan" xml:space="preserve"><value>Rencana belajar harian sampai hari tes</value></data>
+  <data name="Tests.Study" xml:space="preserve"><value>Alat belajar</value></data>
+  <data name="Tests.Tool.Tryout" xml:space="preserve"><value>Mulai tryout SKD</value></data>
+  <data name="Tests.Tool.Practice" xml:space="preserve"><value>Latihan per topik</value></data>
+  <data name="Tests.Tool.Cards" xml:space="preserve"><value>Buka flashcard</value></data>
+  <data name="Tests.Tool.Plan" xml:space="preserve"><value>Pasang tanggal tes</value></data>
+  <data name="Tests.Tool.PlanSet" xml:space="preserve"><value>Rencana belajar · H-{0}</value></data>
+  <data name="Tests.Buy" xml:space="preserve"><value>Beli paket</value></data>
+  <data name="Tests.SeePackage" xml:space="preserve"><value>Lihat detail paket</value></data>
+  <data name="Tests.ExamPageLink" xml:space="preserve"><value>Jadwal dan materi {0}</value></data>
+  <data name="Tests.ExamPageLinkHint" xml:space="preserve"><value>Tanggal, materi yang diujikan dan cara belajar</value></data>
+  <data name="Skd.Title" xml:space="preserve"><value>Nilai SKD</value></data>
+  <data name="Skd.Passed" xml:space="preserve"><value>Lolos ambang batas di ketiga subtes.</value></data>
+  <data name="Skd.Failed" xml:space="preserve"><value>Belum lolos: setiap subtes harus mencapai ambang batasnya.</value></data>
+  <data name="Skd.PartialNote" xml:space="preserve"><value>Sesi ini bukan tryout lengkap, jadi nilai di bawah adalah perkiraan bila semua soal subtes dijawab dengan ketepatan yang sama.</value></data>
+  <data name="Skd.CorrectOf" xml:space="preserve"><value>{0} dari {1} tepat</value></data>
+  <data name="Skd.PassingGrade" xml:space="preserve"><value>ambang {0}</value></data>
+  <data name="Skd.BarLabel" xml:space="preserve"><value>{0}: nilai {1}, ambang batas {2}</value></data>
+  <data name="Skd.Gap" xml:space="preserve"><value>Kurang {0} poin dari ambang batas.</value></data>
+  <data name="Skd.RulesNote" xml:space="preserve"><value>Aturan nilai dari KepmenPAN-RB No. 321 Tahun 2024. Aturan CPNS 2026 belum terbit.</value></data>
+  <data name="Analysis.Title" xml:space="preserve"><value>Analisis sesi</value></data>
+  <data name="Analysis.Weakest" xml:space="preserve"><value>Topik terlemah: {0} ({1} dari {2} benar).</value></data>
+  <data name="Analysis.AllGood" xml:space="preserve"><value>Tidak ada topik yang tertinggal di sesi ini.</value></data>
+  <data name="Analysis.PaceSlow" xml:space="preserve"><value>Rata-rata {0} detik per soal. Di tes asli kamu punya sekitar {1} detik, jadi latih kecepatan.</value></data>
+  <data name="Analysis.PaceOk" xml:space="preserve"><value>Rata-rata {0} detik per soal, masih di bawah batas tes asli sekitar {1} detik.</value></data>
+  <data name="Analysis.Pace" xml:space="preserve"><value>Rata-rata {0} detik per soal.</value></data>
+  <data name="Analysis.Cards" xml:space="preserve"><value>{0} soal yang salah masuk flashcard dan akan muncul lagi sampai kamu menguasainya.</value></data>
+  <data name="Analysis.PracticeTopic" xml:space="preserve"><value>Latihan {0}</value></data>
+  <data name="Analysis.OpenCards" xml:space="preserve"><value>Ulangi di flashcard</value></data>
+  <data name="Admin.Nav.UpcomingTests" xml:space="preserve"><value>Jadwal tes</value></data>
+  <data name="Admin.UpcomingTests.Title" xml:space="preserve"><value>Jadwal tes</value></data>
+  <data name="Admin.UpcomingTests.Add" xml:space="preserve"><value>Tambah tes</value></data>
+  <data name="Admin.UpcomingTests.Edit" xml:space="preserve"><value>Ubah tes</value></data>
+  <data name="Admin.UpcomingTests.Lead" xml:space="preserve"><value>Tes rekrutmen yang tampil di /jadwal-tes. Hubungkan tes dengan ujian berbayar agar paketnya tampil di halaman tes.</value></data>
+  <data name="Admin.UpcomingTests.Empty" xml:space="preserve"><value>Belum ada tes.</value></data>
+  <data name="Admin.UpcomingTests.Published" xml:space="preserve"><value>Tampil</value></data>
+  <data name="Admin.UpcomingTests.Hidden" xml:space="preserve"><value>Disembunyikan</value></data>
+  <data name="Admin.UpcomingTests.PackageIs" xml:space="preserve"><value>paket: {0}</value></data>
+  <data name="Admin.UpcomingTests.Delete" xml:space="preserve"><value>Hapus tes</value></data>
+  <data name="Admin.UpcomingTests.SlugInvalid" xml:space="preserve"><value>Alamat hanya boleh huruf kecil, angka dan tanda hubung, maksimal {0} karakter.</value></data>
+  <data name="Admin.UpcomingTests.SlugTaken" xml:space="preserve"><value>Alamat ini sudah dipakai tes lain.</value></data>
+  <data name="Admin.UpcomingTests.SourceUrlInvalid" xml:space="preserve"><value>Masukkan link lengkap yang diawali http:// atau https://.</value></data>
+  <data name="Admin.UpcomingTests.OfficialNeedsDate" xml:space="preserve"><value>Jadwal resmi butuh tanggal pendaftaran atau tanggal tes.</value></data>
+  <data name="Admin.UpcomingTests.DatesOrder" xml:space="preserve"><value>Tanggal tes tidak boleh sebelum tanggal pendaftaran.</value></data>
+  <data name="Admin.UpcomingTests.ExamMissing" xml:space="preserve"><value>Ujian ini tidak ada atau bukan ujian aplikasi.</value></data>
+  <data name="Admin.UpcomingTest.Name" xml:space="preserve"><value>Nama tes</value></data>
+  <data name="Admin.UpcomingTest.Slug" xml:space="preserve"><value>Alamat</value></data>
+  <data name="Admin.UpcomingTest.SlugHelp" xml:space="preserve"><value>Bagian akhir link, misalnya cpns-2026 untuk /jadwal-tes/cpns-2026.</value></data>
+  <data name="Admin.UpcomingTest.Organizer" xml:space="preserve"><value>Penyelenggara</value></data>
+  <data name="Admin.UpcomingTest.Category" xml:space="preserve"><value>Jenis tes</value></data>
+  <data name="Admin.UpcomingTest.Summary" xml:space="preserve"><value>Ringkasan satu baris</value></data>
+  <data name="Admin.UpcomingTest.Dates" xml:space="preserve"><value>Jadwal</value></data>
+  <data name="Admin.UpcomingTest.ScheduleStatus" xml:space="preserve"><value>Status tanggal</value></data>
+  <data name="Admin.UpcomingTest.ScheduleNote" xml:space="preserve"><value>Catatan jadwal</value></data>
+  <data name="Admin.UpcomingTest.SourceUrl" xml:space="preserve"><value>Link sumber jadwal</value></data>
+  <data name="Admin.UpcomingTest.Outline" xml:space="preserve"><value>Materi yang diujikan</value></data>
+  <data name="Admin.UpcomingTest.OutlineHelp" xml:space="preserve"><value>Pisahkan bagian dengan satu baris kosong. Baris pertama tiap bagian jadi judul, baris berikutnya jadi poin.</value></data>
+  <data name="Admin.UpcomingTest.Exam" xml:space="preserve"><value>Paket (ujian berbayar)</value></data>
+  <data name="Admin.UpcomingTest.NoExam" xml:space="preserve"><value>Tanpa paket</value></data>
+  <data name="Admin.UpcomingTest.IsPublished" xml:space="preserve"><value>Tampilkan di /jadwal-tes</value></data>
+  <data name="Admin.Question.Points" xml:space="preserve"><value>Poin</value></data>
+  <data name="Admin.Questions.PointsInvalid" xml:space="preserve"><value>Poin pilihan harus diisi untuk semua pilihan atau dikosongkan semua, bernilai 0 sampai {0}, hanya untuk pilihan ganda, dan jawaban benar harus berpoin paling tinggi.</value></data>
+  <data name="Admin.Import.PointsUnreadable" xml:space="preserve"><value>Kolom option_points "{0}" harus berisi satu angka untuk setiap pilihan, misalnya 2,3,5,1,4.</value></data>
 </root>

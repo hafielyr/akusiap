@@ -1,7 +1,7 @@
 @page "/learn/target"
 @model Akusiap.Web.Areas.Learn.Pages.Goals.IndexModel
 @using System.Globalization
-@* Exam goals (PLN-01, D-120): active goals with their countdown, then the form to set or move an exam date. Two
+@* Exam goals (PLN-01, D-120): active goals with their countdown and a link to their progress (PLN-04), then the form to set or move an exam date. Two
    columns on wide screens (BRD-07). *@
 @{
   ViewData["Title"] = T["Goals.Title"].Value;
@@ -46,9 +46,12 @@
                 <span class="block font-semibold">@goal.ExamTitle</span>
                 <span class="block text-sm text-slate-600" data-testid="goal-date">@goal.ExamDate.ToString("d MMM yyyy", CultureInfo.CurrentCulture)</span>
               </span>
-              <form method="post" asp-page-handler="Remove" asp-route-id="@goal.Id">
-                <button type="submit" class="btn btn-secondary" aria-label="@T["Goals.RemoveLabel", goal.ExamTitle]" data-testid="goal-remove">@T["Goals.Remove"]</button>
-              </form>
+              <div class="flex w-full gap-2 sm:w-auto">
+                <a href="/learn/target/@goal.Id" class="btn btn-secondary flex-1 sm:flex-none" aria-label="@T["Progress.LinkLabel", goal.ExamTitle]" data-testid="goal-progress">@T["Progress.Link"]</a>
+                <form method="post" asp-page-handler="Remove" asp-route-id="@goal.Id" class="flex-1 sm:flex-none">
+                  <button type="submit" class="btn btn-secondary w-full" aria-label="@T["Goals.RemoveLabel", goal.ExamTitle]" data-testid="goal-remove">@T["Goals.Remove"]</button>
+                </form>
+              </div>
             </li>
           }
         </ul>

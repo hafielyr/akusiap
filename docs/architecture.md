@@ -25,7 +25,7 @@ All libraries are open source. Hangfire core is LGPL-3.0, which is fine as a NuG
 ```
 Akusiap.slnx
 src/
-  Akusiap.Domain/          entities, enums, pure domain services (EntitlementPolicy, Scoring, Sm2Scheduler, RefundPolicy, AllowancePolicy)
+  Akusiap.Domain/          entities, enums, pure domain services (EntitlementPolicy, Scoring, SkdScoring, Sm2Scheduler, RefundPolicy, AllowancePolicy)
   Akusiap.Application/     use cases grouped by feature folder; interfaces (IAppDbContext, IPaymentGateway, IEmailSender, IClock)
   Akusiap.Infrastructure/  AppDbContext, EF configurations, migrations, DOKU client, email, Hangfire jobs, importers
   Akusiap.Web/             Razor Pages (Areas: Admin, Account, Learn), htmx partials, Alpine components, webhook endpoints
@@ -50,8 +50,12 @@ Rules:
 |---|---|
 | Exam.OwnerKind | App, Teacher, Learner |
 | Exam.Status | Draft, Published, Unpublished, TakenDown |
+| Exam.ScoringScheme | Standard, Skd (CPNS-03; D-130) |
+| UpcomingTest.Category | Cpns, Pppk, Kedinasan, Bumn, TniPolri, Banking, Other (CPNS-01; D-129) |
+| UpcomingTest.ScheduleStatus | Official, Estimated, NotAnnounced (CPNS-01; D-129) |
 | Question.QuestionType | SingleChoice, MultiSelect, TrueFalse |
 | Question.Status | Draft, Active, Retired |
+| Question.Origin | Original, ThirdParty (nullable, ADM-T8; D-128) |
 | RulePreset.ShowAnswers | AfterEach, AfterSubmit, Never |
 | ExamPurchase.Status | AwaitingPayment, Active, Expired, Abandoned, Refunded |
 | Subscription.Status | AwaitingPayment, Active, Expired, Abandoned, Refunded |

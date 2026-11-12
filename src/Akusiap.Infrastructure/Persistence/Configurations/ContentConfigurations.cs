@@ -67,6 +67,7 @@ public sealed class ExamConfiguration : IEntityTypeConfiguration<Exam>
             t.HasCheckConstraint("ck_exams_shared_has_token", "NOT is_shared OR share_token IS NOT NULL");
         });
         builder.HasIndex(e => e.ShareToken).IsUnique();
+        builder.Property(e => e.ScoringScheme).HasDefaultValue(ScoringScheme.Standard).HasSentinel(ScoringScheme.Standard);
         builder.HasIndex(e => new { e.Status, e.SubjectId }, "ix_exams_catalog")
             .HasDatabaseName("ix_exams_catalog").HasFilter("owner_kind = 'App'");
         builder.HasOne(e => e.OwnerUser).WithMany().HasForeignKey(e => e.OwnerUserId).OnDelete(DeleteBehavior.NoAction);
@@ -84,5 +85,26 @@ public sealed class ExamQuestionConfiguration : IEntityTypeConfiguration<ExamQue
         builder.HasOne(eq => eq.Question).WithMany().HasForeignKey(eq => eq.QuestionId).OnDelete(DeleteBehavior.Cascade);
         builder.HasIndex(eq => eq.ExamId, "ix_exam_questions_trial")
             .HasDatabaseName("ix_exam_questions_trial").HasFilter("is_trial");
+    }
+}
+
+/// <summary>Per-option points (CPNS-03, D-130): 0–5 or null.</summary>
+public sealed class QuestionOptionConfiguration : IEntityTypeConfiguration<QuestionOption>
+{
+    public void Configure(EntityTypeBuilder<QuestionOption> builder)
+    {
+        builder.ToTable(t => t.HasCheckConstraint("ck_question_options_points", $"points BETWEEN 0 AND {QuestionOption.MaxPoints}"));
+    }
+}
+
+/// <summary>Upcoming hiring tests (CPNS-01, D-129). Not in schema.sql.</summary>
+public sealed class UpcomingTestConfiguration : IEntityTypeConfiguration<UpcomingTest>
+{
+    public void Configure(EntityTypeBuilder<UpcomingTest> builder)
+    {
+        builder.Ignore(t => t.KeyDate);
+        builder.HasIndex(t => t.Slug).IsUnique();
+        builder.HasIndex(t => new { t.IsPublished, t.TestStartsOn });
+        builder.HasOne(t => t.Exam).WithMany().HasForeignKey(t => t.ExamId).OnDelete(DeleteBehavior.SetNull);
     }
 }

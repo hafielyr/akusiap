@@ -1,0 +1,196 @@
+@page "/jadwal-tes/{slug}"
+@model Akusiap.Web.Pages.Tests.DetailModel
+@using Akusiap.Application.Catalog
+@using Akusiap.Domain.Content
+@using Akusiap.Domain.Sessions
+@using Akusiap.Web.Identity
+@using Akusiap.Web.Pages.Exams
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Akusiap.Web.Localization.SharedResource> S
+@* A test's page (CPNS-02). Reading order follows what a job seeker asks: when is it, what is tested, how to prepare.
+   Wide screens put the package in a right column that stays in view (like the exam page, BRD-07); phones show it right
+   after the header, so the price and buttons are never far. Learners with access get the study tools there instead of
+   the buy buttons. *@
+@{
+  var test = Model.Test.Test;
+  var package = Model.Package;
+  ViewData["Title"] = test.Name;
+  ViewData["Description"] = test.Summary ?? T["Tests.MetaDescription"].Value;
+  ViewData["Wide"] = true;
+  var official = test.ScheduleStatus == ScheduleStatus.Official;
+  var returnUrl = TestRoutes.Detail(test.Slug);
+  // The tryout lines and the study steps describe SKD (TWK, TIU, TKP); other packages show only what every exam has.
+  var skd = package?.ScoringScheme == ScoringScheme.Skd;
+}
+
+<article class="space-y-4">
+  <a href="@TestRoutes.List" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">&larr; @T["Tests.Back"]</a>
+
+  <div class="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-6">
+  <div class="contents lg:col-start-1 lg:row-start-1 lg:block lg:space-y-6">
+
+  <header class="panel order-1 space-y-4 px-5 py-6 sm:px-7">
+    <p class="chip">@T[$"Tests.Category.{test.Category}"]</p>
+    <h1 class="text-3xl font-bold leading-tight tracking-tight">@test.Name</h1>
+    <p class="text-slate-600">@test.Organizer</p>
+
+    <div class="flex flex-wrap items-center gap-4 rounded-xl border border-slate-200 bg-white p-4" data-testid="test-countdown-box">
+      @if (test.DaysLeft is { } days && days >= 0)
+      {
+        <p class="min-w-24">
+          <span class="block text-4xl font-bold leading-none tabular-nums @(official ? "text-red-700" : "text-brand-700")" data-testid="test-days">@(days == 0 ? T["Tests.Today"].Value : (official ? "H-" : "± ") + days)</span>
+          <span class="block pt-1 text-sm text-slate-600">@(days == 0 ? null : T["Tests.DaysUnit"].Value)</span>
+        </p>
+      }
+      <dl class="min-w-0 flex-1 space-y-1 text-sm">
+        @if (test.RegistrationOpensOn is { } opens)
+        {
+          <div class="flex flex-wrap gap-x-2"><dt class="font-semibold text-slate-900">@T["Tests.Registration"]</dt><dd class="text-slate-700">@TestRoutes.Date(opens, test.ScheduleStatus)</dd></div>
+        }
+        @if (test.TestStartsOn is { } starts)
+        {
+          <div class="flex flex-wrap gap-x-2"><dt class="font-semibold text-slate-900">@T["Tests.TestDay"]</dt><dd class="text-slate-700">@TestRoutes.Date(starts, test.ScheduleStatus)</dd></div>
+        }
+        <div class="flex flex-wrap gap-x-2"><dt class="font-semibold text-slate-900">@T["Tests.StatusLabel"]</dt><dd class="font-semibold @(official ? "text-green-700" : "text-amber-800")" data-testid="test-status">@T[$"Tests.Status.{test.ScheduleStatus}"]</dd></div>
+      </dl>
+    </div>
+    @if (test.ScheduleNote is not null)
+    {
+      <p class="text-sm text-slate-700" data-testid="test-note">@test.ScheduleNote</p>
+    }
+    @if (Model.Test.SourceUrl is { } source)
+    {
+      <a href="@source" target="_blank" rel="noopener nofollow" class="inline-flex min-h-11 items-center text-sm font-semibold text-brand-700" data-testid="test-source">@T["Tests.Source"] ↗</a>
+    }
+  </header>
+
+  @if (Model.Test.Outline.Count > 0)
+  {
+    <section class="order-3 space-y-3" aria-labelledby="outline-heading" data-testid="test-outline">
+      <h2 id="outline-heading" class="section-title">@T["Tests.Outline"]</h2>
+      <div class="grid gap-3 sm:grid-cols-2">
+        @for (var i = 0; i < Model.Test.Outline.Count; i++)
+        {
+          var block = Model.Test.Outline[i];
+          @* The first block (the test format) spans the full width: it frames the subtests below it. *@
+          <section class="card space-y-2 p-4 @(i == 0 ? "sm:col-span-2" : null)">
+            <h3 class="font-bold text-slate-900">@block.Heading</h3>
+            @if (block.Items.Count > 0)
+            {
+              <ul class="list-disc space-y-1 pl-5 text-sm text-slate-700">
+                @foreach (var item in block.Items)
+                {
+                  <li>@item</li>
+                }
+              </ul>
+            }
+          </section>
+        }
+      </div>
+    </section>
+  }
+
+  @if (package is not null && skd)
+  {
+    <section class="order-4 space-y-3" aria-labelledby="method-heading" data-testid="test-method">
+      <h2 id="method-heading" class="section-title">@T["Tests.Method.Title"]</h2>
+      <ol class="card divide-y divide-slate-200">
+        @foreach (var step in new[] { "Tryout", "Goal", "Practice", "Cards", "Repeat" })
+        {
+          <li class="space-y-0.5 px-4 py-3">
+            <p class="font-semibold text-slate-900">@T[$"Tests.Method.{step}"]</p>
+            <p class="text-sm text-slate-600">@T[$"Tests.Method.{step}Hint", SkdScoring.QuestionCount, SkdScoring.TimeLimitMinutes]</p>
+          </li>
+        }
+      </ol>
+    </section>
+  }
+  </div>
+
+  <aside class="order-2 space-y-4 lg:sticky lg:top-20 lg:col-start-2 lg:row-start-1" data-testid="test-package-box">
+    @if (package is null)
+    {
+      <p class="card p-4 text-sm text-slate-600" data-testid="test-no-package">@T["Tests.NoPackage"]</p>
+    }
+    else
+    {
+      <section class="card space-y-4 p-4" aria-labelledby="package-heading">
+        <div class="space-y-1">
+          <h2 id="package-heading" class="text-lg font-bold leading-snug">@package.Title</h2>
+          @if (!package.IsFree)
+          {
+            <p class="flex flex-wrap items-baseline gap-x-2">
+              <span class="text-2xl font-bold text-slate-900" data-testid="package-price"><idr value="@(package.PriceIdr ?? 0)" /></span>
+              <span class="text-sm text-slate-600">@T["Catalog.AccessDays", package.AccessDays ?? 0]</span>
+            </p>
+          }
+          @if (package.HasFullAccess)
+          {
+            <p class="text-sm font-semibold text-green-700" data-testid="package-owned">@T["Catalog.YourAccess"]</p>
+          }
+        </div>
+
+        <ul class="space-y-2 text-sm text-slate-700" data-testid="package-includes">
+          <li>@T["Tests.Includes.Bank", package.ActiveQuestionCount, string.Join(", ", package.Topics.OrderBy(t => SkdScoring.SubtestOf(t.Name) is { } s ? (int)s : 9).Select(t => $"{t.Name.Split('(').Last().TrimEnd(')')} {t.QuestionCount}"))]</li>
+          @if (skd)
+          {
+            <li>@T["Tests.Includes.Tryout", SkdScoring.QuestionCount, SkdScoring.TimeLimitMinutes]</li>
+          }
+          <li>@T["Tests.Includes.Analysis"]</li>
+          <li>@T["Tests.Includes.Cards"]</li>
+          <li>@T["Tests.Includes.Plan"]</li>
+        </ul>
+
+        @if (Model.CanStudy)
+        {
+          <nav aria-label="@T["Tests.Study"]" class="space-y-2" data-testid="study-tools">
+            <a href="@ExamRoutes.Start(package.Id)?mode=Simulation" class="btn btn-primary w-full" data-testid="tool-tryout">@(skd ? T["Tests.Tool.Tryout"] : T["Plan.SimulationStart"])</a>
+            <a href="@ExamRoutes.Start(package.Id)?mode=Practice&jumlah=20" class="btn btn-secondary w-full" data-testid="tool-practice">@T["Tests.Tool.Practice"]</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+              <form method="post" asp-area="Learn" asp-page="/Flashcards/Index" asp-page-handler="Start">
+                <input type="hidden" name="examId" value="@package.Id" />
+                <button type="submit" class="btn btn-secondary w-full" data-testid="tool-cards">@T["Tests.Tool.Cards"]</button>
+              </form>
+              <a href="@Model.GoalUrl(package.Id)" class="btn btn-secondary w-full" data-testid="tool-plan">
+                @if (Model.Goal is { } goal)
+                {
+                  @T["Tests.Tool.PlanSet", goal.DaysLeft]
+                }
+                else
+                {
+                  @T["Tests.Tool.Plan"]
+                }
+              </a>
+            }
+          </nav>
+        }
+        else
+        {
+          <nav aria-label="@T["ExamPage.Actions"]" class="space-y-2" data-testid="package-ctas">
+            @foreach (var cta in package.Ctas)
+            {
+              var css = cta == package.Ctas[0] ? "btn btn-primary w-full" : "btn btn-secondary w-full";
+              switch (cta)
+              {
+                case ExamCta.Buy:
+                  <a href="@ExamRoutes.Checkout(package.Id)" class="@css" data-testid="cta-buy">@T["Tests.Buy"] · <idr value="@(package.PriceIdr ?? 0)" /></a>
+                  break;
+                case ExamCta.StartTrial:
+                  <a href="@ExamRoutes.Start(package.Id)" class="@css" data-testid="cta-trial">@T["ExamPage.Trial", package.TrialQuestionCount]</a>
+                  break;
+                case ExamCta.Subscribe:
+                  <a href="@ExamRoutes.PlansFor(package.Id)" class="@css" data-testid="cta-subscribe">@T["ExamPage.Subscribe"]</a>
+                  break;
+                case ExamCta.RegisterToUnlock:
+                  <a href="@AccountRoutes.WithReturnUrl(AccountRoutes.Register, returnUrl)" class="@css" data-testid="cta-register">@T["ExamPage.Register"]</a>
+                  break;
+              }
+            }
+            <a href="@ExamRoutes.Detail(package.Id)" class="inline-flex min-h-11 items-center text-sm font-semibold text-brand-700" data-testid="package-detail">@T["Tests.SeePackage"]</a>
+          </nav>
+        }
+      </section>
+    }
+  </aside>
+  </div>
+</article>

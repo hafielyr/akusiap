@@ -24,6 +24,10 @@ public sealed class QuestionInput
 
     public string? SourceNote { get; set; }
 
+    public QuestionOrigin? Origin { get; set; }
+
+    public string? SourceUrl { get; set; }
+
     public QuestionStatus? Status { get; set; } = QuestionStatus.Draft;
 
     public List<OptionInput> Options { get; set; } = [];
@@ -48,8 +52,10 @@ public sealed class QuestionInput
             Hint = question.Hint,
             Difficulty = question.Difficulty,
             SourceNote = question.SourceNote,
+            Origin = question.Origin,
+            SourceUrl = question.SourceUrl,
             Status = question.Status,
-            Options = question.Options.Select(o => new OptionInput { Id = o.Id, Text = o.Text, IsCorrect = o.IsCorrect }).ToList(),
+            Options = question.Options.Select(o => new OptionInput { Id = o.Id, Text = o.Text, IsCorrect = o.IsCorrect, Points = o.Points }).ToList(),
         };
     }
 
@@ -64,7 +70,9 @@ public sealed class QuestionInput
         Difficulty,
         SourceNote,
         Status,
-        Options.Select(o => new OptionRequest(o.Id, o.Text, o.IsCorrect)).ToList());
+        Options.Select(o => new OptionRequest(o.Id, o.Text, o.IsCorrect, o.Points)).ToList(),
+        Origin,
+        SourceUrl);
 }
 
 public sealed class OptionInput
@@ -74,6 +82,9 @@ public sealed class OptionInput
     public string? Text { get; set; }
 
     public bool IsCorrect { get; set; }
+
+    /// <summary>0–5 points for picking this option (TKP, CPNS-03); empty on right/wrong questions.</summary>
+    public int? Points { get; set; }
 }
 
 /// <summary>What <c>_QuestionFormPartial</c> needs besides the posted fields.</summary>
@@ -86,7 +97,7 @@ public sealed record QuestionFormView(QuestionInput Input, IReadOnlyList<TopicOp
         new
         {
             type = (Input.QuestionType ?? QuestionType.SingleChoice).ToString(),
-            options = Input.Options.Select(o => new { id = o.Id, text = o.Text ?? string.Empty, isCorrect = o.IsCorrect }),
+            options = Input.Options.Select(o => new { id = o.Id, text = o.Text ?? string.Empty, isCorrect = o.IsCorrect, points = o.Points }),
             trueText = QuestionValidator.TrueText,
             falseText = QuestionValidator.FalseText,
             maxOptions = Enum.GetValues<QuestionType>().ToDictionary(t => t.ToString(), t => QuestionValidator.OptionCountFor(t).Max),

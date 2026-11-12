@@ -21,7 +21,8 @@ public sealed record CatalogExamDetail(
     int ActiveQuestionCount,
     int TrialQuestionCount,
     IReadOnlyList<CatalogTopic> Topics,
-    AccessDecision Decision)
+    AccessDecision Decision,
+    ScoringScheme ScoringScheme = ScoringScheme.Standard)
 {
     public IReadOnlyList<ExamCta> Ctas => ExamCtas.For(Decision);
 
@@ -49,6 +50,7 @@ public sealed class GetCatalogExam(IAppDbContext db, IEntitlementService entitle
                 e.IsFree,
                 e.PriceIdr,
                 e.AccessDays,
+                e.ScoringScheme,
                 e.OwnerUserId,
                 e.OwnerKind,
                 e.Status,
@@ -92,6 +94,7 @@ public sealed class GetCatalogExam(IAppDbContext db, IEntitlementService entitle
             row.ActiveQuestionCount,
             row.TrialQuestionCount,
             [.. topics.Select(t => new CatalogTopic(t.Name, t.Count))],
-            decision);
+            decision,
+            row.ScoringScheme);
     }
 }

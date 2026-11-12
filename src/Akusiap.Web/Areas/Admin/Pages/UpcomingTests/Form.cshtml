@@ -1,0 +1,124 @@
+@page "/admin/jadwal-tes/form/{id:long?}"
+@model Akusiap.Web.Areas.Admin.Pages.UpcomingTests.FormModel
+@using Akusiap.Domain.Content
+@* Add or edit an upcoming test (CPNS-01). Errors come from UpcomingTestRules and show under their field. *@
+@{
+  var isNew = Model.Id is null;
+  ViewData["Title"] = (isNew ? T["Admin.UpcomingTests.Add"] : T["Admin.UpcomingTests.Edit"]).Value;
+  var input = Model.Input;
+  var modelState = ViewContext.ViewData.ModelState;
+  string? ErrorFor(string field) => modelState[$"Input.{field}"]?.Errors.FirstOrDefault()?.ErrorMessage;
+  string? Invalid(string field) => ErrorFor(field) is null ? null : "true";
+}
+
+<section class="space-y-4">
+  <a href="/admin/jadwal-tes" class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700">← @T["Admin.UpcomingTests.Title"]</a>
+  <h1 class="text-2xl font-bold leading-tight">@ViewData["Title"]</h1>
+
+  <form method="post" class="space-y-4" novalidate data-testid="test-form">
+    <div asp-validation-summary="ModelOnly" class="field-error" role="alert"></div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="space-y-1">
+        <label for="Input_Name" class="label">@T["Admin.UpcomingTest.Name"]</label>
+        <input id="Input_Name" name="Input.Name" value="@input.Name" maxlength="150" class="input" aria-invalid="@Invalid("Name")" />
+        @if (ErrorFor("Name") is { } e1) { <span class="field-error">@e1</span> }
+      </div>
+      <div class="space-y-1">
+        <label for="Input_Slug" class="label">@T["Admin.UpcomingTest.Slug"]</label>
+        <input id="Input_Slug" name="Input.Slug" value="@input.Slug" maxlength="80" class="input" aria-describedby="slug-help" aria-invalid="@Invalid("Slug")" />
+        <p id="slug-help" class="text-sm text-slate-500">@T["Admin.UpcomingTest.SlugHelp"]</p>
+        @if (ErrorFor("Slug") is { } e2) { <span class="field-error" data-testid="error-slug">@e2</span> }
+      </div>
+      <div class="space-y-1">
+        <label for="Input_Organizer" class="label">@T["Admin.UpcomingTest.Organizer"]</label>
+        <input id="Input_Organizer" name="Input.Organizer" value="@input.Organizer" maxlength="150" class="input" aria-invalid="@Invalid("Organizer")" />
+        @if (ErrorFor("Organizer") is { } e3) { <span class="field-error">@e3</span> }
+      </div>
+      <div class="space-y-1">
+        <label for="Input_Category" class="label">@T["Admin.UpcomingTest.Category"]</label>
+        <select id="Input_Category" name="Input.Category" class="input" aria-invalid="@Invalid("Category")">
+          <option value="">–</option>
+          @foreach (var category in Enum.GetValues<UpcomingTestCategory>())
+          {
+            <option value="@category" selected="@(input.Category == category)">@T[$"Tests.Category.{category}"]</option>
+          }
+        </select>
+        @if (ErrorFor("Category") is { } e4) { <span class="field-error">@e4</span> }
+      </div>
+    </div>
+
+    <div class="space-y-1">
+      <label for="Input_Summary" class="label">@T["Admin.UpcomingTest.Summary"]</label>
+      <input id="Input_Summary" name="Input.Summary" value="@input.Summary" maxlength="300" class="input" aria-invalid="@Invalid("Summary")" />
+      @if (ErrorFor("Summary") is { } e5) { <span class="field-error">@e5</span> }
+    </div>
+
+    <fieldset class="grid gap-4 rounded-xl border border-slate-200 p-4 sm:grid-cols-3">
+      <legend class="label px-1">@T["Admin.UpcomingTest.Dates"]</legend>
+      <div class="space-y-1">
+        <label for="Input_RegistrationOpensOn" class="label">@T["Tests.Registration"]</label>
+        <input id="Input_RegistrationOpensOn" name="Input.RegistrationOpensOn" type="date" value="@input.RegistrationOpensOn?.ToString("yyyy-MM-dd")" class="input" />
+      </div>
+      <div class="space-y-1">
+        <label for="Input_TestStartsOn" class="label">@T["Tests.TestDay"]</label>
+        <input id="Input_TestStartsOn" name="Input.TestStartsOn" type="date" value="@input.TestStartsOn?.ToString("yyyy-MM-dd")" class="input" aria-invalid="@Invalid("TestStartsOn")" />
+        @if (ErrorFor("TestStartsOn") is { } e6) { <span class="field-error">@e6</span> }
+      </div>
+      <div class="space-y-1">
+        <label for="Input_ScheduleStatus" class="label">@T["Admin.UpcomingTest.ScheduleStatus"]</label>
+        <select id="Input_ScheduleStatus" name="Input.ScheduleStatus" class="input" aria-invalid="@Invalid("ScheduleStatus")">
+          @foreach (var status in Enum.GetValues<ScheduleStatus>())
+          {
+            <option value="@status" selected="@(input.ScheduleStatus == status)">@T[$"Tests.Status.{status}"]</option>
+          }
+        </select>
+        @if (ErrorFor("ScheduleStatus") is { } e7) { <span class="field-error">@e7</span> }
+      </div>
+      <div class="space-y-1 sm:col-span-3">
+        <label for="Input_ScheduleNote" class="label">@T["Admin.UpcomingTest.ScheduleNote"]</label>
+        <input id="Input_ScheduleNote" name="Input.ScheduleNote" value="@input.ScheduleNote" maxlength="300" class="input" aria-invalid="@Invalid("ScheduleNote")" />
+        @if (ErrorFor("ScheduleNote") is { } e8) { <span class="field-error">@e8</span> }
+      </div>
+      <div class="space-y-1 sm:col-span-3">
+        <label for="Input_SourceUrl" class="label">@T["Admin.UpcomingTest.SourceUrl"]</label>
+        <input id="Input_SourceUrl" name="Input.SourceUrl" type="url" value="@input.SourceUrl" maxlength="1000" class="input" aria-invalid="@Invalid("SourceUrl")" />
+        @if (ErrorFor("SourceUrl") is { } e9) { <span class="field-error">@e9</span> }
+      </div>
+    </fieldset>
+
+    <div class="space-y-1">
+      <label for="Input_Outline" class="label">@T["Admin.UpcomingTest.Outline"]</label>
+      <textarea id="Input_Outline" name="Input.Outline" rows="10" maxlength="8000" class="input font-mono text-sm" aria-describedby="outline-help" aria-invalid="@Invalid("Outline")">@input.Outline</textarea>
+      <p id="outline-help" class="text-sm text-slate-500">@T["Admin.UpcomingTest.OutlineHelp"]</p>
+      @if (ErrorFor("Outline") is { } e10) { <span class="field-error">@e10</span> }
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="space-y-1">
+        <label for="Input_ExamId" class="label">@T["Admin.UpcomingTest.Exam"]</label>
+        <select id="Input_ExamId" name="Input.ExamId" class="input" aria-invalid="@Invalid("ExamId")">
+          <option value="">@T["Admin.UpcomingTest.NoExam"]</option>
+          @foreach (var exam in Model.Exams)
+          {
+            <option value="@exam.Id" selected="@(input.ExamId == exam.Id)">@exam.Title (@T[$"Admin.ExamStatus.{exam.Status}"])</option>
+          }
+        </select>
+        @if (ErrorFor("ExamId") is { } e11) { <span class="field-error">@e11</span> }
+      </div>
+      <label class="toggle-tile self-end">
+        <input type="checkbox" name="Input.IsPublished" value="true" checked="@input.IsPublished" class="size-5 shrink-0 rounded border-slate-300 accent-brand-600" />
+        <span>@T["Admin.UpcomingTest.IsPublished"]</span>
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-full sm:w-auto" data-testid="save-test">@T["Admin.Save"]</button>
+  </form>
+
+  @if (!isNew)
+  {
+    <form method="post" asp-page-handler="Delete" class="border-t border-slate-200 pt-4">
+      <button type="submit" class="btn btn-secondary text-red-700" data-testid="delete-test">@T["Admin.UpcomingTests.Delete"]</button>
+    </form>
+  }
+</section>

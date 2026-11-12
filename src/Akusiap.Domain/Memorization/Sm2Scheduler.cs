@@ -69,12 +69,23 @@ public static class Sm2Scheduler
         return new Sm2Result(next, now.AddDays((double)next.IntervalDays));
     }
 
-    /// <summary>Applies a review to <paramref name="card"/> and returns the log entry to store.</summary>
-    public static ReviewLog Apply(ReviewCard card, ReviewRating rating, DateTime now)
+    /// <summary>
+    /// The due date with an exam-day cap applied (PLN-03, D-123): the earlier of the two, but only while the cap is
+    /// still ahead. From the cap on (the day before the exam), SM-2 decides alone, so a card isn't due again at once.
+    /// </summary>
+    public static DateTime CapDue(DateTime dueAt, DateTime? cap, DateTime now) =>
+        cap is { } at && at > now && dueAt > at ? at : dueAt;
+
+    /// <summary>
+    /// Applies a review to <paramref name="card"/> and returns the log entry to store. <paramref name="dueCap"/> moves
+    /// only the due date (see <see cref="CapDue"/>); interval, ease and state still follow SM-2.
+    /// </summary>
+    public static ReviewLog Apply(ReviewCard card, ReviewRating rating, DateTime now, DateTime? dueCap = null)
     {
         ArgumentNullException.ThrowIfNull(card);
         var before = card.IntervalDays;
-        var (next, dueAt) = Review(Sm2State.Of(card), rating, now);
+        var (next, sm2Due) = Review(Sm2State.Of(card), rating, now);
+        var dueAt = CapDue(sm2Due, dueCap, now);
         card.State = next.State;
         card.IntervalDays = next.IntervalDays;
         card.EaseFactor = next.EaseFactor;

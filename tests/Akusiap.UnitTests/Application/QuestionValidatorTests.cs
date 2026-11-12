@@ -192,6 +192,44 @@ public sealed class QuestionValidatorTests
         Assert.Contains(problems, p => p is { Code: QuestionValidator.StatusRequired, Field: QuestionValidator.StatusField });
     }
 
+    [Theory]
+    [InlineData("https://blog.itera.ac.id/30-soal-twk/")]
+    [InlineData("http://example.com/soal?id=1")]
+    [InlineData(" ")]
+    public void A_source_link_may_be_empty_or_a_web_address(string url)
+    {
+        var request = Request(QuestionType.SingleChoice, Options(2, [0])) with { Origin = QuestionOrigin.ThirdParty, SourceUrl = url };
+
+        Assert.Empty(QuestionValidator.Validate(request));
+    }
+
+    [Theory]
+    [InlineData("blog.itera.ac.id/30-soal-twk")]
+    [InlineData("ftp://example.com/soal.txt")]
+    [InlineData("javascript:alert(1)")]
+    [InlineData("/relatif")]
+    public void A_source_link_must_be_an_http_address(string url)
+    {
+        var request = Request(QuestionType.SingleChoice, Options(2, [0])) with { SourceUrl = url };
+
+        var problem = Assert.Single(QuestionValidator.Validate(request));
+        Assert.Equal((QuestionValidator.SourceUrlInvalid, QuestionValidator.SourceUrlField), (problem.Code, problem.Field));
+    }
+
+    [Fact]
+    public void A_source_link_has_a_length_limit_and_the_origin_must_be_known()
+    {
+        var request = Request(QuestionType.SingleChoice, Options(2, [0])) with
+        {
+            Origin = (QuestionOrigin)9,
+            SourceUrl = "https://example.com/" + new string('a', Question.SourceUrlMaxLength),
+        };
+
+        var codes = QuestionValidator.Validate(request).Select(p => p.Code).ToList();
+
+        Assert.Equal([QuestionValidator.OriginInvalid, TextRules.TooLong], codes);
+    }
+
     [Fact]
     public void Every_code_is_a_translation_key()
     {
@@ -200,7 +238,8 @@ public sealed class QuestionValidatorTests
             QuestionValidator.TopicRequired, QuestionValidator.TypeRequired, QuestionValidator.StatusRequired,
             QuestionValidator.DifficultyRange, QuestionValidator.OptionCount, QuestionValidator.ExactlyOneCorrect,
             QuestionValidator.AtLeastOneCorrect, QuestionValidator.TrueFalseOptions, QuestionValidator.OptionTextRequired,
-            QuestionValidator.OptionTooLong, QuestionValidator.OptionDuplicate,
+            QuestionValidator.OptionTooLong, QuestionValidator.OptionDuplicate, QuestionValidator.OriginInvalid,
+            QuestionValidator.SourceUrlInvalid,
         ];
 
         Assert.All(codes, code => Assert.StartsWith("Admin.Questions.", code, StringComparison.Ordinal));

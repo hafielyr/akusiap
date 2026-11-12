@@ -76,6 +76,29 @@ public sealed partial class QuestionImportTests(PostgresFixture database)
     }
 
     [Fact]
+    public async Task Origin_and_source_link_columns_are_saved()
+    {
+        await using var app = new AppFactory(database);
+        await app.SeedReferenceDataAsync();
+        using var admin = await app.CreateSignedInClientAsync(TestData.User().Build(), RoleNames.Admin);
+        var topic = await TopicAsync();
+        var csv = "type,text,option_a,option_b,correct,explanation,topic,origin,source_url\r\n"
+            + $"SingleChoice,Soal tamu {topic},satu,dua,A,Pembahasan.,{topic},Orang lain,https://blog.itera.ac.id/30-soal-twk/\r\n"
+            + $"SingleChoice,Soal tim {topic},satu,dua,B,Pembahasan.,{topic},Sendiri,";
+
+        using var preview = await UploadAsync(admin, csv, "soal.csv");
+        var key = KeyPattern().Match(await preview.Content.ReadAsStringAsync()).Groups[1].Value;
+        using var confirmed = await admin.PostFormAsync(Page, new Dictionary<string, string> { ["key"] = key }, $"{Page}?handler=Confirm");
+
+        Assert.Equal(HttpStatusCode.Redirect, confirmed.StatusCode);
+        await using var db = database.CreateContext();
+        var saved = await db.Questions.Where(q => q.Topic!.Name == topic).Select(q => new { q.Text, q.Origin, q.SourceUrl }).ToListAsync();
+        Assert.Equal(
+            [($"Soal tamu {topic}", (QuestionOrigin?)QuestionOrigin.ThirdParty, (string?)"https://blog.itera.ac.id/30-soal-twk/"), ($"Soal tim {topic}", QuestionOrigin.Original, null)],
+            saved.OrderBy(q => q.Text, StringComparer.Ordinal).Select(q => (q.Text, q.Origin, q.SourceUrl)));
+    }
+
+    [Fact]
     public async Task The_template_downloads_as_xlsx()
     {
         await using var app = new AppFactory(database);
