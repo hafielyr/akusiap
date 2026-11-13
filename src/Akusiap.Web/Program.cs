@@ -54,6 +54,7 @@ builder.Services.AddRazorPages(options =>
     .AddViewLocalization()
     .AddDataAnnotationsLocalization(options =>
         options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)));
+builder.Services.AddLocalizedImplicitRequired();
 builder.Services.Configure<SupportOptions>(builder.Configuration.GetSection(SupportOptions.SectionName));
 builder.Services.Configure<SiteOptions>(builder.Configuration.GetSection(SiteOptions.SectionName));
 builder.Services.AddScoped<AccountEmails>();

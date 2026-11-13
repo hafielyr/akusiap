@@ -1228,6 +1228,17 @@
   <data name="Goals.ExamPageSet" xml:space="preserve"><value>Set an exam goal</value></data>
   <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Add your exam date for a countdown.</value></data>
   <data name="Goals.ExamPageChange" xml:space="preserve"><value>Change goal</value></data>
+  <data name="Home.Fact.Cards" xml:space="preserve"><value>Mistakes become flashcards</value></data>
+  <data name="Home.Benefit.Daily.Title" xml:space="preserve"><value>A little, every day</value></data>
+  <data name="Home.Benefit.Daily.Text" xml:space="preserve"><value>The daily drill has 10 questions: due cards first, then new ones. Your streak records every day you practise, so the habit holds.</value></data>
+  <data name="Home.Benefit.Goal.Title" xml:space="preserve"><value>Set your exam goal</value></data>
+  <data name="Home.Benefit.Goal.Text" xml:space="preserve"><value>Once you sign up, enter your exam date and LatihanSoal counts down the days, so you always know how many are left to practise.</value></data>
+  <data name="Home.Feature.Pay" xml:space="preserve"><value>Pay per exam</value></data>
+  <data name="Home.Feature.Pay.Text" xml:space="preserve"><value>Buy one exam for its access period, or subscribe to all of them. Pay by QRIS or virtual account.</value></data>
+  <data name="Home.Feature.Light" xml:space="preserve"><value>Light on your phone</value></data>
+  <data name="Home.Feature.Light.Text" xml:space="preserve"><value>Answers save as you go, so a dropped signal does not lose your progress.</value></data>
+  <data name="Home.Faq.Daily.Q" xml:space="preserve"><value>How long should I practise each day?</value></data>
+  <data name="Home.Faq.Daily.A" xml:space="preserve"><value>Start with the daily drill: 10 questions, due cards first, then new ones. Regularity matters most, so try to practise every day and keep your streak going.</value></data>
   <data name="Plan.Title" xml:space="preserve"><value>Today's tasks</value></data>
   <data name="Plan.New" xml:space="preserve"><value>New questions</value></data>
   <data name="Plan.Cards" xml:space="preserve"><value>Review cards</value></data>

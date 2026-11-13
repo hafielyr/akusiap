@@ -1228,6 +1228,17 @@
   <data name="Goals.ExamPageSet" xml:space="preserve"><value>Pasang target ujian</value></data>
   <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Isi tanggal ujian Anda untuk hitung mundur.</value></data>
   <data name="Goals.ExamPageChange" xml:space="preserve"><value>Ubah target</value></data>
+  <data name="Home.Fact.Cards" xml:space="preserve"><value>Soal salah jadi kartu hafalan</value></data>
+  <data name="Home.Benefit.Daily.Title" xml:space="preserve"><value>Sedikit, tapi setiap hari</value></data>
+  <data name="Home.Benefit.Daily.Text" xml:space="preserve"><value>Latihan harian berisi 10 soal: kartu yang jatuh tempo dulu, lalu soal baru. Streak mencatat setiap hari Anda berlatih, supaya kebiasaan itu terjaga.</value></data>
+  <data name="Home.Benefit.Goal.Title" xml:space="preserve"><value>Pasang target ujian</value></data>
+  <data name="Home.Benefit.Goal.Text" xml:space="preserve"><value>Setelah daftar, masukkan tanggal ujian Anda dan LatihanSoal menghitung mundur harinya. Anda selalu tahu berapa hari tersisa untuk berlatih.</value></data>
+  <data name="Home.Feature.Pay" xml:space="preserve"><value>Bayar per ujian</value></data>
+  <data name="Home.Feature.Pay.Text" xml:space="preserve"><value>Beli satu ujian sesuai masa aksesnya, atau berlangganan semua ujian. Lewat QRIS atau virtual account.</value></data>
+  <data name="Home.Feature.Light" xml:space="preserve"><value>Ringan di HP</value></data>
+  <data name="Home.Feature.Light.Text" xml:space="preserve"><value>Jawaban tersimpan otomatis, jadi progres tidak hilang saat sinyal putus.</value></data>
+  <data name="Home.Faq.Daily.Q" xml:space="preserve"><value>Berapa lama saya perlu berlatih setiap hari?</value></data>
+  <data name="Home.Faq.Daily.A" xml:space="preserve"><value>Mulai dari latihan harian: 10 soal, kartu yang jatuh tempo dulu, lalu soal baru. Yang paling menentukan adalah rutinnya, jadi usahakan berlatih setiap hari dan jaga streak Anda.</value></data>
   <data name="Plan.Title" xml:space="preserve"><value>Tugas hari ini</value></data>
   <data name="Plan.New" xml:space="preserve"><value>Soal baru</value></data>
   <data name="Plan.Cards" xml:space="preserve"><value>Kartu ulasan</value></data>
