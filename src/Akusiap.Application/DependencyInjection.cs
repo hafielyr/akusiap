@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<GetPlayer>();
         services.AddScoped<SaveAnswer>();
         services.AddScoped<AttemptFinisher>();
+        services.AddScoped<Memorization.WrongAnswerCards>();
         services.AddScoped<SubmitAttempt>();
         services.AddScoped<PracticeHelp>();
         services.AddScoped<GetResult>();
@@ -45,6 +46,7 @@ public static class DependencyInjection
         services.AddScoped<Gamification.WeeklyLeaderboardAwards>();
         services.AddScoped<Planning.StudyGoals>();
         services.AddScoped<Planning.StudyPlans>();
+        services.AddScoped<Planning.LearningAnalysis>();
         services.AddScoped<Planning.ExamDayCap>();
         services.AddScoped<UpcomingTests.UpcomingTests>();
         services.AddScoped<UpcomingTests.ManageUpcomingTests>();

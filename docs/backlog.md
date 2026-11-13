@@ -637,3 +637,38 @@ Owner request (2026-11-09): show the hiring tests coming up this year so job see
 - Scope: `dotnet run --project src/Akusiap.Web -- load-cpns-pack <folder>` imports every question file in the folder (not the browsing workbook), skips duplicates and broken rows, reads TKP points from "Skor per pilihan", keeps low-quality questions as Draft, and builds the published exam "Paket CPNS 2026: SKD" (Rp50.000, 180 days, SKD scoring, tryout preset, 30-question trial) plus the starting list of upcoming tests (D-133). Safe to run again.
 - AC: Running it twice adds nothing the second time; the exam has every Active CPNS question and a valid trial set; CPNS 2026 on `/jadwal-tes` links to it.
 - Tests: unit (duplicate key, points, quality score), integration (load).
+
+## E16 Guest funnel and learning analysis (M11)
+
+Owner request (2026-11-13): a visitor without an account takes one 30-question test, is then asked to register to keep practising, and a registered learner gets an app that remembers every test, shows the weak sections and plans what to study next (D-134 to D-137).
+
+### GST-01 One guest trial, then register · S
+- Stories: G-02, owner request (2026-11-13) · Depends on: ENT-02, SES-01
+- Scope: Rule 9 gives a guest the trial once in all, counted by the guest cookie (`ICurrentUser.GuestToken`, `ViewerContext.GuestTrialUsed`); afterwards the reason is `GuestTrialUsed` and the exam and test pages show "Daftar gratis untuk lanjut berlatih" before buy and subscribe (D-134).
+- AC:
+  - A guest starts one trial; starting a trial on any exam afterwards sends them to the exam page with the register button. The started trial can still be finished and its result opened.
+  - Registered users still start trials on every paid exam as often as they like; shared links still open for guests.
+- Tests: unit (policy, CTAs), integration (second trial refused, exam page).
+
+### GST-02 Guest trial result and carrying it over · S
+- Stories: G-04, G-09, owner request · Depends on: GST-01, SHR-04, MEM-01
+- Scope: The guest's trial result adds the "Simpan hasil ini dan dapatkan rencana belajar" card (locked list, register and sign-in links to `/learn/analisis`) before the buy offer; no "Ulangi yang salah" for guests on a trial. Registering, password sign-in and Google sign-in claim the browser's guest attempts and turn their wrong answers into review cards (D-135).
+- AC:
+  - The guest result shows the card with the number of wrong answers; signed-in learners don't see it.
+  - After registering from the card the learner lands on `/learn/analisis`, sees the trial's exam, and has one review card per wrong answer; signing in to an existing account does the same.
+- Tests: integration (result card, register and sign-in claim with cards).
+
+### ANL-01 Learning analysis page · M
+- Stories: R-03, M-11, owner request · Depends on: GST-02, PLN-01, CPNS-03
+- Scope: `/learn/analisis` and a tile on `/learn`: per exam (goal's first, then most recently practised, up to 6), tried questions, the weakest topic, SKD subtests, topics weakest first with Weak/Fair/Strong and the learning plan with one button per step (D-137). Rules live in `Domain/Planning/WeakAreas`.
+- AC:
+  - The weakest topic and the order of topics match the learner's latest answers; a topic with fewer than 3 tried questions is not rated.
+  - The plan starts with due cards, then the two weakest topics, and adds a simulation, an unlock step on a trial or a goal step as D-137 says; each button opens the right page.
+  - A learner without tests sees an empty state that links to the catalog.
+- Tests: unit (strength, ordering, subtests, plan), integration (page).
+
+### ANL-02 Analysis on the goal page · S
+- Stories: M-11, owner request · Depends on: ANL-01, PLN-04
+- Scope: `/learn/target/{id}` adds the SKD subtests and the learning plan for the goal's exam under the schedule check (D-136).
+- AC: The goal page shows the plan without a "set goal" step.
+- Tests: integration.

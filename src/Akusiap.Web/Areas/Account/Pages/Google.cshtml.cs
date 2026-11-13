@@ -1,6 +1,8 @@
+using Akusiap.Application.Sessions;
 using Akusiap.Domain.Users;
 using Akusiap.Web.Identity;
 using Akusiap.Web.Localization;
+using Akusiap.Web.Sessions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +17,8 @@ namespace Akusiap.Web.Areas.Account.Pages;
 public sealed class GoogleModel(
     SignInManager<User> signIn,
     GoogleAccounts accounts,
-    IAuthenticationSchemeProvider schemes) : PageModel
+    IAuthenticationSchemeProvider schemes,
+    ClaimGuestAttempts claimGuestAttempts) : PageModel
 {
     /// <summary>The resource key of the message to show, when sign-in failed.</summary>
     public string? Error { get; private set; }
@@ -53,6 +56,12 @@ public sealed class GoogleModel(
         }
 
         await signIn.SignInAsync(user, isPersistent: true, authenticationMethod: login.LoginProvider);
+        if (GuestTokenCookie.Read(Request) is { } guestToken)
+        {
+            // GST-02 (D-135): guest attempts from this browser move into the account, new or existing.
+            await claimGuestAttempts.HandleAsync(user.Id, guestToken, cancellationToken);
+        }
+
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
         LocalizationSetup.SetCultureCookie(Response, LocalizationSetup.CultureFor(user.PreferredLanguage));
         return LocalRedirect(Safe(returnUrl));

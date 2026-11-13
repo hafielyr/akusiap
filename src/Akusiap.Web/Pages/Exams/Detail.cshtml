@@ -108,6 +108,14 @@
             <a href="@ExamRoutes.PlansFor(exam.Id)" class="@css" data-testid="cta-subscribe">@T["ExamPage.Subscribe"]</a>
             <p class="text-center text-sm text-slate-500">@T["ExamPage.SubscribeHint"]</p>
             break;
+          case ExamCta.RegisterToContinue:
+            <p class="text-sm text-slate-700" data-testid="guest-trial-used">@T["ExamPage.GuestTrialUsed"]</p>
+            <a href="@registerUrl" class="@css" data-testid="cta-register-continue">@T["ExamPage.RegisterToContinue"]</a>
+            <p class="text-center text-sm text-slate-600">
+              @T["Account.Register.HaveAccount"]
+              <a href="@signInUrl" class="inline-flex min-h-11 items-center font-semibold text-brand-700">@T["Nav.SignIn"]</a>
+            </p>
+            break;
           case ExamCta.RegisterToUnlock:
             <a href="@registerUrl" class="@css" data-testid="cta-register">@T["ExamPage.Register"]</a>
             <p class="text-center text-sm text-slate-600">

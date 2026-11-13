@@ -1394,4 +1394,50 @@
   <data name="Admin.Question.Points" xml:space="preserve"><value>Points</value></data>
   <data name="Admin.Questions.PointsInvalid" xml:space="preserve"><value>Option points must be filled in for every option or for none, from 0 to {0}, on single-choice questions only, and the right option must score the most.</value></data>
   <data name="Admin.Import.PointsUnreadable" xml:space="preserve"><value>The option_points cell "{0}" must hold one number per option, for example 2,3,5,1,4.</value></data>
+  <data name="ExamPage.GuestTrialUsed" xml:space="preserve"><value>You have used your free test without an account. Sign up free to try this exam's questions, keep your results and get a study plan.</value></data>
+  <data name="ExamPage.RegisterToContinue" xml:space="preserve"><value>Sign up free to keep practising</value></data>
+  <data name="GuestTrial.Eyebrow" xml:space="preserve"><value>Free test done</value></data>
+  <data name="GuestTrial.Title" xml:space="preserve"><value>Keep this result and get a study plan</value></data>
+  <data name="GuestTrial.Lead" xml:space="preserve"><value>Without an account the free test is a one-off. Sign up free to keep practising; this result comes with you.</value></data>
+  <data name="GuestTrial.Analysis" xml:space="preserve"><value>Analysis by topic and subtest across all your tests</value></data>
+  <data name="GuestTrial.Cards" xml:space="preserve"><value>{0} wrong answers become flashcards</value></data>
+  <data name="GuestTrial.Plan" xml:space="preserve"><value>A study plan: weakest topics first, up to exam day</value></data>
+  <data name="GuestTrial.MoreExams" xml:space="preserve"><value>Free trial questions on every other exam</value></data>
+  <data name="GuestTrial.Register" xml:space="preserve"><value>Sign up free and see your analysis</value></data>
+  <data name="Analysis.PageTitle" xml:space="preserve"><value>Study analysis</value></data>
+  <data name="Analysis.PageLead" xml:space="preserve"><value>Worked out from all your answers. Each question counts by its latest answer, so practice shows at once.</value></data>
+  <data name="Analysis.Link" xml:space="preserve"><value>Weakest topics and study plan</value></data>
+  <data name="Analysis.Empty" xml:space="preserve"><value>No tests yet. Take one and its analysis appears here.</value></data>
+  <data name="Analysis.EmptyGo" xml:space="preserve"><value>Choose an exam</value></data>
+  <data name="Analysis.Tried" xml:space="preserve"><value>{0} of {1} questions tried ({2}%)</value></data>
+  <data name="Analysis.TriedTrial" xml:space="preserve"><value>{0} of {1} free trial questions tried ({2}%)</value></data>
+  <data name="Analysis.GoalLink" xml:space="preserve"><value>See exam goal</value></data>
+  <data name="Analysis.WeakestTopic" xml:space="preserve"><value>Weakest: {0}, {1}% right</value></data>
+  <data name="Analysis.Topics" xml:space="preserve"><value>By topic, weakest first</value></data>
+  <data name="Analysis.NoAnswersYet" xml:space="preserve"><value>No answers in this exam yet.</value></data>
+  <data name="Analysis.TopicLine" xml:space="preserve"><value>{0} of {1} tried questions now right · {2} questions in this topic</value></data>
+  <data name="Analysis.Untried" xml:space="preserve"><value>{0} topics not tried yet.</value></data>
+  <data name="Analysis.Plan" xml:space="preserve"><value>Study plan</value></data>
+  <data name="Analysis.PlanDone" xml:space="preserve"><value>Every topic is strong. Keep it up with the daily drill.</value></data>
+  <data name="Analysis.Strength.NotEnough" xml:space="preserve"><value>Too early</value></data>
+  <data name="Analysis.Strength.Weak" xml:space="preserve"><value>Weak</value></data>
+  <data name="Analysis.Strength.Fair" xml:space="preserve"><value>Fair</value></data>
+  <data name="Analysis.Strength.Strong" xml:space="preserve"><value>Strong</value></data>
+  <data name="Analysis.Step.ReviewCards" xml:space="preserve"><value>Review {0} flashcards</value></data>
+  <data name="Analysis.Step.ReviewCardsHint" xml:space="preserve"><value>Questions you got wrong, repeated just before you forget them.</value></data>
+  <data name="Analysis.Step.ReviewCardsGo" xml:space="preserve"><value>Review cards</value></data>
+  <data name="Analysis.Step.PractiseTopic" xml:space="preserve"><value>Practise {0} (now {1}% right)</value></data>
+  <data name="Analysis.Step.PractiseTopicHint" xml:space="preserve"><value>{0} questions, untimed, then read the explanations.</value></data>
+  <data name="Analysis.Step.Practise" xml:space="preserve"><value>Start practice</value></data>
+  <data name="Analysis.Step.TryTopic" xml:space="preserve"><value>Try {0}</value></data>
+  <data name="Analysis.Step.TryTopicHint" xml:space="preserve"><value>{0} questions you have not done yet.</value></data>
+  <data name="Analysis.Step.Simulation" xml:space="preserve"><value>Full simulation</value></data>
+  <data name="Analysis.Step.SimulationHint" xml:space="preserve"><value>Check your progress with the real exam's time and rules.</value></data>
+  <data name="Analysis.Step.SimulationGo" xml:space="preserve"><value>Start simulation</value></data>
+  <data name="Analysis.Step.Unlock" xml:space="preserve"><value>Unlock every question of this exam</value></data>
+  <data name="Analysis.Step.UnlockHint" xml:space="preserve"><value>You have done all {0} free trial questions.</value></data>
+  <data name="Analysis.Step.UnlockGo" xml:space="preserve"><value>See options</value></data>
+  <data name="Analysis.Step.SetGoal" xml:space="preserve"><value>Set your exam date</value></data>
+  <data name="Analysis.Step.SetGoalHint" xml:space="preserve"><value>LatihanSoal spreads the questions over the days up to the exam.</value></data>
+  <data name="Analysis.Step.SetGoalGo" xml:space="preserve"><value>Set goal</value></data>
 </root>

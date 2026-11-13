@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Akusiap.Application.Abstractions;
-using Akusiap.Domain.Memorization;
 using Akusiap.Domain.Sessions;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +11,7 @@ namespace Akusiap.Application.Sessions;
 /// limit) and the final status with SubmittedAt; signed-in users get review cards for wrong answers (MEM-01). Closing an
 /// attempt that is no longer in progress changes nothing.
 /// </summary>
-public sealed class AttemptFinisher(IAppDbContext db, Gamification.Badges badges)
+public sealed class AttemptFinisher(IAppDbContext db, Gamification.Badges badges, Memorization.WrongAnswerCards cards)
 {
     public async Task FinishAsync(Attempt attempt, AttemptStatus status, DateTime at, CancellationToken cancellationToken)
     {
@@ -55,7 +54,7 @@ public sealed class AttemptFinisher(IAppDbContext db, Gamification.Badges badges
         attempt.LastSavedAt = at;
         if (attempt.UserId is { } userId)
         {
-            await QueueWrongAnswersAsync(userId, [.. items.Where(i => !i.IsCorrect).Select(i => i.QuestionId)], at, cancellationToken).ConfigureAwait(false);
+            await cards.QueueAsync(userId, [.. items.Where(i => !i.IsCorrect).Select(i => i.QuestionId)], at, cancellationToken).ConfigureAwait(false);
         }
 
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
@@ -63,35 +62,6 @@ public sealed class AttemptFinisher(IAppDbContext db, Gamification.Badges badges
         {
             // GAM-01: milestone badges, and a rank badge when this is a counted Simulation attempt in the top 10.
             await badges.AwardAsync(owner, attempt.Id, cancellationToken).ConfigureAwait(false);
-        }
-    }
-
-    /// <summary>
-    /// MEM-01 (story M-04, D-76): each wrong question becomes a review card in Learning, due at once. A card the user
-    /// already has (any state) goes back to Learning and due now, keeping its SM-2 history. Guests get no cards.
-    /// </summary>
-    private async Task QueueWrongAnswersAsync(Guid userId, List<long> questionIds, DateTime at, CancellationToken cancellationToken)
-    {
-        if (questionIds.Count == 0)
-        {
-            return;
-        }
-
-        var existing = await db.ReviewCards
-            .Where(c => c.UserId == userId && questionIds.Contains(c.QuestionId))
-            .ToDictionaryAsync(c => c.QuestionId, cancellationToken)
-            .ConfigureAwait(false);
-        foreach (var questionId in questionIds.Distinct())
-        {
-            if (existing.TryGetValue(questionId, out var card))
-            {
-                card.State = ReviewCardState.Learning;
-                card.DueAt = at;
-            }
-            else
-            {
-                db.ReviewCards.Add(new ReviewCard { UserId = userId, QuestionId = questionId, State = ReviewCardState.Learning, DueAt = at });
-            }
         }
     }
 
