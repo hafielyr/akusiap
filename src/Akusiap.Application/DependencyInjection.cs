@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<GetPlayer>();
         services.AddScoped<SaveAnswer>();
         services.AddScoped<AttemptFinisher>();
+        services.AddScoped<QuestionStatsRecorder>();
         services.AddScoped<Memorization.WrongAnswerCards>();
         services.AddScoped<SubmitAttempt>();
         services.AddScoped<PracticeHelp>();
