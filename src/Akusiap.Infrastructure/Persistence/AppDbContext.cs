@@ -39,6 +39,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<Subscription> Subscriptions => Set<Subscription>();
 
+    public DbSet<UserDevice> UserDevices => Set<UserDevice>();
+
     public DbSet<ExamPurchase> ExamPurchases => Set<ExamPurchase>();
 
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();

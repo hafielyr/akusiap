@@ -47,3 +47,14 @@ public sealed class AuditLogConfiguration : IEntityTypeConfiguration<AuditLog>
             .IsDescending(false, true);
     }
 }
+
+/// <summary>PAY-13 (D-141): one row per user and device cookie.</summary>
+public sealed class UserDeviceConfiguration : IEntityTypeConfiguration<UserDevice>
+{
+    public void Configure(EntityTypeBuilder<UserDevice> builder)
+    {
+        builder.Property(d => d.Label).HasMaxLength(UserDevice.LabelMaxLength);
+        builder.HasOne(d => d.User).WithMany().HasForeignKey(d => d.UserId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(d => new { d.UserId, d.DeviceKey }).IsUnique();
+    }
+}

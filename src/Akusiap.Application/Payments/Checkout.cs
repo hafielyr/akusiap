@@ -8,15 +8,16 @@ using Microsoft.Extensions.Options;
 
 namespace Akusiap.Application.Payments;
 
-/// <summary>What is being bought: an exam (by id) or a plan package (by plan price id).</summary>
-public sealed record CheckoutItemRef(long? ExamId, long? PlanPriceId)
+/// <summary>What is being bought: an exam (by id) or a plan package (by plan price id), with extra devices for a package (PAY-13).</summary>
+public sealed record CheckoutItemRef(long? ExamId, long? PlanPriceId, int ExtraDevices = 0)
 {
-    public bool IsValid => (ExamId is null) != (PlanPriceId is null);
+    public bool IsValid => (ExamId is null) != (PlanPriceId is null) && DeviceLimits.IsValidExtra(ExtraDevices) && (PlanPriceId is not null || ExtraDevices == 0);
 }
 
 /// <param name="AccessEndsAt">When access would end if paid now (D-03, D-04): extends running access, else starts now.</param>
 /// <param name="IsExtension">The learner already has running access that this purchase extends.</param>
 /// <param name="PendingOrderNumber">A payment already waiting for this item.</param>
+/// <param name="PriceIdr">The total to pay: the item's price plus any extra devices (PAY-13).</param>
 public sealed record CheckoutSummary(
     CheckoutItemRef Item,
     string Title,
@@ -26,7 +27,17 @@ public sealed record CheckoutSummary(
     bool IncludesAllExams,
     DateTime AccessEndsAt,
     bool IsExtension,
-    string? PendingOrderNumber);
+    string? PendingOrderNumber)
+{
+    /// <summary>The item's own price, before extra devices.</summary>
+    public long BasePriceIdr { get; init; } = PriceIdr;
+
+    /// <summary>The normal price, shown struck through, when the item is on sale (PAY-13).</summary>
+    public long? OriginalPriceIdr { get; init; }
+
+    /// <summary>The price of one extra device for this package; null for exams.</summary>
+    public long? ExtraDevicePriceIdr { get; init; }
+}
 
 /// <summary>
 /// Checkout (PAY-03, stories P-01, P-02, P-03, D-58). <see cref="SummaryAsync"/> describes the purchase for the signed-in
@@ -71,7 +82,7 @@ public sealed class Checkout(IAppDbContext db, ICurrentUser currentUser, IClock 
 
         var package = await db.PlanPrices
             .Where(p => p.Id == item.PlanPriceId && p.IsActive && p.Plan!.IsActive && p.Plan.Code != PlanCode.Free)
-            .Select(p => new { p.PlanId, p.Plan!.Name, p.Plan.IncludesAllExams, p.PriceIdr, p.DurationMonths })
+            .Select(p => new { p.PlanId, p.Plan!.Name, p.Plan.IncludesAllExams, p.PriceIdr, p.OriginalPriceIdr, p.DurationMonths })
             .SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
         if (package is null)
         {
@@ -81,9 +92,15 @@ public sealed class Checkout(IAppDbContext db, ICurrentUser currentUser, IClock 
         var subscription = await LiveSubscriptionAsync(userId, package.PlanId, cancellationToken).ConfigureAwait(false);
         var runningEnd = subscription is { Status: SubscriptionStatus.Active } && subscription.CurrentPeriodEnd > now ? subscription.CurrentPeriodEnd : null;
         var pendingOrder = subscription is null ? null : await PendingOrderAsync(p => p.SubscriptionId == subscription.Id, cancellationToken).ConfigureAwait(false);
+        var devicePrice = DeviceLimits.ExtraPriceIdr(package.DurationMonths);
         return new CheckoutSummary(
-            item, package.Name, package.PriceIdr, null, package.DurationMonths, package.IncludesAllExams,
-            (runningEnd ?? now).AddMonths(package.DurationMonths), runningEnd is not null, pendingOrder);
+            item, package.Name, package.PriceIdr + (item.ExtraDevices * devicePrice), null, package.DurationMonths, package.IncludesAllExams,
+            (runningEnd ?? now).AddMonths(package.DurationMonths), runningEnd is not null, pendingOrder)
+        {
+            BasePriceIdr = package.PriceIdr,
+            OriginalPriceIdr = package.OriginalPriceIdr > package.PriceIdr ? package.OriginalPriceIdr : null,
+            ExtraDevicePriceIdr = devicePrice,
+        };
     }
 
     public async Task<bool> IsEmailConfirmedAsync(CancellationToken cancellationToken)
@@ -158,8 +175,12 @@ public sealed class Checkout(IAppDbContext db, ICurrentUser currentUser, IClock 
                 subscription.PlanPriceId = package.Id;
             }
 
+            // ... and the devices bought with it, which apply once it is paid (PAY-13).
+            subscription.PendingExtraDevices = item.ExtraDevices;
+
             await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-            paymentItem = PaymentItem.ForSubscription(subscription.Id, $"{summary.Title} {summary.DurationMonths} bulan");
+            var devices = item.ExtraDevices > 0 ? $" + {item.ExtraDevices} perangkat" : string.Empty;
+            paymentItem = PaymentItem.ForSubscription(subscription.Id, $"{summary.Title} {summary.DurationMonths} bulan{devices}");
         }
 
         var payment = await createPayment.HandleAsync(

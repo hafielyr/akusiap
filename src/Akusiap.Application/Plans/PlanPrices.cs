@@ -8,15 +8,18 @@ using Microsoft.EntityFrameworkCore;
 namespace Akusiap.Application.Plans;
 
 /// <summary>One package of a plan: a duration with its price, or no price yet.</summary>
-public sealed record PlanPackage(int DurationMonths, long? PriceIdr, bool IsActive, int SubscriptionCount)
+public sealed record PlanPackage(int DurationMonths, long? PriceIdr, bool IsActive, int SubscriptionCount, long? OriginalPriceIdr = null)
 {
     public bool InUse => SubscriptionCount > 0;
 }
 
 public sealed record PlanPricing(long PlanId, PlanCode Code, string Name, bool IncludesAllExams, IReadOnlyList<PlanPackage> Packages);
 
-/// <summary>What the admin typed for one duration. A null price means "no package for this duration".</summary>
-public sealed record PackageInput(int DurationMonths, long? PriceIdr, bool IsActive);
+/// <summary>
+/// What the admin typed for one duration. A null price means "no package for this duration". <paramref name="OriginalPriceIdr"/>
+/// is the normal price shown struck through (PAY-13); it must be higher than the price.
+/// </summary>
+public sealed record PackageInput(int DurationMonths, long? PriceIdr, bool IsActive, long? OriginalPriceIdr = null);
 
 public sealed record SavePlanPricesRequest(long PlanId, IReadOnlyList<PackageInput> Packages);
 
@@ -37,6 +40,7 @@ public sealed class ListPlanPricing(IAppDbContext db)
                 {
                     pp.DurationMonths,
                     pp.PriceIdr,
+                    pp.OriginalPriceIdr,
                     pp.IsActive,
                     Subscriptions = db.Subscriptions.Count(s => s.PlanPriceId == pp.Id),
                 }).ToList(),
@@ -53,7 +57,7 @@ public sealed class ListPlanPricing(IAppDbContext db)
                 p.IncludesAllExams,
                 [.. PlanPrice.AllowedDurationMonths.Select(months =>
                     p.Prices.FirstOrDefault(pp => pp.DurationMonths == months) is { } price
-                        ? new PlanPackage(months, price.PriceIdr, price.IsActive, price.Subscriptions)
+                        ? new PlanPackage(months, price.PriceIdr, price.IsActive, price.Subscriptions, price.OriginalPriceIdr)
                         : new PlanPackage(months, null, false, 0))]))];
     }
 }
@@ -73,6 +77,9 @@ public sealed class SavePlanPrices(IAppDbContext db, ICurrentUser currentUser, I
 
     /// <summary>Arg: months.</summary>
     public const string PriceInUse = "Admin.Plans.PriceInUse";
+
+    /// <summary>Arg: months.</summary>
+    public const string OriginalNotHigher = "Admin.Plans.OriginalNotHigher";
 
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
@@ -104,6 +111,10 @@ public sealed class SavePlanPrices(IAppDbContext db, ICurrentUser currentUser, I
             {
                 problems.Add(new Problem(PriceInUse, null, input.DurationMonths));
             }
+            else if (input.OriginalPriceIdr is { } original && (input.PriceIdr is not { } sale || original <= sale))
+            {
+                problems.Add(new Problem(OriginalNotHigher, null, input.DurationMonths));
+            }
         }
 
         if (problems.Count > 0)
@@ -132,11 +143,12 @@ public sealed class SavePlanPrices(IAppDbContext db, ICurrentUser currentUser, I
             }
 
             existing.PriceIdr = price;
+            existing.OriginalPriceIdr = input.OriginalPriceIdr;
             existing.IsActive = input.IsActive;
         }
 
         var after = request.Packages.Where(p => p.PriceIdr is not null)
-            .Select(p => new { months = p.DurationMonths, priceIdr = p.PriceIdr, isActive = p.IsActive }).ToList();
+            .Select(p => new { months = p.DurationMonths, priceIdr = p.PriceIdr, originalPriceIdr = p.OriginalPriceIdr, isActive = p.IsActive }).ToList();
         if (JsonSerializer.Serialize(before) != JsonSerializer.Serialize(after.OrderBy(p => p.months)))
         {
             db.AuditLogs.Add(new AuditLog
@@ -155,5 +167,5 @@ public sealed class SavePlanPrices(IAppDbContext db, ICurrentUser currentUser, I
     }
 
     private static object[] Snapshot(Plan plan) =>
-        [.. plan.Prices.OrderBy(p => p.DurationMonths).Select(p => new { months = p.DurationMonths, priceIdr = (long?)p.PriceIdr, isActive = p.IsActive })];
+        [.. plan.Prices.OrderBy(p => p.DurationMonths).Select(p => new { months = p.DurationMonths, priceIdr = (long?)p.PriceIdr, originalPriceIdr = p.OriginalPriceIdr, isActive = p.IsActive })];
 }

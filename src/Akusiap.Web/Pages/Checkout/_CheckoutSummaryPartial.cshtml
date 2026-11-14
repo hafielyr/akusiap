@@ -17,6 +17,23 @@
     }
     <li class="flex gap-2" data-testid="access-end"><span class="text-green-600" aria-hidden="true">✓</span><span>@Model.Until</span></li>
   </ul>
+  @if (Model.Summary.OriginalPriceIdr is not null || Model.Summary.PriceIdr != Model.Summary.BasePriceIdr)
+  {
+    @* PAY-13: the package price (struck-through normal price when on sale) and the extra devices. *@
+    <dl class="space-y-1 text-sm text-slate-700" data-testid="price-lines">
+      <div class="flex justify-between gap-3">
+        <dt>@T["Checkout.PackagePrice"]</dt>
+        <dd class="num">@if (Model.Summary.OriginalPriceIdr is { } original) {<s class="mr-1 text-slate-500" data-testid="original-price"><idr value="@original" /></s>}<idr value="@Model.Summary.BasePriceIdr" /></dd>
+      </div>
+      @if (Model.Summary.PriceIdr != Model.Summary.BasePriceIdr)
+      {
+        <div class="flex justify-between gap-3" data-testid="devices-line">
+          <dt>@T["Checkout.ExtraDevices", Model.Summary.Item.ExtraDevices]</dt>
+          <dd class="num"><idr value="@(Model.Summary.PriceIdr - Model.Summary.BasePriceIdr)" /></dd>
+        </div>
+      }
+    </dl>
+  }
   <div class="border-t border-dashed border-slate-200 pt-3">
     <div class="flex items-baseline justify-between gap-3">
       <span class="text-sm font-semibold text-slate-700">@T["Checkout.Total"]</span>

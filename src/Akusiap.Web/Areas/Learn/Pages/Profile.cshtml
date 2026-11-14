@@ -84,6 +84,24 @@
     </section>
   }
 
+  @if (Model.Devices.Devices.Count > 0)
+  {
+    @* PAY-13 (D-141): devices signed in; with a subscription, the newest sign-in pushes out the oldest over the limit. *@
+    <section class="space-y-2 card p-4" aria-labelledby="devices-heading" data-testid="devices">
+      <h2 id="devices-heading" class="text-lg font-semibold">@T["Profile.Devices"]</h2>
+      <p class="text-sm text-slate-600">@if (Model.Devices.Allowed is { } allowed) {@T["Profile.DevicesLimit", allowed]} else {@T["Profile.DevicesNoLimit"]}</p>
+      <ul class="divide-y divide-slate-200 text-sm">
+        @foreach (var device in Model.Devices.Devices)
+        {
+          <li class="flex items-center justify-between gap-3 py-2" data-testid="device-row">
+            <span class="min-w-0 truncate font-medium">@device.Label</span>
+            <span class="shrink-0 text-slate-500">@if (device.IsCurrent) {@T["Profile.ThisDevice"]} else {@Akusiap.Domain.JakartaTime.FormatDate(device.LastSignInAt)}</span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
   <form method="post" asp-page-handler="Password" class="space-y-4 card p-4" novalidate data-testid="password-form">
     <h2 class="text-lg font-semibold">@T["Profile.PasswordTitle"]</h2>
     @if (Model.HasPassword)
