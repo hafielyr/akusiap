@@ -8,7 +8,11 @@ namespace Akusiap.Application.Catalog;
 public sealed record PricingExam(long Id, string Title, long PriceIdr, int AccessDays);
 
 /// <param name="MonthlyIdr">The price per month, rounded to whole Rupiah.</param>
-public sealed record PricingPackage(long PlanPriceId, int DurationMonths, long PriceIdr, long MonthlyIdr, bool IsCheapestMonthly);
+public sealed record PricingPackage(long PlanPriceId, int DurationMonths, long PriceIdr, long MonthlyIdr, bool IsCheapestMonthly)
+{
+    /// <summary>The normal price, struck through, when on sale (PAY-13).</summary>
+    public long? OriginalPriceIdr { get; init; }
+}
 
 /// <param name="Exam">The exam the visitor came from, when it is a published paid app exam.</param>
 /// <param name="LowestExamPriceIdr">"Mulai dari": the cheapest published paid exam, shown when there is no exam context.</param>
@@ -42,14 +46,14 @@ public sealed class GetPricing(IAppDbContext db)
             .Select(p => new
             {
                 p.Name,
-                Prices = p.Prices.Where(pp => pp.IsActive).Select(pp => new { pp.Id, pp.DurationMonths, pp.PriceIdr }).ToList(),
+                Prices = p.Prices.Where(pp => pp.IsActive).Select(pp => new { pp.Id, pp.DurationMonths, pp.PriceIdr, pp.OriginalPriceIdr }).ToList(),
             })
             .SingleOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
 
         var packages = (plan?.Prices ?? [])
             .OrderBy(p => p.DurationMonths)
-            .Select(p => new { p.Id, p.DurationMonths, p.PriceIdr, Monthly = MonthlyEquivalent(p.PriceIdr, p.DurationMonths) })
+            .Select(p => new { p.Id, p.DurationMonths, p.PriceIdr, p.OriginalPriceIdr, Monthly = MonthlyEquivalent(p.PriceIdr, p.DurationMonths) })
             .ToList();
         var cheapest = packages.OrderBy(p => p.Monthly).ThenByDescending(p => p.DurationMonths).FirstOrDefault();
 
@@ -57,7 +61,7 @@ public sealed class GetPricing(IAppDbContext db)
             exam,
             lowest,
             plan?.Name,
-            [.. packages.Select(p => new PricingPackage(p.Id, p.DurationMonths, p.PriceIdr, p.Monthly, p.Id == cheapest?.Id))]);
+            [.. packages.Select(p => new PricingPackage(p.Id, p.DurationMonths, p.PriceIdr, p.Monthly, p.Id == cheapest?.Id) { OriginalPriceIdr = p.OriginalPriceIdr > p.PriceIdr ? p.OriginalPriceIdr : null })]);
     }
 
     /// <summary>Price per month, rounded half up to whole Rupiah.</summary>

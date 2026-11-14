@@ -103,6 +103,7 @@
   }
 
   <main id="main" tabindex="-1" class="@(fullWidth || cat ? "w-full flex-1" : wide ? "mx-auto w-full max-w-5xl flex-1 px-4 py-6" : "mx-auto w-full max-w-3xl flex-1 px-4 py-6") focus:outline-none">
+    <partial name="_PushedOutNoticePartial" />
     @RenderBody()
   </main>
 

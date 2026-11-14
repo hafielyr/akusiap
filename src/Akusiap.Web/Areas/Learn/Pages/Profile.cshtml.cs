@@ -15,7 +15,7 @@ namespace Akusiap.Web.Areas.Learn.Pages;
 /// name and roles show at once, and sets the culture cookie so the language changes on the next page. Each handler
 /// binds and validates only its own form (<c>TryUpdateModelAsync</c>).
 /// </summary>
-public sealed class ProfileModel(UserManager<User> users, SignInManager<User> signIn, IStringLocalizer<SharedResource> t, Akusiap.Application.Access.GetAllowance getAllowance) : PageModel
+public sealed class ProfileModel(UserManager<User> users, SignInManager<User> signIn, IStringLocalizer<SharedResource> t, Akusiap.Application.Access.GetAllowance getAllowance, Akusiap.Application.Access.DeviceSessions devices) : PageModel
 {
     public const string Route = "/learn/profil";
 
@@ -29,6 +29,9 @@ public sealed class ProfileModel(UserManager<User> users, SignInManager<User> si
 
     /// <summary>Own-content usage for the allowance widget (OWN-05).</summary>
     public Akusiap.Domain.Access.Allowance? Allowance { get; private set; }
+
+    /// <summary>The devices signed in and the subscription's limit (PAY-13).</summary>
+    public Akusiap.Application.Access.DeviceList Devices { get; private set; } = new([], null);
 
     [TempData]
     public string? Flash { get; set; }
@@ -160,6 +163,7 @@ public sealed class ProfileModel(UserManager<User> users, SignInManager<User> si
         Email = user.Email ?? string.Empty;
         HasPassword = await users.HasPasswordAsync(user);
         Allowance = await getAllowance.HandleAsync(HttpContext.RequestAborted);
+        Devices = await devices.ListAsync(user.Id, Akusiap.Web.Identity.DeviceTracking.DeviceId(User), HttpContext.RequestAborted);
     }
 
     /// <summary>Shows the profile form with the saved values again after a password error.</summary>

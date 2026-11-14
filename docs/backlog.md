@@ -710,3 +710,12 @@ Owner request (2026-11-13): a visitor without an account takes one 30-question t
   - A question with at least 10 right or wrong answers shows its level; fewer shows none.
   - The level follows the D-140 score and thresholds.
 - Tests: unit (score, thresholds, minimum), integration (counts, labels, admin list).
+
+### PAY-13 Subscription prices and the device limit · L
+- Stories: owner request (2026-11-14) · Depends on: PAY-02, PAY-03, PAY-06, CAT-03
+- Scope: Learner plan Rp20.000/month and Rp110.000/year (normally Rp200.000) with the struck-through price on `/harga` and checkout (`plan_prices.original_price_idr`, editable on `/admin/paket`); 1 device per subscription with extra devices bought at checkout (+Rp10.000/month, +Rp100.000/year); `user_devices` and the device cookie; the newest sign-in pushes out the oldest device over the limit (D-141).
+- AC:
+  - `/harga` and checkout show Rp110.000 with Rp200.000 struck through for the year, and Rp20.000 for the month.
+  - Checkout offers 0–4 extra devices; the total and the payment add Rp100.000 per device on the year (Rp10.000 per month on monthly) and payment grants them.
+  - A subscriber signing in on one device more than allowed signs out the device that signed in longest ago, which sees a notice; accounts without a subscription are not limited.
+- Tests: unit (device prices), integration (checkout, fulfilment, device limit).

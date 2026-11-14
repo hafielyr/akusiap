@@ -42,6 +42,8 @@ public interface IAppDbContext
 
     DbSet<Subscription> Subscriptions { get; }
 
+    DbSet<UserDevice> UserDevices { get; }
+
     DbSet<ExamPurchase> ExamPurchases { get; }
 
     DbSet<AuditLog> AuditLogs { get; }

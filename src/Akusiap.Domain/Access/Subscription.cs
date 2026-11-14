@@ -43,4 +43,10 @@ public class Subscription
     public string? GatewaySubscriptionId { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    /// <summary>Devices bought on top of the one included (PAY-13, D-141), 0 to <see cref="DeviceLimits.MaxExtra"/>.</summary>
+    public int ExtraDevices { get; set; }
+
+    /// <summary>The extra devices in the order waiting for payment; they replace <see cref="ExtraDevices"/> once it is paid.</summary>
+    public int? PendingExtraDevices { get; set; }
 }

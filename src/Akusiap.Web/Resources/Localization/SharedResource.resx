@@ -483,6 +483,8 @@
   <data name="Admin.Plans.PriceInvalid" xml:space="preserve"><value>Harga {0} bulan: tulis rupiah tanpa desimal, misalnya 99000 atau Rp99.000.</value></data>
   <data name="Admin.Plans.PriceRange" xml:space="preserve"><value>Harga {0} bulan harus lebih dari 0.</value></data>
   <data name="Admin.Plans.ActiveNeedsPrice" xml:space="preserve"><value>Paket {0} bulan perlu harga sebelum dijual.</value></data>
+  <data name="Admin.Plans.OriginalPrice" xml:space="preserve"><value>Harga normal (dicoret, opsional)</value></data>
+  <data name="Admin.Plans.OriginalNotHigher" xml:space="preserve"><value>Paket {0} bulan: harga normal harus lebih tinggi dari harga jual.</value></data>
   <data name="Admin.Plans.PriceInUse" xml:space="preserve"><value>Paket {0} bulan sudah dibeli, jadi harganya tidak bisa dihapus. Matikan "Dijual" saja.</value></data>
   <data name="Admin.Nav.Users" xml:space="preserve"><value>Pengguna</value></data>
   <data name="Admin.Users.Title" xml:space="preserve"><value>Pengguna</value></data>
@@ -525,6 +527,11 @@
   <data name="Session.Setup.Start" xml:space="preserve"><value>Mulai</value></data>
   <data name="Session.Player.QuestionsLeft" xml:space="preserve"><value>soal tersisa</value></data>
   <data name="Session.Player.Question" xml:space="preserve"><value>Soal</value></data>
+  <data name="Profile.Devices" xml:space="preserve"><value>Perangkat</value></data>
+  <data name="Profile.DevicesLimit" xml:space="preserve"><value>Paket langganan Anda berlaku untuk {0} perangkat. Masuk di perangkat baru mengeluarkan perangkat yang paling lama masuk.</value></data>
+  <data name="Profile.DevicesNoLimit" xml:space="preserve"><value>Perangkat yang sedang masuk ke akun ini.</value></data>
+  <data name="Profile.ThisDevice" xml:space="preserve"><value>Perangkat ini</value></data>
+  <data name="Device.PushedOut" xml:space="preserve"><value>Anda keluar dari perangkat ini karena akun Anda masuk di perangkat lain. Paket langganan berlaku untuk 1 perangkat; tambah perangkat saat membeli atau memperpanjang paket.</value></data>
   <data name="Difficulty.Easy" xml:space="preserve"><value>Mudah</value></data>
   <data name="Difficulty.Medium" xml:space="preserve"><value>Sedang</value></data>
   <data name="Difficulty.Hard" xml:space="preserve"><value>Sulit</value></data>
@@ -558,6 +565,13 @@
   <data name="Checkout.ExamAccess" xml:space="preserve"><value>Semua soal ujian ini selama {0} hari.</value></data>
   <data name="Checkout.AccessTo" xml:space="preserve"><value>Akses sampai {0}.</value></data>
   <data name="Checkout.ExtendsTo" xml:space="preserve"><value>Akses Anda yang berjalan diperpanjang sampai {0}.</value></data>
+  <data name="Checkout.Devices" xml:space="preserve"><value>Perangkat</value></data>
+  <data name="Checkout.DevicesHint" xml:space="preserve"><value>Paket berlaku untuk 1 perangkat. Masuk di perangkat lain akan mengeluarkan perangkat lama. Tambah perangkat:</value></data>
+  <data name="Checkout.PerDevice" xml:space="preserve"><value>per perangkat</value></data>
+  <data name="Checkout.DeviceCount" xml:space="preserve"><value>{0} perangkat</value></data>
+  <data name="Checkout.PackagePrice" xml:space="preserve"><value>Harga paket</value></data>
+  <data name="Checkout.ExtraDevices" xml:space="preserve"><value>Tambahan {0} perangkat</value></data>
+  <data name="Pricing.Devices" xml:space="preserve"><value>Untuk 1 perangkat; tambah perangkat +{0}/bulan atau +{1}/tahun.</value></data>
   <data name="Checkout.Total" xml:space="preserve"><value>Total</value></data>
   <data name="Checkout.TaxIncluded" xml:space="preserve"><value>Harga sudah termasuk pajak.</value></data>
   <data name="Checkout.PendingExists" xml:space="preserve"><value>Anda sudah punya pembayaran yang menunggu ({0}).</value></data>
