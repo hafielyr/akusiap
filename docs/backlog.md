@@ -695,3 +695,9 @@ Owner request (2026-11-13): a visitor without an account takes one 30-question t
 - Scope: Three views read `.Value` from the HTML localizer, which returns the raw template, so learners saw "Salah ({0})" and "Ditandai ({0})" on the review filters, "{0} dari {1} benar" in the history and "Minggu {0}" on weekly badges. They now write the localized HTML string, which fills the arguments.
 - AC: The review filters, the history rows and the journey badges show their numbers and dates.
 - Tests: integration (review, history).
+
+### SES-13 Correct answers in the review · XS
+- Stories: R-02, owner request (2026-11-14) · Depends on: SES-08
+- Scope: The answer review gets a "Benar (n)" filter (`?tampil=benar`) next to Semua, Salah and Ditandai, listing the questions answered right with their explanations.
+- AC: The filter shows exactly the questions answered right, and its count matches.
+- Tests: integration (review filter).
