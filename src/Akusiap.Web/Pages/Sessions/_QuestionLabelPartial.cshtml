@@ -1,6 +1,7 @@
 @model Akusiap.Domain.Sessions.QuestionLabel?
-@* SES-12 (D-138): a question's SKD section and topic, server-rendered (the review). Nothing when it has neither. *@
-@if (Model is { } label && (label.Section is not null || label.Topic is not null))
+@* SES-12 (D-138), DIF-01 (D-140): a question's SKD section, topic and measured difficulty, server-rendered (review,
+   flashcards). Nothing when it has none of them. *@
+@if (Model is { IsEmpty: false } label)
 {
   <p class="flex flex-wrap items-center gap-1.5" data-testid="question-label">
     @if (label.Section is not null)
@@ -10,6 +11,10 @@
     @if (label.Topic is not null)
     {
       <span class="chip bg-slate-100 text-slate-700" data-testid="question-topic"><span class="sr-only">@T["Session.Label.Topic"]:</span> @label.Topic</span>
+    }
+    @if (label.Difficulty is { } level)
+    {
+      <span class="chip @QuestionLabelStyles.Tone(level)" data-testid="question-difficulty" data-difficulty="@level"><span class="sr-only">@T["Session.Label.Difficulty"]:</span> @T[$"Difficulty.{level}"]</span>
     }
   </p>
 }

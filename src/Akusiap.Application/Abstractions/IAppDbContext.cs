@@ -28,6 +28,8 @@ public interface IAppDbContext
 
     DbSet<QuestionOption> QuestionOptions { get; }
 
+    DbSet<QuestionStats> QuestionStats { get; }
+
     DbSet<Exam> Exams { get; }
 
     DbSet<ExamQuestion> ExamQuestions { get; }

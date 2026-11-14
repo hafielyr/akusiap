@@ -108,6 +108,10 @@
               {
                 <span class="rounded-full bg-slate-100 px-2 py-1 text-slate-700">@T["Admin.Questions.DifficultyBadge", difficulty]</span>
               }
+              @if (row.Measured is { } measured)
+              {
+                <span class="rounded-full px-2 py-1 @Akusiap.Web.Pages.Sessions.QuestionLabelStyles.Tone(measured)" data-testid="measured-difficulty" data-difficulty="@measured">@T[$"Difficulty.{measured}"] · @T["Admin.Questions.Answers", row.Answers]</span>
+              }
               @if (row.Origin is { } rowOrigin)
               {
                 <span class="rounded-full bg-slate-100 px-2 py-1 text-slate-700" data-testid="origin-badge">@T[$"Admin.QuestionOrigin.{rowOrigin}"]</span>

@@ -216,6 +216,9 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
                 i.Question.Explanation,
                 i.Question.KeyFact,
                 TopicName = i.Question.Topic == null ? null : i.Question.Topic.Name,
+                StatsCorrect = (int?)i.Question.Stats!.CorrectCount,
+                StatsWrong = (int?)i.Question.Stats!.WrongCount,
+                StatsMarked = (int?)i.Question.Stats!.MarkedCount,
                 Options = i.Question.Options.OrderBy(o => o.SortOrder).ThenBy(o => o.Id).Select(o => new FlashcardOption(o.Id, o.Text, o.IsCorrect)).ToList(),
                 Picked = i.SelectedOptions.Select(o => o.QuestionOptionId).ToList(),
             })
@@ -230,7 +233,7 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
             .Select(i => i.IsAnswered ? (bool?)i.IsCorrect : null)
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
-        return new FlashcardCard(attemptId, card.Position, set.TotalCount, set.Title, card.QuestionType, card.Text, card.Options, card.Explanation, card.KeyFact, results, card.Picked, QuestionLabel.From(card.TopicName));
+        return new FlashcardCard(attemptId, card.Position, set.TotalCount, set.Title, card.QuestionType, card.Text, card.Options, card.Explanation, card.KeyFact, results, card.Picked, QuestionLabel.From(card.TopicName, card.StatsCorrect, card.StatsWrong, card.StatsMarked));
     }
 
     private async Task<DateTime?> RateCoreAsync(long attemptId, int position, ReviewRating rating, IReadOnlyList<long> picked, CancellationToken cancellationToken)

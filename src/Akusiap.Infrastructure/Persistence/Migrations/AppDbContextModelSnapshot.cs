@@ -734,6 +734,52 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Content.QuestionStats", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("CorrectCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("correct_count");
+
+                    b.Property<int>("MarkedCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("marked_count");
+
+                    b.Property<long>("QuestionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("question_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("WrongCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("wrong_count");
+
+                    b.HasKey("Id")
+                        .HasName("pk_question_stats");
+
+                    b.HasIndex("QuestionId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_question_stats_question_id");
+
+                    b.ToTable("question_stats", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_question_stats_correct_count", "correct_count >= 0");
+
+                            t.HasCheckConstraint("ck_question_stats_marked_count", "marked_count >= 0");
+
+                            t.HasCheckConstraint("ck_question_stats_wrong_count", "wrong_count >= 0");
+                        });
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Content.RulePreset", b =>
                 {
                     b.Property<long>("Id")
@@ -2021,6 +2067,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("time_spent_seconds");
 
+                    b.Property<bool>("WasFlagged")
+                        .HasColumnType("boolean")
+                        .HasColumnName("was_flagged");
+
                     b.HasKey("Id")
                         .HasName("pk_attempt_items");
 
@@ -2572,6 +2622,18 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Navigation("Question");
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Content.QuestionStats", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Question", "Question")
+                        .WithOne("Stats")
+                        .HasForeignKey("Akusiap.Domain.Content.QuestionStats", "QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_question_stats_questions_question_id");
+
+                    b.Navigation("Question");
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Content.RulePreset", b =>
                 {
                     b.HasOne("Akusiap.Domain.Users.User", "OwnerUser")
@@ -2978,6 +3040,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Akusiap.Domain.Content.Question", b =>
                 {
                     b.Navigation("Options");
+
+                    b.Navigation("Stats");
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Content.Subject", b =>

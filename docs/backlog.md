@@ -701,3 +701,12 @@ Owner request (2026-11-13): a visitor without an account takes one 30-question t
 - Scope: The answer review gets a "Benar (n)" filter (`?tampil=benar`) next to Semua, Salah and Ditandai, listing the questions answered right with their explanations.
 - AC: The filter shows exactly the questions answered right, and its count matches.
 - Tests: integration (review filter).
+
+### DIF-01 Measured difficulty on each question · M
+- Stories: owner request (2026-11-14) · Depends on: SES-06, SES-12
+- Scope: Table `question_stats` (right, wrong and marked counts per question) filled when each session ends, `attempt_items.was_flagged`, and a Mudah/Sedang/Sulit chip on questions with at least 10 right or wrong answers, in the player, CAT screen, review, flashcards and admin question list (`Domain/Content/QuestionDifficulty`, D-140).
+- AC:
+  - Finishing a session adds 1 right or 1 wrong for each answered question and 1 marked for each question marked at any point, even if unmarked later; blanks and flashcard sets add nothing.
+  - A question with at least 10 right or wrong answers shows its level; fewer shows none.
+  - The level follows the D-140 score and thresholds.
+- Tests: unit (score, thresholds, minimum), integration (counts, labels, admin list).

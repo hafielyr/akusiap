@@ -45,6 +45,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [FIX-02] Guests can't retake · M11 · deps: SES-09, GST-01 · (claude-opus-5.5, 2026-11-14)
 - [FIX-03] Counts missing from localized labels · M11 · deps: SES-08, SES-10, GAM-01 · (claude-opus-5.5, 2026-11-14)
 - [SES-13] Correct answers in the review · M11 · deps: SES-08 · (claude-opus-5.5, 2026-11-14)
+- [DIF-01] Measured difficulty on each question · M11 · deps: SES-06, SES-12 · (claude-opus-5.5, 2026-11-14)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

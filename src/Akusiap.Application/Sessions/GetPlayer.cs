@@ -105,6 +105,9 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
                 i.Question.Explanation,
                 i.Question.KeyFact,
                 TopicName = i.Question.Topic == null ? null : i.Question.Topic.Name,
+                StatsCorrect = (int?)i.Question.Stats!.CorrectCount,
+                StatsWrong = (int?)i.Question.Stats!.WrongCount,
+                StatsMarked = (int?)i.Question.Stats!.MarkedCount,
                 Correct = i.Question.Options.Where(o => o.IsCorrect).Select(o => o.Id).ToList(),
                 Options = i.Question.Options.Select(o => new PlayerOption(o.Id, o.Text)).ToList(),
                 Selected = i.SelectedOptions.Select(s => s.QuestionOptionId).ToList(),
@@ -141,7 +144,7 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
                 practice.HintsEnabled && !string.IsNullOrWhiteSpace(i.Hint),
                 i.HintUsed ? i.Hint : null,
                 i.CheckedAt is null ? null : new AnswerFeedback(Scoring.IsCorrect(i.QuestionType, i.Correct, i.Selected), i.Correct, i.Explanation, i.KeyFact),
-                QuestionLabel.From(i.TopicName)))])
+                QuestionLabel.From(i.TopicName, i.StatsCorrect, i.StatsWrong, i.StatsMarked)))])
         {
             CanCheck = practice.CanCheck,
             Cat = attempt.Mode == AttemptMode.Simulation && rules.RootElement.TryGetProperty("catMode", out var cat) && cat.ValueKind == JsonValueKind.True,

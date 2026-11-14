@@ -72,6 +72,7 @@ public sealed class PlayerModel(GetPlayer getPlayer, SubmitAttempt submitAttempt
                 feedback = i.Feedback,
                 section = i.Label?.Section,
                 topic = i.Label?.Topic,
+                difficulty = i.Label?.Difficulty?.ToString(),
             }),
         },
         Json);

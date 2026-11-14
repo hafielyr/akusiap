@@ -62,6 +62,9 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
                 i.Question.Explanation,
                 i.Question.KeyFact,
                 TopicName = i.Question.Topic == null ? null : i.Question.Topic.Name,
+                StatsCorrect = (int?)i.Question.Stats!.CorrectCount,
+                StatsWrong = (int?)i.Question.Stats!.WrongCount,
+                StatsMarked = (int?)i.Question.Stats!.MarkedCount,
                 i.OptionOrder,
                 i.IsCorrect,
                 i.IsFlagged,
@@ -77,7 +80,7 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
                 .OrderBy(o => order.IndexOf(o.Id) is var i and >= 0 ? i : int.MaxValue).ThenBy(o => o.Id)
                 .Select(o => new ReviewOption(o.Id, o.Text, o.IsCorrect, r.Selected.Contains(o.Id)))
                 .ToList();
-            return new ReviewItem(r.Position, r.QuestionType, r.Text, options, r.IsCorrect, r.IsFlagged, r.Explanation, r.KeyFact, QuestionLabel.From(r.TopicName));
+            return new ReviewItem(r.Position, r.QuestionType, r.Text, options, r.IsCorrect, r.IsFlagged, r.Explanation, r.KeyFact, QuestionLabel.From(r.TopicName, r.StatsCorrect, r.StatsWrong, r.StatsMarked));
         }).ToList();
 
         var filtered = filter switch

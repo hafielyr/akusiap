@@ -86,6 +86,7 @@ public sealed class SaveAnswer(IAppDbContext db, ICurrentUser currentUser, ICloc
         var seconds = Math.Clamp(request.SecondsSpent, 0, MaxSecondsPerSave);
         item.IsAnswered = selected.Count > 0;
         item.IsFlagged = request.IsFlagged;
+        item.WasFlagged |= request.IsFlagged;
         item.TimeSpentSeconds += seconds;
         attempt.TimeSpentSeconds += seconds;
         attempt.LastSavedAt = now;

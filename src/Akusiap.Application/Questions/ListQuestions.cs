@@ -23,7 +23,14 @@ public sealed record QuestionRow(
     QuestionStatus Status,
     short? Difficulty,
     DateTime UpdatedAt,
-    QuestionOrigin? Origin = null);
+    QuestionOrigin? Origin = null)
+{
+    /// <summary>Measured from learners' answers (DIF-01); null below 10 answers.</summary>
+    public MeasuredDifficulty? Measured { get; init; }
+
+    /// <summary>Right plus wrong answers counted so far (DIF-01).</summary>
+    public int Answers { get; init; }
+}
 
 public sealed record QuestionPage(IReadOnlyList<QuestionRow> Rows, int Page, int PageSize, int Total)
 {
@@ -79,10 +86,20 @@ public sealed class ListQuestions(IAppDbContext db)
             .ThenByDescending(q => q.Id)
             .Skip((page - 1) * PageSize)
             .Take(PageSize)
-            .Select(q => new QuestionRow(q.Id, q.Text, q.Topic!.Subject!.Name, q.Topic.Name, q.QuestionType, q.Status, q.Difficulty, q.UpdatedAt, q.Origin))
+            .Select(q => new
+            {
+                Row = new QuestionRow(q.Id, q.Text, q.Topic!.Subject!.Name, q.Topic.Name, q.QuestionType, q.Status, q.Difficulty, q.UpdatedAt, q.Origin),
+                Correct = q.Stats == null ? 0 : q.Stats.CorrectCount,
+                Wrong = q.Stats == null ? 0 : q.Stats.WrongCount,
+                Marked = q.Stats == null ? 0 : q.Stats.MarkedCount,
+            })
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
 
-        return new QuestionPage(rows, page, PageSize, total);
+        return new QuestionPage(
+            [.. rows.Select(r => r.Row with { Measured = QuestionDifficulty.Of(r.Correct, r.Wrong, r.Marked), Answers = r.Correct + r.Wrong })],
+            page,
+            PageSize,
+            total);
     }
 }

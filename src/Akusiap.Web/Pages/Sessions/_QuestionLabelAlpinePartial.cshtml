@@ -1,6 +1,10 @@
-@* SES-12 (D-138): the current question's SKD section and topic, inside the quizPlayer Alpine component. Hidden when the
-   question has neither. Same look as _QuestionLabelPartial. *@
-<p class="flex flex-wrap items-center gap-1.5" x-show="item.section || item.topic" x-cloak data-testid="question-label">
+@* SES-12 (D-138), DIF-01 (D-140): the current question's SKD section, topic and measured difficulty, inside the
+   quizPlayer Alpine component. Hidden when the question has none of them. Same look as _QuestionLabelPartial. *@
+<p class="flex flex-wrap items-center gap-1.5" x-show="item.section || item.topic || item.difficulty" x-cloak data-testid="question-label">
   <span class="chip bg-brand-600 text-white" x-show="item.section" data-testid="question-section"><span class="sr-only">@T["Session.Label.Section"]:</span> <span x-text="item.section"></span></span>
   <span class="chip bg-slate-100 text-slate-700" x-show="item.topic" data-testid="question-topic"><span class="sr-only">@T["Session.Label.Topic"]:</span> <span x-text="item.topic"></span></span>
+  @foreach (var level in Enum.GetValues<Akusiap.Domain.Content.MeasuredDifficulty>())
+  {
+    <span class="chip @QuestionLabelStyles.Tone(level)" x-show="item.difficulty === '@level'" data-testid="question-difficulty" data-difficulty="@level"><span class="sr-only">@T["Session.Label.Difficulty"]:</span> @T[$"Difficulty.{level}"]</span>
+  }
 </p>

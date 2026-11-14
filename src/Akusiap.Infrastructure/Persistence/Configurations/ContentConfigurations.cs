@@ -108,3 +108,20 @@ public sealed class UpcomingTestConfiguration : IEntityTypeConfiguration<Upcomin
         builder.HasOne(t => t.Exam).WithMany().HasForeignKey(t => t.ExamId).OnDelete(DeleteBehavior.SetNull);
     }
 }
+
+/// <summary>DIF-01 (D-140): one stats row per question; counts never go below 0.</summary>
+public sealed class QuestionStatsConfiguration : IEntityTypeConfiguration<QuestionStats>
+{
+    public void Configure(EntityTypeBuilder<QuestionStats> builder)
+    {
+        builder.ToTable(t =>
+        {
+            t.HasCheckConstraint("ck_question_stats_correct_count", "correct_count >= 0");
+            t.HasCheckConstraint("ck_question_stats_wrong_count", "wrong_count >= 0");
+            t.HasCheckConstraint("ck_question_stats_marked_count", "marked_count >= 0");
+        });
+        builder.HasOne(s => s.Question).WithOne(q => q.Stats).HasForeignKey<QuestionStats>(s => s.QuestionId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(s => s.QuestionId).IsUnique();
+        builder.Ignore(s => s.Difficulty);
+    }
+}

@@ -26,6 +26,9 @@ public class AttemptItem
 
     public bool IsFlagged { get; set; }
 
+    /// <summary>Marked at any point in the session, even if unmarked later (DIF-01, D-140). Not in schema.sql.</summary>
+    public bool WasFlagged { get; set; }
+
     public bool HintUsed { get; set; }
 
     public int TimeSpentSeconds { get; set; }
