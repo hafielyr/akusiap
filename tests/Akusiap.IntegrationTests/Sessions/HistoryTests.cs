@@ -44,6 +44,7 @@ public sealed partial class HistoryTests(PostgresFixture database)
         Assert.Contains($"href=\"/sesi/{finished}/pembahasan\"", html, StringComparison.Ordinal);
         Assert.Contains("75%", html, StringComparison.Ordinal);
         Assert.Contains("2 mnt 5 dtk", html, StringComparison.Ordinal);
+        Assert.Contains("3 dari 4 benar", html, StringComparison.Ordinal); // FIX-03: used to show "{0} dari {1} benar"
         Assert.DoesNotContain($"data-attempt=\"{theirs}\"", html, StringComparison.Ordinal);
     }
 

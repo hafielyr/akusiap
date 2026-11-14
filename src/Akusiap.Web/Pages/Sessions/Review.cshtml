@@ -6,11 +6,12 @@
 @{
   var review = Model.Review;
   ViewData["Title"] = T["Session.Review.Title"].Value;
-  var filters = new (ReviewFilter Filter, string? Query, string Label)[]
+  // Kept as HTML strings: .Value on the HTML localizer would drop the counts and show "({0})".
+  var filters = new (ReviewFilter Filter, string? Query, Microsoft.AspNetCore.Html.IHtmlContent Label)[]
   {
-    (ReviewFilter.All, null, T["Session.Review.All"].Value),
-    (ReviewFilter.Wrong, "salah", T["Session.Review.Wrong", review.WrongCount].Value),
-    (ReviewFilter.Flagged, "ditandai", T["Session.Review.Flagged", review.FlaggedCount].Value),
+    (ReviewFilter.All, null, T["Session.Review.All"]),
+    (ReviewFilter.Wrong, "salah", T["Session.Review.Wrong", review.WrongCount]),
+    (ReviewFilter.Flagged, "ditandai", T["Session.Review.Flagged", review.FlaggedCount]),
   };
 }
 

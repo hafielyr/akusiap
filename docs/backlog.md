@@ -689,3 +689,9 @@ Owner request (2026-11-13): a visitor without an account takes one 30-question t
   - A guest's result and review show no retake button.
   - A guest's retake request lands on the result with "Daftar gratis untuk mengulang soal yang salah." and creates no attempt.
 - Tests: integration.
+
+### FIX-03 Counts missing from localized labels · XS
+- Stories: R-02, owner bug report (2026-11-14) · Depends on: SES-08, SES-10, GAM-01
+- Scope: Three views read `.Value` from the HTML localizer, which returns the raw template, so learners saw "Salah ({0})" and "Ditandai ({0})" on the review filters, "{0} dari {1} benar" in the history and "Minggu {0}" on weekly badges. They now write the localized HTML string, which fills the arguments.
+- AC: The review filters, the history rows and the journey badges show their numbers and dates.
+- Tests: integration (review, history).
