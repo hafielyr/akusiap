@@ -42,6 +42,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [ANL-01] Learning analysis page · M11 · deps: GST-02, PLN-01, CPNS-03 · (claude-opus-5.5, 2026-11-13)
 - [ANL-02] Analysis on the goal page · M11 · deps: ANL-01, PLN-04 · (claude-opus-5.5, 2026-11-13)
 - [SES-12] Section and topic on each question · M11 · deps: SES-03, SES-08, TRY-01, MEM-03, CPNS-03 · (claude-opus-5.5, 2026-11-14)
+- [FIX-02] Guests can't retake · M11 · deps: SES-09, GST-01 · (claude-opus-5.5, 2026-11-14)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

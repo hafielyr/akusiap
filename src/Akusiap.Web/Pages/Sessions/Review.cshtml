@@ -32,8 +32,8 @@
   }
   else
   {
-    @* A guest's retake would be a second trial (GST-01), so guests on a trial register instead (the result page asks). *@
-    <partial name="_RetakeWrongPartial" model="(review.AttemptId, review.HasExam && !(review.Source == AttemptSource.Trial && User.Identity?.IsAuthenticated != true) ? review.WrongCount : 0)" />
+    @* A retake needs an account (D-139): guests register instead (the result page and the shared-link invite ask). *@
+    <partial name="_RetakeWrongPartial" model="(review.AttemptId, review.HasExam && User.Identity?.IsAuthenticated == true ? review.WrongCount : 0)" />
     <nav class="flex flex-wrap gap-2" aria-label="@T["Session.Review.Filter"]">
       @foreach (var f in filters)
       {
