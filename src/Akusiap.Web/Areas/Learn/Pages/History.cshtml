@@ -37,7 +37,7 @@
               <p class="shrink-0 text-lg font-bold" data-testid="history-score">@score.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture)%</p>
             }
           </div>
-          <p class="text-sm text-slate-600">@JakartaTime.Format(row.StartedAt) · @mode@(open ? null : " · " + T["Session.Result.Correct", row.CorrectCount, row.TotalCount].Value) · @T["History.Minutes", row.TimeSpentSeconds / 60, row.TimeSpentSeconds % 60]</p>
+          <p class="text-sm text-slate-600">@JakartaTime.Format(row.StartedAt) · @mode@if (!open) {<text> · @T["Session.Result.Correct", row.CorrectCount, row.TotalCount]</text>} · @T["History.Minutes", row.TimeSpentSeconds / 60, row.TimeSpentSeconds % 60]</p>
           <div class="flex flex-wrap gap-2">
             @if (row.Mode == AttemptMode.Flashcard)
             {
