@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Akusiap.Application.Catalog;
 
-public sealed record PricingExam(long Id, string Title, long PriceIdr, int AccessDays);
+public sealed record PricingExam(long Id, string Title, long PriceIdr, int AccessDays, long? OriginalPriceIdr = null);
 
 /// <param name="MonthlyIdr">The price per month, rounded to whole Rupiah.</param>
 public sealed record PricingPackage(long PlanPriceId, int DurationMonths, long PriceIdr, long MonthlyIdr, bool IsCheapestMonthly)
@@ -32,7 +32,7 @@ public sealed class GetPricing(IAppDbContext db)
         if (examId is { } id)
         {
             exam = await paidExams.Where(e => e.Id == id)
-                .Select(e => new PricingExam(e.Id, e.Title, e.PriceIdr!.Value, e.AccessDays!.Value))
+                .Select(e => new PricingExam(e.Id, e.Title, e.PriceIdr!.Value, e.AccessDays!.Value, e.OriginalPriceIdr > e.PriceIdr ? e.OriginalPriceIdr : null))
                 .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
         }

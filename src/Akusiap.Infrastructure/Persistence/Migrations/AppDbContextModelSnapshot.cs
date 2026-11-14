@@ -493,6 +493,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_shared");
 
+                    b.Property<long?>("OriginalPriceIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("original_price_idr");
+
                     b.Property<int>("OwnQuestionAllowance")
                         .HasColumnType("integer")
                         .HasColumnName("own_question_allowance");
@@ -563,6 +567,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         {
                             t.HasCheckConstraint("ck_exams_access_days", "access_days > 0");
 
+                            t.HasCheckConstraint("ck_exams_original_price_idr", "original_price_idr IS NULL OR (price_idr IS NOT NULL AND original_price_idr > price_idr)");
+
                             t.HasCheckConstraint("ck_exams_own_question_allowance", "own_question_allowance >= 0");
 
                             t.HasCheckConstraint("ck_exams_owner", "(owner_kind = 'App') = (owner_user_id IS NULL)");
@@ -599,6 +605,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("sort_order");
 
+                    b.Property<short?>("TryoutSet")
+                        .HasColumnType("smallint")
+                        .HasColumnName("tryout_set");
+
                     b.HasKey("ExamId", "QuestionId")
                         .HasName("pk_exam_questions");
 
@@ -609,7 +619,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ix_exam_questions_trial")
                         .HasFilter("is_trial");
 
-                    b.ToTable("exam_questions", (string)null);
+                    b.ToTable("exam_questions", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_exam_questions_tryout_set", "tryout_set BETWEEN 1 AND 10");
+                        });
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Content.Question", b =>

@@ -788,6 +788,10 @@
   <data name="Own.Exams.Status.TakenDown" xml:space="preserve"><value>Diturunkan admin</value></data>
   <data name="Own.Exams.Practise" xml:space="preserve"><value>Latihan</value></data>
   <data name="Own.Exams.TakenDown" xml:space="preserve"><value>Ujian ini diturunkan oleh admin. Anda masih bisa melihatnya, tetapi tidak bisa memulai latihan.</value></data>
+  <data name="Session.Setup.TryoutSet" xml:space="preserve"><value>Paket tryout</value></data>
+  <data name="Session.Setup.TryoutNumber" xml:space="preserve"><value>Tryout {0}</value></data>
+  <data name="Session.Setup.TryoutDone" xml:space="preserve"><value>Sudah dikerjakan</value></data>
+  <data name="Session.TryoutSetMissing" xml:space="preserve"><value>Pilih paket tryout yang ada.</value></data>
   <data name="Session.Retake.Action" xml:space="preserve"><value>Ulangi yang salah ({0})</value></data>
   <data name="Session.Retake.RegisterFirst" xml:space="preserve"><value>Daftar gratis untuk mengulang soal yang salah.</value></data>
   <data name="Session.Retake.NothingWrong" xml:space="preserve"><value>Semua jawaban benar, tidak ada yang perlu diulang.</value></data>
@@ -1373,7 +1377,7 @@
   <data name="Skd.PassingGrade" xml:space="preserve"><value>ambang {0}</value></data>
   <data name="Skd.BarLabel" xml:space="preserve"><value>{0}: nilai {1}, ambang batas {2}</value></data>
   <data name="Skd.Gap" xml:space="preserve"><value>Kurang {0} poin dari ambang batas.</value></data>
-  <data name="Skd.RulesNote" xml:space="preserve"><value>Aturan nilai dari KepmenPAN-RB No. 321 Tahun 2024. Aturan CPNS 2026 belum terbit.</value></data>
+  <data name="Skd.RulesNote" xml:space="preserve"><value>Ambang batas memakai aturan SKD terakhir yang terbit (2024). Aturan CPNS 2026 belum terbit.</value></data>
   <data name="Analysis.Title" xml:space="preserve"><value>Analisis sesi</value></data>
   <data name="Analysis.Weakest" xml:space="preserve"><value>Topik terlemah: {0} ({1} dari {2} benar).</value></data>
   <data name="Analysis.AllGood" xml:space="preserve"><value>Tidak ada topik yang tertinggal di sesi ini.</value></data>

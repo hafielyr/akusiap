@@ -67,7 +67,7 @@ public sealed class Checkout(IAppDbContext db, ICurrentUser currentUser, IClock 
         {
             var exam = await db.Exams
                 .Where(e => e.Id == examId && e.OwnerKind == OwnerKind.App && e.Status == ExamStatus.Published && !e.IsFree && e.PriceIdr != null && e.AccessDays != null)
-                .Select(e => new { e.Title, Price = e.PriceIdr!.Value, Days = e.AccessDays!.Value })
+                .Select(e => new { e.Title, Price = e.PriceIdr!.Value, e.OriginalPriceIdr, Days = e.AccessDays!.Value })
                 .SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
             if (exam is null)
             {
@@ -77,7 +77,10 @@ public sealed class Checkout(IAppDbContext db, ICurrentUser currentUser, IClock 
             var purchase = await LivePurchaseAsync(userId, examId, cancellationToken).ConfigureAwait(false);
             var running = purchase is { Status: ExamPurchaseStatus.Active } && purchase.AccessExpiresAt > now ? purchase.AccessExpiresAt : null;
             var pending = purchase is null ? null : await PendingOrderAsync(p => p.ExamPurchaseId == purchase.Id, cancellationToken).ConfigureAwait(false);
-            return new CheckoutSummary(item, exam.Title, exam.Price, exam.Days, null, false, (running ?? now).AddDays(exam.Days), running is not null, pending);
+            return new CheckoutSummary(item, exam.Title, exam.Price, exam.Days, null, false, (running ?? now).AddDays(exam.Days), running is not null, pending)
+            {
+                OriginalPriceIdr = exam.OriginalPriceIdr > exam.Price ? exam.OriginalPriceIdr : null,
+            };
         }
 
         var package = await db.PlanPrices

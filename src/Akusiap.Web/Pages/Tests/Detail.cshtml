@@ -119,6 +119,10 @@
           @if (!package.IsFree)
           {
             <p class="flex flex-wrap items-baseline gap-x-2">
+        @if (package.OriginalPriceIdr is { } original)
+        {
+          <s class="text-slate-500" data-testid="original-price"><idr value="@original" /></s>
+        }
               <span class="text-2xl font-bold text-slate-900" data-testid="package-price"><idr value="@(package.PriceIdr ?? 0)" /></span>
               <span class="text-sm text-slate-600">@T["Catalog.AccessDays", package.AccessDays ?? 0]</span>
             </p>

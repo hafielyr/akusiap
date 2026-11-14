@@ -3,6 +3,7 @@ using Akusiap.Application.Common;
 using Akusiap.Application.Questions;
 using Akusiap.Application.Questions.Import;
 using Akusiap.Domain.Content;
+using Akusiap.Domain.Sessions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Akusiap.Application.ContentPacks;
@@ -23,29 +24,52 @@ public sealed record PackReport(
     int TrialQuestions,
     int LeftAsDraft,
     int WithPoints,
-    int UpcomingTestsAdded);
+    int UpcomingTestsAdded)
+{
+    /// <summary>Complete tryout sets of 30 TWK, 35 TIU and 45 TKP (CPNS-07).</summary>
+    public int TryoutSets { get; init; }
+}
 
 /// <summary>
 /// Loads the CPNS 2026 package (CPNS-06, D-133). It imports every question file (the bank-soal folder), skipping rows
 /// that are already in the bank (same text, <see cref="CpnsPackRules.Key"/>) or break the import rules; reads TKP points
 /// from the "Skor per pilihan" line when the file has no option_points column; makes questions that score at least
 /// <see cref="CpnsPackRules.MinScore"/> Active and the rest Draft; then builds or updates the paid exam "Paket CPNS 2026:
-/// SKD" (Rp50.000, the owner's price) with every Active question of the three topics, a 30-question trial (10 per
-/// subtest, the app's own questions first) and the SKD tryout preset. Finally it adds the starting list of upcoming tests.
-/// Running it again adds only what is new, so it is safe to repeat.
+/// SKD" (Rp39.000, normally Rp80.000, 3 months: the owner's update of 2026-11-14) with up to 10 fixed tryout sets of 30
+/// TWK, 35 TIU and 45 TKP, no question in two sets (CPNS-07, D-142), a 30-question trial (10 per subtest, the app's own
+/// questions first) and the SKD tryout preset. Finally it adds the starting list of upcoming tests. Running it again adds
+/// only what is new and keeps the sets learners already took, so it is safe to repeat.
 /// </summary>
 public sealed class CpnsPack(IAppDbContext db, IQuestionFileReader reader, IClock clock)
 {
     public const string ExamTitle = "Paket CPNS 2026: SKD";
     public const string PresetName = "Tryout SKD CPNS";
-    public const long PriceIdr = 50_000;
-    public const int AccessDays = 180;
+    public const long PriceIdr = 39_000;
+    public const long OriginalPriceIdr = 80_000;
+    public const int AccessDays = 90;
     public const int TrialPerTopic = 10;
     private const int MaxRowsPerFile = 20_000;
 
-    public const string ExamDescription =
-        "Persiapan SKD CPNS 2026 dalam satu paket: bank soal TWK, TIU dan TKP dengan pembahasan, tryout 110 soal dalam 100 menit dengan tampilan CAT dan nilai per subtes, flashcard dari soal yang salah, serta rencana belajar harian sampai hari tes.\n\n"
-        + "Nilai tryout memakai aturan SKD terakhir yang terbit (KepmenPAN-RB No. 321 Tahun 2024): TWK 65, TIU 80, TKP 166. Aturan CPNS 2026 belum terbit; angkanya akan disesuaikan bila berubah.";
+    /// <summary>
+    /// The package description (owner text, 2026-11-14) with the real counts: the owner's numbers (1.100 questions, TWK 300,
+    /// TIU 350, TKP 450, 10 tryouts) once the bank fills all ten sets.
+    /// </summary>
+    public static string Description(int twk, int tiu, int tkp, int tryouts)
+    {
+        var id = System.Globalization.CultureInfo.GetCultureInfo("id-ID");
+        var bank = string.Create(id, $"{twk + tiu + tkp:N0} soal dengan pembahasan dan kunci jawaban (TWK {twk:N0}, TIU {tiu:N0}, TKP {tkp:N0})");
+        var tryout = tryouts > 0
+            ? string.Create(id, $"{tryouts} paket tryout, masing-masing 110 soal (30 TWK, 35 TIU, 45 TKP) dalam 100 menit, dengan nilai per subtes")
+            : "Tryout 110 soal, 100 menit, dengan nilai per subtes";
+        return string.Join(
+            '\n',
+            bank,
+            tryout,
+            "Bisa dikerjakan berulang kali",
+            "Analisis tiap sesi: topik terlemah, kecepatan mengerjakan soal, dan ambang batas",
+            "Flashcard dari soal yang salah",
+            "Rencana belajar harian sampai hari tes");
+    }
 
     public async Task<PackReport> LoadAsync(IReadOnlyList<PackFile> files, CancellationToken cancellationToken)
     {
@@ -116,10 +140,10 @@ public sealed class CpnsPack(IAppDbContext db, IQuestionFileReader reader, ICloc
         }
 
         var exam = await EnsureExamAsync(topics, now, cancellationToken).ConfigureAwait(false);
-        var (byTopic, trial) = await FillExamAsync(exam, topics, cancellationToken).ConfigureAwait(false);
+        var (byTopic, trial, sets) = await FillExamAsync(exam, topics, cancellationToken).ConfigureAwait(false);
         var withPoints = await db.Questions.CountAsync(q => q.TopicId == tkpId && q.Status == QuestionStatus.Active && q.Options.Any(o => o.Points != null), cancellationToken).ConfigureAwait(false);
         var testsAdded = await EnsureUpcomingTestsAsync(exam.Id, now, cancellationToken).ConfigureAwait(false);
-        return new PackReport(reports, exam.Id, byTopic.Values.Sum(), byTopic, trial, draft, withPoints, testsAdded);
+        return new PackReport(reports, exam.Id, byTopic.Values.Sum(), byTopic, trial, draft, withPoints, testsAdded) { TryoutSets = sets };
     }
 
     private static Question ToQuestion(SaveQuestionRequest request, QuestionStatus status, DateTime now)
@@ -208,9 +232,9 @@ public sealed class CpnsPack(IAppDbContext db, IQuestionFileReader reader, ICloc
 
         exam.SubjectId = subjectId;
         exam.RulePresetId = preset.Id;
-        exam.Description = ExamDescription;
         exam.IsFree = false;
         exam.PriceIdr = PriceIdr;
+        exam.OriginalPriceIdr = OriginalPriceIdr;
         exam.AccessDays = AccessDays;
         exam.ScoringScheme = ScoringScheme.Skd;
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
@@ -218,33 +242,64 @@ public sealed class CpnsPack(IAppDbContext db, IQuestionFileReader reader, ICloc
     }
 
     /// <summary>
-    /// Puts every Active question of the three topics in the exam (new ones at the end), takes Draft ones out, picks the
-    /// trial set when it is incomplete, and publishes the exam. Returns the count per topic and the trial size.
+    /// Fills the exam (CPNS-07, D-142): up to 10 fixed tryout sets of 30 TWK, 35 TIU and 45 TKP from the Active questions
+    /// of the three topics, best first (TKP with points first, then the app's own questions, then longer explanations),
+    /// keeping the sets learners already took. The exam holds exactly the questions of the complete sets; with not even
+    /// one complete set it holds every Active question, as before. Then it picks the trial set when it is incomplete,
+    /// writes the description with the counts and publishes the exam. Returns the count per topic, the trial size and the
+    /// number of sets.
     /// </summary>
-    private async Task<(Dictionary<string, int> ByTopic, int Trial)> FillExamAsync(Exam exam, Dictionary<string, long> topics, CancellationToken cancellationToken)
+    private async Task<(Dictionary<string, int> ByTopic, int Trial, int Sets)> FillExamAsync(Exam exam, Dictionary<string, long> topics, CancellationToken cancellationToken)
     {
         var topicIds = topics.Values.ToList();
+        var subtestOf = new Dictionary<long, SkdSubtest>
+        {
+            [topics[CpnsPackRules.TwkTopic]] = SkdSubtest.Twk,
+            [topics[CpnsPackRules.TiuTopic]] = SkdSubtest.Tiu,
+            [topics[CpnsPackRules.TkpTopic]] = SkdSubtest.Tkp,
+        };
         var active = await db.Questions
             .Where(q => topicIds.Contains(q.TopicId) && q.OwnerUserId == null && q.Status == QuestionStatus.Active)
-            .Select(q => new { q.Id, q.TopicId, q.Origin, Explanation = q.Explanation.Length, q.CreatedAt })
+            .Select(q => new { q.Id, q.TopicId, q.Origin, Explanation = q.Explanation.Length, HasPoints = q.Options.Any(o => o.Points != null) })
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
-        var activeIds = active.Select(q => q.Id).ToHashSet();
         var links = await db.ExamQuestions.Where(x => x.ExamId == exam.Id).ToListAsync(cancellationToken).ConfigureAwait(false);
-        foreach (var gone in links.Where(l => !activeIds.Contains(l.QuestionId)).ToList())
+        var currentSet = links.Where(l => l.TryoutSet != null).ToDictionary(l => l.QuestionId, l => (int?)l.TryoutSet);
+        var ranked = active
+            .OrderByDescending(q => q.HasPoints)
+            .ThenByDescending(q => q.Origin == QuestionOrigin.Original)
+            .ThenByDescending(q => q.Explanation)
+            .ThenBy(q => q.Id)
+            .ToList();
+        var sets = TryoutSets.Assign([.. ranked.Select(q => new TryoutCandidate(q.Id, subtestOf[q.TopicId], currentSet.GetValueOrDefault(q.Id)))]);
+        var setCount = sets.Values.Distinct().Count();
+        var rank = ranked.Select((q, i) => (q.Id, i)).ToDictionary(x => x.Id, x => x.i);
+        var content = (setCount > 0 ? ranked.Where(q => sets.ContainsKey(q.Id)) : ranked)
+            .OrderBy(q => sets.TryGetValue(q.Id, out var set) ? set : 0)
+            .ThenBy(q => subtestOf[q.TopicId])
+            .ThenBy(q => rank[q.Id])
+            .ToList();
+
+        var keep = content.Select(q => q.Id).ToHashSet();
+        foreach (var gone in links.Where(l => !keep.Contains(l.QuestionId)).ToList())
         {
             db.ExamQuestions.Remove(gone);
             links.Remove(gone);
         }
 
-        var linked = links.Select(l => l.QuestionId).ToHashSet();
-        var order = links.Count == 0 ? 0 : links.Max(l => l.SortOrder);
-        var topicOrder = topicIds.Select((id, i) => (id, i)).ToDictionary(x => x.id, x => x.i);
-        foreach (var question in active.Where(q => !linked.Contains(q.Id)).OrderBy(q => topicOrder[q.TopicId]).ThenBy(q => q.Id))
+        var byQuestion = links.ToDictionary(l => l.QuestionId);
+        var order = 0;
+        foreach (var question in content)
         {
-            var link = new ExamQuestion { ExamId = exam.Id, QuestionId = question.Id, SortOrder = ++order };
-            db.ExamQuestions.Add(link);
-            links.Add(link);
+            if (!byQuestion.TryGetValue(question.Id, out var link))
+            {
+                link = new ExamQuestion { ExamId = exam.Id, QuestionId = question.Id };
+                db.ExamQuestions.Add(link);
+                links.Add(link);
+            }
+
+            link.SortOrder = ++order;
+            link.TryoutSet = sets.TryGetValue(question.Id, out var set) ? (short)set : null;
         }
 
         if (links.Count(l => l.IsTrial) < TrialSetRule.MinTrial)
@@ -278,10 +333,14 @@ public sealed class CpnsPack(IAppDbContext db, IQuestionFileReader reader, ICloc
             exam.Status = ExamStatus.Published;
         }
 
+        var counts = content.GroupBy(q => q.TopicId).ToDictionary(g => g.Key, g => g.Count());
+        exam.Description = Description(
+            counts.GetValueOrDefault(topics[CpnsPackRules.TwkTopic]),
+            counts.GetValueOrDefault(topics[CpnsPackRules.TiuTopic]),
+            counts.GetValueOrDefault(topics[CpnsPackRules.TkpTopic]),
+            setCount);
         await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        var inExam = links.Select(l => l.QuestionId).ToHashSet();
-        var counts = active.Where(q => inExam.Contains(q.Id)).GroupBy(q => q.TopicId).ToDictionary(g => g.Key, g => g.Count());
-        return (topics.ToDictionary(t => t.Key, t => counts.GetValueOrDefault(t.Value)), trial);
+        return (topics.ToDictionary(t => t.Key, t => counts.GetValueOrDefault(t.Value)), trial, setCount);
     }
 
     /// <summary>Adds the starting list of upcoming tests whose slug is not taken yet; links CPNS 2026 to the package.</summary>

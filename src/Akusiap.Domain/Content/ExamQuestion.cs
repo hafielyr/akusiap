@@ -14,4 +14,7 @@ public class ExamQuestion
 
     /// <summary>Part of the fixed trial set (D-08).</summary>
     public bool IsTrial { get; set; }
+
+    /// <summary>The fixed SKD tryout set the question belongs to (CPNS-07, D-142), 1 to 10; null when in none.</summary>
+    public short? TryoutSet { get; set; }
 }

@@ -19,6 +19,10 @@
       @if (pricing.Exam is { } exam)
       {
         <p class="text-slate-700">@exam.Title</p>
+        @if (exam.OriginalPriceIdr is { } examOriginal)
+        {
+          <p class="text-sm text-slate-500" data-testid="exam-original-price"><s><idr value="@examOriginal" /></s></p>
+        }
         <p class="text-3xl font-bold tracking-tight" data-testid="exam-price"><idr value="@exam.PriceIdr" /></p>
         <p class="text-sm text-slate-600">@T["Catalog.AccessDays", exam.AccessDays]</p>
         <a href="@ExamRoutes.Checkout(exam.Id)" class="btn btn-secondary w-full" data-testid="buy-exam">@T["ExamPage.Buy"]</a>

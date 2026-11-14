@@ -719,3 +719,13 @@ Owner request (2026-11-13): a visitor without an account takes one 30-question t
   - Checkout offers 0–4 extra devices; the total and the payment add Rp100.000 per device on the year (Rp10.000 per month on monthly) and payment grants them.
   - A subscriber signing in on one device more than allowed signs out the device that signed in longest ago, which sees a notice; accounts without a subscription are not limited.
 - Tests: unit (device prices), integration (checkout, fulfilment, device limit).
+
+### CPNS-07 CPNS package update with 10 tryout sets · M
+- Stories: owner request (2026-11-14) · Depends on: CPNS-04, CPNS-06
+- Scope: Rp39.000 (normally Rp80.000), 3 months, the owner's description without BKN or KemenPAN-RB, and up to 10 fixed tryout sets of 30 TWK, 35 TIU and 45 TKP with no shared questions, chosen on the setup page (D-142).
+- AC:
+  - The package shows Rp39.000 with Rp80.000 struck through and 3 months of access.
+  - Loading the bank builds up to 10 complete sets with no question in two sets; reloading keeps each question's set; the package holds exactly the set questions.
+  - Starting a Simulation of the package offers the sets and takes the chosen set's 110 questions, TWK, then TIU, then TKP.
+  - The description gives the real counts and doesn't mention BKN or KemenPAN-RB.
+- Tests: unit (set assignment), integration (load, reload, start a set).
