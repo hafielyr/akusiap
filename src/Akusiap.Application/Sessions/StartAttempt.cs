@@ -42,6 +42,7 @@ public sealed class StartAttempt(
     public const string GuestNameRequired = "Session.GuestNameRequired";
     public const string MaxAttemptsReached = "Session.MaxAttemptsReached";
     public const string NothingWrong = "Session.Retake.NothingWrong";
+    public const string RegisterToRetake = "Session.Retake.RegisterFirst";
     public const string MixEmpty = "Mix.Empty";
     public const string ClassClosed = "Class.AssignmentClosed";
 
@@ -201,6 +202,12 @@ public sealed class StartAttempt(
             return Result.Fail<StartedAttempt>(Problem.NotFound);
         }
 
+        // Guests only take trials and shared links; a WrongOnly attempt needs an account (ck_attempts_taker, D-139).
+        if (userId is null)
+        {
+            return Result.Fail<StartedAttempt>(new Problem(RegisterToRetake));
+        }
+
         var wrong = await db.AttemptItems
             .Where(i => i.AttemptId == attemptId && !i.IsCorrect)
             .Select(i => i.QuestionId)
@@ -240,7 +247,6 @@ public sealed class StartAttempt(
         var attempt = new Attempt
         {
             UserId = userId,
-            GuestToken = userId is null ? source.GuestToken : null,
             ExamId = examId,
             Source = AttemptSource.WrongOnly,
             Mode = rules.Mode,

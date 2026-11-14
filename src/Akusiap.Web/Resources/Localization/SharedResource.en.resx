@@ -769,6 +769,7 @@
   <data name="Own.Exams.Practise" xml:space="preserve"><value>Practise</value></data>
   <data name="Own.Exams.TakenDown" xml:space="preserve"><value>An admin took this exam down. You can still see it, but you can't start practice.</value></data>
   <data name="Session.Retake.Action" xml:space="preserve"><value>Retake the wrong ones ({0})</value></data>
+  <data name="Session.Retake.RegisterFirst" xml:space="preserve"><value>Register free to retake the questions you got wrong.</value></data>
   <data name="Session.Retake.NothingWrong" xml:space="preserve"><value>Every answer was right, so there is nothing to retake.</value></data>
   <data name="Report.Title" xml:space="preserve"><value>Report a question</value></data>
   <data name="Report.Back" xml:space="preserve"><value>Back</value></data>
