@@ -37,6 +37,10 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [CPNS-04] SKD tryout composition · M10 · deps: CPNS-03 · (claude-opus-5.5, 2026-11-09)
 - [CPNS-05] Session analysis · M10 · deps: SES-07, MEM-01 · (claude-opus-5.5, 2026-11-09)
 - [CPNS-06] CPNS 2026 package content · M10 · deps: CPNS-03, ADM-T8 · (claude-opus-5.5, 2026-11-09)
+- [GST-01] One guest trial, then register · M11 · deps: ENT-02, SES-01 · (claude-opus-5.5, 2026-11-13)
+- [GST-02] Guest trial result and carrying it over · M11 · deps: GST-01, SHR-04, MEM-01 · (claude-opus-5.5, 2026-11-13)
+- [ANL-01] Learning analysis page · M11 · deps: GST-02, PLN-01, CPNS-03 · (claude-opus-5.5, 2026-11-13)
+- [ANL-02] Analysis on the goal page · M11 · deps: ANL-01, PLN-04 · (claude-opus-5.5, 2026-11-13)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

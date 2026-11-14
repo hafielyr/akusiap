@@ -11,6 +11,8 @@
   var minutes = r.TimeSpentSeconds / 60;
   var seconds = r.TimeSpentSeconds % 60;
   var signedIn = User.Identity?.IsAuthenticated == true;
+  // GST-02: a guest's trial result asks them to register; retaking would be a second trial, so it is left out.
+  var guestTrial = !signedIn && r.Source == AttemptSource.Trial;
   string ForViewer(string url) => signedIn ? url : AccountRoutes.WithReturnUrl(AccountRoutes.SignIn, url);
 }
 
@@ -141,6 +143,11 @@
     </a>
   }
 
+  @if (guestTrial)
+  {
+    <partial name="_GuestTrialInvitePartial" model="r" />
+  }
+
   @if (r.Offer is { } offer)
   {
     <article class="space-y-3 rounded-xl border border-brand-200 bg-brand-50 p-4" data-testid="trial-offer">
@@ -176,7 +183,7 @@
   }
 
   <a href="@SessionRoutes.Review(r.AttemptId)" class="btn btn-primary w-full" data-testid="see-review">@T["Session.Result.SeeReview"]</a>
-  <partial name="_RetakeWrongPartial" model="(r.AttemptId, r.ExamId is null ? 0 : r.TotalCount - r.CorrectCount)" />
+  <partial name="_RetakeWrongPartial" model="(r.AttemptId, r.ExamId is null || guestTrial ? 0 : r.TotalCount - r.CorrectCount)" />
 
   @if (r.ExamId is { } examId)
   {

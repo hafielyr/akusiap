@@ -76,9 +76,15 @@ public static class EntitlementPolicy
             return All(AccessLevel.Full, AccessReason.Subscription);
         }
 
-        // 9. The trial set of a paid app exam, for guests and registered users alike.
+        // 9. The trial set of a paid app exam, for registered users on every exam and for a guest once in all (GST-01,
+        //    D-134): after their first trial a guest is asked to register free to keep practising.
         if (exam.OwnerKind == OwnerKind.App && exam.HasTrialQuestions)
         {
+            if (!viewer.IsRegistered && viewer.GuestTrialUsed)
+            {
+                return NoAccess(AccessReason.GuestTrialUsed);
+            }
+
             return new AccessDecision(AccessLevel.Trial, AccessReason.TrialAvailable, QuestionScope.TrialOnly);
         }
 

@@ -181,6 +181,9 @@
                 case ExamCta.Subscribe:
                   <a href="@ExamRoutes.PlansFor(package.Id)" class="@css" data-testid="cta-subscribe">@T["ExamPage.Subscribe"]</a>
                   break;
+                case ExamCta.RegisterToContinue:
+                  <a href="@AccountRoutes.WithReturnUrl(AccountRoutes.Register, returnUrl)" class="@css" data-testid="cta-register-continue">@T["ExamPage.RegisterToContinue"]</a>
+                  break;
                 case ExamCta.RegisterToUnlock:
                   <a href="@AccountRoutes.WithReturnUrl(AccountRoutes.Register, returnUrl)" class="@css" data-testid="cta-register">@T["ExamPage.Register"]</a>
                   break;

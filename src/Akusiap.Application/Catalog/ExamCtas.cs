@@ -19,6 +19,9 @@ public enum ExamCta
 
     /// <summary>"Daftar gratis untuk membuka": a guest on a free exam (D-05).</summary>
     RegisterToUnlock,
+
+    /// <summary>"Daftar gratis untuk lanjut berlatih": a guest who already took their one trial (GST-01, D-134).</summary>
+    RegisterToContinue,
 }
 
 /// <summary>Maps an <see cref="AccessDecision"/> to the exam page's buttons, most important first (CAT-02, D-43).</summary>
@@ -32,6 +35,7 @@ public static class ExamCtas
             { Level: AccessLevel.Trial } => [ExamCta.StartTrial, ExamCta.Buy, ExamCta.Subscribe],
             { CanStart: true } => [ExamCta.StartPractice],
             { Reason: AccessReason.RegisterToUnlock } => [ExamCta.RegisterToUnlock],
+            { Reason: AccessReason.GuestTrialUsed } => [ExamCta.RegisterToContinue, ExamCta.Buy, ExamCta.Subscribe],
             { Level: AccessLevel.None, Reason: AccessReason.NoAccess } => [ExamCta.Buy, ExamCta.Subscribe],
             _ => [],
         };
