@@ -62,9 +62,13 @@ public sealed partial class ReviewTests(PostgresFixture database)
 
         var wrong = await learner.GetStringAsync(new Uri($"{player}/pembahasan?tampil=salah", UriKind.Relative));
         var flagged = await learner.GetStringAsync(new Uri($"{player}/pembahasan?tampil=ditandai", UriKind.Relative));
+        var correct = await learner.GetStringAsync(new Uri($"{player}/pembahasan?tampil=benar", UriKind.Relative));
         Assert.Equal(["2", "3"], ItemPattern().Matches(wrong).Select(m => m.Groups[1].Value));
         Assert.Contains(">Salah (2)</a>", html, StringComparison.Ordinal); // FIX-03: the counts used to show as "({0})"
         Assert.Contains(">Ditandai (1)</a>", html, StringComparison.Ordinal);
+        Assert.Equal(["1"], ItemPattern().Matches(correct).Select(m => m.Groups[1].Value)); // SES-13
+        Assert.Contains($"href=\"{player}/pembahasan?tampil=benar\"", html, StringComparison.Ordinal);
+        Assert.Contains(">Benar (1)</a>", html, StringComparison.Ordinal);
         Assert.Equal(["2"], ItemPattern().Matches(flagged).Select(m => m.Groups[1].Value));
     }
 

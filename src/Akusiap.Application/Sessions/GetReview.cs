@@ -11,6 +11,9 @@ public enum ReviewFilter
     All,
     Wrong,
     Flagged,
+
+    /// <summary>The questions answered right (SES-13).</summary>
+    Correct,
 }
 
 public sealed record ReviewOption(long Id, string Text, bool IsCorrect, bool Selected);
@@ -19,7 +22,11 @@ public sealed record ReviewOption(long Id, string Text, bool IsCorrect, bool Sel
 public sealed record ReviewItem(int Position, QuestionType Type, string Text, IReadOnlyList<ReviewOption> Options, bool IsCorrect, bool IsFlagged, string Explanation, string? KeyFact, QuestionLabel? Label = null);
 
 /// <param name="Hidden">The rules say answers are never shown (ShowAnswers = Never).</param>
-public sealed record AttemptReview(long AttemptId, string Title, bool Hidden, int WrongCount, int FlaggedCount, IReadOnlyList<ReviewItem> Items, bool HasExam = true, AttemptSource Source = AttemptSource.Exam);
+public sealed record AttemptReview(long AttemptId, string Title, bool Hidden, int WrongCount, int FlaggedCount, IReadOnlyList<ReviewItem> Items, bool HasExam = true, AttemptSource Source = AttemptSource.Exam)
+{
+    /// <summary>Questions answered right (SES-13).</summary>
+    public int CorrectCount { get; init; }
+}
 
 /// <summary>
 /// The answer review of a finished attempt (SES-08, stories R-02, G-03, M-03, D-74): every item in its position with
@@ -77,9 +84,13 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
         {
             ReviewFilter.Wrong => items.Where(i => !i.IsCorrect),
             ReviewFilter.Flagged => items.Where(i => i.IsFlagged),
+            ReviewFilter.Correct => items.Where(i => i.IsCorrect),
             _ => items,
         };
-        return new AttemptReview(attemptId, attempt.Title ?? string.Empty, false, items.Count(i => !i.IsCorrect), items.Count(i => i.IsFlagged), [.. filtered], attempt.ExamId is not null, attempt.Source);
+        return new AttemptReview(attemptId, attempt.Title ?? string.Empty, false, items.Count(i => !i.IsCorrect), items.Count(i => i.IsFlagged), [.. filtered], attempt.ExamId is not null, attempt.Source)
+        {
+            CorrectCount = items.Count(i => i.IsCorrect),
+        };
     }
 
     private static bool IsHidden(string rulesSnapshot)

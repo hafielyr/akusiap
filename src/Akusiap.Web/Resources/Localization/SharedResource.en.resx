@@ -722,6 +722,7 @@
   <data name="Session.Result.CorrectShort" xml:space="preserve"><value>Correct</value></data>
   <data name="Session.Review.Title" xml:space="preserve"><value>Answer review</value></data>
   <data name="Session.Review.All" xml:space="preserve"><value>All</value></data>
+  <data name="Session.Review.Correct" xml:space="preserve"><value>Correct ({0})</value></data>
   <data name="Session.Review.Wrong" xml:space="preserve"><value>Wrong ({0})</value></data>
   <data name="Session.Review.Flagged" xml:space="preserve"><value>Flagged ({0})</value></data>
   <data name="Session.Review.Filter" xml:space="preserve"><value>Filter the review</value></data>

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Akusiap.Web.Pages.Sessions;
 
-/// <summary><c>/sesi/{id}/pembahasan</c> (SES-08): the answer review, filtered with <c>?tampil=salah|ditandai</c>.</summary>
+/// <summary><c>/sesi/{id}/pembahasan</c> (SES-08, SES-13): the answer review, filtered with <c>?tampil=benar|salah|ditandai</c>.</summary>
 public sealed class ReviewModel(GetReview getReview) : PageModel
 {
     [BindProperty(SupportsGet = true, Name = "tampil")]
@@ -15,6 +15,7 @@ public sealed class ReviewModel(GetReview getReview) : PageModel
     {
         "salah" => ReviewFilter.Wrong,
         "ditandai" => ReviewFilter.Flagged,
+        "benar" => ReviewFilter.Correct,
         _ => ReviewFilter.All,
     };
 

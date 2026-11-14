@@ -10,6 +10,7 @@
   var filters = new (ReviewFilter Filter, string? Query, Microsoft.AspNetCore.Html.IHtmlContent Label)[]
   {
     (ReviewFilter.All, null, T["Session.Review.All"]),
+    (ReviewFilter.Correct, "benar", T["Session.Review.Correct", review.CorrectCount]),
     (ReviewFilter.Wrong, "salah", T["Session.Review.Wrong", review.WrongCount]),
     (ReviewFilter.Flagged, "ditandai", T["Session.Review.Flagged", review.FlaggedCount]),
   };

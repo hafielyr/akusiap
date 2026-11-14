@@ -722,6 +722,7 @@
   <data name="Session.Result.CorrectShort" xml:space="preserve"><value>Benar</value></data>
   <data name="Session.Review.Title" xml:space="preserve"><value>Pembahasan</value></data>
   <data name="Session.Review.All" xml:space="preserve"><value>Semua</value></data>
+  <data name="Session.Review.Correct" xml:space="preserve"><value>Benar ({0})</value></data>
   <data name="Session.Review.Wrong" xml:space="preserve"><value>Salah ({0})</value></data>
   <data name="Session.Review.Flagged" xml:space="preserve"><value>Ditandai ({0})</value></data>
   <data name="Session.Review.Filter" xml:space="preserve"><value>Saring pembahasan</value></data>
