@@ -681,3 +681,11 @@ Owner request (2026-11-13): a visitor without an account takes one 30-question t
   - The review and flashcards show the same label on every question.
   - A question whose topic names no section shows only the topic.
 - Tests: unit (label from topic names), integration (player state and review).
+
+### FIX-02 Guests can't retake · XS
+- Stories: G-02, owner bug report (2026-11-14) · Depends on: SES-09, GST-01
+- Scope: "Ulangi yang salah" as a guest crashed on `ck_attempts_taker` (a user-less WrongOnly attempt). Guests no longer see the button, and a guest retake returns to the result with a register message (D-139).
+- AC:
+  - A guest's result and review show no retake button.
+  - A guest's retake request lands on the result with "Daftar gratis untuk mengulang soal yang salah." and creates no attempt.
+- Tests: integration.
