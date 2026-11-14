@@ -48,6 +48,7 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [DIF-01] Measured difficulty on each question · M11 · deps: SES-06, SES-12 · (claude-opus-5.5, 2026-11-14)
 - [PAY-13] Subscription prices and the device limit · M11 · deps: PAY-02, PAY-03, PAY-06, CAT-03 · (claude-opus-5.5, 2026-11-14)
 - [CPNS-07] CPNS package update with 10 tryout sets · M11 · deps: CPNS-04, CPNS-06 · (claude-opus-5.5, 2026-11-14)
+- [FIX-04] Latihan shows each answer in the CPNS package · M11 · deps: SES-05, CPNS-06 · (claude-opus-5.5, 2026-11-14)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

@@ -1,4 +1,7 @@
+using System.Net;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using Akusiap.Application.ContentPacks;
 using Akusiap.Domain.Content;
 using Akusiap.TestSupport.Builders;
@@ -15,7 +18,7 @@ namespace Akusiap.IntegrationTests.Questions;
 /// page link.
 /// </summary>
 [Collection(UsesDatabase.Name)]
-public sealed class CpnsPackTests(PostgresFixture database)
+public sealed partial class CpnsPackTests(PostgresFixture database)
 {
     private const string Header = "type,text,option_a,option_b,option_c,option_d,option_e,correct,explanation,topic,origin";
 
@@ -135,6 +138,64 @@ public sealed class CpnsPackTests(PostgresFixture database)
             [.. Enumerable.Repeat(CpnsPackRules.TwkTopic, 30), .. Enumerable.Repeat(CpnsPackRules.TiuTopic, 35), .. Enumerable.Repeat(CpnsPackRules.TkpTopic, 45)],
             items.Select(i => i.Topic));
     }
+
+    [Fact]
+    public async Task A_guest_practising_the_trial_checks_each_answer_and_reads_its_explanation()
+    {
+        // FIX-04 (D-143): the package's preset showed answers only after submitting, so Latihan had no "Periksa" and no
+        // explanation per question.
+        await using var app = new AppFactory(database);
+        await app.SeedReferenceDataAsync();
+        var tag = TestData.Unique();
+        var explanation = $"Pembahasan {tag}: jawaban yang benar sesuai materi dasar SKD, dijelaskan langkah demi langkah dengan contoh.";
+        var rows = Enumerable.Range(1, 12).Select(i => Row("TWK", $"Soal latihan tamu nomor {i} paket {tag} adalah ....", "C", explanation)).ToArray();
+        PackReport report;
+        await using (var scope = app.Services.CreateAsyncScope())
+        {
+            report = await scope.ServiceProvider.GetRequiredService<CpnsPack>().LoadAsync([new PackFile("guest.csv", Csv(rows))], CancellationToken.None);
+        }
+
+        await using (var db = database.CreateContext())
+        {
+            var preset = await db.Exams.Where(e => e.Id == report.ExamId).Select(e => e.RulePreset!).SingleAsync();
+            Assert.Equal(ShowAnswers.AfterEach, preset.ShowAnswers);
+        }
+
+        using var guest = app.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var started = await guest.PostFormAsync($"/ujian/{report.ExamId}/mulai", new Dictionary<string, string>
+        {
+            ["Form.Mode"] = "Practice", ["Form.Untimed"] = "true", ["Form.HintsEnabled"] = "true",
+        });
+        Assert.Equal(HttpStatusCode.Redirect, started.StatusCode);
+        var player = started.Headers.Location!.OriginalString;
+        var html = await guest.GetStringAsync(new Uri(player, UriKind.Relative));
+        var state = JsonDocument.Parse(StatePattern().Match(html).Groups[1].Value).RootElement;
+        Assert.True(state.GetProperty("canCheck").GetBoolean());
+        var token = state.GetProperty("token").GetString()!;
+        var option = state.GetProperty("items")[0].GetProperty("options")[0].GetProperty("id").GetInt64();
+
+        using (var save = Post(player, "jawab", token, new Dictionary<string, string> { ["position"] = "1", ["selected"] = option.ToString(System.Globalization.CultureInfo.InvariantCulture), ["flagged"] = "false", ["seconds"] = "5" }))
+        using (var saved = await guest.SendAsync(save))
+        {
+            Assert.Equal(HttpStatusCode.NoContent, saved.StatusCode);
+        }
+
+        using var check = Post(player, "bantuan?handler=Check", token, new Dictionary<string, string> { ["position"] = "1" });
+        using var checkedAnswer = await guest.SendAsync(check);
+        Assert.Equal(HttpStatusCode.OK, checkedAnswer.StatusCode);
+        var feedback = JsonDocument.Parse(await checkedAnswer.Content.ReadAsStringAsync()).RootElement;
+        Assert.False(string.IsNullOrWhiteSpace(feedback.GetProperty("explanation").GetString()));
+    }
+
+    private static HttpRequestMessage Post(string player, string path, string token, Dictionary<string, string> fields)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{player}/{path}", UriKind.Relative)) { Content = new FormUrlEncodedContent(fields) };
+        request.Headers.Add("RequestVerificationToken", token);
+        return request;
+    }
+
+    [GeneratedRegex("<script type=\"application/json\" id=\"quiz-state\">(.*?)</script>", RegexOptions.Singleline)]
+    private static partial Regex StatePattern();
 
     private static MemoryStream Csv(params string[] rows) =>
         new(Encoding.UTF8.GetBytes(string.Join('\n', [Header, .. rows])));

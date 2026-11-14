@@ -696,6 +696,12 @@ Owner request (2026-11-13): a visitor without an account takes one 30-question t
 - AC: The review filters, the history rows and the journey badges show their numbers and dates.
 - Tests: integration (review, history).
 
+### FIX-04 Latihan shows each answer in the CPNS package · XS
+- Stories: R-01, owner bug report (2026-11-14) · Depends on: SES-05, CPNS-06
+- Scope: The CPNS package's preset showed answers only after submitting, so Latihan had no "Periksa" and no explanation per question. The preset shows answers after each question (in code and by a migration for the existing preset); the tryout is unchanged (D-143).
+- AC: A guest practising the package's trial can check an answer and reads its explanation.
+- Tests: integration (guest trial check).
+
 ### SES-13 Correct answers in the review · XS
 - Stories: R-02, owner request (2026-11-14) · Depends on: SES-08
 - Scope: The answer review gets a "Benar (n)" filter (`?tampil=benar`) next to Semua, Salah and Ditandai, listing the questions answered right with their explanations.

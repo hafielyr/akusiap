@@ -215,7 +215,8 @@ public sealed class CpnsPack(IAppDbContext db, IQuestionFileReader reader, ICloc
                 HintsEnabled = true,
                 ShuffleQuestions = true,
                 ShuffleOptions = true,
-                ShowAnswers = ShowAnswers.AfterSubmit,
+                // Latihan checks each answer and shows its explanation (FIX-04, D-143); the tryout always shows them at the end.
+                ShowAnswers = ShowAnswers.AfterEach,
                 CatMode = true,
             };
             db.RulePresets.Add(preset);
