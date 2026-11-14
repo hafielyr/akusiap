@@ -11,6 +11,7 @@ public sealed record PlayerOption(long Id, string Text);
 
 /// <param name="Feedback">Set once the item was checked in Practice (SES-05); the answer is then locked.</param>
 /// <param name="Hint">Set once the hint was used.</param>
+/// <param name="Label">The SKD section and topic shown on the question (SES-12).</param>
 public sealed record PlayerItem(
     int Position,
     long QuestionId,
@@ -21,7 +22,8 @@ public sealed record PlayerItem(
     bool IsFlagged,
     bool HasHint = false,
     string? Hint = null,
-    AnswerFeedback? Feedback = null);
+    AnswerFeedback? Feedback = null,
+    QuestionLabel? Label = null);
 
 /// <param name="SecondsLeft">Null when untimed; never negative.</param>
 public sealed record PlayerView(
@@ -102,6 +104,7 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
                 i.Question.Hint,
                 i.Question.Explanation,
                 i.Question.KeyFact,
+                TopicName = i.Question.Topic == null ? null : i.Question.Topic.Name,
                 Correct = i.Question.Options.Where(o => o.IsCorrect).Select(o => o.Id).ToList(),
                 Options = i.Question.Options.Select(o => new PlayerOption(o.Id, o.Text)).ToList(),
                 Selected = i.SelectedOptions.Select(s => s.QuestionOptionId).ToList(),
@@ -137,7 +140,8 @@ public sealed class GetPlayer(IAppDbContext db, ICurrentUser currentUser, IClock
                 i.IsFlagged,
                 practice.HintsEnabled && !string.IsNullOrWhiteSpace(i.Hint),
                 i.HintUsed ? i.Hint : null,
-                i.CheckedAt is null ? null : new AnswerFeedback(Scoring.IsCorrect(i.QuestionType, i.Correct, i.Selected), i.Correct, i.Explanation, i.KeyFact)))])
+                i.CheckedAt is null ? null : new AnswerFeedback(Scoring.IsCorrect(i.QuestionType, i.Correct, i.Selected), i.Correct, i.Explanation, i.KeyFact),
+                QuestionLabel.From(i.TopicName)))])
         {
             CanCheck = practice.CanCheck,
             Cat = attempt.Mode == AttemptMode.Simulation && rules.RootElement.TryGetProperty("catMode", out var cat) && cat.ValueKind == JsonValueKind.True,

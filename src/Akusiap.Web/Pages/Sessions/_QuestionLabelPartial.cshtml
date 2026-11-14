@@ -1,0 +1,15 @@
+@model Akusiap.Domain.Sessions.QuestionLabel?
+@* SES-12 (D-138): a question's SKD section and topic, server-rendered (the review). Nothing when it has neither. *@
+@if (Model is { } label && (label.Section is not null || label.Topic is not null))
+{
+  <p class="flex flex-wrap items-center gap-1.5" data-testid="question-label">
+    @if (label.Section is not null)
+    {
+      <span class="chip bg-brand-600 text-white" data-testid="question-section"><span class="sr-only">@T["Session.Label.Section"]:</span> @label.Section</span>
+    }
+    @if (label.Topic is not null)
+    {
+      <span class="chip bg-slate-100 text-slate-700" data-testid="question-topic"><span class="sr-only">@T["Session.Label.Topic"]:</span> @label.Topic</span>
+    }
+  </p>
+}

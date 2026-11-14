@@ -25,7 +25,8 @@ public sealed record FlashcardCard(
     string Explanation,
     string? KeyFact,
     IReadOnlyList<bool?> Results,
-    IReadOnlyList<long> Picked)
+    IReadOnlyList<long> Picked,
+    QuestionLabel? Label = null)
 {
     /// <summary>Whether this card was already answered or rated in the set (its answer is then shown).</summary>
     public bool IsAnswered => Results[Position - 1] is not null;
@@ -214,6 +215,7 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
                 i.Question.Text,
                 i.Question.Explanation,
                 i.Question.KeyFact,
+                TopicName = i.Question.Topic == null ? null : i.Question.Topic.Name,
                 Options = i.Question.Options.OrderBy(o => o.SortOrder).ThenBy(o => o.Id).Select(o => new FlashcardOption(o.Id, o.Text, o.IsCorrect)).ToList(),
                 Picked = i.SelectedOptions.Select(o => o.QuestionOptionId).ToList(),
             })
@@ -228,7 +230,7 @@ public sealed class Flashcards(IAppDbContext db, IEntitlementService entitlement
             .Select(i => i.IsAnswered ? (bool?)i.IsCorrect : null)
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
-        return new FlashcardCard(attemptId, card.Position, set.TotalCount, set.Title, card.QuestionType, card.Text, card.Options, card.Explanation, card.KeyFact, results, card.Picked);
+        return new FlashcardCard(attemptId, card.Position, set.TotalCount, set.Title, card.QuestionType, card.Text, card.Options, card.Explanation, card.KeyFact, results, card.Picked, QuestionLabel.From(card.TopicName));
     }
 
     private async Task<DateTime?> RateCoreAsync(long attemptId, int position, ReviewRating rating, IReadOnlyList<long> picked, CancellationToken cancellationToken)

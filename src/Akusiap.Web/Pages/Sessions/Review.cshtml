@@ -53,6 +53,7 @@
           <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
             @T["Session.Player.Question"] @item.Position · <span class="@(item.IsCorrect ? "text-green-700" : "text-red-700")">@(item.IsCorrect ? T["Session.Review.RightShort"] : T["Session.Review.WrongShort"])</span>@(item.IsFlagged ? " · " + T["Session.Player.Flagged"].Value : null)
           </p>
+          <partial name="_QuestionLabelPartial" model="item.Label" />
           <p class="whitespace-pre-line font-medium">@item.Text</p>
           <ul class="space-y-2">
             @foreach (var option in item.Options)

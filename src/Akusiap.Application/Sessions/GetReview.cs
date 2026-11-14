@@ -15,7 +15,8 @@ public enum ReviewFilter
 
 public sealed record ReviewOption(long Id, string Text, bool IsCorrect, bool Selected);
 
-public sealed record ReviewItem(int Position, QuestionType Type, string Text, IReadOnlyList<ReviewOption> Options, bool IsCorrect, bool IsFlagged, string Explanation, string? KeyFact);
+/// <param name="Label">The SKD section and topic shown on the question (SES-12).</param>
+public sealed record ReviewItem(int Position, QuestionType Type, string Text, IReadOnlyList<ReviewOption> Options, bool IsCorrect, bool IsFlagged, string Explanation, string? KeyFact, QuestionLabel? Label = null);
 
 /// <param name="Hidden">The rules say answers are never shown (ShowAnswers = Never).</param>
 public sealed record AttemptReview(long AttemptId, string Title, bool Hidden, int WrongCount, int FlaggedCount, IReadOnlyList<ReviewItem> Items, bool HasExam = true, AttemptSource Source = AttemptSource.Exam);
@@ -53,6 +54,7 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
                 i.Question.Text,
                 i.Question.Explanation,
                 i.Question.KeyFact,
+                TopicName = i.Question.Topic == null ? null : i.Question.Topic.Name,
                 i.OptionOrder,
                 i.IsCorrect,
                 i.IsFlagged,
@@ -68,7 +70,7 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
                 .OrderBy(o => order.IndexOf(o.Id) is var i and >= 0 ? i : int.MaxValue).ThenBy(o => o.Id)
                 .Select(o => new ReviewOption(o.Id, o.Text, o.IsCorrect, r.Selected.Contains(o.Id)))
                 .ToList();
-            return new ReviewItem(r.Position, r.QuestionType, r.Text, options, r.IsCorrect, r.IsFlagged, r.Explanation, r.KeyFact);
+            return new ReviewItem(r.Position, r.QuestionType, r.Text, options, r.IsCorrect, r.IsFlagged, r.Explanation, r.KeyFact, QuestionLabel.From(r.TopicName));
         }).ToList();
 
         var filtered = filter switch

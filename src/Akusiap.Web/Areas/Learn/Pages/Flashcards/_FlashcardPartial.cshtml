@@ -62,6 +62,7 @@
         <p role="status" class="rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700" data-testid="next-due">@T["Flashcards.NextDue", nextDue]</p>
       }
 
+      <partial name="/Pages/Sessions/_QuestionLabelPartial.cshtml" model="Model.Label" />
       <p class="whitespace-pre-line text-lg font-semibold leading-snug sm:text-xl">@Model.Text</p>
 
       @if (answered)

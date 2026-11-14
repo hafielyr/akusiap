@@ -672,3 +672,12 @@ Owner request (2026-11-13): a visitor without an account takes one 30-question t
 - Scope: `/learn/target/{id}` adds the SKD subtests and the learning plan for the goal's exam under the schedule check (D-136).
 - AC: The goal page shows the plan without a "set goal" step.
 - Tests: integration.
+
+### SES-12 Section and topic on each question · S
+- Stories: R-02, owner request (2026-11-14) · Depends on: SES-03, SES-08, TRY-01, MEM-03, CPNS-03
+- Scope: The player, the CAT screen, the review and flashcards show the question's SKD section and topic as chips above the text (`Domain/Sessions/QuestionLabel`, D-138).
+- AC:
+  - Each question in the player and the CAT screen shows its section (when the topic names TWK, TIU or TKP) and its topic without the code; the label changes with the question.
+  - The review and flashcards show the same label on every question.
+  - A question whose topic names no section shows only the topic.
+- Tests: unit (label from topic names), integration (player state and review).
