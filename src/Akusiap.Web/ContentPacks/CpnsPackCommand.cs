@@ -63,6 +63,7 @@ public static class CpnsPackCommand
             }
 
             Console.WriteLine(string.Create(culture, $"TKP questions with points: {report.WithPoints}. Left as Draft (low quality score): {report.LeftAsDraft}. Upcoming tests added: {report.UpcomingTestsAdded}."));
+            Console.WriteLine(string.Create(culture, $"Tryout sets (30 TWK, 35 TIU, 45 TKP, no shared questions): {report.TryoutSets} of {Akusiap.Domain.Sessions.TryoutSets.MaxSets}."));
             return 0;
         }
         finally

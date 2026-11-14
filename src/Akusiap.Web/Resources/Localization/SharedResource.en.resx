@@ -788,6 +788,10 @@
   <data name="Own.Exams.Status.TakenDown" xml:space="preserve"><value>Taken down by an admin</value></data>
   <data name="Own.Exams.Practise" xml:space="preserve"><value>Practise</value></data>
   <data name="Own.Exams.TakenDown" xml:space="preserve"><value>An admin took this exam down. You can still see it, but you can't start practice.</value></data>
+  <data name="Session.Setup.TryoutSet" xml:space="preserve"><value>Tryout set</value></data>
+  <data name="Session.Setup.TryoutNumber" xml:space="preserve"><value>Tryout {0}</value></data>
+  <data name="Session.Setup.TryoutDone" xml:space="preserve"><value>Done</value></data>
+  <data name="Session.TryoutSetMissing" xml:space="preserve"><value>Choose one of the tryout sets.</value></data>
   <data name="Session.Retake.Action" xml:space="preserve"><value>Retake the wrong ones ({0})</value></data>
   <data name="Session.Retake.RegisterFirst" xml:space="preserve"><value>Register free to retake the questions you got wrong.</value></data>
   <data name="Session.Retake.NothingWrong" xml:space="preserve"><value>Every answer was right, so there is nothing to retake.</value></data>
@@ -1373,7 +1377,7 @@
   <data name="Skd.PassingGrade" xml:space="preserve"><value>pass {0}</value></data>
   <data name="Skd.BarLabel" xml:space="preserve"><value>{0}: score {1}, passing grade {2}</value></data>
   <data name="Skd.Gap" xml:space="preserve"><value>{0} points short of the passing grade.</value></data>
-  <data name="Skd.RulesNote" xml:space="preserve"><value>Scoring rules from KepmenPAN-RB No. 321 of 2024. The CPNS 2026 rules are not published yet.</value></data>
+  <data name="Skd.RulesNote" xml:space="preserve"><value>Passing grades follow the latest published SKD rules (2024). The CPNS 2026 rules are not published yet.</value></data>
   <data name="Analysis.Title" xml:space="preserve"><value>Session analysis</value></data>
   <data name="Analysis.Weakest" xml:space="preserve"><value>Weakest topic: {0} ({1} of {2} right).</value></data>
   <data name="Analysis.AllGood" xml:space="preserve"><value>No topic fell behind in this session.</value></data>

@@ -21,7 +21,8 @@ public sealed record StartAttemptRequest(
     string? ShareToken = null,
     Guid? GuestToken = null,
     string? GuestName = null,
-    long? ClassAssignmentId = null);
+    long? ClassAssignmentId = null,
+    int? TryoutSet = null);
 
 public sealed record StartedAttempt(long AttemptId, AttemptSource Source, int QuestionCount);
 
@@ -42,6 +43,7 @@ public sealed class StartAttempt(
     public const string GuestNameRequired = "Session.GuestNameRequired";
     public const string MaxAttemptsReached = "Session.MaxAttemptsReached";
     public const string NothingWrong = "Session.Retake.NothingWrong";
+    public const string TryoutSetMissing = "Session.TryoutSetMissing";
     public const string RegisterToRetake = "Session.Retake.RegisterFirst";
     public const string MixEmpty = "Mix.Empty";
     public const string ClassClosed = "Class.AssignmentClosed";
@@ -133,9 +135,40 @@ public sealed class StartAttempt(
         var scheme = await db.Exams.Where(e => e.Id == request.ExamId).Select(e => e.ScoringScheme).SingleAsync(cancellationToken).ConfigureAwait(false);
         if (scheme == ScoringScheme.Skd && rules.Mode == AttemptMode.Simulation && decision.Scope == QuestionScope.All)
         {
-            // An SKD tryout (CPNS-04, D-131): 30 TWK, 35 TIU and 45 TKP in that order, like the CAT test.
-            var tryout = await ComposeSkdAsync(candidates, cancellationToken).ConfigureAwait(false);
-            rules = rules with { QuestionCount = tryout.Count, ShuffleQuestions = false };
+            // An SKD tryout (CPNS-04, D-131): 30 TWK, 35 TIU and 45 TKP in that order, like the CAT test. With fixed sets
+            // (CPNS-07, D-142) it is the chosen set, else a random draw.
+            var setNumbers = await db.ExamQuestions
+                .Where(x => x.ExamId == request.ExamId && x.TryoutSet != null)
+                .Select(x => (int)x.TryoutSet!.Value)
+                .Distinct()
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+            IReadOnlyList<CandidateQuestion> tryout;
+            int? tryoutSet = null;
+            if (setNumbers.Count > 0)
+            {
+                tryoutSet = request.TryoutSet ?? setNumbers.Min();
+                if (!setNumbers.Contains(tryoutSet.Value))
+                {
+                    return Result.Fail<StartedAttempt>(new Problem(TryoutSetMissing, nameof(StartAttemptRequest.TryoutSet)));
+                }
+
+                var setIds = await db.ExamQuestions
+                    .Where(x => x.ExamId == request.ExamId && x.TryoutSet == tryoutSet)
+                    .OrderBy(x => x.SortOrder)
+                    .Select(x => x.QuestionId)
+                    .ToListAsync(cancellationToken)
+                    .ConfigureAwait(false);
+                // In set order, and only what the access allows now (a question retired since the load drops out).
+                var allowed = candidates.ToDictionary(c => c.QuestionId);
+                tryout = [.. setIds.Where(allowed.ContainsKey).Select(id => allowed[id])];
+            }
+            else
+            {
+                tryout = await ComposeSkdAsync(candidates, cancellationToken).ConfigureAwait(false);
+            }
+
+            rules = rules with { QuestionCount = tryout.Count, ShuffleQuestions = false, TryoutSet = tryoutSet };
             selected = QuestionSelection.Select(tryout, [], tryout.Count, shuffleQuestions: false, rules.ShuffleOptions, random.Random);
         }
         else

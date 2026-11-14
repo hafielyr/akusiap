@@ -60,6 +60,7 @@ public sealed class ExamConfiguration : IEntityTypeConfiguration<Exam>
         builder.ToTable(t =>
         {
             t.HasCheckConstraint("ck_exams_price_idr", "price_idr >= 0");
+            t.HasCheckConstraint("ck_exams_original_price_idr", "original_price_idr IS NULL OR (price_idr IS NOT NULL AND original_price_idr > price_idr)");
             t.HasCheckConstraint("ck_exams_access_days", "access_days > 0");
             t.HasCheckConstraint("ck_exams_own_question_allowance", "own_question_allowance >= 0");
             t.HasCheckConstraint("ck_exams_owner", "(owner_kind = 'App') = (owner_user_id IS NULL)");
@@ -85,6 +86,7 @@ public sealed class ExamQuestionConfiguration : IEntityTypeConfiguration<ExamQue
         builder.HasOne(eq => eq.Question).WithMany().HasForeignKey(eq => eq.QuestionId).OnDelete(DeleteBehavior.Cascade);
         builder.HasIndex(eq => eq.ExamId, "ix_exam_questions_trial")
             .HasDatabaseName("ix_exam_questions_trial").HasFilter("is_trial");
+        builder.ToTable(t => t.HasCheckConstraint("ck_exam_questions_tryout_set", $"tryout_set BETWEEN 1 AND {Domain.Sessions.TryoutSets.MaxSets}"));
     }
 }
 

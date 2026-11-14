@@ -111,6 +111,28 @@
       <span asp-validation-for="Form.HintsEnabled" class="field-error"></span>
     </div>
 
+    @if (setup.Tryouts.Count > 0)
+    {
+      @* CPNS-07 (D-142): fixed tryout sets, each different; the first one not finished yet is picked. *@
+      var chosen = Model.Form.TryoutSet ?? setup.SuggestedTryout;
+      <fieldset x-show="mode === 'Simulation'" class="space-y-2" data-testid="tryout-sets">
+        <legend class="label mb-2">@T["Session.Setup.TryoutSet"]</legend>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-5">
+          @foreach (var tryout in setup.Tryouts)
+          {
+            <label class="card card-link flex min-h-11 cursor-pointer items-center gap-2 p-3 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50">
+              <input type="radio" name="Form.TryoutSet" value="@tryout.Number" checked="@(chosen == tryout.Number)" class="size-5 shrink-0 accent-brand-600" data-testid="tryout-set" data-number="@tryout.Number" data-done="@(tryout.Done ? "true" : "false")" />
+              <span class="font-semibold">@T["Session.Setup.TryoutNumber", tryout.Number]</span>
+              @if (tryout.Done)
+              {
+                <span class="ml-auto text-green-700" title="@T["Session.Setup.TryoutDone"]" aria-label="@T["Session.Setup.TryoutDone"]">✓</span>
+              }
+            </label>
+          }
+        </div>
+      </fieldset>
+    }
+
     <div x-show="mode === 'Simulation'" class="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm" data-testid="simulation-rules">
       <p class="font-semibold">@T["Session.Setup.Locked"]</p>
       <p>@string.Join(" · ", locked)</p>

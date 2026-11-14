@@ -29,6 +29,9 @@ public sealed class SetupForm
     public bool ShuffleOptions { get; set; }
 
     public List<long> TopicIds { get; set; } = [];
+
+    /// <summary>The fixed SKD tryout set for a Simulation (CPNS-07); null takes the suggested one.</summary>
+    public int? TryoutSet { get; set; }
 }
 
 /// <summary>
@@ -116,7 +119,7 @@ public sealed class StartModel(GetSessionSetup getSetup, StartAttempt startAttem
         }
 
         var guestToken = User.Identity?.IsAuthenticated == true ? (Guid?)null : GuestTokenCookie.GetOrCreate(HttpContext);
-        var result = await startAttempt.HandleAsync(new StartAttemptRequest(id, Form.Mode, overrides, GuestToken: guestToken), cancellationToken);
+        var result = await startAttempt.HandleAsync(new StartAttemptRequest(id, Form.Mode, overrides, GuestToken: guestToken, TryoutSet: Form.Mode == AttemptMode.Simulation ? Form.TryoutSet ?? Setup.SuggestedTryout : null), cancellationToken);
         if (result.Succeeded)
         {
             return Redirect(SessionRoutes.Player(result.Value!.AttemptId));
