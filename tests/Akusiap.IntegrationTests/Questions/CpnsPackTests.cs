@@ -1,4 +1,7 @@
+using System.Net;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using Akusiap.Application.ContentPacks;
 using Akusiap.Domain.Content;
 using Akusiap.TestSupport.Builders;
@@ -10,11 +13,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Akusiap.IntegrationTests.Questions;
 
 /// <summary>
-/// CPNS-06: loading the question files skips duplicates and broken rows, reads TKP points, keeps weak questions as Draft
-/// and builds the published Rp50.000 SKD package with its trial set and the CPNS 2026 test page link.
+/// CPNS-06, CPNS-07: loading the question files skips duplicates and broken rows, reads TKP points, keeps weak questions
+/// as Draft and builds the published Rp39.000 SKD package with fixed tryout sets, its trial set and the CPNS 2026 test
+/// page link.
 /// </summary>
 [Collection(UsesDatabase.Name)]
-public sealed class CpnsPackTests(PostgresFixture database)
+public sealed partial class CpnsPackTests(PostgresFixture database)
 {
     private const string Header = "type,text,option_a,option_b,option_c,option_d,option_e,correct,explanation,topic,origin";
 
@@ -61,6 +65,137 @@ public sealed class CpnsPackTests(PostgresFixture database)
         Assert.Equal(exam.Id, cpns.ExamId);
         Assert.True(cpns.IsPublished);
     }
+
+    [Fact]
+    public async Task Enough_questions_make_fixed_tryout_sets_without_shared_questions_that_stay_put_and_can_be_taken()
+    {
+        await using var app = new AppFactory(database);
+        await app.SeedReferenceDataAsync();
+        var tag = TestData.Unique();
+        const string explanation = "Pembahasan lengkap: jawaban yang tepat sesuai materi dasar SKD dan aturan yang berlaku, dijelaskan langkah demi langkah.";
+        const string tkpExplanation = "Sikap terbaik mengutamakan pelayanan dan tanggung jawab kepada masyarakat.\nSkor per pilihan: A 2, B 3, C 5, D 1, E 4.";
+        var rows = new List<string>();
+        rows.AddRange(Enumerable.Range(1, 60).Select(i => Row("TWK", $"Soal wawasan kebangsaan nomor {i} paket {tag} adalah ....", "C", explanation)));
+        rows.AddRange(Enumerable.Range(1, 70).Select(i => Row("TIU", $"Soal intelegensia umum nomor {i} paket {tag} adalah ....", "A", explanation)));
+        rows.AddRange(Enumerable.Range(1, 90).Select(i => Row("TKP", $"Soal karakteristik pribadi nomor {i} paket {tag} adalah ....", "C", tkpExplanation)));
+
+        PackReport report;
+        await using (var scope = app.Services.CreateAsyncScope())
+        {
+            report = await scope.ServiceProvider.GetRequiredService<CpnsPack>().LoadAsync([new PackFile("sets.csv", Csv([.. rows]))], CancellationToken.None);
+        }
+
+        await using var db = database.CreateContext();
+        var exam = await db.Exams.SingleAsync(e => e.Id == report.ExamId);
+        var links = await db.ExamQuestions.Where(x => x.ExamId == exam.Id).Select(x => new { x.QuestionId, x.TryoutSet, Topic = x.Question!.Topic!.Name }).ToListAsync();
+        Assert.Equal(2, report.TryoutSets);
+        Assert.Equal((39_000L, 80_000L, 90), (exam.PriceIdr!.Value, exam.OriginalPriceIdr!.Value, exam.AccessDays!.Value));
+        Assert.Equal(220, links.Count);
+        Assert.All(links, l => Assert.NotNull(l.TryoutSet));
+        foreach (var set in new short[] { 1, 2 })
+        {
+            Assert.Equal(
+                [(CpnsPackRules.TiuTopic, 35), (CpnsPackRules.TkpTopic, 45), (CpnsPackRules.TwkTopic, 30)],
+                links.Where(l => l.TryoutSet == set).GroupBy(l => l.Topic).Select(g => (g.Key, g.Count())).OrderBy(g => g.Key));
+        }
+
+        Assert.StartsWith("220 soal dengan pembahasan dan kunci jawaban (TWK 60, TIU 70, TKP 90)\n2 paket tryout", exam.Description, StringComparison.Ordinal);
+        Assert.DoesNotContain("KemenPAN", exam.Description, StringComparison.OrdinalIgnoreCase);
+
+        // Loading again keeps every question in its set.
+        await using (var scope = app.Services.CreateAsyncScope())
+        {
+            await scope.ServiceProvider.GetRequiredService<CpnsPack>().LoadAsync([], CancellationToken.None);
+        }
+
+        await using (var again = database.CreateContext())
+        {
+            var after = await again.ExamQuestions.Where(x => x.ExamId == exam.Id).ToDictionaryAsync(x => x.QuestionId, x => x.TryoutSet);
+            Assert.All(links, l => Assert.Equal(l.TryoutSet, after[l.QuestionId]));
+        }
+
+        // A buyer picks a set on the setup page and gets exactly its 110 questions, TWK, then TIU, then TKP.
+        var user = TestData.User().Build();
+        using var buyer = await app.CreateSignedInClientAsync(user, Akusiap.Domain.Users.RoleNames.Learner);
+        db.ExamPurchases.Add(new Akusiap.Domain.Access.ExamPurchase
+        {
+            UserId = user.Id, ExamId = exam.Id, PricePaidIdr = 39_000, Status = Akusiap.Domain.Access.ExamPurchaseStatus.Active,
+            PurchasedAt = TestData.Now.AddDays(-1), AccessExpiresAt = TestData.Now.AddDays(89),
+        });
+        await db.SaveChangesAsync();
+        var setup = await buyer.GetStringAsync(new Uri($"/ujian/{exam.Id}/mulai?mode=Simulation", UriKind.Relative));
+        using var started = await buyer.PostFormAsync($"/ujian/{exam.Id}/mulai", new Dictionary<string, string> { ["Form.Mode"] = "Simulation", ["Form.TryoutSet"] = "2" });
+
+        Assert.Contains("data-testid=\"tryout-set\" data-number=\"1\" data-done=\"false\"", setup, StringComparison.Ordinal);
+        Assert.Contains("data-testid=\"tryout-set\" data-number=\"2\"", setup, StringComparison.Ordinal);
+        Assert.Equal(System.Net.HttpStatusCode.Redirect, started.StatusCode);
+        var attemptId = long.Parse(started.Headers.Location!.OriginalString.Split('/')[^1], System.Globalization.CultureInfo.InvariantCulture);
+        var items = await db.AttemptItems.Where(i => i.AttemptId == attemptId).OrderBy(i => i.Position).Select(i => new { i.QuestionId, Topic = i.Question!.Topic!.Name }).ToListAsync();
+        var setTwo = links.Where(l => l.TryoutSet == 2).Select(l => l.QuestionId).ToHashSet();
+        Assert.Equal(110, items.Count);
+        Assert.All(items, i => Assert.Contains(i.QuestionId, setTwo));
+        Assert.Equal(
+            [.. Enumerable.Repeat(CpnsPackRules.TwkTopic, 30), .. Enumerable.Repeat(CpnsPackRules.TiuTopic, 35), .. Enumerable.Repeat(CpnsPackRules.TkpTopic, 45)],
+            items.Select(i => i.Topic));
+    }
+
+    [Fact]
+    public async Task A_guest_practising_the_trial_checks_each_answer_and_reads_its_explanation()
+    {
+        // FIX-04 (D-143): the package's preset showed answers only after submitting, so Latihan had no "Periksa" and no
+        // explanation per question.
+        await using var app = new AppFactory(database);
+        await app.SeedReferenceDataAsync();
+        var tag = TestData.Unique();
+        var explanation = $"Pembahasan {tag}: jawaban yang benar sesuai materi dasar SKD, dijelaskan langkah demi langkah dengan contoh.";
+        var rows = Enumerable.Range(1, 12).Select(i => Row("TWK", $"Soal latihan tamu nomor {i} paket {tag} adalah ....", "C", explanation)).ToArray();
+        PackReport report;
+        await using (var scope = app.Services.CreateAsyncScope())
+        {
+            report = await scope.ServiceProvider.GetRequiredService<CpnsPack>().LoadAsync([new PackFile("guest.csv", Csv(rows))], CancellationToken.None);
+        }
+
+        await using (var db = database.CreateContext())
+        {
+            var preset = await db.Exams.Where(e => e.Id == report.ExamId).Select(e => e.RulePreset!).SingleAsync();
+            Assert.Equal(ShowAnswers.AfterEach, preset.ShowAnswers);
+        }
+
+        using var guest = app.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        using var started = await guest.PostFormAsync($"/ujian/{report.ExamId}/mulai", new Dictionary<string, string>
+        {
+            ["Form.Mode"] = "Practice", ["Form.Untimed"] = "true", ["Form.HintsEnabled"] = "true",
+        });
+        Assert.Equal(HttpStatusCode.Redirect, started.StatusCode);
+        var player = started.Headers.Location!.OriginalString;
+        var html = await guest.GetStringAsync(new Uri(player, UriKind.Relative));
+        var state = JsonDocument.Parse(StatePattern().Match(html).Groups[1].Value).RootElement;
+        Assert.True(state.GetProperty("canCheck").GetBoolean());
+        var token = state.GetProperty("token").GetString()!;
+        var option = state.GetProperty("items")[0].GetProperty("options")[0].GetProperty("id").GetInt64();
+
+        using (var save = Post(player, "jawab", token, new Dictionary<string, string> { ["position"] = "1", ["selected"] = option.ToString(System.Globalization.CultureInfo.InvariantCulture), ["flagged"] = "false", ["seconds"] = "5" }))
+        using (var saved = await guest.SendAsync(save))
+        {
+            Assert.Equal(HttpStatusCode.NoContent, saved.StatusCode);
+        }
+
+        using var check = Post(player, "bantuan?handler=Check", token, new Dictionary<string, string> { ["position"] = "1" });
+        using var checkedAnswer = await guest.SendAsync(check);
+        Assert.Equal(HttpStatusCode.OK, checkedAnswer.StatusCode);
+        var feedback = JsonDocument.Parse(await checkedAnswer.Content.ReadAsStringAsync()).RootElement;
+        Assert.False(string.IsNullOrWhiteSpace(feedback.GetProperty("explanation").GetString()));
+    }
+
+    private static HttpRequestMessage Post(string player, string path, string token, Dictionary<string, string> fields)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Post, new Uri($"{player}/{path}", UriKind.Relative)) { Content = new FormUrlEncodedContent(fields) };
+        request.Headers.Add("RequestVerificationToken", token);
+        return request;
+    }
+
+    [GeneratedRegex("<script type=\"application/json\" id=\"quiz-state\">(.*?)</script>", RegexOptions.Singleline)]
+    private static partial Regex StatePattern();
 
     private static MemoryStream Csv(params string[] rows) =>
         new(Encoding.UTF8.GetBytes(string.Join('\n', [Header, .. rows])));

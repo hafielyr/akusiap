@@ -20,5 +20,7 @@ public sealed class HttpCurrentUser(IHttpContextAccessor accessor, ActingUser ac
 
     public bool IsAdmin => Principal is not null && UserId is not null && Principal.IsInRole(RoleNames.Admin);
 
+    public Guid? GuestToken => UserId is null && accessor.HttpContext is { } context ? Sessions.GuestTokenCookie.Read(context.Request) : null;
+
     public bool IsTeacher => Principal is not null && UserId is not null && (Principal.IsInRole(RoleNames.Teacher) || Principal.IsInRole(RoleNames.Admin));
 }

@@ -83,6 +83,36 @@ public sealed partial class PlayerTests(PostgresFixture database)
         Assert.Contains("data-testid=\"timer\"", html, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public async Task Each_question_carries_its_section_and_topic_in_the_player_and_the_review()
+    {
+        await using var app = new AppFactory(database);
+        await app.SeedReferenceDataAsync();
+        using var learner = await app.CreateSignedInClientAsync(TestData.User().Build(), RoleNames.Learner);
+        var preset = new RulePreset { Name = "Label " + TestData.Unique(), ShuffleQuestions = false };
+        var exam = TestData.Exam().Free().WithRules(preset).WithQuestions(3).Build();
+        exam.Questions.First().Question!.Topic!.Name = "Tes Wawasan Kebangsaan (TWK)";
+        var numeric = new Topic { Subject = exam.Subject, Name = "TIU · Numerik" };
+        var plain = new Topic { Subject = exam.Subject, Name = "Bahasa Indonesia" };
+        exam.Questions.Single(q => q.SortOrder == 2).Question!.Topic = numeric;
+        exam.Questions.Single(q => q.SortOrder == 3).Question!.Topic = plain;
+        var player = await StartAsync(learner, await SeedAsync(exam));
+
+        var html = await learner.GetStringAsync(new Uri(player, UriKind.Relative));
+        using var state = State(html);
+        var labels = state.RootElement.GetProperty("items").EnumerateArray()
+            .Select(i => (i.GetProperty("section").GetString(), i.GetProperty("topic").GetString())).ToList();
+        using var submitted = await learner.PostFormAsync(player, new Dictionary<string, string>(), $"{player}?handler=Submit");
+        var review = WebUtility.HtmlDecode(await learner.GetStringAsync(new Uri($"{player}/pembahasan", UriKind.Relative)));
+
+        Assert.Equal([("TWK", "Tes Wawasan Kebangsaan"), ("TIU", "Numerik"), (null, "Bahasa Indonesia")], labels);
+        Assert.Contains("data-testid=\"question-label\"", html, StringComparison.Ordinal);
+        Assert.Equal(HttpStatusCode.Redirect, submitted.StatusCode);
+        Assert.Equal(3, ReviewLabelPattern().Count(review));
+        Assert.Contains("<span class=\"sr-only\">Bagian:</span> TWK</span>", review, StringComparison.Ordinal);
+        Assert.Contains("<span class=\"sr-only\">Topik:</span> Numerik</span>", review, StringComparison.Ordinal);
+    }
+
     // ---------- Helpers ----------
 
     private async Task<long> SeedAsync(Exam exam)
@@ -116,4 +146,7 @@ public sealed partial class PlayerTests(PostgresFixture database)
 
     [GeneratedRegex("<script type=\"application/json\" id=\"quiz-state\">(.*?)</script>", RegexOptions.Singleline)]
     private static partial Regex StatePattern();
+
+    [GeneratedRegex("data-testid=\"question-label\"")]
+    private static partial Regex ReviewLabelPattern();
 }

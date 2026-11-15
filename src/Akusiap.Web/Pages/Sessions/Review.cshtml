@@ -1,15 +1,18 @@
 @page "/sesi/{id:long}/pembahasan"
 @model Akusiap.Web.Pages.Sessions.ReviewModel
 @using Akusiap.Application.Sessions
+@using Akusiap.Domain.Sessions
 @* Answer review (SES-08): options in the attempt's stored order; green = correct, red = your wrong choice. *@
 @{
   var review = Model.Review;
   ViewData["Title"] = T["Session.Review.Title"].Value;
-  var filters = new (ReviewFilter Filter, string? Query, string Label)[]
+  // Kept as HTML strings: .Value on the HTML localizer would drop the counts and show "({0})".
+  var filters = new (ReviewFilter Filter, string? Query, Microsoft.AspNetCore.Html.IHtmlContent Label)[]
   {
-    (ReviewFilter.All, null, T["Session.Review.All"].Value),
-    (ReviewFilter.Wrong, "salah", T["Session.Review.Wrong", review.WrongCount].Value),
-    (ReviewFilter.Flagged, "ditandai", T["Session.Review.Flagged", review.FlaggedCount].Value),
+    (ReviewFilter.All, null, T["Session.Review.All"]),
+    (ReviewFilter.Correct, "benar", T["Session.Review.Correct", review.CorrectCount]),
+    (ReviewFilter.Wrong, "salah", T["Session.Review.Wrong", review.WrongCount]),
+    (ReviewFilter.Flagged, "ditandai", T["Session.Review.Flagged", review.FlaggedCount]),
   };
 }
 
@@ -31,7 +34,8 @@
   }
   else
   {
-    <partial name="_RetakeWrongPartial" model="(review.AttemptId, review.HasExam ? review.WrongCount : 0)" />
+    @* A retake needs an account (D-139): guests register instead (the result page and the shared-link invite ask). *@
+    <partial name="_RetakeWrongPartial" model="(review.AttemptId, review.HasExam && User.Identity?.IsAuthenticated == true ? review.WrongCount : 0)" />
     <nav class="flex flex-wrap gap-2" aria-label="@T["Session.Review.Filter"]">
       @foreach (var f in filters)
       {
@@ -51,6 +55,7 @@
           <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
             @T["Session.Player.Question"] @item.Position · <span class="@(item.IsCorrect ? "text-green-700" : "text-red-700")">@(item.IsCorrect ? T["Session.Review.RightShort"] : T["Session.Review.WrongShort"])</span>@(item.IsFlagged ? " · " + T["Session.Player.Flagged"].Value : null)
           </p>
+          <partial name="_QuestionLabelPartial" model="item.Label" />
           <p class="whitespace-pre-line font-medium">@item.Text</p>
           <ul class="space-y-2">
             @foreach (var option in item.Options)

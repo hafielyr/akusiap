@@ -28,6 +28,8 @@ public interface IAppDbContext
 
     DbSet<QuestionOption> QuestionOptions { get; }
 
+    DbSet<QuestionStats> QuestionStats { get; }
+
     DbSet<Exam> Exams { get; }
 
     DbSet<ExamQuestion> ExamQuestions { get; }
@@ -39,6 +41,8 @@ public interface IAppDbContext
     DbSet<PlanPrice> PlanPrices { get; }
 
     DbSet<Subscription> Subscriptions { get; }
+
+    DbSet<UserDevice> UserDevices { get; }
 
     DbSet<ExamPurchase> ExamPurchases { get; }
 

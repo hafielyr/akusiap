@@ -28,6 +28,7 @@ public sealed class PlanPriceConfiguration : IEntityTypeConfiguration<PlanPrice>
         {
             t.HasCheckConstraint("ck_plan_prices_duration_months", $"duration_months IN ({allowed})");
             t.HasCheckConstraint("ck_plan_prices_price_idr", "price_idr >= 0");
+            t.HasCheckConstraint("ck_plan_prices_original_price_idr", "original_price_idr IS NULL OR original_price_idr > price_idr");
         });
         builder.HasIndex(pp => new { pp.PlanId, pp.DurationMonths }).IsUnique();
         // Lets a subscription's (plan_price_id, plan_id) reference this pair, so price and plan always agree.
@@ -48,6 +49,10 @@ public sealed class SubscriptionConfiguration : IEntityTypeConfiguration<Subscri
                 "ck_subscriptions_active_period",
                 $"status <> '{SubscriptionStatus.Active}' OR " +
                 "(current_period_start IS NOT NULL AND current_period_end > current_period_start)");
+            t.HasCheckConstraint("ck_subscriptions_extra_devices", $"extra_devices BETWEEN 0 AND {DeviceLimits.MaxExtra}");
+            t.HasCheckConstraint(
+                "ck_subscriptions_pending_extra_devices",
+                $"pending_extra_devices IS NULL OR pending_extra_devices BETWEEN 0 AND {DeviceLimits.MaxExtra}");
         });
         builder.Property(s => s.Reminder7dSentAt).HasColumnName("reminder_7d_sent_at");
         builder.Property(s => s.Reminder1dSentAt).HasColumnName("reminder_1d_sent_at");

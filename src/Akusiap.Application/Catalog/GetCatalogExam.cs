@@ -26,6 +26,9 @@ public sealed record CatalogExamDetail(
 {
     public IReadOnlyList<ExamCta> Ctas => ExamCtas.For(Decision);
 
+    /// <summary>The normal price, struck through, when the exam is on sale (CPNS-07).</summary>
+    public long? OriginalPriceIdr { get; init; }
+
     /// <summary>The viewer can use every question of a paid exam (purchase, subscription, admin).</summary>
     public bool HasFullAccess => !IsFree && Decision.Level is AccessLevel.Full or AccessLevel.Admin or AccessLevel.Owner;
 }
@@ -49,6 +52,7 @@ public sealed class GetCatalogExam(IAppDbContext db, IEntitlementService entitle
                 SubjectName = e.Subject == null ? null : e.Subject.Name,
                 e.IsFree,
                 e.PriceIdr,
+                e.OriginalPriceIdr,
                 e.AccessDays,
                 e.ScoringScheme,
                 e.OwnerUserId,
@@ -95,6 +99,9 @@ public sealed class GetCatalogExam(IAppDbContext db, IEntitlementService entitle
             row.TrialQuestionCount,
             [.. topics.Select(t => new CatalogTopic(t.Name, t.Count))],
             decision,
-            row.ScoringScheme);
+            row.ScoringScheme)
+        {
+            OriginalPriceIdr = row.OriginalPriceIdr > row.PriceIdr ? row.OriginalPriceIdr : null,
+        };
     }
 }

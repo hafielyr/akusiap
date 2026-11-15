@@ -37,6 +37,18 @@ WIP limit: In Progress ≤ 3 cards (parallel agents), one card per agent.
 - [CPNS-04] SKD tryout composition · M10 · deps: CPNS-03 · (claude-opus-5.5, 2026-11-09)
 - [CPNS-05] Session analysis · M10 · deps: SES-07, MEM-01 · (claude-opus-5.5, 2026-11-09)
 - [CPNS-06] CPNS 2026 package content · M10 · deps: CPNS-03, ADM-T8 · (claude-opus-5.5, 2026-11-09)
+- [GST-01] One guest trial, then register · M11 · deps: ENT-02, SES-01 · (claude-opus-5.5, 2026-11-13)
+- [GST-02] Guest trial result and carrying it over · M11 · deps: GST-01, SHR-04, MEM-01 · (claude-opus-5.5, 2026-11-13)
+- [ANL-01] Learning analysis page · M11 · deps: GST-02, PLN-01, CPNS-03 · (claude-opus-5.5, 2026-11-13)
+- [ANL-02] Analysis on the goal page · M11 · deps: ANL-01, PLN-04 · (claude-opus-5.5, 2026-11-13)
+- [SES-12] Section and topic on each question · M11 · deps: SES-03, SES-08, TRY-01, MEM-03, CPNS-03 · (claude-opus-5.5, 2026-11-14)
+- [FIX-02] Guests can't retake · M11 · deps: SES-09, GST-01 · (claude-opus-5.5, 2026-11-14)
+- [FIX-03] Counts missing from localized labels · M11 · deps: SES-08, SES-10, GAM-01 · (claude-opus-5.5, 2026-11-14)
+- [SES-13] Correct answers in the review · M11 · deps: SES-08 · (claude-opus-5.5, 2026-11-14)
+- [DIF-01] Measured difficulty on each question · M11 · deps: SES-06, SES-12 · (claude-opus-5.5, 2026-11-14)
+- [PAY-13] Subscription prices and the device limit · M11 · deps: PAY-02, PAY-03, PAY-06, CAT-03 · (claude-opus-5.5, 2026-11-14)
+- [CPNS-07] CPNS package update with 10 tryout sets · M11 · deps: CPNS-04, CPNS-06 · (claude-opus-5.5, 2026-11-14)
+- [FIX-04] Latihan shows each answer in the CPNS package · M11 · deps: SES-05, CPNS-06 · (claude-opus-5.5, 2026-11-14)
 
 ## Blocked
 <!-- Add the reason and what is needed from the owner. -->

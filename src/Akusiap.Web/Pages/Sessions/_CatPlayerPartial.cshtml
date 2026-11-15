@@ -36,6 +36,7 @@
           <p class="font-bold text-brand-900">@T["Cat.Number"] <span x-text="index + 1" data-testid="position"></span></p>
           <span class="badge-soon" x-show="item.flagged" x-cloak data-testid="ragu-badge">@T["Cat.Ragu"]</span>
         </div>
+        <partial name="_QuestionLabelAlpinePartial" />
         <h1 class="whitespace-pre-line text-lg font-medium leading-snug outline-none" tabindex="-1" x-ref="question" x-text="item.text" data-testid="question"></h1>
         <p class="text-sm text-slate-600" x-show="item.type === 'MultiSelect'">@T["Session.Player.PickAll"]</p>
         <fieldset class="space-y-2">

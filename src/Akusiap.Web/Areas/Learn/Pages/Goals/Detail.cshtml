@@ -1,7 +1,8 @@
 @page "/learn/target/{id:long}"
 @model Akusiap.Web.Areas.Learn.Pages.Goals.DetailModel
 @using System.Globalization
-@* One goal's progress (PLN-04, D-122): answered and mastered overall, the schedule check, then topics weakest first.
+@* One goal's progress (PLN-04, D-122): answered and mastered overall, the schedule check, the SKD subtests and learning
+   plan (ANL-02, D-137), then topics weakest first.
    Two columns on wide screens (BRD-07). *@
 @{
   var p = Model.Progress;
@@ -49,6 +50,12 @@
         @if (goal.DaysLeft >= 0)
         {
           <a href="/learn/hari-ini" class="btn btn-secondary w-full sm:w-auto">@T["Plan.Title"]</a>
+        }
+        @if (Model.Analysis is { } analysis)
+        {
+          <div class="space-y-4 pt-2" data-testid="goal-analysis">
+            <partial name="_ExamAnalysisPartial" model="(analysis, false)" />
+          </div>
         }
       </section>
 

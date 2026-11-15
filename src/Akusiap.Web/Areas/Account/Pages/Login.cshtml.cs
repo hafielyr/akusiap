@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Akusiap.Application.Sessions;
 using Akusiap.Domain.Users;
 using Akusiap.Web.Identity;
 using Akusiap.Web.Localization;
+using Akusiap.Web.Sessions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,7 +12,7 @@ using Microsoft.Extensions.Localization;
 namespace Akusiap.Web.Areas.Account.Pages;
 
 /// <summary>Email sign-in. Deactivated users are told so only after the right password, so the page never reveals account state.</summary>
-public sealed class LoginModel(UserManager<User> users, SignInManager<User> signIn, IStringLocalizer<SharedResource> t) : PageModel
+public sealed class LoginModel(UserManager<User> users, SignInManager<User> signIn, IStringLocalizer<SharedResource> t, ClaimGuestAttempts claimGuestAttempts) : PageModel
 {
     [BindProperty]
     public LoginInput Input { get; set; } = new();
@@ -42,6 +44,12 @@ public sealed class LoginModel(UserManager<User> users, SignInManager<User> sign
         cancellationToken.ThrowIfCancellationRequested();
         if (result.Succeeded)
         {
+            // GST-02 (D-135): what this browser practised as a guest moves into the account.
+            if (GuestTokenCookie.Read(Request) is { } guestToken)
+            {
+                await claimGuestAttempts.HandleAsync(user.Id, guestToken, cancellationToken);
+            }
+
             LocalizationSetup.SetCultureCookie(Response, LocalizationSetup.CultureFor(user.PreferredLanguage));
             return LocalRedirect(SafeReturnUrl);
         }

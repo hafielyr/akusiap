@@ -70,6 +70,9 @@ public sealed class PlayerModel(GetPlayer getPlayer, SubmitAttempt submitAttempt
                 hasHint = i.HasHint,
                 hint = i.Hint,
                 feedback = i.Feedback,
+                section = i.Label?.Section,
+                topic = i.Label?.Topic,
+                difficulty = i.Label?.Difficulty?.ToString(),
             }),
         },
         Json);

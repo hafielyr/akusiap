@@ -180,6 +180,9 @@ public sealed class ApplyGatewayNotification(IAppDbContext db, IPaymentGateway g
 
         subscription.Status = SubscriptionStatus.Active;
         subscription.CurrentPeriodEnd = (runningEnd ?? now).AddMonths(subscription.PlanPrice!.DurationMonths);
+        // PAY-13 (D-141): the devices bought with this payment replace the earlier count, from now on.
+        subscription.ExtraDevices = subscription.PendingExtraDevices ?? subscription.ExtraDevices;
+        subscription.PendingExtraDevices = null;
         // A new period gets its own ending reminders (PAY-08).
         subscription.Reminder7dSentAt = null;
         subscription.Reminder1dSentAt = null;

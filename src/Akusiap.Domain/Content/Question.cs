@@ -53,4 +53,7 @@ public class Question
     public DateTime UpdatedAt { get; set; }
 
     public ICollection<QuestionOption> Options { get; } = [];
+
+    /// <summary>Answer counts and the measured difficulty (DIF-01); null until a finished session included the question.</summary>
+    public QuestionStats? Stats { get; set; }
 }

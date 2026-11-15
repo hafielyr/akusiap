@@ -14,6 +14,9 @@ public sealed record SetupTopic(long Id, string Name, int QuestionCount);
 /// <summary>The exam's rules as the setup page shows them.</summary>
 public sealed record SetupPreset(int? TimeLimitMinutes, int? QuestionCount, bool HintsEnabled, bool ShuffleQuestions, bool ShuffleOptions, int? MaxAttempts, int? PassMarkPercent);
 
+/// <summary>A fixed SKD tryout set on the setup page (CPNS-07) and whether the viewer has finished it.</summary>
+public sealed record SetupTryout(int Number, bool Done);
+
 /// <param name="AvailableCount">Questions in the viewer's scope (the trial set for a trial).</param>
 /// <param name="SimulationAttemptsLeft">Null when simulations are unlimited.</param>
 public sealed record SessionSetup(
@@ -29,6 +32,12 @@ public sealed record SessionSetup(
 
     /// <summary>Practice starts with the preset's count, capped at what is available.</summary>
     public int DefaultQuestionCount => Preset.QuestionCount is { } n ? Math.Min(n, AvailableCount) : AvailableCount;
+
+    /// <summary>The exam's fixed tryout sets for a Simulation with full access (CPNS-07); empty otherwise.</summary>
+    public IReadOnlyList<SetupTryout> Tryouts { get; init; } = [];
+
+    /// <summary>The first set not finished yet, else the first.</summary>
+    public int? SuggestedTryout => Tryouts.FirstOrDefault(t => !t.Done)?.Number ?? (Tryouts.Count > 0 ? Tryouts[0].Number : null);
 }
 
 /// <summary>
@@ -90,6 +99,38 @@ public sealed class GetSessionSetup(IAppDbContext db, IEntitlementService entitl
             exam.Preset,
             [.. topics.OrderBy(t => t.Name, StringComparer.CurrentCulture)],
             ids.Count,
-            attemptsLeft);
+            attemptsLeft)
+        {
+            Tryouts = access.Decision.Scope == QuestionScope.All ? await TryoutsAsync(examId, guestToken, cancellationToken).ConfigureAwait(false) : [],
+        };
+    }
+
+    private async Task<IReadOnlyList<SetupTryout>> TryoutsAsync(long examId, Guid? guestToken, CancellationToken cancellationToken)
+    {
+        var numbers = await db.ExamQuestions
+            .Where(x => x.ExamId == examId && x.TryoutSet != null)
+            .Select(x => (int)x.TryoutSet!.Value)
+            .Distinct()
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+        if (numbers.Count == 0)
+        {
+            return [];
+        }
+
+        var userId = currentUser.UserId;
+        var snapshots = userId is null && guestToken is null
+            ? []
+            : await db.Attempts
+                .Where(a => a.ExamId == examId && a.Mode == AttemptMode.Simulation && a.Status != AttemptStatus.InProgress
+                    && (userId != null ? a.UserId == userId : a.UserId == null && a.GuestToken == guestToken))
+                .Select(a => a.RulesSnapshot)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        var done = snapshots
+            .Select(json => System.Text.Json.JsonDocument.Parse(json).RootElement.TryGetProperty("tryoutSet", out var set) && set.ValueKind == System.Text.Json.JsonValueKind.Number ? set.GetInt32() : (int?)null)
+            .Where(n => n is not null)
+            .ToHashSet();
+        return [.. numbers.Order().Select(n => new SetupTryout(n, done.Contains(n)))];
     }
 }

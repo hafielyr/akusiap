@@ -16,6 +16,9 @@ public sealed class PackageForm
 
     public string? Price { get; set; }
 
+    /// <summary>The normal price, shown struck through (PAY-13).</summary>
+    public string? OriginalPrice { get; set; }
+
     public bool IsActive { get; set; }
 }
 
@@ -57,7 +60,21 @@ public sealed class IndexModel(ListPlanPricing listPricing, SavePlanPrices saveP
                 }
             }
 
-            inputs.Add(new PackageInput(package.DurationMonths, price, package.IsActive));
+            long? original = null;
+            if (!string.IsNullOrWhiteSpace(package.OriginalPrice))
+            {
+                if (Money.TryParseIdr(package.OriginalPrice, out var parsedOriginal))
+                {
+                    original = parsedOriginal;
+                }
+                else
+                {
+                    problems.Add(t["Admin.Plans.PriceInvalid", package.DurationMonths]);
+                    continue;
+                }
+            }
+
+            inputs.Add(new PackageInput(package.DurationMonths, price, package.IsActive, original));
         }
 
         if (problems.Count == 0)
@@ -95,6 +112,19 @@ public sealed class IndexModel(ListPlanPricing listPricing, SavePlanPrices saveP
         }
 
         return package.PriceIdr?.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>The value to show in the normal-price box, like <see cref="PriceText"/>.</summary>
+    public string? OriginalPriceText(PlanPricing plan, PlanPackage package)
+    {
+        ArgumentNullException.ThrowIfNull(plan);
+        ArgumentNullException.ThrowIfNull(package);
+        if (FailedPlanId == plan.PlanId && Posted.FirstOrDefault(p => p.DurationMonths == package.DurationMonths) is { } typed)
+        {
+            return typed.OriginalPrice;
+        }
+
+        return package.OriginalPriceIdr?.ToString(System.Globalization.CultureInfo.InvariantCulture);
     }
 
     public bool ActiveValue(PlanPricing plan, PlanPackage package)

@@ -160,6 +160,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
 
+                    b.Property<long?>("OriginalPriceIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("original_price_idr");
+
                     b.Property<long>("PlanId")
                         .HasColumnType("bigint")
                         .HasColumnName("plan_id");
@@ -181,6 +185,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.ToTable("plan_prices", null, t =>
                         {
                             t.HasCheckConstraint("ck_plan_prices_duration_months", "duration_months IN (1, 3, 6, 12)");
+
+                            t.HasCheckConstraint("ck_plan_prices_original_price_idr", "original_price_idr IS NULL OR original_price_idr > price_idr");
 
                             t.HasCheckConstraint("ck_plan_prices_price_idr", "price_idr >= 0");
                         });
@@ -207,6 +213,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("current_period_start");
 
+                    b.Property<int>("ExtraDevices")
+                        .HasColumnType("integer")
+                        .HasColumnName("extra_devices");
+
                     b.Property<string>("GatewaySubscriptionId")
                         .HasColumnType("text")
                         .HasColumnName("gateway_subscription_id");
@@ -214,6 +224,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("GraceUntil")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("grace_until");
+
+                    b.Property<int?>("PendingExtraDevices")
+                        .HasColumnType("integer")
+                        .HasColumnName("pending_extra_devices");
 
                     b.Property<long>("PlanId")
                         .HasColumnType("bigint")
@@ -275,6 +289,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                             t.HasCheckConstraint("ck_subscriptions_active_period", "status <> 'Active' OR (current_period_start IS NOT NULL AND current_period_end > current_period_start)");
 
                             t.HasCheckConstraint("ck_subscriptions_auto_debit_method", "renewal_mode = 'Manual' OR saved_payment_method_id IS NOT NULL");
+
+                            t.HasCheckConstraint("ck_subscriptions_extra_devices", "extra_devices BETWEEN 0 AND 4");
+
+                            t.HasCheckConstraint("ck_subscriptions_pending_extra_devices", "pending_extra_devices IS NULL OR pending_extra_devices BETWEEN 0 AND 4");
 
                             t.HasCheckConstraint("ck_subscriptions_renewal_mode", "renewal_mode IN ('Manual', 'AutoDebit')");
 
@@ -475,6 +493,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_shared");
 
+                    b.Property<long?>("OriginalPriceIdr")
+                        .HasColumnType("bigint")
+                        .HasColumnName("original_price_idr");
+
                     b.Property<int>("OwnQuestionAllowance")
                         .HasColumnType("integer")
                         .HasColumnName("own_question_allowance");
@@ -545,6 +567,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         {
                             t.HasCheckConstraint("ck_exams_access_days", "access_days > 0");
 
+                            t.HasCheckConstraint("ck_exams_original_price_idr", "original_price_idr IS NULL OR (price_idr IS NOT NULL AND original_price_idr > price_idr)");
+
                             t.HasCheckConstraint("ck_exams_own_question_allowance", "own_question_allowance >= 0");
 
                             t.HasCheckConstraint("ck_exams_owner", "(owner_kind = 'App') = (owner_user_id IS NULL)");
@@ -581,6 +605,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("sort_order");
 
+                    b.Property<short?>("TryoutSet")
+                        .HasColumnType("smallint")
+                        .HasColumnName("tryout_set");
+
                     b.HasKey("ExamId", "QuestionId")
                         .HasName("pk_exam_questions");
 
@@ -591,7 +619,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ix_exam_questions_trial")
                         .HasFilter("is_trial");
 
-                    b.ToTable("exam_questions", (string)null);
+                    b.ToTable("exam_questions", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_exam_questions_tryout_set", "tryout_set BETWEEN 1 AND 10");
+                        });
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Content.Question", b =>
@@ -731,6 +762,52 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.ToTable("question_options", null, t =>
                         {
                             t.HasCheckConstraint("ck_question_options_points", "points BETWEEN 0 AND 5");
+                        });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Content.QuestionStats", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("CorrectCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("correct_count");
+
+                    b.Property<int>("MarkedCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("marked_count");
+
+                    b.Property<long>("QuestionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("question_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("WrongCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("wrong_count");
+
+                    b.HasKey("Id")
+                        .HasName("pk_question_stats");
+
+                    b.HasIndex("QuestionId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_question_stats_question_id");
+
+                    b.ToTable("question_stats", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_question_stats_correct_count", "correct_count >= 0");
+
+                            t.HasCheckConstraint("ck_question_stats_marked_count", "marked_count >= 0");
+
+                            t.HasCheckConstraint("ck_question_stats_wrong_count", "wrong_count >= 0");
                         });
                 });
 
@@ -2021,6 +2098,10 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("time_spent_seconds");
 
+                    b.Property<bool>("WasFlagged")
+                        .HasColumnType("boolean")
+                        .HasColumnName("was_flagged");
+
                     b.HasKey("Id")
                         .HasName("pk_attempt_items");
 
@@ -2214,6 +2295,55 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
 
                             t.HasCheckConstraint("ck_users_preferred_language", "preferred_language IN ('id', 'en')");
                         });
+                });
+
+            modelBuilder.Entity("Akusiap.Domain.Users.UserDevice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid>("DeviceKey")
+                        .HasColumnType("uuid")
+                        .HasColumnName("device_key");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("label");
+
+                    b.Property<DateTime>("LastSignInAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_sign_in_at");
+
+                    b.Property<bool>("PushedOut")
+                        .HasColumnType("boolean")
+                        .HasColumnName("pushed_out");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("revoked_at");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_user_devices");
+
+                    b.HasIndex("UserId", "DeviceKey")
+                        .IsUnique()
+                        .HasDatabaseName("ix_user_devices_user_id_device_key");
+
+                    b.ToTable("user_devices", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -2572,6 +2702,18 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Navigation("Question");
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Content.QuestionStats", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Content.Question", "Question")
+                        .WithOne("Stats")
+                        .HasForeignKey("Akusiap.Domain.Content.QuestionStats", "QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_question_stats_questions_question_id");
+
+                    b.Navigation("Question");
+                });
+
             modelBuilder.Entity("Akusiap.Domain.Content.RulePreset", b =>
                 {
                     b.HasOne("Akusiap.Domain.Users.User", "OwnerUser")
@@ -2901,6 +3043,18 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
                     b.Navigation("QuestionOption");
                 });
 
+            modelBuilder.Entity("Akusiap.Domain.Users.UserDevice", b =>
+                {
+                    b.HasOne("Akusiap.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_devices_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Akusiap.Domain.Users.Role", null)
@@ -2978,6 +3132,8 @@ namespace Akusiap.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Akusiap.Domain.Content.Question", b =>
                 {
                     b.Navigation("Options");
+
+                    b.Navigation("Stats");
                 });
 
             modelBuilder.Entity("Akusiap.Domain.Content.Subject", b =>

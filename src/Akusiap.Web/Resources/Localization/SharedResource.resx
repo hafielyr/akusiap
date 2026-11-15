@@ -110,6 +110,7 @@
   <data name="Admin.Questions.Previous" xml:space="preserve"><value>Sebelumnya</value></data>
   <data name="Admin.Questions.Next" xml:space="preserve"><value>Berikutnya</value></data>
   <data name="Admin.Questions.PageOf" xml:space="preserve"><value>Halaman {0} dari {1}</value></data>
+  <data name="Admin.Questions.Answers" xml:space="preserve"><value>{0} jawaban</value></data>
   <data name="Admin.Questions.DifficultyBadge" xml:space="preserve"><value>Kesulitan {0}</value></data>
   <data name="Admin.Questions.UsedInExams" xml:space="preserve"><value>Dipakai di {0} ujian.</value></data>
   <data name="Admin.Questions.ChooseTopic" xml:space="preserve"><value>Pilih topik</value></data>
@@ -482,6 +483,8 @@
   <data name="Admin.Plans.PriceInvalid" xml:space="preserve"><value>Harga {0} bulan: tulis rupiah tanpa desimal, misalnya 99000 atau Rp99.000.</value></data>
   <data name="Admin.Plans.PriceRange" xml:space="preserve"><value>Harga {0} bulan harus lebih dari 0.</value></data>
   <data name="Admin.Plans.ActiveNeedsPrice" xml:space="preserve"><value>Paket {0} bulan perlu harga sebelum dijual.</value></data>
+  <data name="Admin.Plans.OriginalPrice" xml:space="preserve"><value>Harga normal (dicoret, opsional)</value></data>
+  <data name="Admin.Plans.OriginalNotHigher" xml:space="preserve"><value>Paket {0} bulan: harga normal harus lebih tinggi dari harga jual.</value></data>
   <data name="Admin.Plans.PriceInUse" xml:space="preserve"><value>Paket {0} bulan sudah dibeli, jadi harganya tidak bisa dihapus. Matikan "Dijual" saja.</value></data>
   <data name="Admin.Nav.Users" xml:space="preserve"><value>Pengguna</value></data>
   <data name="Admin.Users.Title" xml:space="preserve"><value>Pengguna</value></data>
@@ -524,6 +527,17 @@
   <data name="Session.Setup.Start" xml:space="preserve"><value>Mulai</value></data>
   <data name="Session.Player.QuestionsLeft" xml:space="preserve"><value>soal tersisa</value></data>
   <data name="Session.Player.Question" xml:space="preserve"><value>Soal</value></data>
+  <data name="Profile.Devices" xml:space="preserve"><value>Perangkat</value></data>
+  <data name="Profile.DevicesLimit" xml:space="preserve"><value>Paket langganan Anda berlaku untuk {0} perangkat. Masuk di perangkat baru mengeluarkan perangkat yang paling lama masuk.</value></data>
+  <data name="Profile.DevicesNoLimit" xml:space="preserve"><value>Perangkat yang sedang masuk ke akun ini.</value></data>
+  <data name="Profile.ThisDevice" xml:space="preserve"><value>Perangkat ini</value></data>
+  <data name="Device.PushedOut" xml:space="preserve"><value>Anda keluar dari perangkat ini karena akun Anda masuk di perangkat lain. Paket langganan berlaku untuk 1 perangkat; tambah perangkat saat membeli atau memperpanjang paket.</value></data>
+  <data name="Difficulty.Easy" xml:space="preserve"><value>Mudah</value></data>
+  <data name="Difficulty.Medium" xml:space="preserve"><value>Sedang</value></data>
+  <data name="Difficulty.Hard" xml:space="preserve"><value>Sulit</value></data>
+  <data name="Session.Label.Difficulty" xml:space="preserve"><value>Tingkat kesulitan</value></data>
+  <data name="Session.Label.Section" xml:space="preserve"><value>Bagian</value></data>
+  <data name="Session.Label.Topic" xml:space="preserve"><value>Topik</value></data>
   <data name="Session.Player.PickAll" xml:space="preserve"><value>pilih semua yang benar</value></data>
   <data name="Session.Player.Options" xml:space="preserve"><value>Pilihan jawaban</value></data>
   <data name="Session.Player.Previous" xml:space="preserve"><value>Sebelumnya</value></data>
@@ -551,6 +565,13 @@
   <data name="Checkout.ExamAccess" xml:space="preserve"><value>Semua soal ujian ini selama {0} hari.</value></data>
   <data name="Checkout.AccessTo" xml:space="preserve"><value>Akses sampai {0}.</value></data>
   <data name="Checkout.ExtendsTo" xml:space="preserve"><value>Akses Anda yang berjalan diperpanjang sampai {0}.</value></data>
+  <data name="Checkout.Devices" xml:space="preserve"><value>Perangkat</value></data>
+  <data name="Checkout.DevicesHint" xml:space="preserve"><value>Paket berlaku untuk 1 perangkat. Masuk di perangkat lain akan mengeluarkan perangkat lama. Tambah perangkat:</value></data>
+  <data name="Checkout.PerDevice" xml:space="preserve"><value>per perangkat</value></data>
+  <data name="Checkout.DeviceCount" xml:space="preserve"><value>{0} perangkat</value></data>
+  <data name="Checkout.PackagePrice" xml:space="preserve"><value>Harga paket</value></data>
+  <data name="Checkout.ExtraDevices" xml:space="preserve"><value>Tambahan {0} perangkat</value></data>
+  <data name="Pricing.Devices" xml:space="preserve"><value>Untuk 1 perangkat; tambah perangkat +{0}/bulan atau +{1}/tahun.</value></data>
   <data name="Checkout.Total" xml:space="preserve"><value>Total</value></data>
   <data name="Checkout.TaxIncluded" xml:space="preserve"><value>Harga sudah termasuk pajak.</value></data>
   <data name="Checkout.PendingExists" xml:space="preserve"><value>Anda sudah punya pembayaran yang menunggu ({0}).</value></data>
@@ -720,6 +741,7 @@
   <data name="Session.Result.CorrectShort" xml:space="preserve"><value>Benar</value></data>
   <data name="Session.Review.Title" xml:space="preserve"><value>Pembahasan</value></data>
   <data name="Session.Review.All" xml:space="preserve"><value>Semua</value></data>
+  <data name="Session.Review.Correct" xml:space="preserve"><value>Benar ({0})</value></data>
   <data name="Session.Review.Wrong" xml:space="preserve"><value>Salah ({0})</value></data>
   <data name="Session.Review.Flagged" xml:space="preserve"><value>Ditandai ({0})</value></data>
   <data name="Session.Review.Filter" xml:space="preserve"><value>Saring pembahasan</value></data>
@@ -766,7 +788,12 @@
   <data name="Own.Exams.Status.TakenDown" xml:space="preserve"><value>Diturunkan admin</value></data>
   <data name="Own.Exams.Practise" xml:space="preserve"><value>Latihan</value></data>
   <data name="Own.Exams.TakenDown" xml:space="preserve"><value>Ujian ini diturunkan oleh admin. Anda masih bisa melihatnya, tetapi tidak bisa memulai latihan.</value></data>
+  <data name="Session.Setup.TryoutSet" xml:space="preserve"><value>Paket tryout</value></data>
+  <data name="Session.Setup.TryoutNumber" xml:space="preserve"><value>Tryout {0}</value></data>
+  <data name="Session.Setup.TryoutDone" xml:space="preserve"><value>Sudah dikerjakan</value></data>
+  <data name="Session.TryoutSetMissing" xml:space="preserve"><value>Pilih paket tryout yang ada.</value></data>
   <data name="Session.Retake.Action" xml:space="preserve"><value>Ulangi yang salah ({0})</value></data>
+  <data name="Session.Retake.RegisterFirst" xml:space="preserve"><value>Daftar gratis untuk mengulang soal yang salah.</value></data>
   <data name="Session.Retake.NothingWrong" xml:space="preserve"><value>Semua jawaban benar, tidak ada yang perlu diulang.</value></data>
   <data name="Report.Title" xml:space="preserve"><value>Laporkan soal</value></data>
   <data name="Report.Back" xml:space="preserve"><value>Kembali</value></data>
@@ -1350,7 +1377,7 @@
   <data name="Skd.PassingGrade" xml:space="preserve"><value>ambang {0}</value></data>
   <data name="Skd.BarLabel" xml:space="preserve"><value>{0}: nilai {1}, ambang batas {2}</value></data>
   <data name="Skd.Gap" xml:space="preserve"><value>Kurang {0} poin dari ambang batas.</value></data>
-  <data name="Skd.RulesNote" xml:space="preserve"><value>Aturan nilai dari KepmenPAN-RB No. 321 Tahun 2024. Aturan CPNS 2026 belum terbit.</value></data>
+  <data name="Skd.RulesNote" xml:space="preserve"><value>Ambang batas memakai aturan SKD terakhir yang terbit (2024). Aturan CPNS 2026 belum terbit.</value></data>
   <data name="Analysis.Title" xml:space="preserve"><value>Analisis sesi</value></data>
   <data name="Analysis.Weakest" xml:space="preserve"><value>Topik terlemah: {0} ({1} dari {2} benar).</value></data>
   <data name="Analysis.AllGood" xml:space="preserve"><value>Tidak ada topik yang tertinggal di sesi ini.</value></data>
@@ -1394,4 +1421,50 @@
   <data name="Admin.Question.Points" xml:space="preserve"><value>Poin</value></data>
   <data name="Admin.Questions.PointsInvalid" xml:space="preserve"><value>Poin pilihan harus diisi untuk semua pilihan atau dikosongkan semua, bernilai 0 sampai {0}, hanya untuk pilihan ganda, dan jawaban benar harus berpoin paling tinggi.</value></data>
   <data name="Admin.Import.PointsUnreadable" xml:space="preserve"><value>Kolom option_points "{0}" harus berisi satu angka untuk setiap pilihan, misalnya 2,3,5,1,4.</value></data>
+  <data name="ExamPage.GuestTrialUsed" xml:space="preserve"><value>Anda sudah memakai tes gratis tanpa akun. Daftar gratis untuk mencoba soal ujian ini, menyimpan hasil, dan mendapat rencana belajar.</value></data>
+  <data name="ExamPage.RegisterToContinue" xml:space="preserve"><value>Daftar gratis untuk lanjut berlatih</value></data>
+  <data name="GuestTrial.Eyebrow" xml:space="preserve"><value>Tes gratis selesai</value></data>
+  <data name="GuestTrial.Title" xml:space="preserve"><value>Simpan hasil ini dan dapatkan rencana belajar</value></data>
+  <data name="GuestTrial.Lead" xml:space="preserve"><value>Tanpa akun, tes gratis hanya satu kali. Daftar gratis untuk lanjut berlatih: hasil ini ikut tersimpan.</value></data>
+  <data name="GuestTrial.Analysis" xml:space="preserve"><value>Analisis per topik dan subtes dari semua tes Anda</value></data>
+  <data name="GuestTrial.Cards" xml:space="preserve"><value>{0} soal yang salah jadi kartu hafalan</value></data>
+  <data name="GuestTrial.Plan" xml:space="preserve"><value>Rencana belajar: topik terlemah dulu, sampai hari ujian</value></data>
+  <data name="GuestTrial.MoreExams" xml:space="preserve"><value>Soal coba gratis di semua ujian lainnya</value></data>
+  <data name="GuestTrial.Register" xml:space="preserve"><value>Daftar gratis dan lihat analisis</value></data>
+  <data name="Analysis.PageTitle" xml:space="preserve"><value>Analisis belajar</value></data>
+  <data name="Analysis.PageLead" xml:space="preserve"><value>Dihitung dari semua jawaban Anda. Setiap soal dinilai dari jawaban terakhirnya, jadi latihan ulang langsung terlihat.</value></data>
+  <data name="Analysis.Link" xml:space="preserve"><value>Topik terlemah dan rencana belajar</value></data>
+  <data name="Analysis.Empty" xml:space="preserve"><value>Belum ada tes. Kerjakan satu tes dan analisisnya muncul di sini.</value></data>
+  <data name="Analysis.EmptyGo" xml:space="preserve"><value>Pilih ujian</value></data>
+  <data name="Analysis.Tried" xml:space="preserve"><value>{0} dari {1} soal sudah dicoba ({2}%)</value></data>
+  <data name="Analysis.TriedTrial" xml:space="preserve"><value>{0} dari {1} soal coba gratis sudah dicoba ({2}%)</value></data>
+  <data name="Analysis.GoalLink" xml:space="preserve"><value>Lihat target ujian</value></data>
+  <data name="Analysis.WeakestTopic" xml:space="preserve"><value>Paling lemah: {0}, {1}% benar</value></data>
+  <data name="Analysis.Topics" xml:space="preserve"><value>Per topik, terlemah dulu</value></data>
+  <data name="Analysis.NoAnswersYet" xml:space="preserve"><value>Belum ada jawaban di ujian ini.</value></data>
+  <data name="Analysis.TopicLine" xml:space="preserve"><value>{0} dari {1} soal yang dicoba kini benar · {2} soal di topik ini</value></data>
+  <data name="Analysis.Untried" xml:space="preserve"><value>{0} topik belum dicoba.</value></data>
+  <data name="Analysis.Plan" xml:space="preserve"><value>Rencana belajar</value></data>
+  <data name="Analysis.PlanDone" xml:space="preserve"><value>Semua topik sudah kuat. Pertahankan dengan latihan harian.</value></data>
+  <data name="Analysis.Strength.NotEnough" xml:space="preserve"><value>Belum cukup data</value></data>
+  <data name="Analysis.Strength.Weak" xml:space="preserve"><value>Lemah</value></data>
+  <data name="Analysis.Strength.Fair" xml:space="preserve"><value>Cukup</value></data>
+  <data name="Analysis.Strength.Strong" xml:space="preserve"><value>Kuat</value></data>
+  <data name="Analysis.Step.ReviewCards" xml:space="preserve"><value>Ulas {0} kartu hafalan</value></data>
+  <data name="Analysis.Step.ReviewCardsHint" xml:space="preserve"><value>Soal yang pernah salah, diulang tepat sebelum terlupa.</value></data>
+  <data name="Analysis.Step.ReviewCardsGo" xml:space="preserve"><value>Ulas kartu</value></data>
+  <data name="Analysis.Step.PractiseTopic" xml:space="preserve"><value>Latih {0} (kini {1}% benar)</value></data>
+  <data name="Analysis.Step.PractiseTopicHint" xml:space="preserve"><value>{0} soal tanpa batas waktu, lalu baca pembahasannya.</value></data>
+  <data name="Analysis.Step.Practise" xml:space="preserve"><value>Mulai latihan</value></data>
+  <data name="Analysis.Step.TryTopic" xml:space="preserve"><value>Coba topik {0}</value></data>
+  <data name="Analysis.Step.TryTopicHint" xml:space="preserve"><value>{0} soal yang belum pernah Anda kerjakan.</value></data>
+  <data name="Analysis.Step.Simulation" xml:space="preserve"><value>Simulasi penuh</value></data>
+  <data name="Analysis.Step.SimulationHint" xml:space="preserve"><value>Uji kemajuan Anda dengan waktu dan aturan ujian sebenarnya.</value></data>
+  <data name="Analysis.Step.SimulationGo" xml:space="preserve"><value>Mulai simulasi</value></data>
+  <data name="Analysis.Step.Unlock" xml:space="preserve"><value>Buka semua soal ujian ini</value></data>
+  <data name="Analysis.Step.UnlockHint" xml:space="preserve"><value>Semua {0} soal coba gratis sudah Anda kerjakan.</value></data>
+  <data name="Analysis.Step.UnlockGo" xml:space="preserve"><value>Lihat pilihan</value></data>
+  <data name="Analysis.Step.SetGoal" xml:space="preserve"><value>Pasang tanggal ujian</value></data>
+  <data name="Analysis.Step.SetGoalHint" xml:space="preserve"><value>LatihanSoal membagi soal per hari sampai hari ujian.</value></data>
+  <data name="Analysis.Step.SetGoalGo" xml:space="preserve"><value>Pasang target</value></data>
 </root>

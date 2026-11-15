@@ -109,6 +109,54 @@ public sealed partial class CheckoutTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task A_package_shows_its_normal_price_and_extra_devices_are_paid_for_and_granted_on_payment()
+    {
+        // PAY-13 (D-141): 1 device included; each extra is Rp100.000 on a 12-month package.
+        await using var app = await StartAsync();
+        var user = TestData.User().Build();
+        using var client = await app.CreateSignedInClientAsync(user, RoleNames.Learner);
+        long priceId;
+        await using (var db = _database.CreateContext())
+        {
+            var plan = await db.Plans.SingleAsync(p => p.Code == PlanCode.Learner);
+            var price = new PlanPrice { PlanId = plan.Id, DurationMonths = 12, PriceIdr = 110_000, OriginalPriceIdr = 200_000, IsActive = true };
+            db.PlanPrices.Add(price);
+            await db.SaveChangesAsync();
+            priceId = price.Id;
+        }
+
+        var pricing = WebUtility.HtmlDecode(await client.GetStringAsync(new Uri("/harga", UriKind.Relative)));
+        var plain = WebUtility.HtmlDecode(await client.GetStringAsync(new Uri($"/checkout?planPrice={priceId}", UriKind.Relative)));
+        var page = WebUtility.HtmlDecode(await client.GetStringAsync(new Uri($"/checkout?planPrice={priceId}&perangkat=2", UriKind.Relative)));
+        using var tooMany = await client.GetAsync(new Uri($"/checkout?planPrice={priceId}&perangkat=5", UriKind.Relative));
+        using var placed = await client.PostFormAsync($"/checkout?planPrice={priceId}&perangkat=2", new Dictionary<string, string>(Order("QRIS")) { ["perangkat"] = "2" });
+
+        Assert.Contains("<s>Rp200.000</s>", pricing, StringComparison.Ordinal);
+        Assert.Contains("data-testid=\"device-note\"", pricing, StringComparison.Ordinal);
+        Assert.Contains("data-testid=\"device-picker\"", plain, StringComparison.Ordinal);
+        Assert.Contains("Rp200.000</s>Rp110.000", plain, StringComparison.Ordinal);
+        Assert.Contains("data-testid=\"checkout-price\">Rp110.000<", plain, StringComparison.Ordinal);
+        Assert.Contains("Tambahan 2 perangkat", page, StringComparison.Ordinal);
+        Assert.Contains("data-testid=\"checkout-price\">Rp310.000<", page, StringComparison.Ordinal);
+        Assert.Equal(HttpStatusCode.NotFound, tooMany.StatusCode);
+        Assert.Equal(HttpStatusCode.Redirect, placed.StatusCode);
+        long paymentId;
+        await using (var check = _database.CreateContext())
+        {
+            var subscription = await check.Subscriptions.SingleAsync(s => s.UserId == user.Id);
+            var payment = await check.Payments.SingleAsync(p => p.SubscriptionId == subscription.Id);
+            Assert.Equal((310_000L, 2, 0), (payment.AmountIdr, subscription.PendingExtraDevices!.Value, subscription.ExtraDevices));
+            paymentId = payment.Id;
+        }
+
+        using var paid = await client.PostFormAsync("/dev/pembayaran", new Dictionary<string, string> { ["paymentId"] = $"{paymentId}", ["status"] = "PAID" }, "/dev/pembayaran?handler=Notify");
+
+        await using var after = _database.CreateContext();
+        var active = await after.Subscriptions.SingleAsync(s => s.UserId == user.Id);
+        Assert.Equal((SubscriptionStatus.Active, 2, (int?)null), (active.Status, active.ExtraDevices, active.PendingExtraDevices));
+    }
+
+    [Fact]
     public async Task Disabled_channels_and_channels_below_their_minimum_are_hidden_and_refused()
     {
         await using var app = await StartAsync();

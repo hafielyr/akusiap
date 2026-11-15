@@ -11,14 +11,22 @@ public enum ReviewFilter
     All,
     Wrong,
     Flagged,
+
+    /// <summary>The questions answered right (SES-13).</summary>
+    Correct,
 }
 
 public sealed record ReviewOption(long Id, string Text, bool IsCorrect, bool Selected);
 
-public sealed record ReviewItem(int Position, QuestionType Type, string Text, IReadOnlyList<ReviewOption> Options, bool IsCorrect, bool IsFlagged, string Explanation, string? KeyFact);
+/// <param name="Label">The SKD section and topic shown on the question (SES-12).</param>
+public sealed record ReviewItem(int Position, QuestionType Type, string Text, IReadOnlyList<ReviewOption> Options, bool IsCorrect, bool IsFlagged, string Explanation, string? KeyFact, QuestionLabel? Label = null);
 
 /// <param name="Hidden">The rules say answers are never shown (ShowAnswers = Never).</param>
-public sealed record AttemptReview(long AttemptId, string Title, bool Hidden, int WrongCount, int FlaggedCount, IReadOnlyList<ReviewItem> Items, bool HasExam = true, AttemptSource Source = AttemptSource.Exam);
+public sealed record AttemptReview(long AttemptId, string Title, bool Hidden, int WrongCount, int FlaggedCount, IReadOnlyList<ReviewItem> Items, bool HasExam = true, AttemptSource Source = AttemptSource.Exam)
+{
+    /// <summary>Questions answered right (SES-13).</summary>
+    public int CorrectCount { get; init; }
+}
 
 /// <summary>
 /// The answer review of a finished attempt (SES-08, stories R-02, G-03, M-03, D-74): every item in its position with
@@ -53,6 +61,10 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
                 i.Question.Text,
                 i.Question.Explanation,
                 i.Question.KeyFact,
+                TopicName = i.Question.Topic == null ? null : i.Question.Topic.Name,
+                StatsCorrect = (int?)i.Question.Stats!.CorrectCount,
+                StatsWrong = (int?)i.Question.Stats!.WrongCount,
+                StatsMarked = (int?)i.Question.Stats!.MarkedCount,
                 i.OptionOrder,
                 i.IsCorrect,
                 i.IsFlagged,
@@ -68,16 +80,20 @@ public sealed class GetReview(IAppDbContext db, ICurrentUser currentUser)
                 .OrderBy(o => order.IndexOf(o.Id) is var i and >= 0 ? i : int.MaxValue).ThenBy(o => o.Id)
                 .Select(o => new ReviewOption(o.Id, o.Text, o.IsCorrect, r.Selected.Contains(o.Id)))
                 .ToList();
-            return new ReviewItem(r.Position, r.QuestionType, r.Text, options, r.IsCorrect, r.IsFlagged, r.Explanation, r.KeyFact);
+            return new ReviewItem(r.Position, r.QuestionType, r.Text, options, r.IsCorrect, r.IsFlagged, r.Explanation, r.KeyFact, QuestionLabel.From(r.TopicName, r.StatsCorrect, r.StatsWrong, r.StatsMarked));
         }).ToList();
 
         var filtered = filter switch
         {
             ReviewFilter.Wrong => items.Where(i => !i.IsCorrect),
             ReviewFilter.Flagged => items.Where(i => i.IsFlagged),
+            ReviewFilter.Correct => items.Where(i => i.IsCorrect),
             _ => items,
         };
-        return new AttemptReview(attemptId, attempt.Title ?? string.Empty, false, items.Count(i => !i.IsCorrect), items.Count(i => i.IsFlagged), [.. filtered], attempt.ExamId is not null, attempt.Source);
+        return new AttemptReview(attemptId, attempt.Title ?? string.Empty, false, items.Count(i => !i.IsCorrect), items.Count(i => i.IsFlagged), [.. filtered], attempt.ExamId is not null, attempt.Source)
+        {
+            CorrectCount = items.Count(i => i.IsCorrect),
+        };
     }
 
     private static bool IsHidden(string rulesSnapshot)

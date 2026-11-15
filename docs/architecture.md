@@ -94,7 +94,7 @@ Evaluate in this order; the first match wins:
 6. `Exam.IsFree`: registered → `Full`; guest → `None` with reason `RegisterToUnlock`.
 7. The viewer has an `ExamPurchase` for this exam with `Status == Active && AccessExpiresAt > now` → `Full`.
 8. The viewer has a `Subscription` with `Status == Active && CurrentPeriodEnd > now` whose `Plan.IncludesAllExams` → `Full`.
-9. A paid app exam with trial questions → `Trial`, `TrialOnly` (guests and registered users, no attempt limit).
+9. A paid app exam with trial questions → `Trial`, `TrialOnly` for registered users (no attempt limit). A guest gets it once in all: after their browser's guest token has started any Trial attempt, a guest gets `None` with reason `GuestTrialUsed` ("register free to keep practising", GST-01, D-134).
 10. Otherwise → `None`.
 
 Deactivated users (`IsActive == false`) cannot sign in, so they never reach evaluation. Teacher class assignments are rule 4b (GAM-01).

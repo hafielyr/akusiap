@@ -25,6 +25,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 
     public DbSet<QuestionOption> QuestionOptions => Set<QuestionOption>();
 
+    public DbSet<QuestionStats> QuestionStats => Set<QuestionStats>();
+
     public DbSet<Exam> Exams => Set<Exam>();
 
     public DbSet<ExamQuestion> ExamQuestions => Set<ExamQuestion>();
@@ -36,6 +38,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<PlanPrice> PlanPrices => Set<PlanPrice>();
 
     public DbSet<Subscription> Subscriptions => Set<Subscription>();
+
+    public DbSet<UserDevice> UserDevices => Set<UserDevice>();
 
     public DbSet<ExamPurchase> ExamPurchases => Set<ExamPurchase>();
 

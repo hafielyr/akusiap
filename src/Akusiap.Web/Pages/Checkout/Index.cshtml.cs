@@ -19,7 +19,7 @@ public static class PaymentRoutes
 }
 
 /// <summary>
-/// <c>/checkout?exam={id}</c> or <c>?planPrice={id}</c> (PAY-03): summary, access end date, price incl. tax, channel list
+/// <c>/checkout?exam={id}</c> or <c>?planPrice={id}[&amp;perangkat={n}]</c> (PAY-03, PAY-13): summary, access end date, price incl. tax, channel list
 /// and the terms checkbox. Signed-in users only; an unconfirmed email is asked to be confirmed first. Placing the order
 /// sends the learner to the payment instructions (PAY-05).
 /// </summary>
@@ -31,6 +31,10 @@ public sealed class IndexModel(Application.Payments.Checkout checkout, IEnumerab
 
     [BindProperty(SupportsGet = true, Name = "planPrice")]
     public long? PlanPriceId { get; set; }
+
+    /// <summary>Extra devices on a package (PAY-13), 0 to <see cref="Domain.Access.DeviceLimits.MaxExtra"/>.</summary>
+    [BindProperty(SupportsGet = true, Name = "perangkat")]
+    public int ExtraDevices { get; set; }
 
     [BindProperty]
     public string? Channel { get; set; }
@@ -65,7 +69,7 @@ public sealed class IndexModel(Application.Payments.Checkout checkout, IEnumerab
         }
 
         var createPayment = HttpContext.RequestServices.GetRequiredService<CreatePayment>();
-        var result = await checkout.PlaceOrderAsync(new CheckoutItemRef(ExamId, PlanPriceId), Channel, AcceptTerms, createPayment, cancellationToken);
+        var result = await checkout.PlaceOrderAsync(new CheckoutItemRef(ExamId, PlanPriceId, ExtraDevices), Channel, AcceptTerms, createPayment, cancellationToken);
         if (result.Succeeded)
         {
             return Redirect(PaymentRoutes.Instructions(result.Value!));
@@ -82,7 +86,7 @@ public sealed class IndexModel(Application.Payments.Checkout checkout, IEnumerab
 
     private async Task<bool> LoadAsync(CancellationToken cancellationToken)
     {
-        var summary = await checkout.SummaryAsync(new CheckoutItemRef(ExamId, PlanPriceId), cancellationToken);
+        var summary = await checkout.SummaryAsync(new CheckoutItemRef(ExamId, PlanPriceId, ExtraDevices), cancellationToken);
         if (summary is null)
         {
             return false;

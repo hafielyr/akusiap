@@ -33,6 +33,14 @@ public sealed class ExamCtaTests
     }
 
     [Fact]
+    public void Guest_who_used_their_trial_is_asked_to_register_first_then_offered_to_buy()
+    {
+        Assert.Equal(
+            [ExamCta.RegisterToContinue, ExamCta.Buy, ExamCta.Subscribe],
+            ExamCtas.For(Decision(AccessLevel.None, AccessReason.GuestTrialUsed)));
+    }
+
+    [Fact]
     public void No_access_without_a_trial_offers_buy_and_subscribe()
     {
         Assert.Equal([ExamCta.Buy, ExamCta.Subscribe], ExamCtas.For(Decision(AccessLevel.None, AccessReason.NoAccess)));

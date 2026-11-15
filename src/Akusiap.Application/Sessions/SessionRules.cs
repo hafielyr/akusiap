@@ -6,7 +6,7 @@ namespace Akusiap.Application.Sessions;
 
 /// <summary>
 /// The rules in force for one attempt, stored as <c>attempts.rules_snapshot</c> (D-09). <see cref="QuestionCount"/> is the
-/// number of questions the attempt really has.
+/// number of questions the attempt really has. <see cref="TryoutSet"/> is the fixed SKD set taken (CPNS-07), if any.
 /// </summary>
 public sealed record SessionRules(
     AttemptMode Mode,
@@ -20,7 +20,8 @@ public sealed record SessionRules(
     int? PassMarkPercent,
     ShowAnswers ShowAnswers,
     IReadOnlyList<long> TopicIds,
-    bool CatMode = false);
+    bool CatMode = false,
+    int? TryoutSet = null);
 
 /// <summary>What a learner asked to change in Practice. Null means "use the preset".</summary>
 public sealed record RuleOverrides(

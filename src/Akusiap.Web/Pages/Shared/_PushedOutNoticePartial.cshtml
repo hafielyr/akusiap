@@ -1,0 +1,7 @@
+@using Akusiap.Web.Identity
+@* PAY-13 (D-141): shown once after this device was signed out because the account signed in on another device. *@
+@if (Context.Request.Cookies.ContainsKey(DeviceTracking.NoticeCookieName))
+{
+  Context.Response.Cookies.Delete(DeviceTracking.NoticeCookieName);
+  <p role="status" class="mb-4 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="pushed-out">@T["Device.PushedOut"]</p>
+}

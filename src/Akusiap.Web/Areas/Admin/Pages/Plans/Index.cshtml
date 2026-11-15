@@ -41,6 +41,8 @@
             <input type="hidden" name="packages[@i].DurationMonths" value="@package.DurationMonths" />
             <label for="@id" class="label">@T["Admin.Plans.Price", package.DurationMonths]</label>
             <input id="@id" name="packages[@i].Price" value="@Model.PriceText(plan, package)" inputmode="numeric" autocomplete="off" class="input" />
+            <label for="@id-original" class="label">@T["Admin.Plans.OriginalPrice"]</label>
+            <input id="@id-original" name="packages[@i].OriginalPrice" value="@Model.OriginalPriceText(plan, package)" inputmode="numeric" autocomplete="off" class="input" data-testid="original-price-input" />
             <div class="flex items-center justify-between gap-2">
               <label class="flex min-h-11 items-center gap-2 text-sm text-slate-700">
                 <input type="checkbox" name="packages[@i].IsActive" value="true" checked="@Model.ActiveValue(plan, package)" class="size-5 rounded border-slate-300 accent-brand-600" />

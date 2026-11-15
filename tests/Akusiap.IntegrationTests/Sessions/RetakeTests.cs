@@ -114,6 +114,35 @@ public sealed partial class RetakeTests(PostgresFixture database)
         Assert.Equal(HttpStatusCode.NotFound, stranger.StatusCode);
     }
 
+    [Fact]
+    public async Task Guests_are_asked_to_register_instead_of_retaking()
+    {
+        // FIX-02 (D-139): a guest retake used to insert a user-less WrongOnly attempt and fail ck_attempts_taker.
+        await using var app = new AppFactory(database);
+        using var guest = app.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        long examId;
+        await using (var db = database.CreateContext())
+        {
+            examId = (await db.SaveAsync(TestData.Exam().Paid(49_000).WithQuestions(3, trial: 3).Build())).Id;
+        }
+
+        var player = await StartAsync(guest, examId);
+        using (await guest.PostFormAsync(player, new Dictionary<string, string>(), $"{player}?handler=Submit"))
+        {
+        }
+
+        var review = await guest.GetStringAsync(new Uri($"{player}/pembahasan", UriKind.Relative));
+        using var retake = await guest.PostFormAsync("/akun/masuk", new Dictionary<string, string>(), $"{player}/ulangi");
+        var result = System.Net.WebUtility.HtmlDecode(await guest.GetStringAsync(new Uri($"{player}/hasil", UriKind.Relative)));
+
+        Assert.DoesNotContain("data-testid=\"retake-wrong\"", review, StringComparison.Ordinal);
+        Assert.DoesNotContain("data-testid=\"retake-wrong\"", result, StringComparison.Ordinal);
+        Assert.Equal((HttpStatusCode.Redirect, $"{player}/hasil"), (retake.StatusCode, retake.Headers.Location!.OriginalString));
+        Assert.Contains("Daftar gratis untuk mengulang soal yang salah.", result, StringComparison.Ordinal);
+        await using var check = database.CreateContext();
+        Assert.False(await check.Attempts.AnyAsync(a => a.ExamId == examId && a.Source == AttemptSource.WrongOnly));
+    }
+
     private static long Option(JsonElement item, int index) => item.GetProperty("options")[index].GetProperty("id").GetInt64();
 
     private async Task<Attempt> LoadAsync(string playerUrl)

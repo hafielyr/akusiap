@@ -32,6 +32,9 @@ public class Exam
     /// <summary>Rupiah, tax-inclusive. Only app exams are sold.</summary>
     public long? PriceIdr { get; set; }
 
+    /// <summary>The normal price, shown struck through when higher than <see cref="PriceIdr"/> (CPNS-07); null when not on sale.</summary>
+    public long? OriginalPriceIdr { get; set; }
+
     /// <summary>Access length for a paid exam.</summary>
     public int? AccessDays { get; set; }
 

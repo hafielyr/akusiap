@@ -60,6 +60,7 @@ public sealed class ExamConfiguration : IEntityTypeConfiguration<Exam>
         builder.ToTable(t =>
         {
             t.HasCheckConstraint("ck_exams_price_idr", "price_idr >= 0");
+            t.HasCheckConstraint("ck_exams_original_price_idr", "original_price_idr IS NULL OR (price_idr IS NOT NULL AND original_price_idr > price_idr)");
             t.HasCheckConstraint("ck_exams_access_days", "access_days > 0");
             t.HasCheckConstraint("ck_exams_own_question_allowance", "own_question_allowance >= 0");
             t.HasCheckConstraint("ck_exams_owner", "(owner_kind = 'App') = (owner_user_id IS NULL)");
@@ -85,6 +86,7 @@ public sealed class ExamQuestionConfiguration : IEntityTypeConfiguration<ExamQue
         builder.HasOne(eq => eq.Question).WithMany().HasForeignKey(eq => eq.QuestionId).OnDelete(DeleteBehavior.Cascade);
         builder.HasIndex(eq => eq.ExamId, "ix_exam_questions_trial")
             .HasDatabaseName("ix_exam_questions_trial").HasFilter("is_trial");
+        builder.ToTable(t => t.HasCheckConstraint("ck_exam_questions_tryout_set", $"tryout_set BETWEEN 1 AND {Domain.Sessions.TryoutSets.MaxSets}"));
     }
 }
 
@@ -106,5 +108,22 @@ public sealed class UpcomingTestConfiguration : IEntityTypeConfiguration<Upcomin
         builder.HasIndex(t => t.Slug).IsUnique();
         builder.HasIndex(t => new { t.IsPublished, t.TestStartsOn });
         builder.HasOne(t => t.Exam).WithMany().HasForeignKey(t => t.ExamId).OnDelete(DeleteBehavior.SetNull);
+    }
+}
+
+/// <summary>DIF-01 (D-140): one stats row per question; counts never go below 0.</summary>
+public sealed class QuestionStatsConfiguration : IEntityTypeConfiguration<QuestionStats>
+{
+    public void Configure(EntityTypeBuilder<QuestionStats> builder)
+    {
+        builder.ToTable(t =>
+        {
+            t.HasCheckConstraint("ck_question_stats_correct_count", "correct_count >= 0");
+            t.HasCheckConstraint("ck_question_stats_wrong_count", "wrong_count >= 0");
+            t.HasCheckConstraint("ck_question_stats_marked_count", "marked_count >= 0");
+        });
+        builder.HasOne(s => s.Question).WithOne(q => q.Stats).HasForeignKey<QuestionStats>(s => s.QuestionId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasIndex(s => s.QuestionId).IsUnique();
+        builder.Ignore(s => s.Difficulty);
     }
 }

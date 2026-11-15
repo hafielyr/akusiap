@@ -1,0 +1,106 @@
+@model (Akusiap.Application.Planning.ExamAnalysis Analysis, bool ShowTopics)
+@using Akusiap.Domain.Planning
+@using Akusiap.Web.Pages.Exams
+@* ANL-01, ANL-02 (D-137): SKD subtests, topics weakest first (on the analysis page; the goal page has its own list) and
+   the learning plan with one action per step. *@
+@{
+  var a = Model.Analysis;
+  string Tone(Strength s) => s switch
+  {
+    Strength.Weak => "bg-red-50 text-red-800",
+    Strength.Fair => "bg-amber-50 text-amber-900",
+    Strength.Strong => "bg-green-50 text-green-800",
+    _ => "bg-slate-100 text-slate-700",
+  };
+  string Bar(Strength s) => s switch
+  {
+    Strength.Weak => "bg-red-600",
+    Strength.Fair => "bg-amber-500",
+    Strength.Strong => "bg-green-600",
+    _ => "bg-slate-400",
+  };
+  var topics = a.Topics.Where(t => t.Tried > 0).ToList();
+  var untried = a.Topics.Count(t => t.Tried == 0);
+}
+
+@if (a.Subtests.Count > 0)
+{
+  <ul class="grid grid-cols-3 gap-2" data-testid="analysis-subtests">
+    @foreach (var s in a.Subtests)
+    {
+      <li class="stat space-y-1" data-testid="analysis-subtest" data-subtest="@s.Code" data-strength="@s.Strength">
+        <span class="block text-xs font-semibold text-slate-500">@s.Code</span>
+        <span class="block text-2xl font-bold tabular-nums text-slate-900">@(s.Tried == 0 ? "–" : $"{s.Percent}%")</span>
+        <span class="chip @Tone(s.Strength)">@T[$"Analysis.Strength.{s.Strength}"]</span>
+      </li>
+    }
+  </ul>
+}
+
+@if (Model.ShowTopics)
+{
+  <section class="space-y-2" aria-labelledby="topics-@a.ExamId">
+    <h3 id="topics-@a.ExamId" class="font-semibold">@T["Analysis.Topics"]</h3>
+    @if (topics.Count == 0)
+    {
+      <p class="text-sm text-slate-600">@T["Analysis.NoAnswersYet"]</p>
+    }
+    else
+    {
+      <ol class="card divide-y divide-slate-200" data-testid="analysis-topic-list">
+        @foreach (var topic in topics)
+        {
+          <li class="space-y-1.5 px-4 py-3" data-testid="analysis-topic" data-topic="@topic.TopicId" data-strength="@topic.Strength">
+            <div class="flex items-baseline justify-between gap-3">
+              <span class="font-semibold">@topic.Topic</span>
+              <span class="chip shrink-0 @Tone(topic.Strength)">@T[$"Analysis.Strength.{topic.Strength}"]</span>
+            </div>
+            <div class="relative h-2 overflow-hidden rounded-full bg-slate-200" aria-hidden="true">
+              <div class="absolute inset-y-0 left-0 rounded-full @Bar(topic.Strength)" style="width: @(topic.Percent)%"></div>
+            </div>
+            <p class="text-sm text-slate-600" data-testid="analysis-topic-line">@T["Analysis.TopicLine", topic.RightNow, topic.Tried, topic.Questions]</p>
+          </li>
+        }
+      </ol>
+      @if (untried > 0)
+      {
+        <p class="text-sm text-slate-600">@T["Analysis.Untried", untried]</p>
+      }
+    }
+  </section>
+}
+
+<section class="space-y-2" aria-labelledby="plan-@a.ExamId">
+  <h3 id="plan-@a.ExamId" class="font-semibold">@T["Analysis.Plan"]</h3>
+  @if (a.Steps.Count == 0)
+  {
+    <p class="rounded-lg bg-green-50 px-3 py-2 text-sm font-semibold text-green-800" data-testid="analysis-plan-done">@T["Analysis.PlanDone"]</p>
+  }
+  else
+  {
+    <ol class="card divide-y divide-slate-200" data-testid="analysis-plan">
+      @{ var n = 0; }
+      @foreach (var step in a.Steps)
+      {
+        n++;
+        var (title, hint, href, action) = step.Kind switch
+        {
+          PlanStepKind.ReviewCards => (T["Analysis.Step.ReviewCards", step.Count], T["Analysis.Step.ReviewCardsHint"], a.CardsInDeck ? "/learn/kartu" : "/learn/hari-ini", T["Analysis.Step.ReviewCardsGo"]),
+          PlanStepKind.PractiseTopic => (T["Analysis.Step.PractiseTopic", step.Topic!, step.Percent ?? 0], T["Analysis.Step.PractiseTopicHint", step.Count], $"{ExamRoutes.Start(a.ExamId)}?topik={step.TopicId}&jumlah={step.Count}", T["Analysis.Step.Practise"]),
+          PlanStepKind.TryTopic => (T["Analysis.Step.TryTopic", step.Topic!], T["Analysis.Step.TryTopicHint", step.Count], $"{ExamRoutes.Start(a.ExamId)}?topik={step.TopicId}&jumlah={step.Count}", T["Analysis.Step.Practise"]),
+          PlanStepKind.Simulation => (T["Analysis.Step.Simulation"], T["Analysis.Step.SimulationHint"], $"{ExamRoutes.Start(a.ExamId)}?mode=Simulation", T["Analysis.Step.SimulationGo"]),
+          PlanStepKind.Unlock => (T["Analysis.Step.Unlock"], T["Analysis.Step.UnlockHint", a.PoolSize], ExamRoutes.Detail(a.ExamId), T["Analysis.Step.UnlockGo"]),
+          _ => (T["Analysis.Step.SetGoal"], T["Analysis.Step.SetGoalHint"], $"/learn/target?examId={a.ExamId}", T["Analysis.Step.SetGoalGo"]),
+        };
+        <li class="flex flex-wrap items-center gap-3 px-4 py-3" data-testid="analysis-step" data-kind="@step.Kind">
+          <span class="grid size-8 shrink-0 place-items-center rounded-full bg-brand-50 text-sm font-bold text-brand-700" aria-hidden="true">@n</span>
+          <span class="min-w-0 flex-1 space-y-0.5">
+            <span class="block font-semibold text-slate-900">@title</span>
+            <span class="block text-sm text-slate-600">@hint</span>
+          </span>
+          <a href="@href" class="btn btn-secondary w-full sm:w-auto" data-testid="analysis-step-go">@action</a>
+        </li>
+      }
+    </ol>
+  }
+</section>

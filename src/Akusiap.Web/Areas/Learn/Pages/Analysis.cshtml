@@ -1,0 +1,45 @@
+@page "/learn/analisis"
+@model AnalysisModel
+@using Akusiap.Domain.Planning
+@using Akusiap.Web.Pages.Exams
+@* ANL-01 (D-137): one card per exam, the goal's exam first, then the most recently practised. *@
+@{
+  ViewData["Title"] = T["Analysis.PageTitle"].Value;
+}
+
+<section class="space-y-5">
+  <header class="space-y-1">
+    <h1 class="text-3xl font-bold leading-tight tracking-tight">@T["Analysis.PageTitle"]</h1>
+    <p class="text-slate-600">@T["Analysis.PageLead"]</p>
+  </header>
+
+  @if (Model.Exams.Count == 0)
+  {
+    <div class="card space-y-3 p-5" data-testid="analysis-empty">
+      <p class="text-slate-700">@T["Analysis.Empty"]</p>
+      <a href="/ujian" class="btn btn-primary w-full sm:w-auto">@T["Analysis.EmptyGo"]</a>
+    </div>
+  }
+
+  @foreach (var exam in Model.Exams)
+  {
+    var weakest = exam.WeakTopics.FirstOrDefault();
+    <article class="card space-y-4 p-4 sm:p-5" data-testid="analysis-exam" data-exam="@exam.ExamId" aria-labelledby="exam-@exam.ExamId">
+      <header class="flex flex-wrap items-start justify-between gap-2">
+        <div class="min-w-0 space-y-0.5">
+          <h2 id="exam-@exam.ExamId" class="text-xl font-bold leading-tight"><a href="@ExamRoutes.Detail(exam.ExamId)" class="hover:underline">@exam.ExamTitle</a></h2>
+          <p class="text-sm text-slate-600" data-testid="analysis-tried">@T[exam.TrialOnly ? "Analysis.TriedTrial" : "Analysis.Tried", exam.Tried, exam.PoolSize, exam.TriedPercent]</p>
+        </div>
+        @if (exam.GoalId is { } goalId)
+        {
+          <a href="/learn/target/@goalId" class="chip">@T["Analysis.GoalLink"]</a>
+        }
+      </header>
+      @if (weakest is not null)
+      {
+        <p class="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-800" data-testid="analysis-weakest-topic">@T["Analysis.WeakestTopic", weakest.Topic, weakest.Percent]</p>
+      }
+      <partial name="_ExamAnalysisPartial" model="(exam, true)" />
+    </article>
+  }
+</section>

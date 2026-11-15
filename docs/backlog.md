@@ -637,3 +637,101 @@ Owner request (2026-11-09): show the hiring tests coming up this year so job see
 - Scope: `dotnet run --project src/Akusiap.Web -- load-cpns-pack <folder>` imports every question file in the folder (not the browsing workbook), skips duplicates and broken rows, reads TKP points from "Skor per pilihan", keeps low-quality questions as Draft, and builds the published exam "Paket CPNS 2026: SKD" (Rp50.000, 180 days, SKD scoring, tryout preset, 30-question trial) plus the starting list of upcoming tests (D-133). Safe to run again.
 - AC: Running it twice adds nothing the second time; the exam has every Active CPNS question and a valid trial set; CPNS 2026 on `/jadwal-tes` links to it.
 - Tests: unit (duplicate key, points, quality score), integration (load).
+
+## E16 Guest funnel and learning analysis (M11)
+
+Owner request (2026-11-13): a visitor without an account takes one 30-question test, is then asked to register to keep practising, and a registered learner gets an app that remembers every test, shows the weak sections and plans what to study next (D-134 to D-137).
+
+### GST-01 One guest trial, then register · S
+- Stories: G-02, owner request (2026-11-13) · Depends on: ENT-02, SES-01
+- Scope: Rule 9 gives a guest the trial once in all, counted by the guest cookie (`ICurrentUser.GuestToken`, `ViewerContext.GuestTrialUsed`); afterwards the reason is `GuestTrialUsed` and the exam and test pages show "Daftar gratis untuk lanjut berlatih" before buy and subscribe (D-134).
+- AC:
+  - A guest starts one trial; starting a trial on any exam afterwards sends them to the exam page with the register button. The started trial can still be finished and its result opened.
+  - Registered users still start trials on every paid exam as often as they like; shared links still open for guests.
+- Tests: unit (policy, CTAs), integration (second trial refused, exam page).
+
+### GST-02 Guest trial result and carrying it over · S
+- Stories: G-04, G-09, owner request · Depends on: GST-01, SHR-04, MEM-01
+- Scope: The guest's trial result adds the "Simpan hasil ini dan dapatkan rencana belajar" card (locked list, register and sign-in links to `/learn/analisis`) before the buy offer; no "Ulangi yang salah" for guests on a trial. Registering, password sign-in and Google sign-in claim the browser's guest attempts and turn their wrong answers into review cards (D-135).
+- AC:
+  - The guest result shows the card with the number of wrong answers; signed-in learners don't see it.
+  - After registering from the card the learner lands on `/learn/analisis`, sees the trial's exam, and has one review card per wrong answer; signing in to an existing account does the same.
+- Tests: integration (result card, register and sign-in claim with cards).
+
+### ANL-01 Learning analysis page · M
+- Stories: R-03, M-11, owner request · Depends on: GST-02, PLN-01, CPNS-03
+- Scope: `/learn/analisis` and a tile on `/learn`: per exam (goal's first, then most recently practised, up to 6), tried questions, the weakest topic, SKD subtests, topics weakest first with Weak/Fair/Strong and the learning plan with one button per step (D-137). Rules live in `Domain/Planning/WeakAreas`.
+- AC:
+  - The weakest topic and the order of topics match the learner's latest answers; a topic with fewer than 3 tried questions is not rated.
+  - The plan starts with due cards, then the two weakest topics, and adds a simulation, an unlock step on a trial or a goal step as D-137 says; each button opens the right page.
+  - A learner without tests sees an empty state that links to the catalog.
+- Tests: unit (strength, ordering, subtests, plan), integration (page).
+
+### ANL-02 Analysis on the goal page · S
+- Stories: M-11, owner request · Depends on: ANL-01, PLN-04
+- Scope: `/learn/target/{id}` adds the SKD subtests and the learning plan for the goal's exam under the schedule check (D-136).
+- AC: The goal page shows the plan without a "set goal" step.
+- Tests: integration.
+
+### SES-12 Section and topic on each question · S
+- Stories: R-02, owner request (2026-11-14) · Depends on: SES-03, SES-08, TRY-01, MEM-03, CPNS-03
+- Scope: The player, the CAT screen, the review and flashcards show the question's SKD section and topic as chips above the text (`Domain/Sessions/QuestionLabel`, D-138).
+- AC:
+  - Each question in the player and the CAT screen shows its section (when the topic names TWK, TIU or TKP) and its topic without the code; the label changes with the question.
+  - The review and flashcards show the same label on every question.
+  - A question whose topic names no section shows only the topic.
+- Tests: unit (label from topic names), integration (player state and review).
+
+### FIX-02 Guests can't retake · XS
+- Stories: G-02, owner bug report (2026-11-14) · Depends on: SES-09, GST-01
+- Scope: "Ulangi yang salah" as a guest crashed on `ck_attempts_taker` (a user-less WrongOnly attempt). Guests no longer see the button, and a guest retake returns to the result with a register message (D-139).
+- AC:
+  - A guest's result and review show no retake button.
+  - A guest's retake request lands on the result with "Daftar gratis untuk mengulang soal yang salah." and creates no attempt.
+- Tests: integration.
+
+### FIX-03 Counts missing from localized labels · XS
+- Stories: R-02, owner bug report (2026-11-14) · Depends on: SES-08, SES-10, GAM-01
+- Scope: Three views read `.Value` from the HTML localizer, which returns the raw template, so learners saw "Salah ({0})" and "Ditandai ({0})" on the review filters, "{0} dari {1} benar" in the history and "Minggu {0}" on weekly badges. They now write the localized HTML string, which fills the arguments.
+- AC: The review filters, the history rows and the journey badges show their numbers and dates.
+- Tests: integration (review, history).
+
+### FIX-04 Latihan shows each answer in the CPNS package · XS
+- Stories: R-01, owner bug report (2026-11-14) · Depends on: SES-05, CPNS-06
+- Scope: The CPNS package's preset showed answers only after submitting, so Latihan had no "Periksa" and no explanation per question. The preset shows answers after each question (in code and by a migration for the existing preset); the tryout is unchanged (D-143).
+- AC: A guest practising the package's trial can check an answer and reads its explanation.
+- Tests: integration (guest trial check).
+
+### SES-13 Correct answers in the review · XS
+- Stories: R-02, owner request (2026-11-14) · Depends on: SES-08
+- Scope: The answer review gets a "Benar (n)" filter (`?tampil=benar`) next to Semua, Salah and Ditandai, listing the questions answered right with their explanations.
+- AC: The filter shows exactly the questions answered right, and its count matches.
+- Tests: integration (review filter).
+
+### DIF-01 Measured difficulty on each question · M
+- Stories: owner request (2026-11-14) · Depends on: SES-06, SES-12
+- Scope: Table `question_stats` (right, wrong and marked counts per question) filled when each session ends, `attempt_items.was_flagged`, and a Mudah/Sedang/Sulit chip on questions with at least 10 right or wrong answers, in the player, CAT screen, review, flashcards and admin question list (`Domain/Content/QuestionDifficulty`, D-140).
+- AC:
+  - Finishing a session adds 1 right or 1 wrong for each answered question and 1 marked for each question marked at any point, even if unmarked later; blanks and flashcard sets add nothing.
+  - A question with at least 10 right or wrong answers shows its level; fewer shows none.
+  - The level follows the D-140 score and thresholds.
+- Tests: unit (score, thresholds, minimum), integration (counts, labels, admin list).
+
+### PAY-13 Subscription prices and the device limit · L
+- Stories: owner request (2026-11-14) · Depends on: PAY-02, PAY-03, PAY-06, CAT-03
+- Scope: Learner plan Rp20.000/month and Rp110.000/year (normally Rp200.000) with the struck-through price on `/harga` and checkout (`plan_prices.original_price_idr`, editable on `/admin/paket`); 1 device per subscription with extra devices bought at checkout (+Rp10.000/month, +Rp100.000/year); `user_devices` and the device cookie; the newest sign-in pushes out the oldest device over the limit (D-141).
+- AC:
+  - `/harga` and checkout show Rp110.000 with Rp200.000 struck through for the year, and Rp20.000 for the month.
+  - Checkout offers 0–4 extra devices; the total and the payment add Rp100.000 per device on the year (Rp10.000 per month on monthly) and payment grants them.
+  - A subscriber signing in on one device more than allowed signs out the device that signed in longest ago, which sees a notice; accounts without a subscription are not limited.
+- Tests: unit (device prices), integration (checkout, fulfilment, device limit).
+
+### CPNS-07 CPNS package update with 10 tryout sets · M
+- Stories: owner request (2026-11-14) · Depends on: CPNS-04, CPNS-06
+- Scope: Rp39.000 (normally Rp80.000), 3 months, the owner's description without BKN or KemenPAN-RB, and up to 10 fixed tryout sets of 30 TWK, 35 TIU and 45 TKP with no shared questions, chosen on the setup page (D-142).
+- AC:
+  - The package shows Rp39.000 with Rp80.000 struck through and 3 months of access.
+  - Loading the bank builds up to 10 complete sets with no question in two sets; reloading keeps each question's set; the package holds exactly the set questions.
+  - Starting a Simulation of the package offers the sets and takes the chosen set's 110 questions, TWK, then TIU, then TKP.
+  - The description gives the real counts and doesn't mention BKN or KemenPAN-RB.
+- Tests: unit (set assignment), integration (load, reload, start a set).

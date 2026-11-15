@@ -56,6 +56,7 @@ else
         @T["Session.Player.Question"] <span x-text="index + 1" data-testid="position"></span> / @view.Items.Count
         <span x-show="item.type === 'MultiSelect'">· @T["Session.Player.PickAll"]</span>
       </p>
+      <partial name="_QuestionLabelAlpinePartial" />
       <h1 class="whitespace-pre-line text-lg font-medium leading-snug outline-none" tabindex="-1" x-ref="question" x-text="item.text" data-testid="question"></h1>
 
       <fieldset class="space-y-2">

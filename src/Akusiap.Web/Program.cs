@@ -22,7 +22,11 @@ authentication.AddIdentityCookies();
 authentication.AddGoogleIfConfigured(builder.Configuration);
 builder.Services.AddScoped<GoogleAccounts>();
 // Check the security stamp on every request, so deactivating a user or changing a password signs them out at once (USR-03).
-builder.Services.Configure<SecurityStampValidatorOptions>(options => options.ValidationInterval = TimeSpan.Zero);
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.Zero;
+    options.OnRefreshingPrincipal = DeviceTracking.KeepDeviceClaim;
+});
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = AccountRoutes.SignIn;
@@ -38,6 +42,8 @@ builder.Services.ConfigureApplicationCookie(options =>
         context.Response.StatusCode = StatusCodes.Status403Forbidden;
         return Task.CompletedTask;
     };
+    // PAY-13 (D-141): one device per subscription, newest sign-in wins.
+    DeviceTracking.Attach(options, secureCookies: !builder.Environment.IsDevelopment());
 });
 builder.Services.AddAppAuthorization();
 builder.Services.AddAppLocalization();

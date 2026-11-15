@@ -119,6 +119,10 @@
           @if (!package.IsFree)
           {
             <p class="flex flex-wrap items-baseline gap-x-2">
+        @if (package.OriginalPriceIdr is { } original)
+        {
+          <s class="text-slate-500" data-testid="original-price"><idr value="@original" /></s>
+        }
               <span class="text-2xl font-bold text-slate-900" data-testid="package-price"><idr value="@(package.PriceIdr ?? 0)" /></span>
               <span class="text-sm text-slate-600">@T["Catalog.AccessDays", package.AccessDays ?? 0]</span>
             </p>
@@ -180,6 +184,9 @@
                   break;
                 case ExamCta.Subscribe:
                   <a href="@ExamRoutes.PlansFor(package.Id)" class="@css" data-testid="cta-subscribe">@T["ExamPage.Subscribe"]</a>
+                  break;
+                case ExamCta.RegisterToContinue:
+                  <a href="@AccountRoutes.WithReturnUrl(AccountRoutes.Register, returnUrl)" class="@css" data-testid="cta-register-continue">@T["ExamPage.RegisterToContinue"]</a>
                   break;
                 case ExamCta.RegisterToUnlock:
                   <a href="@AccountRoutes.WithReturnUrl(AccountRoutes.Register, returnUrl)" class="@css" data-testid="cta-register">@T["ExamPage.Register"]</a>

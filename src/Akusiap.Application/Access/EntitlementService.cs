@@ -1,6 +1,7 @@
 using Akusiap.Application.Abstractions;
 using Akusiap.Domain.Access;
 using Akusiap.Domain.Content;
+using Akusiap.Domain.Sessions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Akusiap.Application.Access;
@@ -54,7 +55,11 @@ public sealed class EntitlementService(IAppDbContext db, ICurrentUser currentUse
     {
         if (currentUser.UserId is not { } userId)
         {
-            return ViewerContext.Guest;
+            // GST-01 (D-134): a guest gets one trial in all, counted by the browser's guest token.
+            return currentUser.GuestToken is { } guestToken
+                && await db.Attempts.AnyAsync(a => a.UserId == null && a.GuestToken == guestToken && a.Source == AttemptSource.Trial, cancellationToken).ConfigureAwait(false)
+                ? ViewerContext.Guest with { GuestTrialUsed = true }
+                : ViewerContext.Guest;
         }
 
         // Only rows that can still grant access: Active and ending after now, plus class assignments (GAM-01) in the

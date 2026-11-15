@@ -292,6 +292,25 @@ public sealed class EntitlementPolicyTests
         Assert.Equal(TrialDecision, Evaluate(Viewer(LearnerId), PaidExam()));
     }
 
+    [Fact]
+    public void Rule9_a_guest_who_used_their_one_trial_is_asked_to_register_but_shared_links_still_open()
+    {
+        var used = ViewerContext.Guest with { GuestTrialUsed = true };
+
+        var decision = Evaluate(used, PaidExam());
+
+        Assert.Equal(Decision(AccessLevel.None, AccessReason.GuestTrialUsed, QuestionScope.None), decision);
+        Assert.False(decision.CanStart);
+        Assert.Equal(AccessReason.RegisterToUnlock, Evaluate(used, FreeExam()).Reason);
+        Assert.Equal(AccessLevel.Shared, Evaluate(used, SharedExam(OtherLearnerId), Token).Level);
+    }
+
+    [Fact]
+    public void Rule9_the_guest_limit_never_applies_to_registered_users()
+    {
+        Assert.Equal(TrialDecision, Evaluate(Viewer(LearnerId) with { GuestTrialUsed = true }, PaidExam()));
+    }
+
     // ---------- Rule 10: otherwise ----------
 
     [Fact]

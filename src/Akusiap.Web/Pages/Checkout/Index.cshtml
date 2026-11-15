@@ -67,6 +67,7 @@
           class="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-6">
       <input type="hidden" name="exam" value="@Model.ExamId" />
       <input type="hidden" name="planPrice" value="@Model.PlanPriceId" />
+      <input type="hidden" name="perangkat" value="@Model.ExtraDevices" />
 
       @* Phones: summary first (order-1). Wide screens: the right column. *@
       <div class="contents lg:sticky lg:top-20 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:block lg:space-y-4">
@@ -93,7 +94,22 @@
         </div>
       </div>
 
-      <fieldset class="order-2 min-w-0 space-y-4 lg:col-start-1 lg:row-start-1">
+      <div class="order-2 min-w-0 space-y-4 lg:col-start-1 lg:row-start-1">
+      @if (summary.ExtraDevicePriceIdr is { } devicePrice)
+      {
+        @* PAY-13 (D-141): one device is included; extra devices reload the page with the new total. *@
+        <section class="space-y-2" aria-labelledby="devices-heading" data-testid="device-picker">
+          <h2 id="devices-heading" class="text-lg font-bold">@T["Checkout.Devices"]</h2>
+          <p class="text-sm text-slate-600">@T["Checkout.DevicesHint"] <span class="font-semibold">+<idr value="@devicePrice" /> @T["Checkout.PerDevice"]</span></p>
+          <nav class="seg" aria-label="@T["Checkout.Devices"]">
+            @for (var n = 0; n <= Akusiap.Domain.Access.DeviceLimits.MaxExtra; n++)
+            {
+              <a href="/checkout?planPrice=@Model.PlanPriceId&perangkat=@n" aria-current="@(n == Model.ExtraDevices ? "true" : null)" data-testid="device-option" data-extra="@n">@T["Checkout.DeviceCount", Akusiap.Domain.Access.DeviceLimits.Included + n]</a>
+            }
+          </nav>
+        </section>
+      }
+      <fieldset class="min-w-0 space-y-4">
         <legend class="mb-3 text-lg font-bold">@T["Checkout.Channel"]</legend>
         @if (Model.Channels.Count == 0)
         {
@@ -131,6 +147,7 @@
         }
         <p class="text-sm text-slate-600">@T["Checkout.RefundNote"] <a href="@PaymentRoutes.RefundPolicy" class="font-medium text-brand-700 underline">@T["Checkout.RefundLink"]</a>.</p>
       </fieldset>
+      </div>
     </form>
   }
 </section>

@@ -40,6 +40,9 @@ public enum AccessReason
     Subscription,
     TrialAvailable,
     NoAccess,
+
+    /// <summary>A guest who already took their one trial (GST-01, D-134): "register free to keep practising".</summary>
+    GuestTrialUsed,
 }
 
 /// <summary>An exam purchase of the viewer. The loader may pass every purchase; the policy checks status and expiry.</summary>
@@ -62,6 +65,9 @@ public sealed record ViewerContext(
 
     /// <summary>Assignments in the viewer's classes (GAM-01). Empty for guests and for viewers loaded without them.</summary>
     public IReadOnlyList<ClassAssignmentFact> ClassAssignments { get; init; } = [];
+
+    /// <summary>A guest whose browser already started a trial attempt (GST-01, D-134). Always false for users.</summary>
+    public bool GuestTrialUsed { get; init; }
 
     public bool IsRegistered => UserId is not null;
 }

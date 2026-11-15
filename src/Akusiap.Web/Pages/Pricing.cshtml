@@ -19,6 +19,10 @@
       @if (pricing.Exam is { } exam)
       {
         <p class="text-slate-700">@exam.Title</p>
+        @if (exam.OriginalPriceIdr is { } examOriginal)
+        {
+          <p class="text-sm text-slate-500" data-testid="exam-original-price"><s><idr value="@examOriginal" /></s></p>
+        }
         <p class="text-3xl font-bold tracking-tight" data-testid="exam-price"><idr value="@exam.PriceIdr" /></p>
         <p class="text-sm text-slate-600">@T["Catalog.AccessDays", exam.AccessDays]</p>
         <a href="@ExamRoutes.Checkout(exam.Id)" class="btn btn-secondary w-full" data-testid="buy-exam">@T["ExamPage.Buy"]</a>
@@ -39,6 +43,7 @@
     <article class="card space-y-3 p-5 ring-2 ring-brand-600" data-testid="plan-card">
       <h2 class="text-lg font-bold">@(pricing.PlanName ?? T["Pricing.Subscription"].Value)</h2>
       <p class="text-sm text-slate-600">@T["Pricing.PlanHint"]</p>
+      <p class="text-sm text-slate-600" data-testid="device-note">@T["Pricing.Devices", Akusiap.Domain.Money.FormatIdr(Akusiap.Domain.Access.DeviceLimits.ExtraPerMonthIdr), Akusiap.Domain.Money.FormatIdr(Akusiap.Domain.Access.DeviceLimits.ExtraPerYearIdr)]</p>
       @if (pricing.Packages.Count == 0)
       {
         <p class="text-slate-600" data-testid="no-packages">@T["Pricing.NoPackages"]</p>
@@ -56,6 +61,10 @@
                   <p class="text-sm text-slate-600" data-testid="monthly">≈ <idr value="@package.MonthlyIdr" /> @T["Pricing.PerMonth"]</p>
                 </div>
                 <div class="text-right">
+                  @if (package.OriginalPriceIdr is { } original)
+                  {
+                    <p class="text-sm text-slate-500" data-testid="original-price"><s><idr value="@original" /></s></p>
+                  }
                   <p class="text-lg font-bold"><idr value="@package.PriceIdr" /></p>
                   @if (package.IsCheapestMonthly)
                   {
