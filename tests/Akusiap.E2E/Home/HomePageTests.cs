@@ -20,7 +20,7 @@ public sealed class HomePageTests(MobileSite site)
         Assert.True(response?.Ok, $"GET / returned {response?.Status}");
         Assert.Equal("id", await page.Locator("html").GetAttributeAsync("lang"));
         Assert.Equal(
-            "Kuasai soal seleksi dengan cepat dan efisien",
+            "Belajar Cepat dan Efisien, Di Mana Pun dan Kapan Pun",
             string.Join(' ', (await page.Locator("h1").InnerTextAsync()).Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)));
         var tryFree = await page.GetByTestId("home-try").BoundingBoxAsync();
         Assert.NotNull(tryFree);

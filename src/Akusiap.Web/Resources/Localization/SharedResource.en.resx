@@ -7,7 +7,7 @@
   <data name="Layout.Help" xml:space="preserve"><value>Help</value></data>
   <data name="Layout.Language" xml:space="preserve"><value>Language</value></data>
   <data name="Home.Title" xml:space="preserve"><value>Practice questions for CPNS, BUMN, Kedinasan and UKMPPD</value></data>
-  <data name="Home.Lead" xml:space="preserve"><value>Practice questions for CPNS, BUMN, service school and UKMPPD exams, with an explanation for every question. The ones you get wrong come back as flashcards, so your study time goes to what you have not mastered yet.</value></data>
+  <data name="Home.Lead" xml:space="preserve"><value>Practice questions for CPNS, BUMN, service schools and more, with an explanation for every question, exam simulations and tryouts. It offers a variety of study methods and an analysis of every study session to help you master the questions quickly and efficiently.</value></data>
   <data name="Home.BrowseCatalog" xml:space="preserve"><value>Browse exam catalog</value></data>
   <data name="Error.Title" xml:space="preserve"><value>Something went wrong</value></data>
   <data name="Error.Heading" xml:space="preserve"><value>Sorry, something went wrong.</value></data>
@@ -1177,20 +1177,20 @@
   <data name="Nav.Menu" xml:space="preserve"><value>Menu</value></data>
   <data name="Theme.Label" xml:space="preserve"><value>Dark theme</value></data>
   <data name="Home.Description" xml:space="preserve"><value>Master CPNS, BUMN, service school and UKMPPD questions quickly and efficiently: an explanation for every question, flashcards from your mistakes. Try 30 free.</value></data>
-  <data name="Home.Heading.Line1" xml:space="preserve"><value>Master selection exams</value></data>
-  <data name="Home.Heading.Line2" xml:space="preserve"><value>quickly and efficiently</value></data>
-  <data name="Home.TryFree.Note" xml:space="preserve"><value>No account, no credit card.</value></data>
+  <data name="Home.Heading.Line1" xml:space="preserve"><value>Learn quickly and efficiently,</value></data>
+  <data name="Home.Heading.Line2" xml:space="preserve"><value>anywhere, anytime</value></data>
+  <data name="Home.TryFree.Note" xml:space="preserve"><value>No account, no payment.</value></data>
   <data name="Home.Fact.Explanations" xml:space="preserve"><value>An explanation for every question</value></data>
-  <data name="Home.Fact.PerExam" xml:space="preserve"><value>Pay per exam</value></data>
+  <data name="Home.Fact.PerExam" xml:space="preserve"><value>Exam simulations</value></data>
   <data name="Home.SearchHint" xml:space="preserve"><value>Or search the questions</value></data>
   <data name="Home.Focus.Line1" xml:space="preserve"><value>Study only what you need</value></data>
   <data name="Home.Focus.Line2" xml:space="preserve"><value>straight from the exam's questions</value></data>
-  <data name="Home.Focus.Text" xml:space="preserve"><value>LatihanSoal is organised by selection exam, not by school grade: CPNS SKD, BUMN TKD and Akhlak, service schools and UKMPPD. Answer the questions, read the explanations and check your result per topic to see what still needs work.</value></data>
+  <data name="Home.Focus.Text" xml:space="preserve"><value>Answer the questions, read the explanations and check your result per topic to see what still needs work.</value></data>
   <data name="Home.Remember.Title" xml:space="preserve"><value>Repeat what you have not mastered, skip what you have</value></data>
-  <data name="Home.Remember.Text" xml:space="preserve"><value>Questions you answer wrong turn into flashcards automatically. Spaced repetition brings them back on a schedule, while the questions you already know stop taking up your time.</value></data>
-  <data name="Home.Remember.Point.Auto" xml:space="preserve"><value>Cards are made from every tryout automatically</value></data>
-  <data name="Home.Remember.Point.Today" xml:space="preserve"><value>The Today page shows the cards that are due</value></data>
-  <data name="Home.Remember.Point.Retake" xml:space="preserve"><value>Retake only the questions you still miss</value></data>
+  <data name="Home.Remember.Text" xml:space="preserve"><value>The app weighs every question for each participant: each question answered wrong counts strongly toward analysing that participant's weak spots. Participants can study efficiently by focusing on the questions they have not mastered yet.</value></data>
+  <data name="Home.Remember.Point.Auto" xml:space="preserve"><value>Flashcards for studying in small steps</value></data>
+  <data name="Home.Remember.Point.Today" xml:space="preserve"><value>A dedicated tool to analyse your study results</value></data>
+  <data name="Home.Remember.Point.Retake" xml:space="preserve"><value>Study quickly and efficiently</value></data>
   <data name="Home.Example.Topic" xml:space="preserve"><value>TIU · Number series</value></data>
   <data name="Home.Example.Due" xml:space="preserve"><value>Due today</value></data>
   <data name="Home.Example.Question" xml:space="preserve"><value>2, 6, 12, 20, 30, … What comes next?</value></data>
@@ -1255,7 +1255,7 @@
   <data name="Goals.ExamPageSet" xml:space="preserve"><value>Set an exam goal</value></data>
   <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Add your exam date for a countdown.</value></data>
   <data name="Goals.ExamPageChange" xml:space="preserve"><value>Change goal</value></data>
-  <data name="Home.Fact.Cards" xml:space="preserve"><value>Mistakes become flashcards</value></data>
+  <data name="Home.Fact.Cards" xml:space="preserve"><value>A variety of study methods</value></data>
   <data name="Home.Benefit.Daily.Title" xml:space="preserve"><value>A little, every day</value></data>
   <data name="Home.Benefit.Daily.Text" xml:space="preserve"><value>The daily drill has 10 questions: due cards first, then new ones. Your streak records every day you practise, so the habit holds.</value></data>
   <data name="Home.Benefit.Goal.Title" xml:space="preserve"><value>Set your exam goal</value></data>
