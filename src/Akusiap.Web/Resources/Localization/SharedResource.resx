@@ -7,7 +7,7 @@
   <data name="Layout.Help" xml:space="preserve"><value>Bantuan</value></data>
   <data name="Layout.Language" xml:space="preserve"><value>Bahasa</value></data>
   <data name="Home.Title" xml:space="preserve"><value>Latihan soal CPNS, BUMN, Kedinasan dan UKMPPD</value></data>
-  <data name="Home.Lead" xml:space="preserve"><value>Latihan soal CPNS, BUMN, sekolah kedinasan, dan UKMPPD dengan pembahasan di setiap soal. Soal yang Anda jawab salah kembali sebagai kartu hafalan, jadi waktu belajar Anda habis untuk yang belum dikuasai.</value></data>
+  <data name="Home.Lead" xml:space="preserve"><value>Latihan soal CPNS, BUMN, Kedinasan, dll. dengan pembahasan di setiap soal, simulasi ujian, dan try out. Berisi bermacam-macam metode belajar dan analisa dari setiap sesi belajar untuk membantu menguasai soal dengan cepat dan efisien.</value></data>
   <data name="Home.BrowseCatalog" xml:space="preserve"><value>Lihat katalog ujian</value></data>
   <data name="Error.Title" xml:space="preserve"><value>Terjadi kesalahan</value></data>
   <data name="Error.Heading" xml:space="preserve"><value>Maaf, terjadi kesalahan.</value></data>
@@ -1177,20 +1177,20 @@
   <data name="Nav.Menu" xml:space="preserve"><value>Menu</value></data>
   <data name="Theme.Label" xml:space="preserve"><value>Tema gelap</value></data>
   <data name="Home.Description" xml:space="preserve"><value>Kuasai soal CPNS, BUMN, kedinasan, dan UKMPPD dengan cepat dan efisien: pembahasan di setiap soal, kartu hafalan dari soal yang salah. Coba 30 soal gratis.</value></data>
-  <data name="Home.Heading.Line1" xml:space="preserve"><value>Kuasai soal seleksi</value></data>
-  <data name="Home.Heading.Line2" xml:space="preserve"><value>dengan cepat dan efisien</value></data>
-  <data name="Home.TryFree.Note" xml:space="preserve"><value>Tanpa daftar, tanpa kartu kredit.</value></data>
+  <data name="Home.Heading.Line1" xml:space="preserve"><value>Belajar Cepat dan Efisien,</value></data>
+  <data name="Home.Heading.Line2" xml:space="preserve"><value>Di Mana Pun dan Kapan Pun</value></data>
+  <data name="Home.TryFree.Note" xml:space="preserve"><value>Tanpa daftar, tanpa bayar.</value></data>
   <data name="Home.Fact.Explanations" xml:space="preserve"><value>Pembahasan di setiap soal</value></data>
-  <data name="Home.Fact.PerExam" xml:space="preserve"><value>Bayar per ujian</value></data>
+  <data name="Home.Fact.PerExam" xml:space="preserve"><value>Simulasi ujian</value></data>
   <data name="Home.SearchHint" xml:space="preserve"><value>Atau cari soal langsung</value></data>
   <data name="Home.Focus.Line1" xml:space="preserve"><value>Belajar yang perlu saja</value></data>
   <data name="Home.Focus.Line2" xml:space="preserve"><value>langsung dari soal ujiannya</value></data>
-  <data name="Home.Focus.Text" xml:space="preserve"><value>LatihanSoal disusun per ujian seleksi, bukan per kelas sekolah: SKD CPNS, TKD dan Akhlak BUMN, sekolah kedinasan, dan UKMPPD. Kerjakan soalnya, baca pembahasannya, dan lihat hasil per topik untuk tahu bagian mana yang perlu dikejar.</value></data>
+  <data name="Home.Focus.Text" xml:space="preserve"><value>Kerjakan soalnya, baca pembahasannya, dan lihat hasil per topik untuk tahu bagian mana yang perlu dikejar.</value></data>
   <data name="Home.Remember.Title" xml:space="preserve"><value>Ulangi yang belum dikuasai, lewati yang sudah</value></data>
-  <data name="Home.Remember.Text" xml:space="preserve"><value>Soal yang Anda jawab salah otomatis jadi kartu hafalan. Pengulangan berjarak menjadwalkannya kembali, sedangkan soal yang sudah Anda kuasai tidak lagi menyita waktu Anda.</value></data>
-  <data name="Home.Remember.Point.Auto" xml:space="preserve"><value>Kartu dibuat otomatis dari setiap tryout</value></data>
-  <data name="Home.Remember.Point.Today" xml:space="preserve"><value>Halaman Hari ini menunjukkan kartu yang jatuh tempo</value></data>
-  <data name="Home.Remember.Point.Retake" xml:space="preserve"><value>Ulangi khusus soal yang masih salah</value></data>
+  <data name="Home.Remember.Text" xml:space="preserve"><value>Aplikasi ini memiliki pembobotan soal untuk setiap peserta, untuk setiap soal yang dijawab salah akan menjadi pertimbangan kuat untuk menganalisa kelemahan peserta. Peserta bisa belajar secara efisien dengan fokus kepada soal-soal yang belum dikuasai.</value></data>
+  <data name="Home.Remember.Point.Auto" xml:space="preserve"><value>Flash Card untuk mencicil belajar</value></data>
+  <data name="Home.Remember.Point.Today" xml:space="preserve"><value>Fitur khusus untuk menganalisa hasil belajar</value></data>
+  <data name="Home.Remember.Point.Retake" xml:space="preserve"><value>Belajar secara cepat dan efisien</value></data>
   <data name="Home.Example.Topic" xml:space="preserve"><value>TIU · Deret angka</value></data>
   <data name="Home.Example.Due" xml:space="preserve"><value>Jatuh tempo hari ini</value></data>
   <data name="Home.Example.Question" xml:space="preserve"><value>2, 6, 12, 20, 30, … Angka berikutnya adalah?</value></data>
@@ -1255,7 +1255,7 @@
   <data name="Goals.ExamPageSet" xml:space="preserve"><value>Pasang target ujian</value></data>
   <data name="Goals.ExamPageSetHint" xml:space="preserve"><value>Isi tanggal ujian Anda untuk hitung mundur.</value></data>
   <data name="Goals.ExamPageChange" xml:space="preserve"><value>Ubah target</value></data>
-  <data name="Home.Fact.Cards" xml:space="preserve"><value>Soal salah jadi kartu hafalan</value></data>
+  <data name="Home.Fact.Cards" xml:space="preserve"><value>Bermacam-macam metode belajar</value></data>
   <data name="Home.Benefit.Daily.Title" xml:space="preserve"><value>Sedikit, tapi setiap hari</value></data>
   <data name="Home.Benefit.Daily.Text" xml:space="preserve"><value>Latihan harian berisi 10 soal: kartu yang jatuh tempo dulu, lalu soal baru. Streak mencatat setiap hari Anda berlatih, supaya kebiasaan itu terjaga.</value></data>
   <data name="Home.Benefit.Goal.Title" xml:space="preserve"><value>Pasang target ujian</value></data>

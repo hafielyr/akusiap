@@ -8,8 +8,8 @@ namespace Akusiap.IntegrationTests.Localization;
 [Collection(UsesDatabase.Name)]
 public sealed class LocalizationTests(PostgresFixture database)
 {
-    private const string IndonesianHeading = "Kuasai soal seleksi";
-    private const string EnglishHeading = "Master selection exams";
+    private const string IndonesianHeading = "Belajar Cepat dan Efisien,";
+    private const string EnglishHeading = "Learn quickly and efficiently,";
 
     [Fact]
     public async Task Default_ui_is_indonesian_even_when_browser_prefers_english()

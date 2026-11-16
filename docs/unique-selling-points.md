@@ -19,7 +19,7 @@ Every page and message leads with these two lines (D-124):
 1. **"Belajar menguasai soal secara cepat dan efisien."** The app helps the learner reach their exam goal by spending study time only where it's needed. Back the claim with the feature that makes it true, every time: explanations on every question, wrong answers turned into flashcards, spaced repetition that skips what's already known, results per topic, the exam goal countdown.
 2. **"Berlatih secara konsisten adalah pilar kesuksesan."** The pillar in the logo. It backs the daily drill, the streak and the Today page. Never turn it into a pass promise.
 
-Where they appear: the home hero ("Kuasai soal seleksi / dengan cepat dan efisien") and the tagline section ("Berlatih secara konsisten / adalah pilar kesuksesan"), the footer, the meta descriptions and the sign-up panel.
+Where they appear: the home hero ("Belajar Cepat dan Efisien, / Di Mana Pun dan Kapan Pun", BRD-12) and the tagline section ("Berlatih secara konsisten / adalah pilar kesuksesan"), the footer, the meta descriptions and the sign-up panel.
 
 ## Core selling points
 
